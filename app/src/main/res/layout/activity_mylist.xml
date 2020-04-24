@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mylist_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MylistActivity">
+
+    <include
+        android:id="@+id/mylist_title"
+        layout="@layout/title_bule"/>
+
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        >
+
+        <include
+            layout="@layout/include_userinfo"
+            />
+
+        <TableLayout
+            android:id="@+id/tl_like_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="Click_visibility"
+            android:stretchColumns="0">
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/tv_like"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/but_blue"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="気に入り"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorLight"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_like_cont"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="3dp"
+                    android:paddingRight="20dp"
+                    android:background="@color/but_blue"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:text="0件"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorLight"
+                    android:textSize="15dp" />
+            </TableRow>
+        </TableLayout>
+
+        <jp.kinwork.Common.CommonView.MyScrollView
+            android:id="@+id/SV_ScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="visible">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                    <TableLayout
+                        android:id="@+id/tl_like"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:stretchColumns="0,2">
+
+                        <TableLayout
+                            android:id="@+id/tl_tl_like"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:shrinkColumns="0"
+                            android:stretchColumns="0">
+
+                        </TableLayout>
+
+                        <TableRow
+                            android:id="@+id/tl_tr_like"
+                            android:layout_marginBottom="10dp"
+                            android:visibility="gone"
+                            >
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/tl_tv_like"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="もっと見る..."
+                                android:textColor="@color/background_holo_dark"
+                                android:textStyle="bold"
+                                android:textSize="15sp"
+                                android:onClick="Click_getmore"
+                                />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+                        </TableRow>
+
+                    </TableLayout>
+                    <include
+                        android:id="@+id/layout"
+                        layout="@layout/include_enterde"/>
+
+                    <TableLayout
+                        android:id="@+id/tl_Entered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:stretchColumns="0,2">
+
+                        <TableLayout
+                            android:id="@+id/tl_tl_Entered"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:shrinkColumns="0"
+                            android:stretchColumns="0">
+                        </TableLayout>
+
+                        <TableRow
+                            android:id="@+id/tl_tr_Entered"
+                            android:layout_marginBottom="10dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/tl_tv_Entered"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="もっと見る..."
+                                android:textColor="@color/background_holo_dark"
+                                android:textStyle="bold"
+                                android:textSize="15sp"
+                                android:onClick="Click_getmore"
+                                />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+                <include
+                    android:id="@+id/top_layout"
+                    layout="@layout/include_enterde_top"/>
+
+            </FrameLayout>
+
+        </jp.kinwork.Common.CommonView.MyScrollView>
+
+    </TableLayout>
+
+
+
+</FrameLayout>

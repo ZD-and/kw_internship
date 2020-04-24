@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundblue"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:id="@+id/tl_userinfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TableRow android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_person_black_24dp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_userinfo_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:paddingLeft="5dp"
+                    android:text="名前 様"
+                    android:textStyle="bold"
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_userinfo_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="none"
+                    android:gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:paddingLeft="5dp"
+                    android:text="test@test.com"
+                    android:textSize="15sp" />
+            </TableLayout>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

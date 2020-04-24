@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLight"
+    tools:context=".SelectResumeActivity">
+
+    <include layout="@layout/include_back" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="50dp"
+        android:gravity="center">
+
+
+        <TableLayout
+            android:id="@+id/tl_sendresume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:visibility="visible"
+            android:background="@drawable/ic_shape_w_bule">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="履歴書を選択して応募"
+                    android:textColor="@color/but_blue"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="件名"
+                    android:textColor="@color/background_holo_dark"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_shape"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:text=""
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="本文"
+                    android:textColor="@color/background_holo_dark"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/ic_shape"
+                    android:gravity="left|top"
+                    android:maxLines="8"
+                    android:minLines="8"
+                    android:padding="5dp"
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="12sp" />
+
+
+            </TableLayout>
+
+            <TableLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="履歴書の選択"
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="12sp" />
+
+                <TableRow
+                    android:id="@+id/tr_resume1"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <CheckBox
+                        android:id="@+id/cb_resume1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:onClick="Click_CheckBox" />
+
+                    <TextView
+                        android:id="@+id/tv_resume1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_shape_orange"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="履歴書①"
+                        android:textColor="@color/link_text_holo_dark"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_resume2"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <CheckBox
+                        android:id="@+id/cb_resume2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:onClick="Click_CheckBox" />
+
+                    <TextView
+                        android:id="@+id/tv_resume2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_shape_orange"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="履歴書②"
+                        android:textColor="@color/link_text_holo_dark"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_resume3"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <CheckBox
+                        android:id="@+id/cb_resume3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:onClick="Click_CheckBox" />
+
+                    <TextView
+                        android:id="@+id/tv_resume3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_shape_orange"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="履歴書③"
+                        android:textColor="@color/link_text_holo_dark"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <Button
+                    android:id="@+id/bu_Application"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/but_blue"
+                    android:onClick="Click_Application"
+                    android:text="応募"
+                    android:textColor="@color/colorLight" />
+            </TableLayout>
+
+        </TableLayout>
+
+
+    </TableLayout>
+</FrameLayout>

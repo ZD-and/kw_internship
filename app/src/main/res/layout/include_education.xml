@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:id="@+id/I_tl_tl_educational"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_shape"
+        android:shrinkColumns="0"
+        android:stretchColumns="0">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/I_tl_tr_tv_schoolname"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:paddingLeft="10dp"
+                android:text="学校名:"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/I_ibu_educationcreate"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/colorLight"
+                android:onClick="Updeducation"
+                app:srcCompat="@mipmap/app_up_s" />
+
+            <ImageView
+                android:id="@+id/I_ibu_educationdelete"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:onClick="Deleducation"
+                android:backgroundTint="@color/colorLight"
+                app:srcCompat="@mipmap/app_del_s" />
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/I_tl_tr_tv_degree"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="学位:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/I_tl_tr_tv_majorfield"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="専攻分野:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/I_tl_tr_tv_schoollocation"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:text="国:"-->
+            <!--android:textColor="@color/background_holo_dark"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
+
+        <TextView
+            android:id="@+id/I_tl_tr_tv_durationofentrance"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="期間:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

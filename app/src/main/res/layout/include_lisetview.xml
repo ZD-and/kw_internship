@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TableLayout
+        android:id="@+id/tl_Entered_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="Click_visibility"
+        android:stretchColumns="0">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+
+
+
+
+        </ListView>
+
+    </TableLayout>
+
+</LinearLayout>

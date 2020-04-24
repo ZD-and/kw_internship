@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:id="@+id/tl_e_basicinformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ic_shape_bule"
+        android:onClick="Click_enteredjob"
+        android:shrinkColumns="0"
+        android:stretchColumns="0"
+        android:visibility="visible">
+
+        <TableRow android:gravity="center_vertical"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tv_e_company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:paddingLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="bottom"
+                android:text="会社名:"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_e_isReaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:text="NEW"
+                android:textStyle="bold"
+                android:textColor="@color/holo_red_light"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/ibu_e_contact"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:backgroundTint="@color/colorLight"
+                android:onClick="Click_ContactDialog"
+                app:srcCompat="@mipmap/send_mail" />
+
+            <ImageView
+                android:id="@+id/ibu_e_del"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:onClick="Click_DelApplyjob"
+                android:backgroundTint="@color/colorLight"
+                app:srcCompat="@drawable/ic_delete" />
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/tv_e_Jobname"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="50dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="職業名"
+            android:textColor="@color/holo_orange_light"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_e_address"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginRight="50dp"
+            android:paddingLeft="10dp"
+            android:maxLines="1"
+            android:text="勤務先:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_e_salary"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginRight="90dp"
+            android:paddingLeft="10dp"
+            android:text="給料:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_e_date"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginRight="90dp"
+            android:layout_marginBottom="5dp"
+            android:paddingLeft="10dp"
+            android:text="応募日"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

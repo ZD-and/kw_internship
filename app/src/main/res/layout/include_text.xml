@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="20dp"
+        android:text="以上"
+        android:gravity="center"
+        android:background="@drawable/ic_background_red"
+        android:textColor="@color/holo_red_light"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+</android.support.constraint.ConstraintLayout>

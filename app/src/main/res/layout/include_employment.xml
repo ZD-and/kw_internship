@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:id="@+id/I_tl_tl_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_shape"
+        android:shrinkColumns="0"
+        android:stretchColumns="0">
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/I_tl_tr_tv_jobtitle"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:paddingLeft="10dp"
+                android:text="職種名:"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/I_ibu_jobcreate"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:onClick="Updemployment"
+                android:backgroundTint="@color/colorLight"
+                app:srcCompat="@mipmap/app_up_s" />
+
+            <ImageView
+                android:id="@+id/I_ibu_jobdelete"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:onClick="Delemployment"
+                android:backgroundTint="@color/colorLight"
+                app:srcCompat="@mipmap/app_del_s" />
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/I_tl_tr_tv_companyname"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="会社名:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/I_tl_tr_tv_companylocation"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:text="国:"-->
+            <!--android:textColor="@color/background_holo_dark"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold" />-->
+
+        <TextView
+            android:id="@+id/I_tl_tr_tv_employmentperiod"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="10dp"
+            android:text="期間:"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

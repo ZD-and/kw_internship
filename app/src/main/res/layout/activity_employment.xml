@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient"
+    tools:context=".EmploymentActivity">
+
+    <TextView
+        android:id="@+id/bu_cancel"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="30dp"
+        android:onClick="Click_cancel"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:text="×"
+        android:textStyle="bold"
+        android:textColor="@color/background_holo_dark"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ic_shape_bule"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,2,5,7">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="職歴編集"
+                android:textColor="@color/but_blue"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_job_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="職業名"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_Job_name"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:paddingLeft="5dp"
+                android:background="@drawable/ic_shape" />
+
+            <TextView
+                android:id="@+id/tv_Company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="会社名"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_Company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:paddingLeft="5dp"
+                android:background="@drawable/ic_shape" />
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="会社所在地"-->
+            <!--android:textColor="@color/background_holo_dark"-->
+            <!--android:textSize="15sp" />-->
+
+            <!--<EditText-->
+            <!--android:id="@+id/et_Company_address"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@drawable/ic_shape" />-->
+
+            <TextView
+                android:id="@+id/tv_date_Employment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="就職期間"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:stretchColumns="0,2">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/tv_Employment_StartYM"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_shape"
+                    android:gravity="center"
+                    android:textColor="@color/background_holo_dark"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:text="~"
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_Employment_EndYM"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_shape"
+                    android:gravity="center"
+                    android:textColor="@color/background_holo_dark"
+                    android:text="" />
+            </TableRow>
+
+        </TableLayout>
+
+        <CheckBox
+            android:id="@+id/cb_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:checked="false"
+            android:gravity="center_vertical"
+            android:text="現在、ここで就職している。"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/bu_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/but_blue"
+            android:onClick="bt_Click"
+            android:text="保存"
+            android:textColor="@color/colorLight"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MakeUserActivity">
+
+    <TableLayout
+        android:id="@+id/tl_mu_dummyview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:onClick="Click_cancel"
+        android:background="@drawable/background_gradient">
+
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tl_mu_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="200dp"
+        android:onClick="Click_cancel"
+        android:background="@drawable/ic_shape_w_bule">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/title_activity_make_user"
+            android:textColor="@color/but_blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_input_A"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="未設定"
+            android:textColor="@color/background_holo_dark" />
+
+        <EditText
+            android:id="@+id/ed_input_A"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_shape"
+            android:ems="10"
+            android:paddingLeft="5dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_input_B"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="未設定"
+            android:textColor="@color/background_holo_dark" />
+
+        <EditText
+            android:id="@+id/ed_input_B"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_shape"
+            android:paddingLeft="5dp"
+            android:textSize="15sp" />
+
+        <TableLayout
+            android:id="@+id/tl_validateCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:stretchColumns="0,2">
+
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="検証コードを再発行する"
+                    android:textColor="@color/but_blue"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:textSize="15sp" />
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:stretchColumns="2"
+            android:layout_marginTop="10dp">
+
+            <TableRow
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:id="@+id/iv_termsofservice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    app:srcCompat="@drawable/ic_check_box_outline"
+                    android:onClick="Click_Agreement" />
+
+                <TextView
+                    android:id="@+id/tv_termsofservice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="70dp"
+                    android:gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:onClick="Click_Agreement"
+                    android:text="利用規約"
+                    android:textColor="@color/background_holo_dark" />
+
+                <TextView />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:id="@+id/iv_privacypolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:onClick="Click_Agreement"
+                    app:srcCompat="@drawable/ic_check_box_outline"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_privacypolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:onClick="Click_Agreement"
+                    android:text="プライバシー ポリシー"
+                    android:textSize="12sp"
+                    android:textColor="@color/background_holo_dark" />
+
+
+                <TextView />
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/bu_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="60dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/but_blue"
+            android:onClick="bt_Click"
+            android:text=""
+            android:textColor="@color/colorLight"/>
+
+
+    </TableLayout>
+
+</FrameLayout>

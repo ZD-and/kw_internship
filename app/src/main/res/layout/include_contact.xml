@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:id="@+id/tl_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:onClick="Click_info"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="@drawable/ic_shape_bule"
+        android:stretchColumns="0">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_companyname"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="会社名"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <!--<ImageView-->
+                <!--android:id="@+id/ibu_e_contact"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:backgroundTint="@color/colorLight"-->
+                <!--app:srcCompat="@mipmap/send_mail" />-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:text="2018-06-30 11:11:11"-->
+                <!--android:textSize="12sp" />-->
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/tv_mailtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="标题"
+            android:maxLines="1"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_mailContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="内容"
+            android:maxLines="2"
+            android:inputType="textMultiLine"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_latesttime"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:text="日期"
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

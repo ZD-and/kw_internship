@@ -1,0 +1,341 @@
+package jp.kinwork;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+import jp.kinwork.Common.AES;
+import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.CommonView.BadgeView;
+import jp.kinwork.Common.MyApplication;
+import jp.kinwork.Common.NetworkUtils;
+import jp.kinwork.Common.PostDate;
+import jp.kinwork.Common.PreferenceUtils;
+
+public class ContactActivity extends AppCompatActivity {
+    final static String PARAM_File = "/MyMailMobile/getDialogList";
+
+    private String deviceId;
+    private String AesKey;
+    private String userId;
+    private String token;
+
+
+    private ImageView ivbcontact;
+    private TextView tvbcontact;
+    private TextView tvtitle;
+    private TextView tvname;
+    private TextView tvemail;
+    private TextView tvshow;
+
+    private TableLayout tlcontact;
+
+    private MyApplication mMyApplication;
+    private PreferenceUtils mPreferenceUtils;
+
+    private LinkedList<TableLayout> listTL_info;
+    private LinkedList<String> list_employer_id;
+    private LinkedList<String> list_company_name;
+    private LinkedList<String> list_address;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contact);
+        Initialization();
+    }
+
+    public void Initialization() {
+        mMyApplication = (MyApplication) getApplication();
+        mPreferenceUtils = new PreferenceUtils(ContactActivity.this);
+        listTL_info = new LinkedList<TableLayout>();
+        list_employer_id = new LinkedList<String>();
+        list_company_name = new LinkedList<String>();
+        list_address = new LinkedList<String>();
+        tvname = (TextView) findViewById(R.id.tv_userinfo_name);
+        tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
+        tvshow = (TextView) findViewById(R.id.tv_show);
+        ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
+        tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
+        ivbcontact.setImageResource(R.mipmap.blue_contact);
+        tvbcontact.setTextColor(Color.parseColor("#5EACE2"));
+        tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
+        tvtitle.setText("連絡");
+        tlcontact = (TableLayout) findViewById(R.id.tl_contact);
+        deviceId = mPreferenceUtils.getdeviceId();
+        AesKey = mPreferenceUtils.getAesKey();
+        userId = mPreferenceUtils.getuserId();
+        token = mPreferenceUtils.gettoken();
+        tvemail.setText(mPreferenceUtils.getEmail());
+        mMyApplication.setContactDialog("0",0);
+        if(mMyApplication.getlast_name().length() > 0){
+            tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
+            urllodad();
+        }
+    }
+
+    public void ll_Click(View View) {
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        switch (View.getId()) {
+            //检索画面に移動
+            case R.id.ll_b_search:
+                mMyApplication.setAct("Search");
+                if(mMyApplication.getSURL(0).equals("0")){
+                    if(mMyApplication.getSApply(0).equals("0")){
+                        if(mMyApplication.getSearchResults(0).equals("0")){
+                            intent.setClass(ContactActivity.this, SearchActivity.class);
+                            intent.putExtra("act","");
+                        } else {
+                            intent.setClass(ContactActivity.this, SearchResultsActivity.class);
+                        }
+                    } else {
+                        intent.setClass(ContactActivity.this, ApplyActivity.class);
+                    }
+                } else {
+                    intent.setClass(ContactActivity.this, WebActivity.class);
+                }
+                break;
+            case R.id.ll_b_contact:
+                intent.setClass(ContactActivity.this, ContactActivity.class);
+                break;
+            //Myリスト画面に移動
+            case R.id.ll_b_mylist:
+                mMyApplication.setAct("Apply");
+                if(mMyApplication.getMURL(0).equals("0")){
+                    if(mMyApplication.getMApply(0).equals("0")){
+                        intent.setClass(ContactActivity.this, MylistActivity.class);
+                    } else {
+                        intent.setClass(ContactActivity.this, ApplyActivity.class);
+                    }
+                } else {
+                    intent.setClass(ContactActivity.this, WebActivity.class);
+                }
+                break;
+            //個人設定画面に移動
+            case R.id.ll_b_personalsettings:
+                if(mMyApplication.getpersonalset(0).equals("0")){
+                    intent.setClass(ContactActivity.this, PersonalSetActivity.class);
+                } else if(mMyApplication.getpersonalset(0).equals("1")){
+                    intent.setClass(ContactActivity.this, BasicinfoeditActivity.class);
+                } else if(mMyApplication.getpersonalset(0).equals("2")){
+                    intent.setClass(ContactActivity.this, ChangepwActivity.class);
+                } else if(mMyApplication.getpersonalset(0).equals("3")){
+                    intent.setClass(ContactActivity.this, ResumeActivity.class);
+                }
+                break;
+        }
+        startActivity(intent);
+    }
+
+    //内容取得、通信
+    private void urllodad() {
+        //Json格式转换并且加密
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(userId);
+        Pdata.setToken(token);
+        Gson mGson1 = new Gson();
+        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
+        Log.d("***mailTitle***", sdPdata);
+        AES mAes = new AES();
+        byte[] mBytes = null;
+        try {
+            mBytes = sdPdata.getBytes("UTF8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String enString = mAes.encrypt(mBytes,AesKey);
+        String data = enString.replace("\n", "").replace("+","%2B");
+
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+
+    //访问服务器，并取得访问结果
+    private class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            Map<String, String> map = params[0];
+            String file = map.get("file");
+            String data = map.get("data");
+            URL searchUrl = NetworkUtils.buildUrl(file);
+            String githubSearchResults = null;
+            try {
+                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data,deviceId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return githubSearchResults;
+        }
+        @Override
+        protected void onPostExecute(String githubSearchResults) {
+            if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                Log.d("***Results***", githubSearchResults);
+                try {
+                    JSONObject obj = new JSONObject(githubSearchResults);
+                    Boolean processResult = obj.getBoolean("processResult");
+                    String message = obj.getString("message");
+                    if(processResult == true) {
+                        String returnData = obj.getString("returnData");
+                        decryptchange(returnData);
+                    } else {
+                        alertdialog(message);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else {
+
+            }
+        }
+    }
+
+    //解密，并且保存得到的数据
+    private void decryptchange(String data){
+        AESprocess AESprocess = new AESprocess();
+        String datas = AESprocess.getdecrypt(data,AesKey);
+        Log.d("***+++datas+++***", datas);
+        try {
+            JSONArray obj = new JSONArray(datas);
+            getMessageList(obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //気に入り数据取得
+    public void getMessageList(JSONArray data){
+        int x= -1;
+        for(int i =0; i < data.length(); i++){
+            try {
+                JSONObject obj = data.getJSONObject(i);
+                Log.d("***obj***", obj.toString());
+                Log.d("***Dialog***", obj.getString("Dialog"));
+                Log.d("***other***", obj.getString("other"));
+                Log.d("***MyMail***", obj.getString("MyMail"));
+                JSONObject objDialog = obj.getJSONObject("Dialog");
+                JSONObject objother = obj.getJSONObject("other");
+                JSONObject objMyMail = obj.getJSONObject("MyMail");
+                Log.d("**objDialog**", objDialog.toString());
+                Log.d("***objother***", objother.toString());
+                Log.d("***objMyMail***", objMyMail.toString());
+                int top= dp2px(this, 10);
+                TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
+                tlparams.setMargins(0,0,0,top);
+                View contact = getLayoutInflater().inflate(R.layout.include_contact, null);
+                TableLayout information = (TableLayout) contact.findViewById(R.id.tl_contact);
+                TextView tvcompanyname = (TextView) contact.findViewById(R.id.tv_companyname);
+                TextView tvlatesttime = (TextView) contact.findViewById(R.id.tv_latesttime);
+                TextView tvmailtitle = (TextView) contact.findViewById(R.id.tv_mailtitle);
+                TextView tvmailContent = (TextView) contact.findViewById(R.id.tv_mailContent);
+                String SnotReadedCount = objother.getString("notReadedCount");
+                int InotReadedCount = Integer.parseInt(SnotReadedCount);
+                if(InotReadedCount > 0){
+                    BadgeView badgeView = new BadgeView(this);
+                    badgeView.setTargetView(tvcompanyname);
+                    badgeView.setBadgeCount(InotReadedCount);
+                    badgeView.setBackground(12, Color.parseColor("#ff5040"));
+                }
+
+//                    String Title = objMyMail.getString("mail_title");
+//                    String mailTitle = new String(android.util.Base64.decode(Title.getBytes(), android.util.Base64.DEFAULT));
+//                    String Content = objMyMail.getString("mail_content");
+//                    String mailContent = new String(android.util.Base64.decode(Content.getBytes(), android.util.Base64.DEFAULT));
+//                    mailContent = mailContent.replace("\n", "");
+//                    Log.d("***mailTitle***", Title);
+//                    Log.d("***mailContent***", Content);
+                tvcompanyname.setText(objother.getString("employer_user_name"));
+                tvmailtitle.setText(objMyMail.getString("mail_title"));
+                tvmailContent.setText(objMyMail.getString("mail_content"));
+                tvlatesttime.setText(objMyMail.getString("send_time"));
+                contact.setLayoutParams(tlparams);
+                tlcontact.addView(contact,i);
+                listTL_info.add(i,information);
+                list_employer_id.add(i,objDialog.getString("employer_user_id"));
+                list_company_name.add(i,objother.getString("employer_user_name"));
+                list_address.add(i,objDialog.getString("employer_email"));
+                x += 1;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if(x < 0){
+            tvshow.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //dp转换为px
+    private int dp2px(Context context, float dpValue){
+        float scale=context.getResources().getDisplayMetrics().density;
+        return (int)(dpValue*scale+0.5f);
+    }
+
+    //通信结果提示
+    private void alertdialog(String meg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("エラー").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+            }
+        }).show();
+    }
+
+    //気に入り職歴信息取得
+    public void Click_info(View View){
+        if (View == null) {
+            return;
+        }
+        // 判断第几个“-”按钮触发了事件
+        int iIndex = -1;
+        String employer_id = "";
+        String company_name = "";
+        String mailaddress = "";
+        for (int i = 0; i < listTL_info.size(); i++) {
+            if (listTL_info.get(i) == View) {
+                iIndex = i;
+                employer_id = list_employer_id.get(i);
+                company_name = list_company_name.get(i);
+                mailaddress = list_address.get(i);
+                break;
+            }
+        }
+        if (iIndex >= 0) {
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.setClass(ContactActivity.this, ContactDialogActivity.class);
+            intent.putExtra("Act","Contact");
+            intent.putExtra("ID",employer_id);
+            intent.putExtra("company_name",company_name);
+            intent.putExtra("mailaddress",mailaddress);
+            startActivity(intent);
+        }
+    }
+}

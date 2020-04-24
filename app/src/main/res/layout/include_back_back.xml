@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:id="@+id/tl_back"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorLight"
+        android:gravity="center_vertical"
+        android:stretchColumns="1">
+
+        <TableRow>
+
+            <LinearLayout
+                android:id="@+id/ll_basic_info_edi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="Click_back"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_chevron_left_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/tv_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Back"
+                    android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/but_blue"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <!--用于拉伸的空白文本框-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text=""
+                android:textColor="@color/background_holo_dark"
+                android:textSize="20dp" />
+        </TableRow>
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

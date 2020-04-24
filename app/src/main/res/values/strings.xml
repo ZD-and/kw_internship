@@ -1,0 +1,309 @@
+<resources>
+    <string name="app_name">KinWork</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_make_user">ユーザー登録</string>
+    <string name="title_search">検索</string>
+    <string name="title_contact">連絡</string>
+    <string name="title_mylist">マイリスト</string>
+    <string name="title_personalsettings">個人設定</string>
+    <string name="title_basic_info_edi">基本情報編集</string>
+    <string name="title_change_password">パスワード変更</string>
+    <string name="title_In_mail_set">受信メール設定</string>
+    <string name="title_edit_resume">履歴書編集</string>
+
+    <string-array name="employmentstatus">
+        <item>雇用形態を選択してください</item>
+        <item>ボランティア</item>
+        <item>正社員</item>
+        <item>インターン</item>
+        <item>業務委託</item>
+        <item>派遣社員</item>
+        <item>嘱託社員</item>
+        <item>契約社員</item>
+        <item>請負</item>
+        <item>アルバイト･パート</item>
+    </string-array>
+
+    <string-array name="annualincome">
+        <item>推定年収を選択してください</item>
+        <item>100万</item>
+        <item>200万</item>
+        <item>300万</item>
+        <item>400万</item>
+        <item>500万</item>
+        <item>600万</item>
+        <item>700万</item>
+        <item>800万</item>
+        <item>900万</item>
+        <item>1000万以上</item>
+    </string-array>
+
+    <string-array name="CountryData">
+        <item>日本</item>
+        <item>中国</item>
+        <item>中央アフリカ共和国</item>
+        <item>仏領ギアナ</item>
+        <item>仏領ポリネシア</item>
+        <item>北マリアナ諸島</item>
+        <item>南アフリカ</item>
+        <item>南スーダン</item>
+        <item>南極</item>
+        <item>台湾</item>
+        <item>朝鮮民主主義人民共和国</item>
+        <item>東ティモール</item>
+        <item>米国</item>
+        <item>米領バージン諸島</item>
+        <item>米領太平洋諸島</item>
+        <item>英領インド洋地域</item>
+        <item>英領バージン諸島</item>
+        <item>西サハラ</item>
+        <item>西サモア</item>
+        <item>赤道ギニア</item>
+        <item>韓国</item>
+        <item>香港</item>
+        <item>アイスランド</item>
+        <item>アイルランド</item>
+        <item>アゼルバイジャン</item>
+        <item>アフガニスタン</item>
+        <item>アメリカンサモア</item>
+        <item>アラブ首長国連邦</item>
+        <item>アルジェリア</item>
+        <item>アルゼンチン</item>
+        <item>アルバニア</item>
+        <item>アルバ島</item>
+        <item>アルメニア</item>
+        <item>アンギラ</item>
+        <item>アンゴラ</item>
+        <item>アンチグアバーブーダ</item>
+        <item>アンドラ</item>
+        <item>イエメン</item>
+        <item>イギリス</item>
+        <item>イスラエル</item>
+        <item>イタリア</item>
+        <item>イラク</item>
+        <item>イラン</item>
+        <item>インド</item>
+        <item>インドネシア</item>
+        <item>ウガンダ</item>
+        <item>ウクライナ</item>
+        <item>ウズベキスタン</item>
+        <item>ウルグアイ</item>
+        <item>エクアドル</item>
+        <item>エジプト</item>
+        <item>エストニア</item>
+        <item>エチオピア</item>
+        <item>エリトリア</item>
+        <item>エルサルバドル</item>
+        <item>オマーン</item>
+        <item>オランダ</item>
+        <item>オランダ領アンティル諸島</item>
+        <item>オーストラリア</item>
+        <item>オーストリア</item>
+        <item>オーランド諸島</item>
+        <item>カザフスタン</item>
+        <item>カタール</item>
+        <item>カナダ</item>
+        <item>カメルーン</item>
+        <item>カンボジア</item>
+        <item>カーボベルデ</item>
+        <item>ガイアナ</item>
+        <item>ガボン</item>
+        <item>ガンビア</item>
+        <item>ガーナ</item>
+        <item>ガーンジー</item>
+        <item>キプロス</item>
+        <item>キュラソー</item>
+        <item>キューバ</item>
+        <item>キリバス</item>
+        <item>キルギスタン</item>
+        <item>ギニア</item>
+        <item>ギニアビサウ</item>
+        <item>ギリシア</item>
+        <item>クウェート</item>
+        <item>クック諸島</item>
+        <item>クリスマス島</item>
+        <item>クロアチア</item>
+        <item>グアテマラ</item>
+        <item>グアドループ</item>
+        <item>グアム</item>
+        <item>グリーンランド</item>
+        <item>グルジア</item>
+        <item>グレナダ</item>
+        <item>ケイマン諸島</item>
+        <item>ケニア</item>
+        <item>ココス諸島</item>
+        <item>コスタリカ</item>
+        <item>コモロ</item>
+        <item>コロンビア</item>
+        <item>コンゴ</item>
+        <item>コンゴ民主共和国</item>
+        <item>コートジボアール</item>
+        <item>サウジアラビア</item>
+        <item>サウスジョージア島・サウスサンドウィッチ島</item>
+        <item>サントメ・プリンシペ</item>
+        <item>サンバルテルミー</item>
+        <item>サンピエール島・ミクロン島</item>
+        <item>サンマリノ</item>
+        <item>サンマルタン</item>
+        <item>ザンビア</item>
+        <item>シエラレオネ</item>
+        <item>シリア</item>
+        <item>シンガポール</item>
+        <item>シントマールテン(オランダ領)</item>
+        <item>ジブチ</item>
+        <item>ジブラルタル</item>
+        <item>ジャマイカ</item>
+        <item>ジャージー</item>
+        <item>ジンバブエ</item>
+        <item>スイス</item>
+        <item>スウェーデン</item>
+        <item>スバールバル諸島・ヤンマイエン島</item>
+        <item>スペイン</item>
+        <item>スリナム</item>
+        <item>スリランカ</item>
+        <item>スロバキア</item>
+        <item>スロベニア</item>
+        <item>スワジランド</item>
+        <item>スーダン</item>
+        <item>セイシェル</item>
+        <item>セネガル</item>
+        <item>セルビア</item>
+        <item>セントクリストファー・ネイビス</item>
+        <item>セントビンセントおよびグレナディーン諸島</item>
+        <item>セントヘレナ島</item>
+        <item>セントルシア</item>
+        <item>ソマリア</item>
+        <item>ソロモン諸島</item>
+        <item>タイ</item>
+        <item>タジキスタン</item>
+        <item>タンザニア</item>
+        <item>タークス諸島・カイコス諸島</item>
+        <item>チェコ</item>
+        <item>チャド</item>
+        <item>チュニジア</item>
+        <item>チリ</item>
+        <item>ツバル</item>
+        <item>デンマーク</item>
+        <item>トケラウ諸島</item>
+        <item>トリニダード・トバゴ</item>
+        <item>トルクメニスタン</item>
+        <item>トルコ</item>
+        <item>トンガ</item>
+        <item>トーゴ</item>
+        <item>ドイツ</item>
+        <item>ドミニカ共和国</item>
+        <item>ドミニカ国</item>
+        <item>ナイジェリア</item>
+        <item>ナウル</item>
+        <item>ナミビア</item>
+        <item>ニウエ島</item>
+        <item>ニカラグア</item>
+        <item>ニジェール</item>
+        <item>ニューカレドニア</item>
+        <item>ニュージーランド</item>
+        <item>ネパール</item>
+        <item>ノルウェー</item>
+        <item>ノーフォーク島</item>
+        <item>ハイチ</item>
+        <item>ハンガリー</item>
+        <item>ハード・マクドナルド諸島</item>
+        <item>バチカン</item>
+        <item>バヌアツ</item>
+        <item>バハマ</item>
+        <item>バルバドス</item>
+        <item>バングラデシュ</item>
+        <item>バーミューダ諸島</item>
+        <item>バーレーン</item>
+        <item>パキスタン</item>
+        <item>パナマ</item>
+        <item>パプアニューギニア</item>
+        <item>パラオ</item>
+        <item>パラグアイ</item>
+        <item>パレスチナ</item>
+        <item>ピトケアン島</item>
+        <item>フィジー</item>
+        <item>フィリピン</item>
+        <item>フィンランド</item>
+        <item>フェロー諸島</item>
+        <item>フォークランド諸島</item>
+        <item>フランス</item>
+        <item>フランス領極南諸島</item>
+        <item>ブラジル</item>
+        <item>ブルガリア</item>
+        <item>ブルキナファソ</item>
+        <item>ブルネイ</item>
+        <item>ブルンジ</item>
+        <item>ブータン</item>
+        <item>ブーベ島</item>
+        <item>プエルトリコ</item>
+        <item>ベトナム</item>
+        <item>ベニン</item>
+        <item>ベネズエラ</item>
+        <item>ベラルーシ</item>
+        <item>ベリーズ</item>
+        <item>ベルギー</item>
+        <item>ペルー</item>
+        <item>ホンジュラス</item>
+        <item>ボスニア・ヘルツェゴビナ</item>
+        <item>ボツワナ</item>
+        <item>ボネール、シントユースタティウスおよびサバ</item>
+        <item>ボリビア</item>
+        <item>ポルトガル</item>
+        <item>ポーランド</item>
+        <item>マカオ</item>
+        <item>マケドニア</item>
+        <item>マダガスカル</item>
+        <item>マヨット島</item>
+        <item>マラウイ</item>
+        <item>マリ</item>
+        <item>マルタ</item>
+        <item>マルティニーク島</item>
+        <item>マレーシア</item>
+        <item>マン島</item>
+        <item>マーシャル諸島</item>
+        <item>ミクロネシア</item>
+        <item>ミャンマー</item>
+        <item>メキシコ</item>
+        <item>モザンビーク</item>
+        <item>モナコ</item>
+        <item>モルディブ</item>
+        <item>モルドバ</item>
+        <item>モロッコ</item>
+        <item>モンゴル</item>
+        <item>モンテネグロ</item>
+        <item>モントセラト島</item>
+        <item>モーリシャス</item>
+        <item>モーリタニア</item>
+        <item>ヨルダン</item>
+        <item>ラオス</item>
+        <item>ラトビア</item>
+        <item>リトアニア</item>
+        <item>リヒテンシュタイン</item>
+        <item>リビア</item>
+        <item>リベリア</item>
+        <item>ルクセンブルク</item>
+        <item>ルワンダ</item>
+        <item>ルーマニア</item>
+        <item>レソト</item>
+        <item>レバノン</item>
+        <item>レユニオン</item>
+        <item>ロシア</item>
+        <item>ワリス・フテュナ諸島</item>
+    </string-array>
+</resources>

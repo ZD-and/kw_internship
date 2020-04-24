@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical"
+    tools:context=".QualificationActivity">
+
+    <TextView
+        android:id="@+id/bu_cancel"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="30dp"
+        android:onClick="Click_cancel"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:text="×"
+        android:textStyle="bold"
+        android:textColor="@color/background_holo_dark"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ic_shape_bule"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="資格・免許編集"
+            android:textColor="@color/but_blue"
+            android:textStyle="bold"
+            android:textSize="20dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:stretchColumns="0,2">
+
+            <TextView
+                android:id="@+id/tv_Qualification_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="資格名称"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_Qualification_name"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/background_holo_dark"
+                android:text=""
+                android:background="@drawable/ic_shape" />
+
+
+            <TextView
+                android:id="@+id/tv_date_Qualification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="15dp"
+                android:text="取得日"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
+
+            <TableRow
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_shape">
+                <TextView
+                    android:id="@+id/tv_Qualification_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:padding="5dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/background_holo_dark" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_clear"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:textSize="15sp"-->
+                    <!--android:text=""-->
+                    <!--android:textColor="@color/background_holo_dark" />-->
+
+            </TableRow>
+
+
+            <Button
+                android:id="@+id/bu_button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/but_blue"
+                android:onClick="bt_Click"
+                android:text="保存"
+                android:textColor="@color/colorLight"/>
+        </TableLayout>
+    </LinearLayout>
+</LinearLayout>

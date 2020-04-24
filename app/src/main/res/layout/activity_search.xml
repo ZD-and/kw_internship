@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
+
+
+    <include
+        android:id="@+id/search_title"
+        layout="@layout/title"/>
+
+    <FrameLayout
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+
+        <TableLayout
+            android:id="@+id/tllayout_search"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            >
+
+            <ImageView
+                android:id="@+id/iv_kinwork"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@mipmap/kinwork" />
+
+            <TextView
+                android:id="@+id/tv_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center_vertical"
+                android:text="キーワード"
+                android:textColor="@color/but_blue"
+                android:textSize="15sp" />
+
+            <!--填充用star-->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:background="@drawable/ic_shape" />
+            <!--填充用end-->
+            <TableLayout
+                android:id="@+id/tl_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape"
+                android:stretchColumns="0">
+
+                <TableRow>
+                    <EditText
+                        android:id="@+id/et_keyword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:background="@null"
+                        android:text=""
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:cursorVisible="false"
+                        android:hint="職種、業種、会社名など"
+                        android:textColor="@color/background_holo_dark" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_clear_keyword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"
+                        android:onClick="Click_clear"
+                        app:srcCompat="@drawable/ic_cancel" />
+
+                </TableRow>
+
+            </TableLayout>
+
+
+            <TextView
+                android:id="@+id/tv_worklocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="勤務地"
+                android:textColor="@color/but_blue" />
+
+            <TableLayout
+                android:id="@+id/tl_worklocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape"
+                android:gravity="center_vertical"
+                android:stretchColumns="0">
+
+                <TableRow>
+                    <EditText
+                        android:id="@+id/et_worklocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:background="@null"
+                        android:text=""
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:cursorVisible="false"
+                        android:hint="都道府県、市区町村、駅名"
+                        android:textColor="@color/background_holo_dark" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_clear_worklocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:tag="location"
+                        android:visibility="visible"
+                        android:onClick="Click_clear"
+                        app:srcCompat="@drawable/ic_location_on" />
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:id="@+id/bu_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp"
+                android:layout_marginTop="30dp"
+                app:backgroundTint="@color/but_blue"
+                android:onClick="Click_Search"
+                android:text="検索"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp" />
+        </TableLayout>
+
+        <ListView
+            android:id="@+id/lv_gethint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="450dp"
+            android:background="@drawable/ic_shape"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
+
+
+</FrameLayout>
