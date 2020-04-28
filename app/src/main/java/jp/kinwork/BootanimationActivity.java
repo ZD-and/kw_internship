@@ -61,7 +61,6 @@ public class BootanimationActivity extends AppCompatActivity {
     private PreferenceUtils mPreferenceUtils;
     private LocationManager mLocationManager;
 
-    private String TAG = "BootanimationActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +78,7 @@ public class BootanimationActivity extends AppCompatActivity {
         mMyApplication.setpersonalset("0",0);
         mMyApplication.setkeyword("");
         mMyApplication.setaddress("");
-        Log.d(TAG +"***onCreate***", "onCreate-1" );
+        Log.w("onCreate", "onCreate-1" );
         if (loaddeviceId.equals("A") || loadAesKey.equals("A")) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -107,7 +106,7 @@ public class BootanimationActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG+"onRequestrequestCode", requestCode+"");
+        Log.d("onRequestrequestCode", requestCode+"");
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -118,10 +117,9 @@ public class BootanimationActivity extends AppCompatActivity {
 
     //判断是否是初次通信
     public void Check(){
-        Log.d(TAG, "Check: ");
         load();
-        Log.d(TAG+"loaddeviceId", loaddeviceId);
-        Log.d(TAG+"loadAesKey", loadAesKey);
+        Log.d("loaddeviceId", loaddeviceId);
+        Log.d("loadAesKey", loadAesKey);
         SaveDate(Initial_Name,"Result","1");
         if (loaddeviceId.equals("A") || loadAesKey.equals("A"))
         {
@@ -158,7 +156,7 @@ public class BootanimationActivity extends AppCompatActivity {
     public void urllodad() {
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_A);
-        param.put("data","2");
+        param.put("data","0");
         flg = "1";
         new GithubQueryTask().execute(param);
     }
@@ -166,8 +164,8 @@ public class BootanimationActivity extends AppCompatActivity {
     //初始所有数据
     public void urlMypageData(){
         load();
-        Log.d(TAG+"loadUserId", loadUserId);
-        Log.d(TAG+"loadToken", loadToken);
+        Log.d("loadUserId", loadUserId);
+        Log.d("loadToken", loadToken);
         if(! loadUserId.equals("A") && ! loadToken.equals("A")){
             //Json格式转换并且加密
             String data = JsonChnge(loadAesKey,loadUserId,loadToken);
@@ -208,7 +206,7 @@ public class BootanimationActivity extends AppCompatActivity {
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,loadAesKey);
-        Log.d(TAG+"***+++解密datas+++***", datas);
+        Log.d("***+++解密datas+++***", datas);
         try {
             JSONObject obj = new JSONObject(datas);
             if(obj.has("id")){
@@ -275,7 +273,7 @@ public class BootanimationActivity extends AppCompatActivity {
             String githubSearchResults = null;
             try {
                 if(flg.equals("1")){
-                    githubSearchResults = getResponseFromHttpUrl(searchUrl,data,"");
+                    githubSearchResults = getResponseFromHttpUrl(searchUrl,"","");
                 } else {
                     githubSearchResults = getResponseFromHttpUrl(searchUrl,data,loaddeviceId);
                 }
@@ -289,7 +287,7 @@ public class BootanimationActivity extends AppCompatActivity {
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 try {
-                    Log.d(TAG+"***Results***", githubSearchResults);
+                    Log.d("***Results***", githubSearchResults);
                     JSONObject obj = new JSONObject(githubSearchResults);
                     Boolean processResult = obj.getBoolean("processResult");
                     if(processResult == true)
@@ -354,7 +352,7 @@ public class BootanimationActivity extends AppCompatActivity {
         for(int i=0; i < data.length(); i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
-                Log.d(TAG+"***ResumeInfo***", data.getString(i));
+                Log.d("***ResumeInfo***", data.getString(i));
                 num = num + 1;
                 if(num == 1 && obj.getString("id") != null){
                     mPreferenceUtils.setresumeid_1(obj.getString("id"));
@@ -383,7 +381,7 @@ public class BootanimationActivity extends AppCompatActivity {
     }
 
     private void locationStart() {
-        Log.d(TAG+"debug", "locationStart()");
+        Log.d("debug", "locationStart()");
         // LocationManager インスタンス生成
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 //        if (mLocationManager != null && mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -395,12 +393,11 @@ public class BootanimationActivity extends AppCompatActivity {
 //            startActivity(settingsIntent);
 //            Log.d("debug", "not gpsEnable, startActivity");
 //        }
-        Log.d(TAG+"debug", "locationStart() AccessFineFocation:" +AccessFineFocation);
         if (AccessFineFocation.equals("1")) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG+"debug", "checkSelfPermission false");
+                Log.d("debug", "checkSelfPermission false");
             }
 //            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 //                    1000, 50, this);
@@ -413,7 +410,6 @@ public class BootanimationActivity extends AppCompatActivity {
             criteria.setCostAllowed(false);//是否允许付费
             criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
             Location Location = mLocationManager.getLastKnownLocation(mLocationManager.getBestProvider(criteria,true));
-            Log.d(TAG+"debug", "locationStart() Location:" +Location);
             if (Location != null) {
                 getaddress_components(Location);
             } else {
@@ -433,7 +429,7 @@ public class BootanimationActivity extends AppCompatActivity {
             String url = map.get("url");
             String itude = map.get("itude");
             String key = map.get("key");
-            Log.d(TAG+"***url***", url + itude + key);
+            Log.d("***url***", url + itude + key);
             URL searchUrl = null;
             try {
                 searchUrl = new URL(url + itude + key);
@@ -451,13 +447,13 @@ public class BootanimationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d(TAG+"***Results***", githubSearchResults);
+                Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     JSONArray job = obj.getJSONArray("results");
-                    Log.d(TAG+"***job***", job.get(0).toString());
+                    Log.d("***job***", job.get(0).toString());
                     mMyApplication.setaddress_components(job.get(0).toString());
-                    Log.d(TAG+"***job***", job.get(0).toString());
+                    Log.d("***job***", job.get(0).toString());
                     Check();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -472,7 +468,6 @@ public class BootanimationActivity extends AppCompatActivity {
         param.put("url","https://maps.google.com/maps/api/geocode/json?latlng=");
         param.put("itude",location.getLatitude() + ","+location.getLongitude());
         param.put("key","&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
-//        new GithubQueryTask2().execute(param);
-        Check();
+        new GithubQueryTask2().execute(param);
     }
 }

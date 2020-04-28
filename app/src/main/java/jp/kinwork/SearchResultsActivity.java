@@ -494,7 +494,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                             } else {
                                 JSONObject Data = new JSONObject(obj.getString("returnData"));
                                 String numFound = Data.getString("numFound");
-                                JSONObject paging = Data.getJSONObject("pagenation");
+                                JSONObject paging = Data.getJSONObject("paging");
                                 String numOfPage = paging.getString("numOfPage");
                                 page = paging.getString("currentPage");
                                 displayresults(numFound, page, numOfPage);
