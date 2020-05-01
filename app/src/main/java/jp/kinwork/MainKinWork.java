@@ -111,6 +111,20 @@ public class MainKinWork extends AppCompatActivity {
                 MainLoginClick();
             }
         });
+        Forgetpw=findViewById(R.id.Click_Forgetpw);
+        Forgetpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Forgetpw();
+            }
+        });
+        MakeNewuser_Click=findViewById(R.id.MakeNewuser_Click);
+        MakeNewuser_Click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MakeNewuser_Click();
+            }
+        });
 
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(MainKinWork.this);
@@ -132,19 +146,6 @@ public class MainKinWork extends AppCompatActivity {
         Email = edloginEmail.getText().toString();
         password = edpassword.getText().toString();
         urllodad(Email,password);
-    }
-
-    public void onclick(View v){
-        switch (v.getId()){
-            case R.id.Click_Forgetpw:
-                Click_Forgetpw();
-                break;
-
-            case R.id.MakeNewuser_Click:
-                MakeNewuser_Click();
-                break;
-        }
-
     }
 
 
