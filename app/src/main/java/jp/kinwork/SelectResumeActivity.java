@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,6 +78,8 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String SetTitle = "";
     private String SetMeg = "";
 
+    private Button application;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +141,12 @@ public class SelectResumeActivity extends AppCompatActivity {
     //初期化
     private void Initialization(){
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("求人詳細");
         tvbackdummy.setText("求人詳細");
@@ -150,6 +159,13 @@ public class SelectResumeActivity extends AppCompatActivity {
         cbresume1 = (CheckBox) findViewById(R.id.cb_resume1);
         cbresume2 = (CheckBox) findViewById(R.id.cb_resume2);
         cbresume3 = (CheckBox) findViewById(R.id.cb_resume3);
+        application=findViewById(R.id.bu_Application);
+        application.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Application();
+            }
+        });
         myApplication = (MyApplication) getApplication();
         String flg = myApplication.getMyjob();
         companyname = myApplication.getcompany_name();
@@ -223,12 +239,12 @@ public class SelectResumeActivity extends AppCompatActivity {
     }
 
     //返回检索画面
-    public void Click_back(View View){
+    public void Click_back(){
         MoveIntent("back");
     }
 
     //应聘按钮
-    public void Click_Application(View View){
+    public void Click_Application(){
         if(cbresumeId.equals("")){
             alertdialog("履歴書を選択してください。");
         } else {

@@ -179,6 +179,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         tlmeg           = (TableLayout) findViewById(R.id.tl_meg);
         slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
         tvback          = (TextView) findViewById(R.id.tv_back);
+
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("連絡");
@@ -425,7 +426,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
     }
     //显示邮件
-    public void Click_DisplayEmail(View View){
+    public void onclick(View View){
         String name = "";
         switch (View.getId()){
             case R.id.tv_allEmail:

@@ -195,7 +195,6 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:backgroundTint="@color/but_blue"
-                    android:onClick="Click_Application"
                     android:text="応募"
                     android:textColor="@color/colorLight" />
             </TableLayout>

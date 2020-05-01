@@ -81,7 +81,6 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:background="@drawable/frame_left_bule"
-                        android:onClick="Click_DisplayEmail"
                         android:text="すべて"/>
 
 
@@ -95,7 +94,6 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:background="@drawable/frame_center_null"
-                        android:onClick="Click_DisplayEmail"
                         android:text="受信トレイ"/>
 
                     <TextView
@@ -108,7 +106,6 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:background="@drawable/frame_right_null"
-                        android:onClick="Click_DisplayEmail"
                         android:text="送信済み"/>
 
                 </TableRow>

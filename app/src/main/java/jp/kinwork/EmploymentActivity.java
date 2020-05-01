@@ -21,7 +21,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Button;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -55,6 +55,9 @@ public class EmploymentActivity extends AppCompatActivity {
     private TextView tv_job_name;
     private TextView tv_Company_name;
     private TextView tv_date_Employment;
+    private TextView cancel;
+
+    private Button save;
 
     private EditText etJobname;
     private EditText etCompanyname;
@@ -101,6 +104,21 @@ public class EmploymentActivity extends AppCompatActivity {
 
     //初期化
     public void Initialization(){
+        cancel=findViewById(R.id.bu_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+
+        save=findViewById(R.id.bu_button);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveurl();
+            }
+        });
         tv_job_name  = (TextView) findViewById(R.id.tv_job_name);
         tv_Company_name  = (TextView) findViewById(R.id.tv_Company_name);
         tv_date_Employment  = (TextView) findViewById(R.id.tv_date_Employment);
@@ -199,13 +217,10 @@ public class EmploymentActivity extends AppCompatActivity {
         }).show();
     }
 
-    //按钮点击触发事件
-    public void bt_Click(View View) {
-        saveurl();
-    }
+
 
     //关闭，履历书画面
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         NewIntent();
     }
 

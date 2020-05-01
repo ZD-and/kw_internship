@@ -90,7 +90,7 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //关闭，返回登录画面
-    public void Click_cancel(View View){
+    public void onclick(View View){
         switch (View.getId()){
             case R.id.tl_mu_dummyview:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -132,6 +132,12 @@ public class MakeUserActivity extends AppCompatActivity {
         ivtermsofservice = (ImageView) findViewById(R.id.iv_termsofservice);
         tvtermsofservice = (TextView) findViewById(R.id.tv_termsofservice);
         bubutton = (Button) findViewById(R.id.bu_button);
+        bubutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt_Click();
+            }
+        });
         PreferenceUtils = new PreferenceUtils(MakeUserActivity.this);
         Email = PreferenceUtils.getEmail();
         token = PreferenceUtils.gettoken();
@@ -237,7 +243,7 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //按钮触发事件
-    public void bt_Click(View View){
+    public void bt_Click(){
         String inputA = edinputA.getText().toString();
         String inputB = edinputB.getText().toString();
         PreferenceUtils.setdeviceId(deviceId);
@@ -278,7 +284,7 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //契约按钮触发事件
-    public void Click_Agreement(View View){
+    public void onClick(View View){
         String Agreement = "";
         switch (View.getId()){
             case R.id.iv_privacypolicy:
