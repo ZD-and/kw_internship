@@ -284,7 +284,7 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //契约按钮触发事件
-    public void onClick(View View){
+    public void Click_Agreement(View View){
         String Agreement = "";
         switch (View.getId()){
             case R.id.iv_privacypolicy:
