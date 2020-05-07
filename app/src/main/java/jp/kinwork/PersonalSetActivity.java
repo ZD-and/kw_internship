@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class PersonalSetActivity extends AppCompatActivity {
+public class PersonalSetActivity extends AppCompatActivity implements View.OnClickListener{
 
 
     private TextView tvtitle;
@@ -23,6 +24,10 @@ public class PersonalSetActivity extends AppCompatActivity {
     private TextView tvResumeSet3;
 
     private TableLayout tlResumeSet;
+
+    private TableRow tr_basicinfoedit;
+    private TableRow tr_changpw;
+    private TableRow tr_LoginOut;
 
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
@@ -44,7 +49,16 @@ public class PersonalSetActivity extends AppCompatActivity {
     public void Initialization(){
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
+
+        tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
+        tr_changpw=findViewById(R.id.tr_changpw);
+        tr_LoginOut=findViewById(R.id.tr_LoginOut);
+        tr_basicinfoedit.setOnClickListener(this);
+        tr_changpw.setOnClickListener(this);
+        tr_LoginOut.setOnClickListener(this);
+
         tlResumeSet = (TableLayout) findViewById(R.id.tl_ResumeSet);
+
         tvResumeSet1 = (TextView) findViewById(R.id.tv_ResumeSet_1);
         tvResumeSet2 = (TextView) findViewById(R.id.tv_ResumeSet_2);
         tvResumeSet3 = (TextView) findViewById(R.id.tv_ResumeSet_3);
@@ -108,7 +122,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //子功能画面按钮
-    public void TR_Click(View View){
+    public void onClick(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
