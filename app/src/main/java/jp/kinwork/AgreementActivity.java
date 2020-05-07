@@ -47,7 +47,7 @@ public class AgreementActivity extends AppCompatActivity {
         tvagreementcontents.setText(Html.fromHtml(text));
     }
 
-    public void onClick(View View){
+    public void Clike(View View){
         mMyApplication.setAgreement(Agreement);
         switch (View.getId()){
             case R.id.bu_back:
