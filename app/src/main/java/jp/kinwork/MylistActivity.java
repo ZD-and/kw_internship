@@ -78,6 +78,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private TableLayout tlEntered;
     private TableLayout tlEnteredtitle;
     private TableLayout tltlEntered;
+    private TableLayout tlliketitle;
 
     private TableRow tltrlike;
     private TableRow tltrEntered;
@@ -164,6 +165,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     //初始化
     public void Initialization(){
         tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title);
+        tlliketitle=findViewById(R.id.tl_like_title);
         ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
         tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
         ivmylist.setImageResource(R.mipmap.blue_mylist);

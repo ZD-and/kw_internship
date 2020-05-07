@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
+import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -100,8 +100,25 @@ public class ResumeActivity extends AppCompatActivity {
     private String hobbySkill = "";
     private String ActCation = "";
 
+
+    private ImageView bu_info_education;
+    private ImageView bu_info_employment;
+    private ImageView bu_info_qualification;
+
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
+
+    private TextView tvapplicationinformation;
+    private TextView tvbasicinformation;
+    private TextView tl_tr_tv_educational;
+    private TextView tl_tr_tv_employmenthistory;
+    private TextView tl_tr_tv_qualification;
+    private TextView tv_PrSkill;
+    private TextView tv_resume_title;
+    private TextView tv_Cancel;
+    private TextView tv_Confirmation;
+
+
     private TextView tvresumetitle;
     private TextView tltrtvname;
     private TextView tltrtvkananame;
@@ -119,6 +136,9 @@ public class ResumeActivity extends AppCompatActivity {
     private EditText etneareststation;
     private EditText etAspirationPR;
     private EditText ethobbySkill;
+
+    private Button bu_cancel;
+    private Button bu_create;
 
     private int one_1          = 0;
     private int two_2          = 0;
@@ -199,6 +219,7 @@ public class ResumeActivity extends AppCompatActivity {
         cbeigh        = (CheckBox) findViewById(R.id.cb_eight);
         cbnine            = (CheckBox) findViewById(R.id.cb_nine);
         cbcanmove         = (CheckBox) findViewById(R.id.cb_canmove);
+
         tlResumename = (TableLayout) findViewById(R.id.tl_Resume_name);
         tlrenameresume = (TableLayout) findViewById(R.id.tl_rename_resume);
         lltleducational = (TableLayout) findViewById(R.id.ll_tl_educational);
@@ -220,11 +241,31 @@ public class ResumeActivity extends AppCompatActivity {
         tltrtvaddress   = (TextView) findViewById(R.id.tl_tr_tv_address);
         tltrtvphone     = (TextView) findViewById(R.id.tl_tr_tv_phone);
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("個人設定");
         tvbackdummy.setText("個人設定");
         tvbacktitle.setText("履歴書編集");
+        bu_cancel=findViewById(R.id.bu_cancel);
+        bu_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+        bu_create=findViewById(R.id.bu_create);
+        bu_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_create();
+            }
+        });
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -332,7 +373,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
     }
     //履歴書番号作成
-    public void Click_create(View View){
+    public void Click_create(){
         if(resume_status.equals("add")){
             resumeNumber = resumeNumber + 1;
             PreferenceUtils.setresume_number(resumeNumber);
@@ -340,7 +381,7 @@ public class ResumeActivity extends AppCompatActivity {
         Create_reaume(userId,token);
     }
     //"×"按钮触发删除事件
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         Delalertdialog("この履歴を削除してもよろしいですか？","resume");
     }
     //項目の表示
@@ -1335,7 +1376,7 @@ public class ResumeActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //返回按钮
-    public void Click_back(View View){
+    public void Click_back(){
         status_sum = one_1      +
                      two_2      +
                      three_4    +

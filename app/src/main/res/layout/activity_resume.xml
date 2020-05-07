@@ -57,7 +57,6 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:backgroundTint="@color/holo_red_light"
-                        android:onClick="Click_cancel"
                         android:padding="5sp"
                         android:text="×"
                         android:textColor="@color/colorLight"
@@ -704,7 +703,6 @@
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="60dp"
                 android:backgroundTint="@color/but_blue"
-                android:onClick="Click_create"
                 android:text="履歴書作成"
                 android:textColor="@color/colorLight" />
         </LinearLayout>

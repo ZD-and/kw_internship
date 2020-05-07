@@ -252,6 +252,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setMessage("検索中...");
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle     = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy     = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("検索");
@@ -378,7 +384,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
     }
     //返回检索画面
-    public void Click_back(View View){
+    public void Click_back(){
         myApplication.setSearchResults("0",0);
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

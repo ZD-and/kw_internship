@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -43,7 +44,7 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity {
+public class ContactDialogActivity extends AppCompatActivity implements View.OnClickListener{
 
 //    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
 //    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
@@ -188,9 +189,14 @@ public class ContactDialogActivity extends AppCompatActivity {
 //        tltvmailaddress     = (TextView) findViewById(R.id.tl_tv_mailaddress);
         ettitle        = (EditText) findViewById(R.id.et_title);
         etmeg          = (EditText) findViewById(R.id.et_meg);
+
         tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
         tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
         tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
+        tvallEmail.setOnClickListener(this);
+        tvsendEmail.setOnClickListener(this);
+        tvReceptionEmail.setOnClickListener(this);
+
         tvToCompanyName  = (TextView) findViewById(R.id.tv_ToCompanyName);
         mPreferenceUtils = new PreferenceUtils(ContactDialogActivity.this);
         mMyApplication = (MyApplication) getApplication();
@@ -426,7 +432,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
     }
     //显示邮件
-    public void onclick(View View){
+    public void onClick(View View){
         String name = "";
         switch (View.getId()){
             case R.id.tv_allEmail:

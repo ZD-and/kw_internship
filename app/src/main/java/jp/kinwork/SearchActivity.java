@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -82,6 +83,8 @@ public class SearchActivity extends AppCompatActivity {
     private TableLayout tlworklocation;
     private boolean blkeyword = false;
     private boolean blworklocation = false;
+
+    private Button bu_search;
 
     private ArrayAdapter<String> adapter;
 
@@ -168,6 +171,14 @@ public class SearchActivity extends AppCompatActivity {
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
         tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
+        bu_search=findViewById(R.id.bu_search);
+        bu_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Search();
+            }
+        });
+
         keywordTop= dp2px(SearchActivity.this, 10);
         Log.d(TAG+"keywordTop", keywordTop + "");
         tvkeyword.post(new Runnable() {
@@ -327,7 +338,7 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //检索结果画面移动
-    public void Click_Search(View View){
+    public void Click_Search(){
         myApplication.setkeyword(etkeyword.getText().toString());
         myApplication.setaddress(etworklocation.getText().toString());
         myApplication.setemploymentStatus("");
