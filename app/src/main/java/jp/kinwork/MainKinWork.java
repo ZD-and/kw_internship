@@ -260,7 +260,7 @@ public class MainKinWork extends AppCompatActivity {
             UserToken UTDate = mGson.fromJson(obj.getString("UserToken"),UserToken.class);
             String Userid = UTDate.getUser_id().toString();
             String Token = UTDate.getToken().toString();
-            String email = UTDate.getEmail().toString();
+            String email = UserDate.getEmail().toString();
             if(UserDate.getUser_type().equals("1")){
                 alertdialog("エラー","本アプリは個人ユーザー向けのため、企業ユーザーはウェブ側でご利用ください。");
             } else {
