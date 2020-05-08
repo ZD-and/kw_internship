@@ -42,7 +42,7 @@ import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class MakeUserActivity extends AppCompatActivity {
+public class MakeUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     final static String PARAM_sendValidateEmail = "/usersMobile/sendValidateEmail";
     final static String PARAM_checkValidateCode = "/usersMobile/checkValidateCode";
@@ -61,6 +61,7 @@ public class MakeUserActivity extends AppCompatActivity {
     private EditText edinputB;
 
     private TableLayout tlvalidateCode;
+    private TableLayout tlmudummyview;
 
     private ImageView ivprivacypolicy;
     private TextView tvprivacypolicy;
@@ -90,9 +91,8 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //关闭，返回登录画面
-    public void onclick(View View){
-        switch (View.getId()){
-            case R.id.tl_mu_dummyview:
+    public void Click_cancel(){
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("").setMessage("新規作成をやめますか？").setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     @Override
@@ -115,8 +115,8 @@ public class MakeUserActivity extends AppCompatActivity {
                         //取消按钮的点击事件
                     }
                 }).show();
-                break;
-        }
+
+
 
 
     }
@@ -127,10 +127,22 @@ public class MakeUserActivity extends AppCompatActivity {
         tvinputB = (TextView) findViewById(R.id.tv_input_B);
         edinputB = (EditText) findViewById(R.id.ed_input_B);
         tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
+        tlmudummyview=findViewById(R.id.tl_mu_dummyview);
+        tlmudummyview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
         ivprivacypolicy = (ImageView) findViewById(R.id.iv_privacypolicy);
         tvprivacypolicy = (TextView) findViewById(R.id.tv_privacypolicy);
         ivtermsofservice = (ImageView) findViewById(R.id.iv_termsofservice);
         tvtermsofservice = (TextView) findViewById(R.id.tv_termsofservice);
+        ivprivacypolicy.setOnClickListener(this);
+        tvprivacypolicy.setOnClickListener(this);
+        ivtermsofservice.setOnClickListener(this);
+        tvtermsofservice.setOnClickListener(this);
+
         bubutton = (Button) findViewById(R.id.bu_button);
         bubutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,7 +296,7 @@ public class MakeUserActivity extends AppCompatActivity {
     }
 
     //契约按钮触发事件
-    public void Click_Agreement(View View){
+    public void onClick(View View){
         String Agreement = "";
         switch (View.getId()){
             case R.id.iv_privacypolicy:

@@ -180,6 +180,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         tlmeg           = (TableLayout) findViewById(R.id.tl_meg);
         slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
 
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
@@ -391,7 +397,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         slmeg.setVisibility(VISIBLE);
     }
     //返回联络画面
-    public void Click_back(View View){
+    public void Click_back(){
         Log.d("sendflg", sendflg);
         if(sendflg.equals("1")){
             if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
@@ -420,15 +426,15 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 etmeg.setText("");
             }
         } else {
-            switch (View.getId()){
-                case R.id.tv_back:
+//            switch (View.getId()){
+//                case R.id.tv_back:
                     mMyApplication.setContactDialog("0",0);
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ContactDialogActivity.this, ContactActivity.class);
                     startActivity(intent);
-                    break;
-            }
+//                    break;
+//            }
         }
     }
     //显示邮件
