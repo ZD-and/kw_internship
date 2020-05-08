@@ -15,6 +15,7 @@ public  class User {
      * created_date : 作成時間
      * updated_user : 更新者
      * updated_date : 更新日時
+     * email : ユーザーメールアドレス
      */
 
     private String id;
@@ -26,6 +27,7 @@ public  class User {
     private String created_date;
     private String updated_user;
     private String updated_date;
+    private String email;
 
     public String getId() {
         return id;
@@ -97,5 +99,9 @@ public  class User {
 
     public void setUpdated_date(String updated_date) {
         this.updated_date = updated_date;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
