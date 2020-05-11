@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,7 +59,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String PARAM_KeywordHint = "/SearchesMobile/getKeywordHint";
     final static String PARAM_AddressHint = "/SearchesMobile/getAddressHint";
@@ -71,6 +72,8 @@ public class SearchActivity extends AppCompatActivity {
     private ImageView ivclearworklocation;
     private String UserLoginFlg;
     private ImageView Ivsearch;
+    private ImageView Ivclearkeyword;
+    private ImageView Ivclearworklocation;
     private TextView tvsearch;
     private TextView tvtitle;
     private TextView tvkeyword;
@@ -166,6 +169,11 @@ public class SearchActivity extends AppCompatActivity {
     //初期化
     public void Initialization(){
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
+        Ivclearkeyword=findViewById(R.id.iv_clear_keyword);
+        Ivclearworklocation=findViewById(R.id.iv_clear_worklocation);
+        Ivclearkeyword.setOnClickListener(this);
+        Ivclearworklocation.setOnClickListener(this);
+
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
@@ -538,7 +546,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
     //输入框的清空处理
-    public void Click_clear(View View){
+    public void onClick(View View){
         switch (View.getId()){
             case R.id.iv_clear_keyword:
                 etkeyword.setText("");

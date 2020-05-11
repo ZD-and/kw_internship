@@ -27,7 +27,6 @@
             android:id="@+id/tl_like_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Click_visibility"
             android:stretchColumns="0">
 
             <TableRow>
@@ -114,7 +113,6 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textStyle="bold"
                                 android:textSize="15sp"
-                                android:onClick="Click_getmore"
                                 />
 
                             <TextView
@@ -162,7 +160,6 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textStyle="bold"
                                 android:textSize="15sp"
-                                android:onClick="Click_getmore"
                                 />
 
                             <TextView

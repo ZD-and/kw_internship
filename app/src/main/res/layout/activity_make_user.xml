@@ -127,7 +127,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    android:onClick="Click_Agreement"
                     app:srcCompat="@drawable/ic_check_box_outline"
                     />
 
@@ -139,7 +138,6 @@
                     android:gravity="center_vertical"
                     android:textSize="12sp"
                     android:text="利用規約"
-                    android:onClick="Click_Agreement"
                     android:textColor="@color/background_holo_dark" />
 
                 <TextView />
@@ -152,7 +150,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    android:onClick="Click_Agreement"
                     app:srcCompat="@drawable/ic_check_box_outline"
                     />
 
@@ -163,7 +160,6 @@
                     android:gravity="center_vertical"
                     android:text="プライバシー ポリシー"
                     android:textSize="12sp"
-                    android:onClick="Click_Agreement"
                     android:textColor="@color/background_holo_dark" />
 
 

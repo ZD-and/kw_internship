@@ -230,7 +230,6 @@
                     android:text="送信"
                     android:textSize="15sp"
                     android:backgroundTint="@color/but_blue"
-                    android:onClick="Click_setSendMeg"
                     />
             </TableLayout>
 

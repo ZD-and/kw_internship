@@ -22,7 +22,6 @@
                 android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
                 android:text="Back"
                 android:textStyle="bold"
-                android:onClick="Click_back"
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 

@@ -70,6 +70,8 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private TextView tvTopApplycont;
     private TextView tvname;
     private TextView tvemail;
+    private TextView tltvlike;
+    private TextView tltvEntered;
     private MyApplication myApplication;
     private PreferenceUtils PreferenceUtils;
 
@@ -164,8 +166,15 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     }
     //初始化
     public void Initialization(){
+        tltvlike=findViewById(R.id.tl_tv_like);
+        tltvEntered=findViewById(R.id.tl_tv_Entered);
+        tltvlike.setOnClickListener(Click_getmore);
+        tltvEntered.setOnClickListener(Click_getmore);
+
         tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title);
         tlliketitle=findViewById(R.id.tl_like_title);
+        tlEnteredtitle.setOnClickListener(Click_visibility);
+        tlliketitle.setOnClickListener(Click_visibility);
         ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
         tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
         ivmylist.setImageResource(R.mipmap.blue_mylist);
@@ -632,30 +641,30 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         }).show();
     }
     //項目の表示
-    public void Click_visibility(View ClikcView){
-        switch (ClikcView.getId()){
-            case R.id.tl_like_title:
-                if(likejobCount == 0){
-                    tllike.setVisibility(View.GONE);
-                }else {
-                    if(tllike.getVisibility() == View.GONE){
-                        tllike.setVisibility(View.VISIBLE);
-                    }
-                    else {
+    private View.OnClickListener Click_visibility =new View.OnClickListener() {
+        public void onClick(View ClikcView) {
+            switch (ClikcView.getId()) {
+                case R.id.tl_like_title:
+                    if (likejobCount == 0) {
                         tllike.setVisibility(View.GONE);
+                    } else {
+                        if (tllike.getVisibility() == View.GONE) {
+                            tllike.setVisibility(View.VISIBLE);
+                        } else {
+                            tllike.setVisibility(View.GONE);
+                        }
                     }
-                }
-                break;
-            case R.id.tl_Entered_title:
-                if(tlEntered.getVisibility() == View.GONE){
-                    tlEntered.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tlEntered.setVisibility(View.GONE);
-                }
-                break;
+                    break;
+                case R.id.tl_Entered_title:
+                    if (tlEntered.getVisibility() == View.GONE) {
+                        tlEntered.setVisibility(View.VISIBLE);
+                    } else {
+                        tlEntered.setVisibility(View.GONE);
+                    }
+                    break;
+            }
         }
-    }
+    };
     //気に入り職歴信息取得
     public void Click_likejob(View View){
         if (View == null) {
@@ -779,29 +788,32 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         }
     }
     //显示更多内容按钮
-    public void Click_getmore(View View){
-        PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
-        Pdata.setUserId(userId);
-        Pdata.setToken(token);
-        switch (View.getId()){
-            case R.id.tl_tv_like:
-                likejobpage = likejobpage + 1;
-                param.put("file",PARAM_likelist);
-                Pdata.setpage(String.valueOf(likejobpage));
-                break;
-            case R.id.tl_tv_Entered:
-                Applyjobpage = Applyjobpage + 1;
-                param.put("file",PARAM_personalApplyJobList);
-                Pdata.setcurrentPage(String.valueOf(Applyjobpage));
-                break;
+    private View.OnClickListener Click_getmore =new View.OnClickListener() {
+
+        public void onClick(View View) {
+            PostDate Pdata = new PostDate();
+            Map<String, String> param = new HashMap<String, String>();
+            Pdata.setUserId(userId);
+            Pdata.setToken(token);
+            switch (View.getId()) {
+                case R.id.tl_tv_like:
+                    likejobpage = likejobpage + 1;
+                    param.put("file", PARAM_likelist);
+                    Pdata.setpage(String.valueOf(likejobpage));
+                    break;
+                case R.id.tl_tv_Entered:
+                    Applyjobpage = Applyjobpage + 1;
+                    param.put("file", PARAM_personalApplyJobList);
+                    Pdata.setcurrentPage(String.valueOf(Applyjobpage));
+                    break;
+            }
+            String data = JsonChnge(AesKey, Pdata);
+            param.put("data", data);
+            param.put("name", "");
+            //数据通信处理（気に入り取得）
+            new GithubQueryTask().execute(param);
         }
-        String data = JsonChnge(AesKey,Pdata);
-        param.put("data",data);
-        param.put("name","");
-        //数据通信处理（気に入り取得）
-        new GithubQueryTask().execute(param);
-    }
+    };
     //応募済み削除
     public void Click_DelApplyjob(View View){
         if (View == null) {

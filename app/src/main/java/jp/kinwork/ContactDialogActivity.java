@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,6 +60,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
     private LinearLayout llmeg;
     private TableLayout tlinformation;
     private TableLayout tlmeg;
+    private TableLayout tlnamedate;
     private ScrollView slmeg;
     private ImageView imvivread;
     private TextView tvback;
@@ -72,6 +74,8 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
     private TextView tvsendEmail;
     private TextView tvReceptionEmail;
     private TextView tvToCompanyName;
+
+    private Button bu_sendmeg;
 
     private String deviceId;
     private String AesKey;
@@ -162,6 +166,13 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 
     //初期化
     private void Initialization(){
+        bu_sendmeg=findViewById(R.id.bu_sendmeg);
+        bu_sendmeg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_setSendMeg();
+            }
+        });
         ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
         tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
         ivbcontact.setImageResource(R.mipmap.blue_contact);
@@ -654,7 +665,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
     }
     //送信处理
-    public void Click_setSendMeg(View View){
+    public void Click_setSendMeg(){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);

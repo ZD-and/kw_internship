@@ -159,6 +159,10 @@ public class SelectResumeActivity extends AppCompatActivity {
         cbresume1 = (CheckBox) findViewById(R.id.cb_resume1);
         cbresume2 = (CheckBox) findViewById(R.id.cb_resume2);
         cbresume3 = (CheckBox) findViewById(R.id.cb_resume3);
+        cbresume1.setOnClickListener(Click_CheckBox);
+        cbresume2.setOnClickListener(Click_CheckBox);
+        cbresume3.setOnClickListener(Click_CheckBox);
+
         application=findViewById(R.id.bu_Application);
         application.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,28 +219,30 @@ public class SelectResumeActivity extends AppCompatActivity {
     }
 
     //履歴書選択按钮
-    public void Click_CheckBox(View View){
-        switch (View.getId()){
-            case R.id.cb_resume1:
-                cbresumeId = resumeId_1;
-                cbresume1.setChecked(true);
-                cbresume2.setChecked(false);
-                cbresume3.setChecked(false);
-                break;
-            case R.id.cb_resume2:
-                cbresumeId = resumeId_2;
-                cbresume1.setChecked(false);
-                cbresume2.setChecked(true);
-                cbresume3.setChecked(false);
-                break;
-            case R.id.cb_resume3:
-                cbresumeId = resumeId_3;
-                cbresume1.setChecked(false);
-                cbresume2.setChecked(false);
-                cbresume3.setChecked(true);
-                break;
+    private View.OnClickListener Click_CheckBox =new View.OnClickListener() {
+        public void onClick(View View) {
+            switch (View.getId()) {
+                case R.id.cb_resume1:
+                    cbresumeId = resumeId_1;
+                    cbresume1.setChecked(true);
+                    cbresume2.setChecked(false);
+                    cbresume3.setChecked(false);
+                    break;
+                case R.id.cb_resume2:
+                    cbresumeId = resumeId_2;
+                    cbresume1.setChecked(false);
+                    cbresume2.setChecked(true);
+                    cbresume3.setChecked(false);
+                    break;
+                case R.id.cb_resume3:
+                    cbresumeId = resumeId_3;
+                    cbresume1.setChecked(false);
+                    cbresume2.setChecked(false);
+                    cbresume3.setChecked(true);
+                    break;
+            }
         }
-    }
+    };
 
     //返回检索画面
     public void Click_back(){
