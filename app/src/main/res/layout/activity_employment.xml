@@ -13,7 +13,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginRight="30dp"
-        android:onClick="Click_cancel"
         android:gravity="center"
         android:layout_gravity="right"
         android:text="×"
@@ -182,7 +181,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/but_blue"
-            android:onClick="bt_Click"
             android:text="保存"
             android:textColor="@color/colorLight"/>
     </LinearLayout>

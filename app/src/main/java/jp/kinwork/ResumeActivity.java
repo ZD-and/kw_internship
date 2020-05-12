@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.sip.SipSession;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
+import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -100,8 +101,25 @@ public class ResumeActivity extends AppCompatActivity {
     private String hobbySkill = "";
     private String ActCation = "";
 
+
+    private ImageView bu_info_education;
+    private ImageView bu_info_employment;
+    private ImageView bu_info_qualification;
+
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
+
+    private TextView tvapplicationinformation;
+    private TextView tvbasicinformation;
+    private TextView tl_tr_tv_educational;
+    private TextView tl_tr_tv_employmenthistory;
+    private TextView tl_tr_tv_qualification;
+    private TextView tv_PrSkill;
+    private TextView tv_resume_title;
+    private TextView tvcancel;
+    private TextView tvconfirmation;
+
+
     private TextView tvresumetitle;
     private TextView tltrtvname;
     private TextView tltrtvkananame;
@@ -119,6 +137,9 @@ public class ResumeActivity extends AppCompatActivity {
     private EditText etneareststation;
     private EditText etAspirationPR;
     private EditText ethobbySkill;
+
+    private Button bu_cancel;
+    private Button bu_create;
 
     private int one_1          = 0;
     private int two_2          = 0;
@@ -199,6 +220,26 @@ public class ResumeActivity extends AppCompatActivity {
         cbeigh        = (CheckBox) findViewById(R.id.cb_eight);
         cbnine            = (CheckBox) findViewById(R.id.cb_nine);
         cbcanmove         = (CheckBox) findViewById(R.id.cb_canmove);
+        cbone.setOnClickListener(checkListener);
+        cbtwo.setOnClickListener(checkListener);
+        cbthre.setOnClickListener(checkListener);
+        cbfour.setOnClickListener(checkListener);
+        cbfive.setOnClickListener(checkListener);
+        cbsix.setOnClickListener(checkListener);
+        cbseve.setOnClickListener(checkListener);
+        cbeigh.setOnClickListener(checkListener);
+        cbnine.setOnClickListener(checkListener);
+        cbcanmove.setOnClickListener(checkListener);
+
+        bu_info_education= findViewById(R.id.bu_info_education);
+        bu_info_employment=findViewById(R.id.bu_info_employment);
+        bu_info_qualification=findViewById(R.id.bu_info_qualification);
+        bu_info_education.setOnClickListener(createListener);
+        bu_info_employment.setOnClickListener(createListener);
+        bu_info_employment.setOnClickListener(createListener);
+
+
+
         tlResumename = (TableLayout) findViewById(R.id.tl_Resume_name);
         tlrenameresume = (TableLayout) findViewById(R.id.tl_rename_resume);
         lltleducational = (TableLayout) findViewById(R.id.ll_tl_educational);
@@ -211,6 +252,25 @@ public class ResumeActivity extends AppCompatActivity {
         tlqualification = (TableLayout) findViewById(R.id.tl_qualification);
         tlPrSkill = (TableLayout) findViewById(R.id.tl_PrSkill);
         tvresumetitle   = (TextView) findViewById(R.id.tv_resume_title);
+        tvcancel=findViewById(R.id.tv_Cancel);
+        tvconfirmation=findViewById(R.id.tv_Confirmation);
+        tvresumetitle.setOnClickListener(Listener);
+        tvcancel.setOnClickListener(Listener);
+        tvconfirmation.setOnClickListener(Listener);
+        tvapplicationinformation=findViewById(R.id.tv_applicationinformation);
+        tvbasicinformation=findViewById(R.id.tv_basicinformation);
+        tl_tr_tv_educational=findViewById(R.id.tl_tr_tv_educational);
+        tl_tr_tv_employmenthistory=findViewById(R.id.tl_tr_tv_employmenthistory);
+        tl_tr_tv_qualification=findViewById(R.id.tl_tr_tv_qualification);
+        tv_PrSkill=findViewById(R.id.tv_PrSkill);
+        tvapplicationinformation.setOnClickListener(onListener);
+        tvbasicinformation.setOnClickListener(onListener);
+        tl_tr_tv_educational.setOnClickListener(onListener);
+        tl_tr_tv_employmenthistory.setOnClickListener(onListener);
+        tl_tr_tv_qualification.setOnClickListener(onListener);
+        tv_PrSkill.setOnClickListener(onListener);
+
+
         etresumename    = (EditText) findViewById(R.id.et_resume_name);
         tltrtvname      = (TextView) findViewById(R.id.tl_tr_tv_name);
         tltrtvkananame  = (TextView) findViewById(R.id.tl_tr_tv_kananame);
@@ -220,11 +280,31 @@ public class ResumeActivity extends AppCompatActivity {
         tltrtvaddress   = (TextView) findViewById(R.id.tl_tr_tv_address);
         tltrtvphone     = (TextView) findViewById(R.id.tl_tr_tv_phone);
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("個人設定");
         tvbackdummy.setText("個人設定");
         tvbacktitle.setText("履歴書編集");
+        bu_cancel=findViewById(R.id.bu_cancel);
+        bu_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+        bu_create=findViewById(R.id.bu_create);
+        bu_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_create();
+            }
+        });
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -332,7 +412,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
     }
     //履歴書番号作成
-    public void Click_create(View View){
+    public void Click_create(){
         if(resume_status.equals("add")){
             resumeNumber = resumeNumber + 1;
             PreferenceUtils.setresume_number(resumeNumber);
@@ -340,153 +420,151 @@ public class ResumeActivity extends AppCompatActivity {
         Create_reaume(userId,token);
     }
     //"×"按钮触发删除事件
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         Delalertdialog("この履歴を削除してもよろしいですか？","resume");
     }
     //項目の表示
-    public void Click_visibility(View ClikcView){
-        switch (ClikcView.getId()){
-            case R.id.tv_applicationinformation:
-                if(tlapplicationinformation.getVisibility() == View.GONE){
-                    tlapplicationinformation.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tlapplicationinformation.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.tv_basicinformation:
-                if(tlbasicinformation.getVisibility() == View.GONE){
-                    tlbasicinformation.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tlbasicinformation.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.tl_tr_tv_employmenthistory:
-                if(JSONArray_employment.length() > 0){
-                    if(tljob.getVisibility() == View.GONE){
-                        tljob.setVisibility(View.VISIBLE);
+    private View.OnClickListener onListener =new View.OnClickListener() {
+        public void onClick(View ClikcView) {
+            switch (ClikcView.getId()) {
+                case R.id.tv_applicationinformation:
+                    if (tlapplicationinformation.getVisibility() == View.GONE) {
+                        tlapplicationinformation.setVisibility(View.VISIBLE);
+                    } else {
+                        tlapplicationinformation.setVisibility(View.GONE);
                     }
-                    else {
-                        tljob.setVisibility(View.GONE);
+                    break;
+                case R.id.tv_basicinformation:
+                    if (tlbasicinformation.getVisibility() == View.GONE) {
+                        tlbasicinformation.setVisibility(View.VISIBLE);
+                    } else {
+                        tlbasicinformation.setVisibility(View.GONE);
                     }
-                }
-                break;
-            case R.id.tl_tr_tv_educational:
-                if(JSONArray_education.length() > 0){
-                    if(tleducational.getVisibility() == View.GONE){
-                        tleducational.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.tl_tr_tv_employmenthistory:
+                    if (JSONArray_employment.length() > 0) {
+                        if (tljob.getVisibility() == View.GONE) {
+                            tljob.setVisibility(View.VISIBLE);
+                        } else {
+                            tljob.setVisibility(View.GONE);
+                        }
                     }
-                    else {
-                        tleducational.setVisibility(View.GONE);
+                    break;
+                case R.id.tl_tr_tv_educational:
+                    if (JSONArray_education.length() > 0) {
+                        if (tleducational.getVisibility() == View.GONE) {
+                            tleducational.setVisibility(View.VISIBLE);
+                        } else {
+                            tleducational.setVisibility(View.GONE);
+                        }
                     }
-                }
-                break;
-            case R.id.tl_tr_tv_qualification:
-                if(JSONArray_qualification.length() > 0){
-                    if(tlqualification.getVisibility() == View.GONE){
-                        tlqualification.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.tl_tr_tv_qualification:
+                    if (JSONArray_qualification.length() > 0) {
+                        if (tlqualification.getVisibility() == View.GONE) {
+                            tlqualification.setVisibility(View.VISIBLE);
+                        } else {
+                            tlqualification.setVisibility(View.GONE);
+                        }
                     }
-                    else {
-                        tlqualification.setVisibility(View.GONE);
+                    break;
+                case R.id.tv_PrSkill:
+                    if (tlPrSkill.getVisibility() == View.GONE) {
+                        tlPrSkill.setVisibility(View.VISIBLE);
+                    } else {
+                        tlPrSkill.setVisibility(View.GONE);
                     }
-                }
-                break;
-            case R.id.tv_PrSkill:
-                if(tlPrSkill.getVisibility() == View.GONE){
-                    tlPrSkill.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tlPrSkill.setVisibility(View.GONE);
-                }
-                break;
+                    break;
+            }
         }
-    }
+    };
     //チェックボックス
-    public void Clik_check(View View){
-        switch (View.getId()){
-            case R.id.cb_one:
-                cbone.isChecked();
-                if(cbone.isChecked() == true){
-                    one_1 = 1;
-                } else{
-                    one_1 = 0;
-                }
-                break;
-            case R.id.cb_two:
-                cbtwo.isChecked();
-                if(cbtwo.isChecked() == true){
-                    two_2 = 2;
-                } else{
-                    two_2 = 0;
-                }
-                break;
-            case R.id.cb_three:
-                cbthre.isChecked();
-                if(cbthre.isChecked() == true){
-                    three_4 = 4;
-                } else{
-                    three_4 = 0;
-                }
-                break;
-            case R.id.cb_four:
-                cbfour.isChecked();
-                if(cbfour.isChecked() == true){
-                    four_8 = 8;
-                } else{
-                    four_8 = 0;
-                }
-                break;
-            case R.id.cb_five:
-                cbfive.isChecked();
-                if(cbfive.isChecked() == true){
-                    five_16 = 16;
-                } else{
-                    five_16 = 0;
-                }
-                break;
-            case R.id.cb_six:
-                cbsix.isChecked();
-                if(cbsix.isChecked() == true){
-                    six_32 = 32;
-                } else{
-                    six_32 = 0;
-                }
-                break;
-            case R.id.cb_seven:
-                cbseve.isChecked();
-                if(cbseve.isChecked() == true){
-                    seven_64 = 64;
-                } else{
-                    seven_64 = 0;
-                }
-                break;
-            case R.id.cb_eight:
-                cbeigh.isChecked();
-                if(cbeigh.isChecked() == true){
-                    eight_128 = 128;
-                } else{
-                    eight_128 = 0;
-                }
-                break;
-            case R.id.cb_nine:
-                cbnine.isChecked();
-                if(cbnine.isChecked() == true){
-                    nine_256 = 256;
-                } else{
-                    nine_256 = 0;
-                }
-                break;
-            case R.id.cb_canmove:
-                cbcanmove.isChecked();
-                if(cbcanmove.isChecked() == true){
-                    canmove = "1";
-                } else{
-                    canmove = "0";
-                }
-                break;
+    private View.OnClickListener checkListener =new View.OnClickListener() {
+        public void onClick(View View) {
+            switch (View.getId()) {
+                case R.id.cb_one:
+                    cbone.isChecked();
+                    if (cbone.isChecked() == true) {
+                        one_1 = 1;
+                    } else {
+                        one_1 = 0;
+                    }
+                    break;
+                case R.id.cb_two:
+                    cbtwo.isChecked();
+                    if (cbtwo.isChecked() == true) {
+                        two_2 = 2;
+                    } else {
+                        two_2 = 0;
+                    }
+                    break;
+                case R.id.cb_three:
+                    cbthre.isChecked();
+                    if (cbthre.isChecked() == true) {
+                        three_4 = 4;
+                    } else {
+                        three_4 = 0;
+                    }
+                    break;
+                case R.id.cb_four:
+                    cbfour.isChecked();
+                    if (cbfour.isChecked() == true) {
+                        four_8 = 8;
+                    } else {
+                        four_8 = 0;
+                    }
+                    break;
+                case R.id.cb_five:
+                    cbfive.isChecked();
+                    if (cbfive.isChecked() == true) {
+                        five_16 = 16;
+                    } else {
+                        five_16 = 0;
+                    }
+                    break;
+                case R.id.cb_six:
+                    cbsix.isChecked();
+                    if (cbsix.isChecked() == true) {
+                        six_32 = 32;
+                    } else {
+                        six_32 = 0;
+                    }
+                    break;
+                case R.id.cb_seven:
+                    cbseve.isChecked();
+                    if (cbseve.isChecked() == true) {
+                        seven_64 = 64;
+                    } else {
+                        seven_64 = 0;
+                    }
+                    break;
+                case R.id.cb_eight:
+                    cbeigh.isChecked();
+                    if (cbeigh.isChecked() == true) {
+                        eight_128 = 128;
+                    } else {
+                        eight_128 = 0;
+                    }
+                    break;
+                case R.id.cb_nine:
+                    cbnine.isChecked();
+                    if (cbnine.isChecked() == true) {
+                        nine_256 = 256;
+                    } else {
+                        nine_256 = 0;
+                    }
+                    break;
+                case R.id.cb_canmove:
+                    cbcanmove.isChecked();
+                    if (cbcanmove.isChecked() == true) {
+                        canmove = "1";
+                    } else {
+                        canmove = "0";
+                    }
+                    break;
+            }
         }
-    }
+    };
     //基本情報を取得
     public void getbasici(){
         PostDate Pdata = new PostDate();
@@ -733,7 +811,9 @@ public class ResumeActivity extends AppCompatActivity {
         new GithubQueryTask().execute(param);
     }
     //職歴追加
-    public void Create(View View){
+    private View.OnClickListener createListener =new View.OnClickListener() {
+
+        public void onClick(View View){
         switch (View.getId()) {
             //職歴画面に
             case R.id.bu_info_employment:
@@ -767,7 +847,8 @@ public class ResumeActivity extends AppCompatActivity {
                 break;
         }
 
-    }
+        }
+    };
     //dp转换为px
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
@@ -1335,7 +1416,7 @@ public class ResumeActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //返回按钮
-    public void Click_back(View View){
+    public void Click_back(){
         status_sum = one_1      +
                      two_2      +
                      three_4    +
@@ -1396,43 +1477,46 @@ public class ResumeActivity extends AppCompatActivity {
 
     }
     //履历书名字设定
-    public void EditResumeName(View View){
-        String ResumeName_old = "";
-        String ResumeName_new = "";
-        switch(View.getId()){
-            case R.id.tv_resume_title:
-                ResumeName_old = tvresumetitle.getText().toString().replace(" ","").replace("　","");
-                etresumename.setText(tvresumetitle.getText().toString());
-                tlResumename.setVisibility(android.view.View.GONE);
-                tlrenameresume.setVisibility(android.view.View.VISIBLE);
-                break;
-            case R.id.tv_Cancel:
-                tlResumename.setVisibility(android.view.View.VISIBLE);
-                tlrenameresume.setVisibility(android.view.View.GONE);
-                break;
-            case R.id.tv_Confirmation:
-                ResumeName_new = etresumename.getText().toString().replace(" ","").replace("　","");
-                tvresumetitle.setText(ResumeName_new);
-                myApplication.setresume_name(tvresumetitle.getText().toString(),IresumeIdflg);
-                tlResumename.setVisibility(android.view.View.VISIBLE);
-                tlrenameresume.setVisibility(android.view.View.GONE);
-                if(!ResumeName_old.equals(ResumeName_new)){
-                    PostDate Pdata = new PostDate();
-                    Pdata.setUserId(userId);
-                    Pdata.setToken(token);
-                    Pdata.setResumeId(resumeId);
-                    Pdata.setresumeName(ResumeName_new);
-                    String data = JsonChnge(AesKey,Pdata);
-                    Map<String,String>param = new HashMap<String, String>();
-                    param.put("file",PARAM_ResumeName);
-                    param.put("data",data);
-                    param.put("name","ResumeName");
-                    //数据通信处理（访问服务器，并取得访问结果）
-                    new GithubQueryTask().execute(param);
-                }
-                break;
+    private View.OnClickListener Listener =new View.OnClickListener() {
+
+        public void onClick(View View) {
+            String ResumeName_old = "";
+            String ResumeName_new = "";
+            switch (View.getId()) {
+                case R.id.tv_resume_title:
+                    ResumeName_old = tvresumetitle.getText().toString().replace(" ", "").replace("　", "");
+                    etresumename.setText(tvresumetitle.getText().toString());
+                    tlResumename.setVisibility(android.view.View.GONE);
+                    tlrenameresume.setVisibility(android.view.View.VISIBLE);
+                    break;
+                case R.id.tv_Cancel:
+                    tlResumename.setVisibility(android.view.View.VISIBLE);
+                    tlrenameresume.setVisibility(android.view.View.GONE);
+                    break;
+                case R.id.tv_Confirmation:
+                    ResumeName_new = etresumename.getText().toString().replace(" ", "").replace("　", "");
+                    tvresumetitle.setText(ResumeName_new);
+                    myApplication.setresume_name(tvresumetitle.getText().toString(), IresumeIdflg);
+                    tlResumename.setVisibility(android.view.View.VISIBLE);
+                    tlrenameresume.setVisibility(android.view.View.GONE);
+                    if (!ResumeName_old.equals(ResumeName_new)) {
+                        PostDate Pdata = new PostDate();
+                        Pdata.setUserId(userId);
+                        Pdata.setToken(token);
+                        Pdata.setResumeId(resumeId);
+                        Pdata.setresumeName(ResumeName_new);
+                        String data = JsonChnge(AesKey, Pdata);
+                        Map<String, String> param = new HashMap<String, String>();
+                        param.put("file", PARAM_ResumeName);
+                        param.put("data", data);
+                        param.put("name", "ResumeName");
+                        //数据通信处理（访问服务器，并取得访问结果）
+                        new GithubQueryTask().execute(param);
+                    }
+                    break;
+            }
         }
-    }
+    };
 
     //菜单栏按钮
     public void ll_Click(View View){

@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +70,11 @@ public class MainKinWork extends AppCompatActivity {
     private PreferenceUtils mPreferenceUtils;
     private Intent intent;
 
+    private Button LoginClick;
+
+    private TextView Forgetpw;
+    private TextView MakeNewuser_Click;
+
     private TableLayout tlview;
     private ProgressDialog dialog;
 
@@ -96,6 +103,29 @@ public class MainKinWork extends AppCompatActivity {
     private void Initialization(){
         edloginEmail = (EditText) findViewById(R.id.ed_login_email);
         edpassword = (EditText) findViewById(R.id.ed_password);
+
+        LoginClick=findViewById(R.id.bu_MainLoginClick);
+        LoginClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainLoginClick();
+            }
+        });
+        Forgetpw=findViewById(R.id.Click_Forgetpw);
+        Forgetpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Forgetpw();
+            }
+        });
+        MakeNewuser_Click=findViewById(R.id.MakeNewuser_Click);
+        MakeNewuser_Click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MakeNewuser_Click();
+            }
+        });
+
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(MainKinWork.this);
         keyword = mMyApplication.getkeyword();
@@ -111,15 +141,16 @@ public class MainKinWork extends AppCompatActivity {
     }
 
     //登录处理
-    public void MainLoginClick(View View){
+    public void MainLoginClick(){
         flg = "0";
         Email = edloginEmail.getText().toString();
         password = edpassword.getText().toString();
         urllodad(Email,password);
     }
 
+
     //密码忘记的时候，再取得
-    public void Click_Forgetpw(View View){
+    public void Click_Forgetpw(){
         flg = "1";
         Email = edloginEmail.getText().toString();
         if(Email.equals("")){
@@ -136,7 +167,7 @@ public class MainKinWork extends AppCompatActivity {
     }
 
     //新账号作成画面移动
-    public void MakeNewuser_Click(View View){
+    public void MakeNewuser_Click(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.setClass(MainKinWork.this, MakeUserActivity.class);
@@ -382,7 +413,7 @@ public class MainKinWork extends AppCompatActivity {
     }
 
     //返回检索結果画面
-    public void Click_cancel(View View){
+    public void onClick(View View){
         switch (View.getId()){
             case R.id.tl_dummyview:
                 Intent intent = new Intent();

@@ -28,7 +28,6 @@ tools:context=".PersonalSetActivity">
             android:layout_marginTop="3dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:onClick="TR_Click"
             android:paddingLeft="30dp">
 
             <ImageView
@@ -66,7 +65,6 @@ tools:context=".PersonalSetActivity">
             android:id="@+id/tr_changpw"
             android:background="@color/colorLight"
             android:layout_marginTop="3dp"
-            android:onClick="TR_Click"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="30dp">
@@ -103,7 +101,6 @@ tools:context=".PersonalSetActivity">
             android:id="@+id/tr_mailSet"
             android:background="@color/colorLight"
             android:layout_marginTop="3dp"
-            android:onClick="TR_Click"
             android:paddingTop="5dp"
             android:visibility="gone"
             android:paddingBottom="5dp"
@@ -139,12 +136,12 @@ tools:context=".PersonalSetActivity">
         </TableRow>
 
         <TableRow
+            android:id="@+id/tr_Resume"
             android:background="@color/colorLight"
             android:layout_marginTop="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:paddingLeft="30dp"
-            android:onClick="Click_Resume">
+            android:paddingLeft="30dp">
 
             <ImageView
                 android:id="@+id/iv_In_Resume_set"
@@ -190,7 +187,6 @@ tools:context=".PersonalSetActivity">
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="履歴書①"
-                android:onClick="Click_resume"
                 android:textStyle="bold"
                 android:textColor="@color/but_blue"
                 android:textSize="12dp" />
@@ -205,8 +201,7 @@ tools:context=".PersonalSetActivity">
                 android:paddingLeft="40dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:onClick="Click_resume"
-                android:text="履歴書③"
+                android:text="履歴書②"
                 android:textStyle="bold"
                 android:textColor="@color/but_blue"
                 android:textSize="12dp" />
@@ -220,7 +215,6 @@ tools:context=".PersonalSetActivity">
                 android:paddingLeft="40dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:onClick="Click_resume"
                 android:text="履歴書③"
                 android:textStyle="bold"
                 android:textColor="@color/but_blue"
@@ -236,7 +230,6 @@ tools:context=".PersonalSetActivity">
             android:layout_marginTop="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:onClick="TR_Click"
             android:paddingLeft="30dp">
 
             <ImageView

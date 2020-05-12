@@ -141,7 +141,6 @@
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/but_blue"
             android:text="検索"
-            android:onClick="Click_Search"
             android:textColor="@color/colorLight" />
     </TableLayout>
 </FrameLayout>

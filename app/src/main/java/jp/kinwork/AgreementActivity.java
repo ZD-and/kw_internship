@@ -8,10 +8,11 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 
 import jp.kinwork.Common.MyApplication;
 
-public class AgreementActivity extends AppCompatActivity {
+public class AgreementActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvagreementname;
     private TextView tvagreementcontents;
@@ -23,6 +24,8 @@ public class AgreementActivity extends AppCompatActivity {
     private String[] Termsofservice_title = new String[]{"KinWork へようこそ","第1条（本サービスのご利用）","第2条（ユーザーの KinWork アカウント）","第3条（プライバシー ポリシー）","第4条（本サービス内のユーザーのコンテンツ）","第5条（本サービスの変更または終了）","第6条（ソーシャルボタンのご利用について）","第7条（保証）","第8条（お客様へのご連絡手段）","第9条（免責事項）","第10条（本規約について）","第11条（準拠法、裁判管轄）"};
     private String[] privacypolicy_title = new String[]{"1. パーソナルデータの取得","2. パーソナルデータの利用目的","3. 個人情報の提供の同意","4. 安全管理の実施","5. パーソナルデータに関する開示等、苦情および相談への対応"};
 
+    private Button bu_back;
+    private Button bu_ok;
     private MyApplication mMyApplication;
 
 
@@ -34,6 +37,10 @@ public class AgreementActivity extends AppCompatActivity {
         Agreement = mMyApplication.getAgreement();
         tvagreementname = (TextView) findViewById(R.id.tv_agreement_name);
         tvagreementcontents = (TextView) findViewById(R.id.tv_agreement_contents);
+        bu_back=findViewById(R.id.bu_back);
+        bu_ok=findViewById(R.id.bu_ok);
+        bu_back.setOnClickListener(this);
+        bu_ok.setOnClickListener(this);
         String text = "";
         if(Agreement.equals("termsofservice")){
             tvagreementname.setText(termsofservice);
@@ -47,7 +54,7 @@ public class AgreementActivity extends AppCompatActivity {
         tvagreementcontents.setText(Html.fromHtml(text));
     }
 
-    public void Clike(View View){
+    public void onClick(View View){
         mMyApplication.setAgreement(Agreement);
         switch (View.getId()){
             case R.id.bu_back:
