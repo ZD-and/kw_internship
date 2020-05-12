@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -57,7 +59,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String PARAM_KeywordHint = "/SearchesMobile/getKeywordHint";
     final static String PARAM_AddressHint = "/SearchesMobile/getAddressHint";
@@ -70,6 +72,8 @@ public class SearchActivity extends AppCompatActivity {
     private ImageView ivclearworklocation;
     private String UserLoginFlg;
     private ImageView Ivsearch;
+    private ImageView Ivclearkeyword;
+    private ImageView Ivclearworklocation;
     private TextView tvsearch;
     private TextView tvtitle;
     private TextView tvkeyword;
@@ -82,6 +86,8 @@ public class SearchActivity extends AppCompatActivity {
     private TableLayout tlworklocation;
     private boolean blkeyword = false;
     private boolean blworklocation = false;
+
+    private Button bu_search;
 
     private ArrayAdapter<String> adapter;
 
@@ -163,11 +169,24 @@ public class SearchActivity extends AppCompatActivity {
     //初期化
     public void Initialization(){
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
+        Ivclearkeyword=findViewById(R.id.iv_clear_keyword);
+        Ivclearworklocation=findViewById(R.id.iv_clear_worklocation);
+        Ivclearkeyword.setOnClickListener(this);
+        Ivclearworklocation.setOnClickListener(this);
+
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
         tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
+        bu_search=findViewById(R.id.bu_search);
+        bu_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Search();
+            }
+        });
+
         keywordTop= dp2px(SearchActivity.this, 10);
         Log.d(TAG+"keywordTop", keywordTop + "");
         tvkeyword.post(new Runnable() {
@@ -327,7 +346,7 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //检索结果画面移动
-    public void Click_Search(View View){
+    public void Click_Search(){
         myApplication.setkeyword(etkeyword.getText().toString());
         myApplication.setaddress(etworklocation.getText().toString());
         myApplication.setemploymentStatus("");
@@ -527,7 +546,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
     //输入框的清空处理
-    public void Click_clear(View View){
+    public void onClick(View View){
         switch (View.getId()){
             case R.id.iv_clear_keyword:
                 etkeyword.setText("");

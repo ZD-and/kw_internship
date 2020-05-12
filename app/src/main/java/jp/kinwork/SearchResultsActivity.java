@@ -69,7 +69,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String PARAM_index = "/SearchesMobile/index";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
@@ -125,6 +125,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
+    private TextView tvsearchreset;
 
     private EditText etkeywordreset;
     private EditText etworklocationreset;
@@ -135,6 +136,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private TableLayout tlSearchcontentsBottom;
     private TableLayout tlresults;
     private TableLayout tlsearchreset;
+    private TableLayout tladvancset;
 
     private ScrollView svsearch;
     private LinearLayout llsearcgresults;
@@ -154,7 +156,6 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private String[] Semploymentstatus = new String[]{"すべて","正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
 
-    private TableLayout tladvancset;
     private TableRow trkeywordreset;
     private TableRow trworklocationreset;
     private TextView tvkeywordreset;
@@ -252,6 +253,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setMessage("検索中...");
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle     = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy     = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("検索");
@@ -259,6 +266,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         tvbackdummy.setText("検索");
         tltrtvtitle = (TextView) findViewById(R.id.tl_tr_tv_title);
         tladvancset = (TableLayout) findViewById(R.id.tl_advancset);
+        tvsearchreset=findViewById(R.id.tv_search_reset);
+        tladvancset.setOnClickListener(Listener);
+        tvsearchreset.setOnClickListener(Listener);
+
         trkeywordreset = (TableRow) findViewById(R.id.tr_keyword_reset);
         trworklocationreset = (TableRow) findViewById(R.id.tr_worklocation_reset);
         tvkeywordreset = (TextView) findViewById(R.id.tv_keyword_reset);
@@ -267,6 +278,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         etworklocationreset = (EditText) findViewById(R.id.et_worklocation_reset);
         ivclearkeywordreset = (ImageView) findViewById(R.id.iv_clear_keyword_reset);
         ivclearworklocationreset = (ImageView) findViewById(R.id.iv_clear_worklocation_reset);
+        ivclearkeywordreset.setOnClickListener(this);
+        ivclearworklocationreset.setOnClickListener(this);
 
 
         tlSearchcontents = (TableLayout) findViewById(R.id.tl_Search_contents);
@@ -283,7 +296,6 @@ public class SearchResultsActivity extends AppCompatActivity {
         tltrbucentre = (Button) findViewById(R.id.tl_tr_bu_centre);
         tltrburight = (Button) findViewById(R.id.tl_tr_bu_right);
         tltrbutheright = (Button) findViewById(R.id.tl_tr_bu_theright);
-
         tltrbuBeforeBottom = (Button) findViewById(R.id.tl_tr_bu_Before_Bottom);
         tltrbuNextBottom = (Button) findViewById(R.id.tl_tr_bu_Next_Bottom);
         tltrbuleftsearchBottom = (Button) findViewById(R.id.tl_tr_bu_leftsearch_Bottom);
@@ -293,6 +305,25 @@ public class SearchResultsActivity extends AppCompatActivity {
         tltrbucentreBottom = (Button) findViewById(R.id.tl_tr_bu_centre_Bottom);
         tltrburightBottom = (Button) findViewById(R.id.tl_tr_bu_right_Bottom);
         tltrbutherightBottom = (Button) findViewById(R.id.tl_tr_bu_theright_Bottom);
+
+        tltrbuBefore.setOnClickListener(Click_buttom);
+        tltrbuNext.setOnClickListener(Click_buttom);
+        tltrbuleftsearch.setOnClickListener(Click_buttom);
+        tltrburightsearch.setOnClickListener(Click_buttom);
+        tltrbutheleft.setOnClickListener(Click_buttom);
+        tltrbuleft.setOnClickListener(Click_buttom);
+        tltrbucentre.setOnClickListener(Click_buttom);
+        tltrburight.setOnClickListener(Click_buttom);
+        tltrbutheright.setOnClickListener(Click_buttom);
+        tltrbuBeforeBottom.setOnClickListener(Click_buttom);
+        tltrbuNextBottom.setOnClickListener(Click_buttom);
+        tltrbuleftsearchBottom.setOnClickListener(Click_buttom);
+        tltrburightsearchBottom.setOnClickListener(Click_buttom);
+        tltrbutheleftBottom.setOnClickListener(Click_buttom);
+        tltrbuleftBottom.setOnClickListener(Click_buttom);
+        tltrbucentreBottom .setOnClickListener(Click_buttom);
+        tltrburightBottom.setOnClickListener(Click_buttom);
+        tltrbutherightBottom.setOnClickListener(Click_buttom);
 
         PreferenceUtils = new PreferenceUtils(SearchResultsActivity.this);
         LoginFlg = PreferenceUtils.getUserFlg();
@@ -378,7 +409,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
     }
     //返回检索画面
-    public void Click_back(View View){
+    public void Click_back(){
         myApplication.setSearchResults("0",0);
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -832,61 +863,63 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
     }
     //翻页按钮设定
-    public void Click_buttom(View View){
-        int PageNum = 0;
-        int i = 0;
-        String Textpage = "";
-        switch (View.getId()){
-            case R.id.tl_tr_bu_Before:
-            case R.id.tl_tr_bu_Before_Bottom:
-                PageNum = Integer.parseInt(page);
-                i = PageNum - 1;
-                if(i > 0){
-                    Textpage = String.valueOf(i);
-                }
-                break;
-            case R.id.tl_tr_bu_leftsearch:
-            case R.id.tl_tr_bu_leftsearch_Bottom:
-                Textpage = tltrbuleftsearch.getText().toString();
-                break;
-            case R.id.tl_tr_bu_theleft:
-            case R.id.tl_tr_bu_theleft_Bottom:
-                Textpage = tltrbutheleft.getText().toString();
-                break;
-            case R.id.tl_tr_bu_left:
-            case R.id.tl_tr_bu_left_Bottom:
-                Textpage = tltrbuleft.getText().toString();
-                break;
-            case R.id.tl_tr_bu_centre:
-            case R.id.tl_tr_bu_centre_Bottom:
-                Textpage = tltrbucentre.getText().toString();
-                break;
-            case R.id.tl_tr_bu_right:
-            case R.id.tl_tr_bu_right_Bottom:
-                Textpage = tltrburight.getText().toString();
-                break;
-            case R.id.tl_tr_bu_theright:
-            case R.id.tl_tr_bu_theright_Bottom:
-                Textpage = tltrbutheright.getText().toString();
-                break;
-            case R.id.tl_tr_bu_rightsearch:
-            case R.id.tl_tr_bu_rightsearch_Bottom:
-                Textpage = tltrburightsearch.getText().toString();
-                break;
-            case R.id.tl_tr_bu_Next:
-            case R.id.tl_tr_bu_Next_Bottom:
-                PageNum = Integer.parseInt(page);
-                i = PageNum + 1;
-                if(i < OfPage){
-                Textpage = String.valueOf(i);
-                }
-                break;
+    private View.OnClickListener Click_buttom =new View.OnClickListener() {
+        public void onClick(View View) {
+            int PageNum = 0;
+            int i = 0;
+            String Textpage = "";
+            switch (View.getId()) {
+                case R.id.tl_tr_bu_Before:
+                case R.id.tl_tr_bu_Before_Bottom:
+                    PageNum = Integer.parseInt(page);
+                    i = PageNum - 1;
+                    if (i > 0) {
+                        Textpage = String.valueOf(i);
+                    }
+                    break;
+                case R.id.tl_tr_bu_leftsearch:
+                case R.id.tl_tr_bu_leftsearch_Bottom:
+                    Textpage = tltrbuleftsearch.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_theleft:
+                case R.id.tl_tr_bu_theleft_Bottom:
+                    Textpage = tltrbutheleft.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_left:
+                case R.id.tl_tr_bu_left_Bottom:
+                    Textpage = tltrbuleft.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_centre:
+                case R.id.tl_tr_bu_centre_Bottom:
+                    Textpage = tltrbucentre.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_right:
+                case R.id.tl_tr_bu_right_Bottom:
+                    Textpage = tltrburight.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_theright:
+                case R.id.tl_tr_bu_theright_Bottom:
+                    Textpage = tltrbutheright.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_rightsearch:
+                case R.id.tl_tr_bu_rightsearch_Bottom:
+                    Textpage = tltrburightsearch.getText().toString();
+                    break;
+                case R.id.tl_tr_bu_Next:
+                case R.id.tl_tr_bu_Next_Bottom:
+                    PageNum = Integer.parseInt(page);
+                    i = PageNum + 1;
+                    if (i < OfPage) {
+                        Textpage = String.valueOf(i);
+                    }
+                    break;
+            }
+            if (Textpage.length() > 0 && !page.equals(Textpage)) {
+                page = Textpage;
+                getSearchResults();
+            }
         }
-        if(Textpage.length() > 0 && ! page.equals(Textpage)){
-            page = Textpage;
-            getSearchResults();
-        }
-    }
+    };
     //翻页按钮内容设定
     public void Buttom_set(int numOfPage,int PageNum){
         String butNumflg = "";
@@ -1114,30 +1147,32 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
     }
     //再检索
-    public void Click_tlsearch(View View){
-        etnamereset = "";
-        switch (View.getId()){
-            case R.id.tl_advancset:
-                if(tlsearchreset.getVisibility() == android.view.View.GONE){
-                    tlsearchreset.setVisibility(android.view.View.VISIBLE);
-                    getWH();
-                } else {
+    private View.OnClickListener Listener =new View.OnClickListener() {
+        public void onClick(View View) {
+            etnamereset = "";
+            switch (View.getId()) {
+                case R.id.tl_advancset:
+                    if (tlsearchreset.getVisibility() == android.view.View.GONE) {
+                        tlsearchreset.setVisibility(android.view.View.VISIBLE);
+                        getWH();
+                    } else {
+                        tlsearchreset.setVisibility(android.view.View.GONE);
+                        lvgethintreset.setVisibility(android.view.View.GONE);
+                    }
+                    break;
+                case R.id.tv_search_reset:
                     tlsearchreset.setVisibility(android.view.View.GONE);
                     lvgethintreset.setVisibility(android.view.View.GONE);
-                }
-                break;
-            case R.id.tv_search_reset:
-                tlsearchreset.setVisibility(android.view.View.GONE);
-                lvgethintreset.setVisibility(android.view.View.GONE);
-                keyword = etkeywordreset.getText().toString();
-                address = etworklocationreset.getText().toString();
-                myApplication.setkeyword(keyword);
-                myApplication.setaddress(address);
-                page = "1";
-                getSearchResults();
-                break;
+                    keyword = etkeywordreset.getText().toString();
+                    address = etworklocationreset.getText().toString();
+                    myApplication.setkeyword(keyword);
+                    myApplication.setaddress(address);
+                    page = "1";
+                    getSearchResults();
+                    break;
+            }
         }
-    }
+    };
     //菜单栏按钮触发事件
     public void ll_Click(View View){
         String ViewID = "";
@@ -1308,7 +1343,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
     }
     //输入框的清空处理
-    public void Click_clear(View View){
+
+    public void onClick(View View){
         switch (View.getId()){
             case R.id.iv_clear_keyword_reset:
                 if(ivclearkeywordreset.getTag().equals("clear")){

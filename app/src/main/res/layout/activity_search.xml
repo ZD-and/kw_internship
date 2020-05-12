@@ -87,7 +87,6 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginRight="5dp"
                         android:visibility="gone"
-                        android:onClick="Click_clear"
                         app:srcCompat="@drawable/ic_cancel" />
 
                 </TableRow>
@@ -138,13 +137,12 @@
                     <ImageView
                         android:id="@+id/iv_clear_worklocation"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="34dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
                         android:tag="location"
                         android:visibility="visible"
-                        android:onClick="Click_clear"
                         app:srcCompat="@drawable/ic_location_on" />
                 </TableRow>
             </TableLayout>
@@ -157,7 +155,6 @@
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="30dp"
                 app:backgroundTint="@color/but_blue"
-                android:onClick="Click_Search"
                 android:text="検索"
                 android:textColor="@color/colorLight"
                 android:textSize="15sp" />

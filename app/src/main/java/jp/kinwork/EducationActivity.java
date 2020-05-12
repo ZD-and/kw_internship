@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 
@@ -55,10 +56,14 @@ public class EducationActivity extends AppCompatActivity {
     private TextView tvMajorfield;
     private TextView tvdateeducation;
 
+    private TextView cancel;
+
     private EditText etDegree;
     private EditText etSchoolname;
     private EditText etMajorfield;
 //    private EditText etSchoollocation;
+
+    private Button save;
 
     private String deviceId;
     private String AesKey;
@@ -99,6 +104,21 @@ public class EducationActivity extends AppCompatActivity {
 
     //初期化
     public void Initialization(){
+        cancel=findViewById(R.id.bu_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+        save=findViewById(R.id.bu_button);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveurl();
+            }
+        });
+
         tvSchoolname = (TextView) findViewById(R.id.tv_School_name);
         SetStyle(tvSchoolname,"（必須）","0");
         tvDegree = (TextView) findViewById(R.id.tv_Degree);
@@ -218,13 +238,9 @@ public class EducationActivity extends AppCompatActivity {
             }
         }).show();
     }
-    //按钮点击触发事件
-    public void bt_Click(View View) {
-        saveurl();
-    }
 
     //关闭，履历书画面
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         NewIntent();
     }
     //内容取得、通信

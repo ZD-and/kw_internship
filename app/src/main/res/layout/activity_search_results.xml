@@ -40,7 +40,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:onClick="Click_tlsearch"
                     android:shrinkColumns="0"
                     android:stretchColumns="1">
 
@@ -129,7 +128,6 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
                                     android:layout_marginRight="5dp"
-                                    android:onClick="Click_clear"
                                     android:visibility="visible"
                                     android:tag="keyword"
                                     app:srcCompat="@drawable/ic_null" />
@@ -184,7 +182,6 @@
                                     android:layout_marginRight="5dp"
                                     android:visibility="visible"
                                     android:tag="location"
-                                    android:onClick="Click_clear"
                                     app:srcCompat="@drawable/ic_location_on" />
                             </TableRow>
                         </TableLayout>
@@ -206,7 +203,6 @@
                         android:textSize="15sp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:onClick="Click_tlsearch"
                         />
                 </TableLayout>
 
@@ -242,7 +238,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_Before"
                             android:text="＜ 前へ"
-                            android:onClick="Click_buttom"
                             />
 
                         <TextView
@@ -255,7 +250,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             android:text="0"
                             />
 
@@ -265,7 +259,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_left"
@@ -273,7 +266,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_centre"
@@ -281,7 +273,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
 
                             />
                         <Button
@@ -290,7 +281,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_theright"
@@ -298,11 +288,9 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_rightsearch"
-                            android:onClick="Click_buttom"
                             android:text="0"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
@@ -315,7 +303,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_Next"
                             android:text="次へ ＞"
-                            android:onClick="Click_buttom"
                             />
                     </TableRow>
                 </TableLayout>
@@ -349,7 +336,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_Before_Bottom"
                             android:text="＜ 前へ"
-                            android:onClick="Click_buttom"
                             />
 
                         <TextView
@@ -362,7 +348,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             android:text="0"
                             />
 
@@ -372,7 +357,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_left_Bottom"
@@ -380,7 +364,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_centre_Bottom"
@@ -388,7 +371,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
 
                             />
                         <Button
@@ -397,7 +379,6 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_theright_Bottom"
@@ -405,11 +386,9 @@
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            android:onClick="Click_buttom"
                             />
                         <Button
                             android:id="@+id/tl_tr_bu_rightsearch_Bottom"
-                            android:onClick="Click_buttom"
                             android:text="0"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
@@ -422,7 +401,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_Next_Bottom"
                             android:text="次へ ＞"
-                            android:onClick="Click_buttom"
                             />
                     </TableRow>
                 </TableLayout>

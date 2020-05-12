@@ -27,10 +27,10 @@
             android:id="@+id/tl_like_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="Click_visibility"
             android:stretchColumns="0">
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_like"
                     android:layout_width="match_parent"
@@ -40,9 +40,9 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="気に入り"
-                    android:textStyle="bold"
                     android:textColor="@color/colorLight"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_like_cont"
@@ -113,7 +113,6 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textStyle="bold"
                                 android:textSize="15sp"
-                                android:onClick="Click_getmore"
                                 />
 
                             <TextView
@@ -161,7 +160,6 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textStyle="bold"
                                 android:textSize="15sp"
-                                android:onClick="Click_getmore"
                                 />
 
                             <TextView

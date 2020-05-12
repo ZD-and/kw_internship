@@ -84,6 +84,7 @@ public class ContactActivity extends AppCompatActivity {
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText("連絡");
         tlcontact = (TableLayout) findViewById(R.id.tl_contact);
+        tlcontact.setOnClickListener(Listener);
         deviceId = mPreferenceUtils.getdeviceId();
         AesKey = mPreferenceUtils.getAesKey();
         userId = mPreferenceUtils.getuserId();
@@ -309,33 +310,35 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     //気に入り職歴信息取得
-    public void Click_info(View View){
-        if (View == null) {
-            return;
-        }
-        // 判断第几个“-”按钮触发了事件
-        int iIndex = -1;
-        String employer_id = "";
-        String company_name = "";
-        String mailaddress = "";
-        for (int i = 0; i < listTL_info.size(); i++) {
-            if (listTL_info.get(i) == View) {
-                iIndex = i;
-                employer_id = list_employer_id.get(i);
-                company_name = list_company_name.get(i);
-                mailaddress = list_address.get(i);
-                break;
+    private View.OnClickListener Listener =new View.OnClickListener() {
+        public void onClick(View View) {
+            if (View == null) {
+                return;
+            }
+            // 判断第几个“-”按钮触发了事件
+            int iIndex = -1;
+            String employer_id = "";
+            String company_name = "";
+            String mailaddress = "";
+            for (int i = 0; i < listTL_info.size(); i++) {
+                if (listTL_info.get(i) == View) {
+                    iIndex = i;
+                    employer_id = list_employer_id.get(i);
+                    company_name = list_company_name.get(i);
+                    mailaddress = list_address.get(i);
+                    break;
+                }
+            }
+            if (iIndex >= 0) {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.setClass(ContactActivity.this, ContactDialogActivity.class);
+                intent.putExtra("Act", "Contact");
+                intent.putExtra("ID", employer_id);
+                intent.putExtra("company_name", company_name);
+                intent.putExtra("mailaddress", mailaddress);
+                startActivity(intent);
             }
         }
-        if (iIndex >= 0) {
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.setClass(ContactActivity.this, ContactDialogActivity.class);
-            intent.putExtra("Act","Contact");
-            intent.putExtra("ID",employer_id);
-            intent.putExtra("company_name",company_name);
-            intent.putExtra("mailaddress",mailaddress);
-            startActivity(intent);
-        }
-    }
+    };
 }

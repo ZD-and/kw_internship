@@ -39,7 +39,6 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginTop="20dp"
-                    android:onClick="Click_selectresume"
                     android:backgroundTint="@color/but_blue"
                     android:text="履歴書を選択して応募"
                     android:textColor="@color/colorLight" />
@@ -426,7 +425,6 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginTop="60dp"
-                    android:onClick="Click_selectresume"
                     android:backgroundTint="@color/but_blue"
                     android:text="履歴書を選択して応募"
                     android:textColor="@color/colorLight" />

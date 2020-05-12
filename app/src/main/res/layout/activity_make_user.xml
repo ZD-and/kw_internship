@@ -11,7 +11,6 @@
         android:id="@+id/tl_mu_dummyview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:onClick="Click_cancel"
         android:background="@drawable/background_gradient">
 
     </TableLayout>
@@ -24,7 +23,6 @@
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="200dp"
-        android:onClick="Click_cancel"
         android:background="@drawable/ic_shape_w_bule">
 
         <TextView
@@ -130,7 +128,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     app:srcCompat="@drawable/ic_check_box_outline"
-                    android:onClick="Click_Agreement" />
+                    />
 
                 <TextView
                     android:id="@+id/tv_termsofservice"
@@ -139,7 +137,6 @@
                     android:layout_marginRight="70dp"
                     android:gravity="center_vertical"
                     android:textSize="12sp"
-                    android:onClick="Click_Agreement"
                     android:text="利用規約"
                     android:textColor="@color/background_holo_dark" />
 
@@ -153,7 +150,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    android:onClick="Click_Agreement"
                     app:srcCompat="@drawable/ic_check_box_outline"
                     />
 
@@ -162,7 +158,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:onClick="Click_Agreement"
                     android:text="プライバシー ポリシー"
                     android:textSize="12sp"
                     android:textColor="@color/background_holo_dark" />
@@ -180,7 +175,6 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/but_blue"
-            android:onClick="bt_Click"
             android:text=""
             android:textColor="@color/colorLight"/>
 

@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+
 
 import com.google.gson.Gson;
 
@@ -43,7 +45,7 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity {
+public class ContactDialogActivity extends AppCompatActivity implements View.OnClickListener{
 
 //    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
 //    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
@@ -58,6 +60,7 @@ public class ContactDialogActivity extends AppCompatActivity {
     private LinearLayout llmeg;
     private TableLayout tlinformation;
     private TableLayout tlmeg;
+    private TableLayout tlnamedate;
     private ScrollView slmeg;
     private ImageView imvivread;
     private TextView tvback;
@@ -71,6 +74,8 @@ public class ContactDialogActivity extends AppCompatActivity {
     private TextView tvsendEmail;
     private TextView tvReceptionEmail;
     private TextView tvToCompanyName;
+
+    private Button bu_sendmeg;
 
     private String deviceId;
     private String AesKey;
@@ -161,6 +166,13 @@ public class ContactDialogActivity extends AppCompatActivity {
 
     //初期化
     private void Initialization(){
+        bu_sendmeg=findViewById(R.id.bu_sendmeg);
+        bu_sendmeg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_setSendMeg();
+            }
+        });
         ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
         tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
         ivbcontact.setImageResource(R.mipmap.blue_contact);
@@ -179,6 +191,13 @@ public class ContactDialogActivity extends AppCompatActivity {
         tlmeg           = (TableLayout) findViewById(R.id.tl_meg);
         slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
+
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText("連絡");
@@ -187,9 +206,14 @@ public class ContactDialogActivity extends AppCompatActivity {
 //        tltvmailaddress     = (TextView) findViewById(R.id.tl_tv_mailaddress);
         ettitle        = (EditText) findViewById(R.id.et_title);
         etmeg          = (EditText) findViewById(R.id.et_meg);
+
         tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
         tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
         tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
+        tvallEmail.setOnClickListener(this);
+        tvsendEmail.setOnClickListener(this);
+        tvReceptionEmail.setOnClickListener(this);
+
         tvToCompanyName  = (TextView) findViewById(R.id.tv_ToCompanyName);
         mPreferenceUtils = new PreferenceUtils(ContactDialogActivity.this);
         mMyApplication = (MyApplication) getApplication();
@@ -384,7 +408,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         slmeg.setVisibility(VISIBLE);
     }
     //返回联络画面
-    public void Click_back(View View){
+    public void Click_back(){
         Log.d("sendflg", sendflg);
         if(sendflg.equals("1")){
             if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
@@ -413,19 +437,19 @@ public class ContactDialogActivity extends AppCompatActivity {
                 etmeg.setText("");
             }
         } else {
-            switch (View.getId()){
-                case R.id.tv_back:
+//            switch (View.getId()){
+//                case R.id.tv_back:
                     mMyApplication.setContactDialog("0",0);
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ContactDialogActivity.this, ContactActivity.class);
                     startActivity(intent);
-                    break;
-            }
+//                    break;
+//            }
         }
     }
     //显示邮件
-    public void Click_DisplayEmail(View View){
+    public void onClick(View View){
         String name = "";
         switch (View.getId()){
             case R.id.tv_allEmail:
@@ -641,7 +665,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
     }
     //送信处理
-    public void Click_setSendMeg(View View){
+    public void Click_setSendMeg(){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
