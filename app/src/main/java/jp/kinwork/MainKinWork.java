@@ -105,9 +105,9 @@ public class MainKinWork extends AppCompatActivity {
         page = mMyApplication.getpage();
         JobInfo = mMyApplication.getjobinfo();
         intent = getIntent();
-        Activity = intent.getStringExtra("Activity");
+        Activity = intent.getStringExtra(getString(R.string.Activity));
         dialog = new ProgressDialog(this);
-        dialog.setMessage("ログイン中…") ;
+        dialog.setMessage(getString(R.string.login)) ;
     }
 
     //登录处理
@@ -123,14 +123,14 @@ public class MainKinWork extends AppCompatActivity {
         flg = "1";
         Email = edloginEmail.getText().toString();
         if(Email.equals("")){
-            alertdialog("エラー","メールアドレスを入力してください。");
+            alertdialog(getString(R.string.error),getString(R.string.mailinput));
             return;
         }
         //Json格式转换并且加密
         String data = JsonChnge(AesKey,Email,"",flg);
         Map<String,String>param = new HashMap<String, String>();
-        param.put("file",PARAM_Forgetwe);
-        param.put("data",data);
+        param.put(getString(R.string.file),PARAM_Forgetwe);
+        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -146,8 +146,8 @@ public class MainKinWork extends AppCompatActivity {
     //设备IDと対象Key取得
     private void load_id_key(){
         SharedPreferences object = getSharedPreferences("Initial", Context.MODE_PRIVATE);
-        deviceId = object.getString("deviceId","A");
-        AesKey = object.getString("aesKey","A");
+        deviceId = object.getString(getString(R.string.deviceid),"A");
+        AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
         mPreferenceUtils.setdeviceId(deviceId);
         mPreferenceUtils.setAesKey(AesKey);
     }
@@ -160,9 +160,9 @@ public class MainKinWork extends AppCompatActivity {
         if (flg.equals("0")){
             param.put("file",PARAM_login);
         } else {
-            param.put("file",PARAM_init);
+            param.put(getString(R.string.file),PARAM_init);
         }
-        param.put("data",data);
+        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -206,8 +206,8 @@ public class MainKinWork extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -225,16 +225,16 @@ public class MainKinWork extends AppCompatActivity {
                 dialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    processResult = obj.getBoolean("processResult");
-                    message = obj.getString("message");
+                    processResult = obj.getBoolean(getString(R.string.processResult));
+                    message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        String returnData = obj.getString("returnData");
+                        String returnData = obj.getString(getString(R.string.returnData));
                         if(flg.equals("0")){
                             decryptchange(returnData);
                         } else if(flg.equals("2")){
                             setmMyApplication(returnData);
                         } else {
-                            alertdialog("","送信されました。ご確認ください。");
+                            alertdialog("",getString(R.string.alertdialog8));
                         }
                     } else {
                         alertdialog("エラー",message);
@@ -256,13 +256,13 @@ public class MainKinWork extends AppCompatActivity {
         Gson mGson = new Gson();
         try {
             JSONObject obj = new JSONObject(datas);
-            User UserDate = mGson.fromJson(obj.getString("User"),User.class);
-            UserToken UTDate = mGson.fromJson(obj.getString("UserToken"),UserToken.class);
+            User UserDate = mGson.fromJson(obj.getString(getString(R.string.User)),User.class);
+            UserToken UTDate = mGson.fromJson(obj.getString(getString(R.string.UserToken)),UserToken.class);
             String Userid = UTDate.getUser_id().toString();
             String Token = UTDate.getToken().toString();
             String email = UserDate.getEmail().toString();
             if(UserDate.getUser_type().equals("1")){
-                alertdialog("エラー","本アプリは個人ユーザー向けのため、企業ユーザーはウェブ側でご利用ください。");
+                alertdialog(getString(R.string.error),getString(R.string.alertdialog9));
             } else {
                 mMyApplication.setuser_id(Userid);
                 mMyApplication.setToken(Token);
@@ -281,7 +281,7 @@ public class MainKinWork extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -304,24 +304,24 @@ public class MainKinWork extends AppCompatActivity {
         Log.d("***+++datas+++***", datas);
         try {
             JSONObject obj = new JSONObject(datas);
-            if(obj.has("id")){
+            if(obj.has(getString(R.string.id))){
                 mMyApplication.setMyApplicationFlg("1");
-                mMyApplication.setid(obj.getString("id"));
-                mMyApplication.setuser_id(obj.getString("user_id"));
-                mMyApplication.setfirst_name(obj.getString("first_name"));
-                mMyApplication.setlast_name(obj.getString("last_name"));
-                mMyApplication.setfirst_name_kana(obj.getString("first_name_kana"));
-                mMyApplication.setlast_name_kana(obj.getString("last_name_kana"));
-                mMyApplication.setbirthday(obj.getString("birthday"));
-                mMyApplication.setsex_div(obj.getString("sex_div"));
-                mMyApplication.setcountry(obj.getString("country"));
-                mMyApplication.setpost_code(obj.getString("post_code"));
-                mMyApplication.setadd_1(obj.getString("add_1"));
-                mMyApplication.setadd_2(obj.getString("add_2"));
-                mMyApplication.setadd_3(obj.getString("add_3"));
-                mMyApplication.setadd_4(obj.getString("add_4"));
-                mMyApplication.setphone_number(obj.getString("phone_number"));
-                JSONArray Resumes = obj.getJSONArray("Resumes");
+                mMyApplication.setid(obj.getString(getString(R.string.id)));
+                mMyApplication.setuser_id(obj.getString(getString(R.string.user_id)));
+                mMyApplication.setfirst_name(obj.getString(getString(R.string.first_name)));
+                mMyApplication.setlast_name(obj.getString(getString(R.string.last_name)));
+                mMyApplication.setfirst_name_kana(obj.getString(getString(R.string.first_name_kana)));
+                mMyApplication.setlast_name_kana(obj.getString(getString(R.string.last_name_kana)));
+                mMyApplication.setbirthday(obj.getString(getString(R.string.birthday)));
+                mMyApplication.setsex_div(obj.getString(getString(R.string.sex_div)));
+                mMyApplication.setcountry(obj.getString(getString(R.string.country)));
+                mMyApplication.setpost_code(obj.getString(getString(R.string.post_code)));
+                mMyApplication.setadd_1(obj.getString(getString(R.string.add_1)));
+                mMyApplication.setadd_2(obj.getString(getString(R.string.add_2)));
+                mMyApplication.setadd_3(obj.getString(getString(R.string.add_3)));
+                mMyApplication.setadd_4(obj.getString(getString(R.string.add_4)));
+                mMyApplication.setphone_number(obj.getString(getString(R.string.phone_number)));
+                JSONArray Resumes = obj.getJSONArray(getString(R.string.title_edit_resume));
                 int ResumeNum = 0;
                 for(int i = 0; i < Resumes.length(); i++){
                     Gson mGson = new Gson();
@@ -389,10 +389,10 @@ public class MainKinWork extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 if(Activity == null || Activity.equals("")){
                     intent.setClass(MainKinWork.this, SearchActivity.class);
-                    intent.putExtra("act","");
-                } else if(Activity.equals("Apply")){
+                    intent.putExtra(getString(R.string.act),"");
+                } else if(Activity.equals(getString(R.string.Apply))){
                     intent.setClass(MainKinWork.this, ApplyActivity.class);
-                } else if(Activity.equals("SearchResults")){
+                } else if(Activity.equals(getString(R.string.SearchResults))){
                     intent.setClass(MainKinWork.this, SearchResultsActivity.class);
                 }
                 startActivity(intent);

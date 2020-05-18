@@ -94,7 +94,7 @@ public class MakeUserActivity extends AppCompatActivity {
         switch (View.getId()){
             case R.id.tl_mu_dummyview:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("").setMessage("新規作成をやめますか？").setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //确定按钮的点击事件
@@ -109,7 +109,7 @@ public class MakeUserActivity extends AppCompatActivity {
                         intentClose.setClass(MakeUserActivity.this, MainKinWork.class);
                         startActivity(intentClose);
                     }
-                }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //取消按钮的点击事件
@@ -151,9 +151,9 @@ public class MakeUserActivity extends AppCompatActivity {
         if(privacypolicyflg.equals("1")) {
             ivprivacypolicy.setImageResource(R.drawable.ic_check_box);
         }
-        if(screenflg.equals("") || screenflg.equals("sendValidateEmail")){
+        if(screenflg.equals("") || screenflg.equals(getString(R.string.sendValidateEmail))){
             sendValidateEmail();
-        } else if(screenflg.equals("checkValidateCode")){
+        } else if(screenflg.equals(getString(R.string.checkValidateCode))){
             checkValidateCode();
         } else {
             setPassword();
@@ -161,20 +161,20 @@ public class MakeUserActivity extends AppCompatActivity {
     }
     //设备IDと対象Key取得
     public void load(){
-        SharedPreferences Initial_object = getSharedPreferences("Initial", Context.MODE_PRIVATE);
-        deviceId = Initial_object.getString("deviceId","A");
-        AesKey = Initial_object.getString("aesKey","A");
+        SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
+        deviceId = Initial_object.getString(getString(R.string.deviceid),"A");
+        AesKey = Initial_object.getString(getString(R.string.Information_Name_aesKey),"A");
 
     }
     //注册账号画面设定
     public void sendValidateEmail(){
-        tvinputA.setText("メールアドレス");
-        tvinputB.setText("メールアドレス");
+        tvinputA.setText(getString(R.string.mailaddressnihongo));
+        tvinputB.setText(getString(R.string.mailaddressnihongo));
         tlvalidateCode.setVisibility(View.GONE);
-        bubutton.setText("検証コードを取得");
-        screenflg = "sendValidateEmail";
+        bubutton.setText(getString(R.string.bubutton));
+        screenflg = getString(R.string.sendValidateEmail);
         // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString("メールアドレス");
+        SpannableString ee = new SpannableString(getString(R.string.mailaddressnihongo));
         // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -182,7 +182,7 @@ public class MakeUserActivity extends AppCompatActivity {
         // 设置hint属性
         edinputA.setHint(new SpannedString(ee));//转码
         // 新建一个可以添加文本的对象
-        SpannableString eec = new SpannableString("確認のためもう一度、入力してください");
+        SpannableString eec = new SpannableString(getString(R.string.Spannable));
         // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -192,14 +192,14 @@ public class MakeUserActivity extends AppCompatActivity {
     }
     //検証コード画面设定
     public void checkValidateCode(){
-        tvinputA.setText("検証コードを入力してください。");
+        tvinputA.setText(getString(R.string.tvinputA));
         tvinputB.setVisibility(View.GONE);
         edinputB.setVisibility(View.GONE);
         tlvalidateCode.setVisibility(View.VISIBLE);
-        bubutton.setText("継続");
-        screenflg = "checkValidateCode";
+        bubutton.setText(getString(R.string.bubutton2));
+        screenflg = getString(R.string.checkValidateCode);
         // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString("検証コード");
+        SpannableString ee = new SpannableString(getString(R.string.Spannableee));
         // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -209,17 +209,17 @@ public class MakeUserActivity extends AppCompatActivity {
     }
     //输入密码画面设定
     public void setPassword(){
-        tvinputA.setText("パスワード");
-        tvinputB.setText("パスワード");
+        tvinputA.setText(getString(R.string.password));
+        tvinputB.setText(getString(R.string.password));
         tvinputB.setVisibility(View.VISIBLE);
         edinputB.setVisibility(View.VISIBLE);
         edinputA.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edinputB.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         tlvalidateCode.setVisibility(View.GONE);
-        bubutton.setText("確認");
-        screenflg = "setPassword";
+        bubutton.setText(getString(R.string.kakunin));
+        screenflg = getString(R.string.setPassword);
         // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString("パスワード");
+        SpannableString ee = new SpannableString(getString(R.string.password));
         // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -227,7 +227,7 @@ public class MakeUserActivity extends AppCompatActivity {
         // 设置hint属性
         edinputA.setHint(new SpannedString(ee));//转码
         // 新建一个可以添加文本的对象
-        SpannableString eec = new SpannableString("確認のためもう一度、入力してください");
+        SpannableString eec = new SpannableString(getString(R.string.Spannable));
         // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -265,13 +265,13 @@ public class MakeUserActivity extends AppCompatActivity {
                 break;
         }
         String data = JsonChnge(AesKey,Pdata);
-        param.put("data",data);
-        param.put("name",screenflg);
+        param.put(getString(R.string.data),data);
+        param.put(getString(R.string.name),screenflg);
         Log.d("***screenflg", screenflg);
         Log.d("***Email", Email);
         Log.d("***token", token);
-        if(screenflg.equals("setPassword") && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
-            alertdialog("利用契約を同意してください。");
+        if(screenflg.equals(getString(R.string.setPassword)) && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
+            alertdialog(getString(R.string.alertdialog10));
         } else {
             new GithubQueryTask().execute(param);
         }
@@ -288,7 +288,7 @@ public class MakeUserActivity extends AppCompatActivity {
                     privacypolicyflg = "0";
                     MyApplication.setprivacypolicyflg("0");
                 } else {
-                    Agreement = "privacypolicy";
+                    Agreement = getString(R.string.privacypolicy);
                 }
                 break;
             case R.id.iv_termsofservice:
@@ -298,7 +298,7 @@ public class MakeUserActivity extends AppCompatActivity {
                     termsofserviceflg = "0";
                     MyApplication.settermsofserviceflg("0");
                 } else {
-                    Agreement = "termsofservice";
+                    Agreement = getString(R.string.termsofservice);
                 }
                 break;
         }
@@ -312,14 +312,14 @@ public class MakeUserActivity extends AppCompatActivity {
             if(edinputB.getText().length() > 0){
                 MyApplication.setinputB(edinputB.getText().toString());
             }
-            MoveIntent("Agreement");
+            MoveIntent(getString(R.string.Agreement));
         }
     }
 
     public void MoveIntent(String Activity){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        if(Activity.equals("setPassword")){
+        if(Activity.equals(getString(R.string.setPassword))){
             intent.setClass(MakeUserActivity.this, PersonalSetActivity.class);
         } else {
             intent.setClass(MakeUserActivity.this, AgreementActivity.class);
@@ -352,8 +352,8 @@ public class MakeUserActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = NetworkUtils.buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -370,22 +370,22 @@ public class MakeUserActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = "";
                     if(processResult == true) {
-                        String returnData = obj.getString("returnData");
+                        String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
-                        String fieldErrors = obj.getString("fieldErrors");
+                        String fieldErrors = obj.getString(getString(R.string.fieldErrors));
                         JSONObject fieldError = new JSONObject(fieldErrors);
-                        if(fieldError.has("email")){
+                        if(fieldError.has(getString(R.string.email))){
                             Log.d("***+++email+++***", fieldError.getString("email"));
-                            JSONArray ja = fieldError.getJSONArray("email");
+                            JSONArray ja = fieldError.getJSONArray(getString(R.string.email));
                             Log.d("***email(index)***", ja.getString(0));
                             message = ja.getString(0);
                         }
-                        if(fieldError.has("emailConfirm")){
-                            JSONArray ja = fieldError.getJSONArray("emailConfirm");
+                        if(fieldError.has(getString(R.string.emailConfirm))){
+                            JSONArray ja = fieldError.getJSONArray(getString(R.string.emailConfirm));
                             Log.d("***emailConfirm***", ja.getString(0));
                             message = ja.getString(0);
                         }
@@ -425,7 +425,7 @@ public class MakeUserActivity extends AppCompatActivity {
                 UserToken UserToken = PDate.getUserToken();
                 String userID = UserToken.getUser_id();
                 PreferenceUtils.setuserId(userID);
-                MoveIntent("setPassword");
+                MoveIntent(getString(R.string.setPassword));
                 break;
         }
     }
@@ -433,7 +433,7 @@ public class MakeUserActivity extends AppCompatActivity {
     //结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("提示").setMessage(meg).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件

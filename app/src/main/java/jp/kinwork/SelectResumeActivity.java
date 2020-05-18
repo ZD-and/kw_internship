@@ -139,8 +139,8 @@ public class SelectResumeActivity extends AppCompatActivity {
     private void Initialization(){
         tvback          = (TextView) findViewById(R.id.tv_back);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText("求人詳細");
-        tvbackdummy.setText("求人詳細");
+        tvback.setText(getString(R.string.detailedinformation));
+        tvbackdummy.setText(getString(R.string.detailedinformation));
         tl_sendresume = (TableLayout) findViewById(R.id.tl_sendresume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
