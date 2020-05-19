@@ -152,7 +152,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private Intent Intent;
 
-    private String[] Semploymentstatus = new String[]{"すべて","正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
+    private String[] Semploymentstatus = new String[]{getString(R.string.Semploymentstatus)};
 
     private TableLayout tladvancset;
     private TableRow trkeywordreset;
@@ -176,7 +176,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         CreateNew();
         Intent = getIntent();
-        Act = Intent.getStringExtra("Act");
+        Act = Intent.getStringExtra(getString(R.string.Act));
         Initialization();
         initData();
     }
@@ -250,13 +250,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         tvsearch.setTextColor(Color.parseColor("#5EACE2"));
         svsearch = (ScrollView) findViewById(R.id.sv_search);
         dialog = new ProgressDialog(this);
-        dialog.setMessage("検索中...");
+        dialog.setMessage(getString(R.string.kensakuchu));
         tvback          = (TextView) findViewById(R.id.tv_back);
         tvbacktitle     = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy     = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText("検索");
-        tvbacktitle.setText("検索結果");
-        tvbackdummy.setText("検索");
+        tvback.setText(getString(R.string.kensaku));
+        tvbacktitle.setText(getString(R.string.kensakukekka));
+        tvbackdummy.setText(getString(R.string.kensaku));
         tltrtvtitle = (TextView) findViewById(R.id.tl_tr_tv_title);
         tladvancset = (TableLayout) findViewById(R.id.tl_advancset);
         trkeywordreset = (TableRow) findViewById(R.id.tr_keyword_reset);
@@ -300,9 +300,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             userid = PreferenceUtils.getuserId();
             token = PreferenceUtils.gettoken();
         }
-        SharedPreferences object = getSharedPreferences("Initial", Context.MODE_PRIVATE);
-        deviceId = object.getString("deviceId","A");
-        AesKey = object.getString("aesKey","A");
+        SharedPreferences object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
+        deviceId = object.getString(getString(R.string.deviceid),"A");
+        AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
         Log.d("***deviceId***", deviceId);
         Log.d("***AesKey***", AesKey);
         PreferenceUtils.setdeviceId(deviceId);
@@ -317,11 +317,11 @@ public class SearchResultsActivity extends AppCompatActivity {
         etworklocationreset.setText(address);
         if(etkeywordreset.getText().length() > 0){
             ivclearkeywordreset.setImageResource(R.drawable.ic_cancel);
-            ivclearkeywordreset.setTag("clear");
+            ivclearkeywordreset.setTag(getString(R.string.clear));
         }
         if(etworklocationreset.getText().length() > 0){
             ivclearworklocationreset.setImageResource(R.drawable.ic_cancel);
-            ivclearworklocationreset.setTag("clear");
+            ivclearworklocationreset.setTag(getString(R.string.clear));
         }
         if(myApplication.getSearchResults(0).equals("0")){
             getSearchResults();
@@ -383,13 +383,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.setClass(SearchResultsActivity.this, SearchActivity.class);
-        intent.putExtra("act","");
+        intent.putExtra(getString(R.string.act),"");
         startActivity(intent);
     }
     //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -415,13 +415,13 @@ public class SearchResultsActivity extends AppCompatActivity {
             if(LoginFlg.equals("1")){
                 Pdata.setUserId(userid);
             }
-            param.put("file",PARAM_index);
-        } else if(etnamereset.equals("keyword")){
+            param.put(getString(R.string.file),PARAM_index);
+        } else if(etnamereset.equals(getString(R.string.keyword))){
             Pdata.setkeyword(keyword);
-            param.put("file",PARAM_KeywordHint);
-        } else if(etnamereset.equals("worklocation")){
+            param.put(getString(R.string.file),PARAM_KeywordHint);
+        } else if(etnamereset.equals(getString(R.string.worklocation))){
             Pdata.setaddress(address);
-            param.put("file",PARAM_AddressHint);
+            param.put(getString(R.string.file),PARAM_AddressHint);
         }
         String data = JsonChnge(AesKey,Pdata);
         param.put("data",data);
@@ -459,8 +459,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -476,29 +476,29 @@ public class SearchResultsActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    String meg = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String meg = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        Log.d("***returnData***", obj.getString("returnData"));
+                        Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
                         Log.d("***urlFlg***", urlFlg);
                         Log.d("***url_name***", etnamereset);
                         if(etnamereset.equals("")) {
-                            if (urlFlg.equals("job")) {
-                                decryptchange(obj.getString("returnData"));
-                            } else if (urlFlg.equals("likejob")) {
-                                alertdialog("お気に入り", "保存しました。");
+                            if (urlFlg.equals(getString(R.string.job))) {
+                                decryptchange(obj.getString(getString(R.string.returnData)));
+                            } else if (urlFlg.equals(getString(R.string.likejob))) {
+                                alertdialog(getString(R.string.alertdialog13), getString(R.string.alertdialog14));
                                 IBNlikejob.setImageResource(R.mipmap.app_like);
-                            } else if (urlFlg.equals("deletelikejob")) {
+                            } else if (urlFlg.equals(getString(R.string.deletelikejob))) {
                                 IBNlikejob.setImageResource(R.mipmap.app_no_like);
-                                alertdialog("お気に入り", "削除しました。");
+                                alertdialog(getString(R.string.alertdialog14), getString(R.string.alertdialog15));
                             } else {
-                                JSONObject Data = new JSONObject(obj.getString("returnData"));
-                                String numFound = Data.getString("numFound");
-                                JSONObject paging = Data.getJSONObject("pagenation");
-                                String numOfPage = paging.getString("numOfPage");
-                                page = paging.getString("currentPage");
+                                JSONObject Data = new JSONObject(obj.getString(getString(R.string.returnData)));
+                                String numFound = Data.getString(getString(R.string.numFound));
+                                JSONObject paging = Data.getJSONObject(getString(R.string.pagenation));
+                                String numOfPage = paging.getString(getString(R.string.numOfPage));
+                                page = paging.getString(getString(R.string.currentPage));
                                 displayresults(numFound, page, numOfPage);
-                                jobList = Data.getJSONArray("jobList");
+                                jobList = Data.getJSONArray(getString(R.string.jobList));
                                 myApplication.setSearchResults("1", 0);
                                 myApplication.setSearchResults(numFound, 1);
                                 myApplication.setSearchResults(numOfPage, 2);
@@ -511,12 +511,12 @@ public class SearchResultsActivity extends AppCompatActivity {
                                 tlSearchcontentsBottom.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            Log.d("***returnData***", obj.getString("returnData"));
-                            JSONArray returnData = obj.getJSONArray("returnData");
+                            Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
+                            JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
                             ArrayList<String> stringArrayList = new ArrayList<String>();
                             String[] Stringdata = {};
                             int length = returnData.length();
-                            if(!obj.getString("returnData").equals("[]")){
+                            if(!obj.getString(getString(R.string.returnData)).equals("[]")){
                                 for (int i=0; i< length; i++) {
                                     Log.d("***i***", i+"");
                                     if( i < 6){
@@ -530,24 +530,24 @@ public class SearchResultsActivity extends AppCompatActivity {
                             Log.d("***etnamereset***", etnamereset);
 
                             Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
-                            if(etnamereset.equals("keyword")){
+                            if(etnamereset.equals(getString(R.string.keyword))){
                                 getItem(Stringdata,etnamereset);
                             } else {
                                 getItem(Stringdata,etnamereset);
                             }
                         }
                     } else {
-                        if(urlFlg.equals("likejob")){
+                        if(urlFlg.equals(getString(R.string.likejob))){
                             IBNlikejob.setImageResource(R.mipmap.app_like);
-                            alertdialog("エラー",meg);
+                            alertdialog(getString(R.string.error),meg);
                         } else {
-                            alertdialog("エラー", "通信失敗");
+                            alertdialog(getString(R.string.error), getString(R.string.tsushinshierror));
                         }
                     }
                     dialog.dismiss();
                 }catch (Exception e){
                     if(etnamereset.equals("")){
-                        alertdialog("エラー","通信失敗");
+                        alertdialog(getString(R.string.error),getString(R.string.tsushinshierror));
                         dialog.dismiss();
                     }
                     e.printStackTrace();
@@ -562,9 +562,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         Log.d("***decryptdata***", decryptdata);
         try {
             JSONObject obj = new JSONObject(decryptdata);
-            myApplication.setMyjob("likejob");
-            myApplication.setjobinfo(obj.getString("JobInfo"));
-            myApplication.setAct("Search");
+            myApplication.setMyjob(getString(R.string.likejob));
+            myApplication.setjobinfo(obj.getString(getString(R.string.JobInfo)));
+            myApplication.setAct(getString(R.string.Search));
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(SearchResultsActivity.this, ApplyActivity.class);
@@ -578,7 +578,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void displayresults(String numFound,String currentPage,String numOfPage){
         OfPage = Integer.parseInt(numOfPage);
         buPage = Integer.parseInt(currentPage);
-        tltrtvtitle.setText("検索結果 " + numFound + "件  "  + currentPage + "ページ目/" + numOfPage + "ページ");
+        tltrtvtitle.setText(getString(R.string.kensakukekka) + numFound + getString(R.string.ken)  + currentPage + getString(R.string.pagemei) + numOfPage + getString(R.string.page));
         Buttom_set(OfPage,Integer.parseInt(currentPage));
     }
     //结果显示(内容)
@@ -591,10 +591,10 @@ public class SearchResultsActivity extends AppCompatActivity {
             try {
                 JSONObject obj = data.getJSONObject(i);
                 Log.d("***addresults***", data.getString(i));
-                JSONArray jobName = obj.getJSONArray("jobName");
+                JSONArray jobName = obj.getJSONArray(getString(R.string.Jobname));
                 View searchresults;
                 String likejobflg = "0";
-                if(obj.getString("isPaid").equals("1")){
+                if(obj.getString(getString(R.string.isPaid)).equals("1")){
                     searchresults = getLayoutInflater().inflate(R.layout.include_searchresults_iskinwork, null);
                 } else {
                     searchresults = getLayoutInflater().inflate(R.layout.include_searchresults_iskinwork, null);
@@ -611,7 +611,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 HorizontalScrollView hsvtag = (HorizontalScrollView) searchresults.findViewById(R.id.hsv_tag);
                 TableRow trtag = (TableRow) searchresults.findViewById(R.id.tr_tag);
 
-                if(obj.getString("isPaid").equals("1")){
+                if(obj.getString(getString(R.string.isPaid)).equals("1")){
                     int w = dp2px(this, 100);
                     int h = dp2px(this, 20);
                     TextView tvtag = new TextView(this);
@@ -627,11 +627,11 @@ public class SearchResultsActivity extends AppCompatActivity {
                     tp.setFakeBoldText(true);
                     tvtag.setBackgroundResource(R.drawable.ic_background_red);
                     tvtag.setTextColor(Color.parseColor("#ffff4444"));
-                    tvtag.setText("急募");
+                    tvtag.setText(getString(R.string.kyuubo));
                     trtag.addView(tvtag);
                 }
-                if(obj.has("kinworktag")){
-                    JSONArray tag = obj.getJSONArray("kinworktag");
+                if(obj.has(getString(R.string.kinworktag))){
+                    JSONArray tag = obj.getJSONArray(getString(R.string.kinworktag));
                     for(int y=0; y < tag.length(); y++){
                         TextView tvtag = new TextView(this);
                         int w = dp2px(this, 100);
@@ -655,26 +655,26 @@ public class SearchResultsActivity extends AppCompatActivity {
                     hsvtag.setVisibility(View.GONE);
                 }
 
-                if(obj.has("isLiked")){
-                    if(obj.getBoolean("isLiked") == true){
+                if(obj.has(getString(R.string.isLiked))){
+                    if(obj.getBoolean(getString(R.string.isLiked)) == true){
                         ibucontact.setImageResource(R.mipmap.app_like);
                         likejobflg = "1";
                     }
                 }
                 tvtitle.setText(jobName.getString(0));
-                tvcompanyname.setText("勤務先：" + obj.getString("address"));
-                JSONArray contentKeyword = obj.getJSONArray("highlightKeywords");
+                tvcompanyname.setText(getString(R.string.kinmusaki)+ obj.getString(getString(R.string.address)));
+                JSONArray contentKeyword = obj.getJSONArray(getString(R.string.highlightKeywords));
                 String contentShorts = "";
                 String date = "";
                 for(int y = 0; y < contentKeyword.length(); y++ ){
                     date = "<font color=#000000><b>" + contentKeyword.getString(y) +"</b></font>";
-                    contentShorts = obj.getString("contentShorts").replace(contentKeyword.getString(y),date) + "...";
+                    contentShorts = obj.getString(getString(R.string.contentShorts)).replace(contentKeyword.getString(y),date) + "...";
                 }
                 tvJobname.setText(Html.fromHtml(contentShorts));
-                tvdate.setText("掲載日：" + obj.getString("releaseDate").substring(0,8));
-                tvPublishedcompany.setText("掲載会社：" + obj.getString("company"));
-                if(obj.has("from")){
-                    tvRecruitmentsite.setText("求人サイト：" + obj.getString("from"));
+                tvdate.setText(getString(R.string.kessaibi) + obj.getString(getString(R.string.releaseDate)).substring(0,8));
+                tvPublishedcompany.setText(getString(R.string.kessaikaisha)+ obj.getString(getString(R.string.company)));
+                if(obj.has(getString(R.string.from))){
+                    tvRecruitmentsite.setText(getString(R.string.kyujinsite) + obj.getString(getString(R.string.from)));
                 }
                 searchresults.setLayoutParams(tlparams);
                 tlresults.addView(searchresults,i);
@@ -708,19 +708,19 @@ public class SearchResultsActivity extends AppCompatActivity {
         myApplication.setpage(page);
         try {
             if (iIndex >= 0) {
-                urlFlg = "job";
-                if(objjobinfo.getString("isFromKinwork").equals("1")){
+                urlFlg = getString(R.string.job);
+                if(objjobinfo.getString(getString(R.string.isFromKinwork)).equals("1")){
                     PostDate Pdata = new PostDate();
                     Map<String,String> param = new HashMap<String, String>();
-                    Pdata.setjobId(objjobinfo.getString("jobId"));
+                    Pdata.setjobId(objjobinfo.getString(getString(R.string.jobId)));
                     String data = JsonChnge(AesKey,Pdata);
-                    param.put("file",PARAM_jobDetail);
-                    param.put("data",data);
+                    param.put(getString(R.string.file),PARAM_jobDetail);
+                    param.put(getString(R.string.data),data);
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 } else {
-                    myApplication.setURL(objjobinfo.getString("url"));
-                    myApplication.setAct("Search");
+                    myApplication.setURL(objjobinfo.getString(getString(R.string.url)));
+                    myApplication.setAct(getString(R.string.Search));
                     Intent intent = new Intent();
                     intent.setClass(SearchResultsActivity.this, WebActivity.class);
                     startActivity(intent);
@@ -758,68 +758,68 @@ public class SearchResultsActivity extends AppCompatActivity {
                     PostDate Pdata = new PostDate();
                     Map<String,String> param = new HashMap<String, String>();
                     if(likejobfl.equals("0")){
-                        urlFlg = "likejob";
+                        urlFlg = getString(R.string.likejob);
                         listlikejobflg.add(iIndex,"1");
-                        JSONArray jobName = objjobinfo.getJSONArray("jobName");
+                        JSONArray jobName = objjobinfo.getJSONArray(getString(R.string.jobName));
                         Pdata.setUserId(userid);
                         Pdata.setToken(token);
                         Log.d("objjobinfo", objjobinfo.toString());
-                        Pdata.setjobId(objjobinfo.getString("jobId"));
-                        Pdata.seturl(objjobinfo.getString("url"));
+                        Pdata.setjobId(objjobinfo.getString(getString(R.string.jobId)));
+                        Pdata.seturl(objjobinfo.getString(getString(R.string.url)));
                         Pdata.settitle(jobName.getString(0));
-                        Pdata.setisFromKinwork(objjobinfo.getString("isFromKinwork"));
-                        Pdata.setreleaseDate(objjobinfo.getString("releaseDate"));
-                        Pdata.setaddress(objjobinfo.getString("address"));
-                        Pdata.setcompany(objjobinfo.getString("company"));
-                        Pdata.setemploymentStatus(objjobinfo.getString("employmentStatus"));
-                        Pdata.setfrom(objjobinfo.getString("from"));
+                        Pdata.setisFromKinwork(objjobinfo.getString(getString(R.string.isFromKinwork)));
+                        Pdata.setreleaseDate(objjobinfo.getString(getString(R.string.releaseDate)));
+                        Pdata.setaddress(objjobinfo.getString(getString(R.string.address)));
+                        Pdata.setcompany(objjobinfo.getString(getString(R.string.company)));
+                        Pdata.setemploymentStatus(objjobinfo.getString(getString(R.string.employmentstatus)));
+                        Pdata.setfrom(objjobinfo.getString(getString(R.string.from)));
                         String str = "";
-                        if(objjobinfo.getString("isPaid").equals("1")){
-                            str = "急募" + " ";
+                        if(objjobinfo.getString(getString(R.string.isPaid)).equals("1")){
+                            str = getString(R.string.kyuubo)+ " ";
                         }
-                        if(objjobinfo.has("kinworktag")){
-                            JSONArray JATag = objjobinfo.getJSONArray("kinworktag");
+                        if(objjobinfo.has(getString(R.string.kinworktag))){
+                            JSONArray JATag = objjobinfo.getJSONArray(getString(R.string.kinworktag));
                             for(int i = 0;i<JATag.length();i++){
                                 str = str + JATag.getString(i) + " ";
                             }
                         }
                         Pdata.setkinworkTag(str);
-                        Pdata.setcontentShorts(objjobinfo.getString("contentShorts"));
-                        Pdata.setcontentShortsHighlight(objjobinfo.getString("contentShortsHighlight"));
-                        param.put("file",PARAM_likeJob);
+                        Pdata.setcontentShorts(objjobinfo.getString(getString(R.string.contentShorts)));
+                        Pdata.setcontentShortsHighlight(objjobinfo.getString(getString(R.string.contentShortsHighlight)));
+                        param.put(getString(R.string.file),PARAM_likeJob);
                     } else if(likejobfl.equals("1")){
-                        urlFlg = "deletelikejob";
+                        urlFlg = getString(R.string.deletelikejob);
                         listlikejobflg.add(iIndex,"0");
                         Pdata.setUserId(userid);
                         Pdata.setToken(token);
-                        Pdata.seturl(objjobinfo.getString("url"));
-                        param.put("file",PARAM_deletelikeJob);
+                        Pdata.seturl(objjobinfo.getString(getString(R.string.url)));
+                        param.put(getString(R.string.file),PARAM_deletelikeJob);
                     }
                     String data = JsonChnge(AesKey,Pdata);
-                    param.put("data",data);
+                    param.put(getString(R.string.data),data);
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     TextView msg = new TextView(this);
-                    msg.setText("未ログインです。\n ログイン画面に遷移しますか？");
+                    msg.setText(getString(R.string.checkloginstatus));
                     //msg.setPadding(10, 10, 10, 10);
                     msg.setGravity(Gravity.CENTER);
                     msg.setTextSize(15);
                     msg.setTextColor(Color.parseColor("#000000"));
-                    builder.setTitle("　").setView(msg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    builder.setTitle("　").setView(msg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //确定按钮的点击事件
-                            PreferenceUtils.setsaveid("SearchResults");
+                            PreferenceUtils.setsaveid(getString(R.string.SearchResults));
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(SearchResultsActivity.this, MainKinWork.class);
-                            intent.putExtra("Activity","SearchResults");
+                            intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                             startActivity(intent);
 
                         }
-                    }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //取消按钮的点击事件
@@ -943,12 +943,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         tltrbuNextBottom.setText("");
 
         if(PageNum > 1) {
-            tltrbuBefore.setText("＜ 前へ");
-            tltrbuBeforeBottom.setText("＜ 前へ");
+            tltrbuBefore.setText(getString(R.string.maehe));
+            tltrbuBeforeBottom.setText(getString(R.string.maehe));
         }
         if(PageNum < numOfPage) {
-            tltrbuNext.setText("次へ ＞");
-            tltrbuNextBottom.setText("次へ ＞");
+            tltrbuNext.setText(getString(R.string.tsugihe));
+            tltrbuNextBottom.setText(getString(R.string.tsugihe));
         }
 
         if(PageNum == 1) {
@@ -959,7 +959,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum + 4;
             theright = PageNum + 5;
             rightsearch = PageNum + 6;
-            butNumflg = "leftsearch";
+            butNumflg = getString(R.string.leftsearch);
         }else if(PageNum == 2) {
             leftsearch = PageNum - 1;
             theleft = PageNum;
@@ -968,7 +968,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum + 3;
             theright = PageNum + 4;
             rightsearch = PageNum + 5;
-            butNumflg = "theleft";
+            butNumflg = getString(R.string.theleft);
         }else if(PageNum == 3) {
             leftsearch = PageNum - 2;
             theleft = PageNum - 1;
@@ -977,7 +977,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum + 2;
             theright = PageNum + 3;
             rightsearch = PageNum + 4;
-            butNumflg = "left";
+            butNumflg = getString(R.string.left);
         }else if(PageNum + 2 == numOfPage) {
             leftsearch = PageNum - 4;
             theleft = PageNum - 3;
@@ -986,7 +986,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum;
             theright = PageNum + 1;
             rightsearch = PageNum + 2;
-            butNumflg = "right";
+            butNumflg = getString(R.string.right);
         }else if(PageNum + 1 == numOfPage) {
             leftsearch = PageNum - 5;
             theleft = PageNum - 4;
@@ -995,7 +995,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum - 1;
             theright = PageNum;
             rightsearch = PageNum + 1;
-            butNumflg = "theright";
+            butNumflg = getString(R.string.theright);
         }else if(PageNum == numOfPage) {
             leftsearch = PageNum - 6;
             theleft = PageNum - 5;
@@ -1004,7 +1004,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum - 2;
             theright = PageNum - 1;
             rightsearch = PageNum;
-            butNumflg = "rightsearch";
+            butNumflg = getString(R.string.rightsearch);
         }else {
             leftsearch = PageNum - 3;
             theleft = PageNum - 2;
@@ -1013,12 +1013,12 @@ public class SearchResultsActivity extends AppCompatActivity {
             right = PageNum + 1;
             theright = PageNum + 2;
             rightsearch = PageNum + 3;
-            butNumflg = "centre";
+            butNumflg = getString(R.string.centre);
         }
         if(leftsearch <= numOfPage){
             tltrbuleftsearch.setText(String.valueOf(leftsearch));
             tltrbuleftsearchBottom.setText(String.valueOf(leftsearch));
-            if(butNumflg.equals("leftsearch")){
+            if(butNumflg.equals(getString(R.string.leftsearch))){
                 tltrbuleftsearch.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrbuleftsearch.setTextColor(Color.parseColor("#ffffffff"));
                 tltrbuleftsearchBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1031,7 +1031,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(theleft <= numOfPage){
             tltrbutheleft.setText(String.valueOf(theleft));
             tltrbutheleftBottom.setText(String.valueOf(theleft));
-            if(butNumflg.equals("theleft")){
+            if(butNumflg.equals(getString(R.string.theleft))){
                 tltrbutheleft.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrbutheleft.setTextColor(Color.parseColor("#ffffffff"));
                 tltrbutheleftBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1044,7 +1044,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(left <= numOfPage){
             tltrbuleft.setText(String.valueOf(left));
             tltrbuleftBottom.setText(String.valueOf(left));
-            if(butNumflg.equals("left")){
+            if(butNumflg.equals(getString(R.string.left))){
                 tltrbuleft.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrbuleft.setTextColor(Color.parseColor("#ffffffff"));
                 tltrbuleftBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1057,7 +1057,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(centre <= numOfPage){
             tltrbucentre.setText(String.valueOf(centre));
             tltrbucentreBottom.setText(String.valueOf(centre));
-            if(butNumflg.equals("centre")){
+            if(butNumflg.equals(getString(R.string.centre))){
                 tltrbucentre.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrbucentre.setTextColor(Color.parseColor("#ffffffff"));
                 tltrbucentreBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1070,7 +1070,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(right <= numOfPage){
             tltrburight.setText(String.valueOf(right));
             tltrburightBottom.setText(String.valueOf(right));
-            if(butNumflg.equals("right")){
+            if(butNumflg.equals(getString(R.string.right))){
                 tltrburight.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrburight.setTextColor(Color.parseColor("#ffffffff"));
                 tltrburightBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1083,7 +1083,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(theright <= numOfPage){
             tltrbutheright.setText(String.valueOf(theright));
             tltrbutherightBottom.setText(String.valueOf(theright));
-            if(butNumflg.equals("theright")){
+            if(butNumflg.equals(getString(R.string.theright))){
                 tltrbutheright.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrbutheright.setTextColor(Color.parseColor("#ffffffff"));
                 tltrbutherightBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1096,7 +1096,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         if(rightsearch <= numOfPage){
             tltrburightsearch.setText(String.valueOf(rightsearch));
             tltrburightsearchBottom.setText(String.valueOf(rightsearch));
-            if(butNumflg.equals("rightsearch")){
+            if(butNumflg.equals(getString(R.string.rightsearch))){
                 tltrburightsearch.setBackgroundResource(R.drawable.ic_shape_bule_all);
                 tltrburightsearch.setTextColor(Color.parseColor("#ffffffff"));
                 tltrburightsearchBottom.setBackgroundResource(R.drawable.ic_shape_bule_all);
@@ -1144,16 +1144,16 @@ public class SearchResultsActivity extends AppCompatActivity {
         switch (View.getId()){
             //連絡画面に移動
             case R.id.ll_b_contact:
-                ViewID = "ll_contact";
+                ViewID = getString(R.string.ll_contact);
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_mylist:
-                myApplication.setAct("Search");
-                ViewID = "ll_mylist";
+                myApplication.setAct(getString(R.string.Search));
+                ViewID = getString(R.string.ll_mylist);
                 break;
             //個人設定画面に移動
             case R.id.ll_b_personalsettings:
-                ViewID = "ll_personalsettings";
+                ViewID = getString(R.string.ll_personalsettings);
                 break;
         }
         if(! ViewID.equals("")){
@@ -1161,7 +1161,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             if(LoginFlg.equals("1")){
                 Click_intent(ViewID);
             } else {
-                Click_intent("UserLogin");
+                Click_intent(getString(R.string.UserLogin));
             }
         }
     }
@@ -1173,7 +1173,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             //  ログイン画面に移動
             case "UserLogin":
                 intent.setClass(SearchResultsActivity.this, MainKinWork.class);
-                intent.putExtra("Activity","SearchResults");
+                intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                 break;
             //連絡画面に移動
             case "ll_contact":
@@ -1185,7 +1185,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case "ll_mylist":
-                myApplication.setAct("Apply");
+                myApplication.setAct(getString(R.string.Apply));
                 if(myApplication.getMURL(0).equals("0")){
                     if(myApplication.getMApply(0).equals("0")){
                         intent.setClass(SearchResultsActivity.this, MylistActivity.class);
@@ -1231,16 +1231,16 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
                     ivclearkeywordreset.setImageResource(R.drawable.ic_cancel);
-                    ivclearworklocationreset.setTag("clear");
+                    ivclearworklocationreset.setTag(getString(R.string.clear));
                     if( blkeywordreset == false){
-                        etnamereset = "keyword";
+                        etnamereset = getString(R.string.keyword);
                         keyword = s.toString();
                         getSearchResults();
                     }
                 } else {
                     lvgethintreset.setVisibility(View.GONE);
                     ivclearkeywordreset.setImageResource(R.drawable.ic_null);
-                    ivclearkeywordreset.setTag("keyword");
+                    ivclearkeywordreset.setTag(getString(R.string.keyword));
                 }
             }
             @Override
@@ -1258,13 +1258,13 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
                     ivclearworklocationreset.setImageResource(R.drawable.ic_location_on);
-                    ivclearworklocationreset.setTag("location");
+                    ivclearworklocationreset.setTag(getString(R.string.location));
                     lvgethintreset.setVisibility(View.GONE);
                 } else {
                     ivclearworklocationreset.setImageResource(R.drawable.ic_cancel);
-                    ivclearworklocationreset.setTag("clear");
+                    ivclearworklocationreset.setTag(getString(R.string.clear));
                     if(blworklocationreset == false){
-                        etnamereset = "worklocation";
+                        etnamereset = getString(R.string.worklocation);
                         address = s.toString();
                         getSearchResults();
 
@@ -1284,7 +1284,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 String data=(String) adapterreset.getItem(position);
                 Log.w("etname", etnamereset);
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.yyyyMMddHHmmssSSS));
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
                 Log.w("***lvgethintDate1***", strDate);
@@ -1297,7 +1297,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                     etkeywordreset.setText(data);
                     etkeywordreset.setSelection(etkeywordreset.getText().length());
 
-                } else if(etnamereset.equals("worklocation")){
+                } else if(etnamereset.equals(getString(R.string.worklocation))){
                     blworklocationreset = true;
                     etworklocationreset.setText(data);
                     etworklocationreset.setSelection(etworklocationreset.getText().length());
@@ -1311,17 +1311,17 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void Click_clear(View View){
         switch (View.getId()){
             case R.id.iv_clear_keyword_reset:
-                if(ivclearkeywordreset.getTag().equals("clear")){
+                if(ivclearkeywordreset.getTag().equals(getString(R.string.clear))){
                     etkeywordreset.setText("");
                     ivclearkeywordreset.setImageResource(R.drawable.ic_null);
-                    ivclearkeywordreset.setTag("keyword");
+                    ivclearkeywordreset.setTag(getString(R.string.keyword));
                 }
                 break;
             case R.id.iv_clear_worklocation_reset:
                 //当前图片为清空的时候，清空输入框
-                if (ivclearworklocationreset.getTag().equals("clear")){
+                if (ivclearworklocationreset.getTag().equals(getString(R.string.clear))){
                     etworklocationreset.setText("");
-                    ivclearworklocationreset.setTag("location");
+                    ivclearworklocationreset.setTag(getString(R.string.location));
                     ivclearworklocationreset.setImageResource(R.drawable.ic_location_on);
                 }else{
                     //当前图片不为清空的时候，重新获取当前所在地
@@ -1379,15 +1379,15 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void getaddress_components(Location location){
         // 緯度の表示
-        String str1 = "Latitude:"+location.getLatitude();
+        String str1 = getString(R.string.Latitude)+location.getLatitude();
         Log.d("str1", str1);
         // 経度の表示
-        String str2 = "Longtude:"+location.getLongitude();
+        String str2 = getString(R.string.Longtude)+location.getLongitude();
         Log.d("str2", str2);
         Map<String,String> param = new HashMap<String, String>();
-        param.put("url","https://maps.google.com/maps/api/geocode/json?latlng=");
-        param.put("itude",location.getLatitude() + ","+location.getLongitude());
-        param.put("key","&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
+        param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
+        param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
+        param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
         new GithubQueryTask2().execute(param);
     }
 
@@ -1396,9 +1396,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String url = map.get("url");
-            String itude = map.get("itude");
-            String key = map.get("key");
+            String url = map.get(getString(R.string.url));
+            String itude = map.get(getString(R.string.itude));
+            String key = map.get(getString(R.string.key));
             Log.d("***url***", url + itude + key);
             URL searchUrl = null;
             try {
@@ -1420,7 +1420,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    JSONArray job = obj.getJSONArray("results");
+                    JSONArray job = obj.getJSONArray(getString(R.string.results));
                     myApplication.setaddress_components(job.get(0).toString());
                     Log.d("***job***", job.get(0).toString());
                     SetAddress(job.get(0).toString());
@@ -1435,22 +1435,22 @@ public class SearchResultsActivity extends AppCompatActivity {
         Log.d("date", date);
         try {
             JSONObject obj = new JSONObject(date);
-            JSONArray results = obj.getJSONArray("address_components");
+            JSONArray results = obj.getJSONArray(getString(R.string.address_components));
             Log.d("results", results.toString());
             int iIndex = -1;
             String add_1 = "";
             String add_2 = "";
             String add_3 = "";
             for (int i = 0;i < results.length();i++){
-                if(results.getJSONObject(i).getString("long_name").equals("日本")){
+                if(results.getJSONObject(i).getString(getString(R.string.long_name)).equals(getString(R.string.nihon))){
                     iIndex = i;
                     break;
                 }
             }
             if(iIndex > -1){
-                add_1 = results.getJSONObject(iIndex - 1).getString("long_name");
-                add_2 = results.getJSONObject(iIndex - 2).getString("long_name");
-                add_3 = results.getJSONObject(iIndex - 3).getString("long_name");
+                add_1 = results.getJSONObject(iIndex - 1).getString(getString(R.string.long_name));
+                add_2 = results.getJSONObject(iIndex - 2).getString(getString(R.string.long_name));
+                add_3 = results.getJSONObject(iIndex - 3).getString(getString(R.string.long_name));
             } else {
                 ivclearworklocationreset.setVisibility(View.GONE);
             }
@@ -1459,7 +1459,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             myApplication.setaddress(etworklocationreset.getText().toString());
             if(etworklocationreset.getText().length() > 0){
                 ivclearworklocationreset.setImageResource(R.drawable.ic_cancel);
-                ivclearworklocationreset.setTag("clear");
+                ivclearworklocationreset.setTag(getString(R.string.clear));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1471,7 +1471,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         int top= 0;
         Log.d("***name***", name);
         Log.d("***Width***", Width+"");
-        if(name.equals("keyword")){
+        if(name.equals(getString(R.string.keyword))){
             top= keywordresetTop;
         } else {
             top= worklocationresetTop;

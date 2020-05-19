@@ -91,7 +91,7 @@ public class SearchActivity extends AppCompatActivity {
     private int worklocationTop = 0;
     private String etname;
 
-    public String TAG = "SearchActivity";
+    public String TAG = getString(R.string.SearchActivity);
     
 //    LocationManager locationManager;
     @Override
@@ -227,7 +227,7 @@ public class SearchActivity extends AppCompatActivity {
         tvsearch = (TextView) findViewById(R.id.tv_search);
         tvsearch.setTextColor(Color.parseColor("#5EACE2"));
         tvtitle      = (TextView) findViewById(R.id.tv_title_name);
-        tvtitle.setText("仕事を探す");
+        tvtitle.setText(getString(R.string.shigotosagasu));
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(SearchActivity.this);
         UserLoginFlg = PreferenceUtils.getUserFlg();
@@ -237,7 +237,7 @@ public class SearchActivity extends AppCompatActivity {
         if(etkeyword.getText().length() > 0){
             ivclearkeyword.setVisibility(View.VISIBLE);
         }
-        if(Intent.getStringExtra("act").equals("Boot")){
+        if(Intent.getStringExtra(getString(R.string.act)).equals(getString(R.string.Boot))){
             if(myApplication.getaddress_components().length() >0){
                 SetAddress(myApplication.getaddress_components());
             } else {
@@ -246,7 +246,7 @@ public class SearchActivity extends AppCompatActivity {
         }
         if(etworklocation.getText().length() > 0){
             ivclearworklocation.setImageResource(R.drawable.ic_cancel);
-            ivclearworklocation.setTag("clear");
+            ivclearworklocation.setTag(getString(R.string.clear));
         }
 
     }
@@ -273,7 +273,7 @@ public class SearchActivity extends AppCompatActivity {
         if(! ViewID.equals("")){
             PreferenceUtils.setsaveid(ViewID);
             if( UserLoginFlg.equals("0")) {
-                Click_intent("UserLogin");
+                Click_intent(getString(R.string.UserLogin));
             } else if( UserLoginFlg.equals("1")) {
                 Click_intent(ViewID);
             }
@@ -288,7 +288,7 @@ public class SearchActivity extends AppCompatActivity {
             //  ログイン画面に移動
             case "UserLogin":
                 intent.setClass(SearchActivity.this, MainKinWork.class);
-                intent.putExtra("Activity","");
+                intent.putExtra(getString(R.string.Activity),"");
                 break;
             //連絡画面に移動
             case "ll_contact":
@@ -300,7 +300,7 @@ public class SearchActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case "ll_mylist":
-                myApplication.setAct("Apply");
+                myApplication.setAct(getString(R.string.Apply));
                 if(myApplication.getMURL(0).equals("0")){
                     if(myApplication.getMApply(0).equals("0")){
                         intent.setClass(SearchActivity.this, MylistActivity.class);
@@ -342,18 +342,18 @@ public class SearchActivity extends AppCompatActivity {
     }
     //ログインフラグ取得
     public  void load(){
-        SharedPreferences Resultflg = getSharedPreferences("Initial", Context.MODE_PRIVATE);
-        String Result = Resultflg.getString("Result","A");
-        deviceId = Resultflg.getString("deviceId","A");
-        AesKey = Resultflg.getString("aesKey","A");
+        SharedPreferences Resultflg = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
+        String Result = Resultflg.getString(getString(R.string.Result),"A");
+        deviceId = Resultflg.getString(getString(R.string.deviceid),"A");
+        AesKey = Resultflg.getString(getString(R.string.Information_Name_aesKey),"A");
         if(Result.equals("0") || Result.equals("A") ){
-            alertdialog("エラー","通信が失敗しました。");
+            alertdialog(getString(R.string.error),getString(R.string.tsushinshippai));
         }
     }
     //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -365,22 +365,22 @@ public class SearchActivity extends AppCompatActivity {
         Log.d(TAG+"date", date);
         try {
             JSONObject obj = new JSONObject(date);
-            JSONArray results = obj.getJSONArray("address_components");
+            JSONArray results = obj.getJSONArray(getString(R.string.address_components));
             Log.d(TAG+"results", results.toString());
             int iIndex = -1;
             String add_1 = "";
             String add_2 = "";
             String add_3 = "";
             for (int i = 0;i < results.length();i++){
-                if(results.getJSONObject(i).getString("long_name").equals("日本")){
+                if(results.getJSONObject(i).getString(getString(R.string.long_name)).equals(getString(R.string.nihon))){
                     iIndex = i;
                     break;
                 }
             }
             if(iIndex > -1){
-                add_1 = results.getJSONObject(iIndex - 1).getString("long_name");
-                add_2 = results.getJSONObject(iIndex - 2).getString("long_name");
-                add_3 = results.getJSONObject(iIndex - 3).getString("long_name");
+                add_1 = results.getJSONObject(iIndex - 1).getString(getString(R.string.long_name));
+                add_2 = results.getJSONObject(iIndex - 2).getString(getString(R.string.long_name));
+                add_3 = results.getJSONObject(iIndex - 3).getString(getString(R.string.long_name));
             } else {
                 ivclearworklocation.setVisibility(View.GONE);
             }
@@ -389,7 +389,7 @@ public class SearchActivity extends AppCompatActivity {
             if(etworklocation.getText().length() > 0){
                 blworklocation = true;
                 ivclearworklocation.setImageResource(R.drawable.ic_cancel);
-                ivclearworklocation.setTag("clear");
+                ivclearworklocation.setTag(getString(R.string.clear));
             }
             Log.d(TAG+"etworklocation", etworklocation.getText().toString());
             initData();
@@ -480,11 +480,11 @@ public class SearchActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
                     ivclearworklocation.setImageResource(R.drawable.ic_location_on);
-                    ivclearworklocation.setTag("location");
+                    ivclearworklocation.setTag(getString(R.string.location));
                     lvgethint.setVisibility(View.GONE);
                 } else {
                     ivclearworklocation.setImageResource(R.drawable.ic_cancel);
-                    ivclearworklocation.setTag("clear");
+                    ivclearworklocation.setTag(getString(R.string.clear));
                     String Text = etworklocation.getText().toString();
                     if(blworklocation == false){
                         getSearchResults("1",Text);
@@ -504,7 +504,7 @@ public class SearchActivity extends AppCompatActivity {
                 String data=(String) adapter.getItem(position);
                 Log.d(TAG+"etname", etname);
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.yyyyMMddHHmmssSSS));
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
                 Log.d(TAG+"***lvgethintDate1***", strDate);
@@ -536,7 +536,7 @@ public class SearchActivity extends AppCompatActivity {
                 //当前图片为清空的时候，清空输入框
                 if (ivclearworklocation.getTag().equals("clear")){
                     etworklocation.setText("");
-                    ivclearworklocation.setTag("location");
+                    ivclearworklocation.setTag(getString(R.string.location));
                     ivclearworklocation.setImageResource(R.drawable.ic_location_on);
                 }else{
                     //当前图片不为清空的时候，重新获取当前所在地
@@ -582,15 +582,15 @@ public class SearchActivity extends AppCompatActivity {
     private void getaddress_components(Location location){
         if(location != null){
             // 緯度の表示
-            String str1 = "Latitude:"+location.getLatitude();
+            String str1 = getString(R.string.Latitude)+location.getLatitude();
             Log.d(TAG+"str1", str1);
             // 経度の表示
-            String str2 = "Longtude:"+location.getLongitude();
+            String str2 = getString(R.string.Longtude)+location.getLongitude();
             Log.d(TAG+"str2", str2);
             Map<String,String> param = new HashMap<String, String>();
-            param.put("url","https://maps.google.com/maps/api/geocode/json?latlng=");
-            param.put("itude",location.getLatitude() + ","+location.getLongitude());
-            param.put("key","&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
+            param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
+            param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
+            param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
 //            new GithubQueryTask2().execute(param);
         }
 
@@ -601,9 +601,9 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String url = map.get("url");
-            String itude = map.get("itude");
-            String key = map.get("key");
+            String url = map.get(getString(R.string.url));
+            String itude = map.get(getString(R.string.itude));
+            String key = map.get(getString(R.string.key));
             Log.d(TAG+"***url***", url + itude + key);
             URL searchUrl = null;
             try {
@@ -641,17 +641,17 @@ public class SearchActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         if(flg.equals("0")){
             Pdata.setkeyword(hintdata);
-            param.put("file",PARAM_KeywordHint);
-            param.put("name","keyword");
-            etname = "keyword";
+            param.put(getString(R.string.file),PARAM_KeywordHint);
+            param.put(getString(R.string.name),getString(R.string.keyword));
+            etname = getString(R.string.keyword);
         } else {
             Pdata.setaddress(hintdata);
-            param.put("file",PARAM_AddressHint);
-            param.put("name","worklocation");
-            etname = "worklocation";
+            param.put(getString(R.string.file),PARAM_AddressHint);
+            param.put(getString(R.string.name),getString(R.string.worklocation));
+            etname = getString(R.string.worklocation);
         }
         String data = JsonChnge(AesKey,Pdata);
-        param.put("data",data);
+        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -679,9 +679,9 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
-            name = map.get("name");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            name = map.get(getString(R.string.name));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -697,15 +697,15 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d(TAG+"***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    String meg = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String meg = obj.getString(getString(R.string.message));
                     if(processResult == true) {
                         Log.d(TAG+"***returnData***", obj.getString("returnData"));
-                        JSONArray returnData = obj.getJSONArray("returnData");
+                        JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
                         ArrayList<String> stringArrayList = new ArrayList<String>();
                         String[] Stringdata = {};
                         int length = returnData.length();
-                        if(!obj.getString("returnData").equals("[]")){
+                        if(!obj.getString(getString(R.string.returnData)).equals("[]")){
                             for (int i=0; i< length; i++) {
                                 Log.d(TAG+"***i***", i+"");
                                 if( i < 6){
@@ -729,7 +729,7 @@ public class SearchActivity extends AppCompatActivity {
     public void getItem(String []Stringdata,String name){
         int top= 0;
         Log.d(TAG+"***name***", name);
-        if(name.equals("keyword")){
+        if(name.equals(getString(R.string.keyword))){
             top= keywordTop;
         } else {
             top= worklocationTop;

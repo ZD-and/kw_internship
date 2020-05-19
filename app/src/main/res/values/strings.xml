@@ -308,6 +308,87 @@
     <string name="Delalertdialog6">編集した内容を保存しなくてもよろしいですか？</string>
     <string name="resume">resume</string>
 
+    <!-- Strings related to Search -->
+    <string name="SearchActivity">SearchActivity</string>
+    <string name="shigotosagasu">仕事を探す</string>
+    <string name="Boot">Boot</string>
+    <string name="clear">clear</string>
+    <string name="UserLogin">UserLogin</string>
+    <string name="tsushinshippai">通信が失敗しました。</string>
+    <string name="address_components">address_components</string>
+    <string name="long_name">long_name</string>
+    <string name="nihon">日本</string>
+    <string name="location">location</string>
+    <string name="yyyyMMddHHmmssSSS">yyyyMMddHHmmssSSS</string>
+    <string name="Latitude">Latitude:</string>
+    <string name="Longtude">Longtude:</string>
+    <string name="keyword">keyword</string>
+    <string name="worklocation">worklocation</string>
+
+    <!-- Strings related to SearchResults-->
+    <string name="Semploymentstatus">すべて,正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
+    <string name="kensaku">検索</string>
+    <string name="kensakukekka">検索結果</string>
+    <string name="job">job</string>
+    <string name="alertdialog13">お気に入り</string>
+    <string name="alertdialog14">保存しました。</string>
+    <string name="alertdialog15">削除しました。</string>
+    <string name="numFound">numFound</string>
+    <string name="pagenation">pagenation</string>
+    <string name="numOfPage">numOfPage</string>
+    <string name="currentPage">currentPage</string>
+    <string name="jobList">jobList</string>
+    <string name="tsushinshierror">通信失敗</string>
+    <string name="ken">件</string>
+    <string name="pagemei">ページ目/</string>
+    <string name="page">ページ</string>
+    <string name="isPaid">isPaid</string>
+    <string name="kinworktag">kinworktag</string>
+    <string name="isLiked">isLiked</string>
+    <string name="highlightKeywords">highlightKeywords</string>
+    <string name="jobId">jobId</string>
+    <string name="jobName">jobName</string>
+    <string name="contentShortsHighlight">contentShortsHighlight</string>
+    <string name="maehe">＜ 前へ</string>
+    <string name="tsugihe">次へ ＞</string>
+    <string name="leftsearch">leftsearch</string>
+    <string name="theleft">theleft</string>
+    <string name="left">left</string>
+    <string name="right">right</string>
+    <string name="theright">theright</string>
+    <string name="rightsearch">rightsearch</string>
+    <string name="centre">centre</string>
+    <string name="ll_contact">ll_contact</string>
+    <string name="ll_mylist">ll_mylist</string>
+    <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="results">results</string>
+
+    <!-- Strings related to SelectResume -->
+    <string name="Erroralertdialog">応募する前に、履歴書をご作成ください。</string>
+    <string name="SetTitle">への応募の件にて/</string>
+    <string name="SetMeg1">ご担当者様
+</string>
+    <string name="SetMeg2">初めてご連絡させていただきます。
+</string>
+    <string name="SetMeg3">）と申します。
+</string>
+    <string name="SetMeg4">キンワークにて貴社の求人を拝見いたしました。
+</string>
+    <string name="SetMeg5">かねてより貴社の事業内容に魅力を感じておりましたので、
+</string>
+    <string name="SetMeg6">このたび応募させていただきました。
+</string>
+    <string name="SetMeg7">ぜひ一度、面接の機会をいただきたく思います。
+</string>
+    <string name="SetMeg8">よろしくお願い申し上げます。</string>
+    <string name="back">back</string>
+    <string name="alertdialog16">履歴書を選択してください。</string>
+    <string name="alertdialog17">タイトルを入力してください。</string>
+    <string name="alertdialog18">送信内容を入力してください。</string>
+    <string name="Application">Application</string>
+    <string name="errormeg">既にこの仕事を応募しました。</string>
+    <string name="sakusei">作成する</string>
+
 
     <!-- Strings related to Web -->
     <string name="kensakuchu">検索中···</string>
