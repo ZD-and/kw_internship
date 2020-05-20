@@ -41,6 +41,7 @@ import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
+import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class EducationActivity extends AppCompatActivity {
 
@@ -84,7 +85,7 @@ public class EducationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_education);
         intent = getIntent();
-        status = intent.getStringExtra("status");
+        status = intent.getStringExtra(getString(R.string.status));
         mMyApplication = (MyApplication) getApplication();
         IresumeIdflg = mMyApplication.getResumeId();
         resumestatus = mMyApplication.getresume_status();
@@ -179,10 +180,10 @@ public class EducationActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
                                           int startDayOfMonth) {
                         if(startYear != 0 && startMonthOfYear != 0){
-                            String textString = String.valueOf(startYear) + "年" + String.valueOf(startMonthOfYear + 1) + "月";
+                            String textString = String.valueOf(startYear) + getString(R.string.Year) + String.valueOf(startMonthOfYear + 1) + getString(R.string.Months);
                             if ((startYear > sysYear) || (startYear == sysYear && startMonthOfYear + 1 >= sysMonth)) {
                                 tveducationstart.setText("");
-                                alertdialog("未来の年月を選択できません。");
+                                alertdialog(getString(R.string.alertdialog2));
                             } else {
                                 Start_mYear = startYear;
                                 Start_mMonth = startMonthOfYear + 1;
@@ -210,10 +211,10 @@ public class EducationActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker endDatePicker, int endYear, int endMonthOfYear,
                                           int endDayOfMonth) {
                         if(endYear != 0 && endMonthOfYear != 0){
-                            String textString = String.valueOf(endYear) + "年" + String.valueOf(endMonthOfYear + 1) + "月";
+                            String textString = String.valueOf(endYear) + getString(R.string.Year) + String.valueOf(endMonthOfYear + 1) + getString(R.string.Months);
                             if ((Start_mYear > endYear) || (Start_mYear == endYear && Start_mMonth >= endMonthOfYear + 1)) {
                                 tveducationend.setText("");
-                                alertdialog("年月選択が不正です。");
+                                alertdialog(getString(R.string.alertdialog3));
                             } else {
                                 End_mYear = endYear;
                                 End_mMonth = endMonthOfYear + 1;
@@ -231,7 +232,7 @@ public class EducationActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -246,13 +247,13 @@ public class EducationActivity extends AppCompatActivity {
     //内容取得、通信
     public void saveurl() {
         if(etSchoolname.getText().toString().equals("")){
-            alertdialog("学校名を入力してください");
+            alertdialog(getString(R.string.alertdialog4));
         } else {
             //Json格式转换
             Gson Gson = new Gson();
             PostDate postdate = new PostDate();
             SchoolCareer SchoolCareer = new SchoolCareer();
-            if(status.equals("upd")){
+            if(status.equals(getString(R.string.upd))){
                 SchoolCareer.setId(schoolCareerId);
             }
             SchoolCareer.setId_resume(resumeId);
@@ -272,13 +273,13 @@ public class EducationActivity extends AppCompatActivity {
             //AES加密
             String data = AesChnge(AesKey, sdPdata);
             Map<String,String> param = new HashMap<String, String>();
-            if (status.equals("add")){
-                param.put("file",PARAM_add);
-            } else if (status.equals("upd")){
-                param.put("file",PARAM_Upd);
+            if (status.equals(getString(R.string.add))){
+                param.put(getString(R.string.file),PARAM_add);
+            } else if (status.equals(getString(R.string.upd))){
+                param.put(getString(R.string.file),PARAM_Upd);
             }
-            param.put("data",data);
-            param.put("deviceid",deviceId);
+            param.put(getString(R.string.data),data);
+            param.put(getString(R.string.deviceid),deviceId);
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
@@ -305,9 +306,9 @@ public class EducationActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
-            String deviceId = map.get("deviceid");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            String deviceId = map.get(getString(R.string.deviceid));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -324,7 +325,7 @@ public class EducationActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean("processResult");
+                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     if(processResult == true) {
                         NewIntent();
                     } else {
@@ -342,32 +343,32 @@ public class EducationActivity extends AppCompatActivity {
 
     //创建、更新判定
     public void getstatus(String data){
-        if(data.equals("upd")){
-            schoolCareerId = intent.getStringExtra("schoolCareerId");
-            etSchoolname.setText(intent.getStringExtra("School_name"));//学校名
+        if(data.equals(getString(R.string.upd))){
+            schoolCareerId = intent.getStringExtra(getString(R.string.schoolCareerId));
+            etSchoolname.setText(intent.getStringExtra(getString(R.string.School_name)));//学校名
             //学位
-            if(intent.getStringExtra("Degree").length() > 0){
-                etDegree.setText(intent.getStringExtra("Degree"));
+            if(intent.getStringExtra(getString(R.string.Degree)).length() > 0){
+                etDegree.setText(intent.getStringExtra(getString(R.string.Degree)));
             }
             //専攻分野
-            if(intent.getStringExtra("Major_field").length() > 0){
-                etMajorfield.setText(intent.getStringExtra("Major_field"));
+            if(intent.getStringExtra(getString(R.string.Major_field)).length() > 0){
+                etMajorfield.setText(intent.getStringExtra(getString(R.string.Major_field)));
             }
             //学校所在地
 //            if(intent.getStringExtra("Country_of_school").length() > 0){
 //                etSchoollocation.setText(intent.getStringExtra("Country_of_school"));
 //            }
             //开始年月
-            if(intent.getStringExtra("Start_Y").length() > 0 && intent.getStringExtra("Start_M").length() > 0){
-                Start_mYear = Integer.parseInt(intent.getStringExtra("Start_Y"));
-                Start_mMonth = Integer.parseInt(intent.getStringExtra("Start_M"));
-                tveducationstart.setText(intent.getStringExtra("Start_Y") + "年" + intent.getStringExtra("Start_M") + "月");
+            if(intent.getStringExtra(getString(R.string.Start_Y)).length() > 0 && intent.getStringExtra(getString(R.string.Start_M)).length() > 0){
+                Start_mYear = Integer.parseInt(intent.getStringExtra(getString(R.string.Start_Y)));
+                Start_mMonth = Integer.parseInt(intent.getStringExtra(getString(R.string.Start_M)));
+                tveducationstart.setText(intent.getStringExtra(getString(R.string.Start_Y)) + getString(R.string.Year) + intent.getStringExtra(getString(R.string.Start_M)) + getString(R.string.Months));
             }
             //结束年月
-            if(intent.getStringExtra("End_Y").length() > 0 && intent.getStringExtra("End_M").length() > 0){
-                End_mYear = Integer.parseInt(intent.getStringExtra("End_Y"));
-                End_mMonth = Integer.parseInt(intent.getStringExtra("End_M"));
-                tveducationend.setText(intent.getStringExtra("End_Y") + "年" + intent.getStringExtra("End_M") + "月");
+            if(intent.getStringExtra(getString(R.string.End_Y)).length() > 0 && intent.getStringExtra(getString(R.string.End_M)).length() > 0){
+                End_mYear = Integer.parseInt(intent.getStringExtra(getString(R.string.End_Y)));
+                End_mMonth = Integer.parseInt(intent.getStringExtra(getString(R.string.End_M)));
+                tveducationend.setText(intent.getStringExtra(getString(R.string.End_Y) + getString(R.string.Year) + intent.getStringExtra(getString(R.string.End_M)) + getString(R.string.Months)));
             }
         }
     }

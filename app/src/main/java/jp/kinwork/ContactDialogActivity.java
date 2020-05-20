@@ -118,8 +118,8 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 //        Act = Intent.getStringExtra("Act");
         Initialization();
         if(mMyApplication.getContactDialog(0).equals("0")){
-            employer_id = Intent.getStringExtra("ID");
-            company_name = Intent.getStringExtra("company_name");
+            employer_id = Intent.getStringExtra(getString(R.string.ID));
+            company_name = Intent.getStringExtra(getString(R.string.company_name));
 //            mailaddress = Intent.getStringExtra("mailaddress");
             Log.d("company_name", company_name);
             mMyApplication.setContactDialog("1",0);
@@ -143,16 +143,16 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
             DisplayEmailFlg = mMyApplication.getContactDialog(4);
             if(DisplayEmailFlg.equals("")){
                 //flg为空的时候，显示全部的邮件
-                DisplayEmail("tv_allEmail");
+                DisplayEmail(getString(R.string.tv_allEmail));
             }else if(DisplayEmailFlg.equals("1")){
                 //flg为1的时候，显示收到的邮件
-                DisplayEmail("tv_sendEmail");
+                DisplayEmail(getString(R.string.tv_sendEmail));
             }else if(DisplayEmailFlg.equals("0")){
                 //flg为1的时候，显示发送的邮件
-                DisplayEmail("tv_ReceptionEmail");
+                DisplayEmail(getString(R.string.tv_ReceptionEmail));
             }
         }
-        tvbacktitle.setText("メール一覧");
+        tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
 //        tltvmailaddress.setText(mailaddress);
     }
@@ -200,8 +200,8 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText("連絡");
-        tvbackdummy.setText("連絡");
+        tvback.setText(getString(R.string.title_contact));
+        tvbackdummy.setText(getString(R.string.title_contact));
         tltvcompany     = (TextView) findViewById(R.id.tl_tv_company);
 //        tltvmailaddress     = (TextView) findViewById(R.id.tl_tv_mailaddress);
         ettitle        = (EditText) findViewById(R.id.et_title);
@@ -232,9 +232,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
         String data = JsonChnge(AesKey,Pdata);
-        param.put("file",PARAM_File);
-        param.put("data",data);
-        param.put("name","");
+        param.put(getString(R.string.file),PARAM_File);
+        param.put(getString(R.string.data),data);
+        param.put(getString(R.string.name),"");
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -263,9 +263,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
-            name = map.get("name");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            name = map.get(getString(R.string.name));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -281,12 +281,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    String meg = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String meg = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        Log.d("***returnData***", obj.getString("returnData"));
-                        if(!name.equals("isReaded")){
-                            decryptchange(obj.getString("returnData"),name);
+                        Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
+                        if(!name.equals(getString(R.string.isReaded))){
+                            decryptchange(obj.getString(getString(R.string.returnData)),name);
                         }
                     }
                 }catch (Exception e){
@@ -302,14 +302,14 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
         Log.d("***decryptdata***", decryptdata);
         try {
-            if (inputname.equals("SendMeg")) {
+            if (inputname.equals(getString(R.string.SendMeg))) {
                 JSONObject obj = new JSONObject(decryptdata);
-                JSONObject objPendingMail = obj.getJSONObject("PendingMail");
+                JSONObject objPendingMail = obj.getJSONObject(getString(R.string.PendingMail));
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
                 Log.d("***strDate***", strDate);
-                Setsendmeg(objPendingMail.getString("mail_title"), objPendingMail.getString("mail_content"), strDate);
+                Setsendmeg(objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
             }else {
                 JSONArray obj = new JSONArray(decryptdata);
                 for(int x=0; x < obj.length(); x++){
@@ -342,7 +342,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         for(int i=0; i < list_String.size(); i++){
             try {
                 JSONObject obj = new JSONObject(list_String.get(i));
-                JSONObject objMyMail = obj.getJSONObject("MyMail");
+                JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
                 Log.d("***obj***", objMyMail.toString());
                 View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
                 TableLayout tltlTableLayout = (TableLayout) dialog.findViewById(R.id.tl_tl_TableLayout);
@@ -356,17 +356,17 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 TextView tvmeg = (TextView) dialog.findViewById(R.id.tl_tv_meg);
                 TableLayout tlreply = (TableLayout) dialog.findViewById(R.id.tl_reply);
                 TableLayout tlnew = (TableLayout) dialog.findViewById(R.id.tl_new);
-                tvdata.setText(objMyMail.getString("send_time"));
+                tvdata.setText(objMyMail.getString(getString(R.string.send_time)));
 //                String Title = obj.getString("mailTitle");
 //                String mailTitle = new String(android.util.Base64.decode(Title.getBytes(), android.util.Base64.DEFAULT));
 //                String Content = obj.getString("mailContent");
 //                String mailContent = new String(android.util.Base64.decode(Content.getBytes(), android.util.Base64.DEFAULT));
-                String mailContent = objMyMail.getString("mail_content").replace("<br />","");
-                tvtitle.setText(objMyMail.getString("mail_title"));
-                tvsubtitle.setText(objMyMail.getString("mail_title"));
+                String mailContent = objMyMail.getString(getString(R.string.mail_content)).replace("<br />","");
+                tvtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
+                tvsubtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
                 tvmeg.setText(mailContent);
-                String isReaded = objMyMail.getString("is_readed");
-                if(objMyMail.getString("direction").equals("1")){
+                String isReaded = objMyMail.getString(getString(R.string.is_readed));
+                if(objMyMail.getString(getString(R.string.direction)).equals("1")){
                     tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule);
                     tvcompany_name.setText(company_name + " から");
                     tvcompany_name.setGravity(Gravity.LEFT);
@@ -384,12 +384,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 }
 
                 //收信的场合不显示送信邮件
-                if(flg.equals("1") && objMyMail.getString("direction").equals("0")){
+                if(flg.equals("1") && objMyMail.getString(getString(R.string.direction)).equals("0")){
                     dialog.setVisibility(GONE);
 
                 }
                 //送信的场合不显示收信邮件
-                else if(flg.equals("0") && objMyMail.getString("direction").equals("1")){
+                else if(flg.equals("0") && objMyMail.getString(getString(R.string.direction)).equals("1")){
                     dialog.setVisibility(GONE);
                 }
                 llmeg.addView(dialog,i);
@@ -413,7 +413,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         if(sendflg.equals("1")){
             if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("").setMessage("そのまま取消でもよろしいでしょうか？").setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                builder.setTitle("").setMessage(getString(R.string.setMessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //确定按钮的点击事件
@@ -423,7 +423,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                         ettitle.setText("");
                         etmeg.setText("");
                     }
-                }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //取消按钮的点击事件
@@ -453,13 +453,13 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         String name = "";
         switch (View.getId()){
             case R.id.tv_allEmail:
-                name = "tv_allEmail";
+                name = getString(R.string.tv_allEmail);
                 break;
             case R.id.tv_sendEmail:
-                name = "tv_sendEmail";
+                name = getString(R.string.tv_sendEmail);
                 break;
             case R.id.tv_ReceptionEmail:
-                name = "tv_ReceptionEmail";
+                name = getString(R.string.tv_ReceptionEmail);
                 break;
         }
         DisplayEmail(name);
@@ -620,12 +620,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
             JSONObject object = new JSONObject();
             object = list_obj.get(iIndex);
             try {
-                direction = object.getString("direction");
-                mymailid =  object.getString("my_mail_id");
-                isReaded = object.getString("is_readed");
+                direction = object.getString(getString(R.string.direction));
+                mymailid =  object.getString(getString(R.string.my_mail_id));
+                isReaded = object.getString(getString(R.string.is_readed));
                 if(direction.equals("1") && isReaded.equals("0")){
                     Click_tvisReaded.setVisibility(GONE);
-                    object.put("is_readed","1");
+                    object.put(getString(R.string.is_readed),"1");
                     LinkedList<String> list_back = new LinkedList<String>(list_String);
                     list_String.clear();
                     for(int i = 0; i < list_back.size(); i++){
@@ -642,9 +642,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                     Pdata.setemployerId(employer_id);
                     Pdata.setMyMailId(mymailid);
                     String data = JsonChnge(AesKey,Pdata);
-                    param.put("file",PARAM_Readed);
-                    param.put("data",data);
-                    param.put("name","isReaded");
+                    param.put(getString(R.string.file),PARAM_Readed);
+                    param.put(getString(R.string.data),data);
+                    param.put(getString(R.string.name),getString(R.string.isReaded));
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 }
@@ -674,9 +674,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         Pdata.setmailTitle(ettitle.getText().toString());
         Pdata.setmailContent(etmeg.getText().toString());
         String data = JsonChnge(AesKey,Pdata);
-        param.put("file",PARAM_sendMessage);
-        param.put("data",data);
-        param.put("name","SendMeg");
+        param.put(getString(R.string.file),PARAM_sendMessage);
+        param.put(getString(R.string.data),data);
+        param.put(getString(R.string.name),getString(R.string.SendMeg));
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -687,12 +687,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         switch (View.getId()) {
             //检索画面に移動
             case R.id.ll_b_search:
-                mMyApplication.setAct("Search");
+                mMyApplication.setAct(getString(R.string.Search));
                 if(mMyApplication.getSURL(0).equals("0")){
                     if(mMyApplication.getSApply(0).equals("0")){
                         if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(ContactDialogActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
+                            intent.putExtra(getString(R.string.act),"");
                         } else {
                             intent.setClass(ContactDialogActivity.this, SearchResultsActivity.class);
                         }
@@ -708,7 +708,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_mylist:
-                mMyApplication.setAct("Apply");
+                mMyApplication.setAct(getString(R.string.Apply));
                 if(mMyApplication.getMURL(0).equals("0")){
                     if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(ContactDialogActivity.this, MylistActivity.class);

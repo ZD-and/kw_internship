@@ -85,8 +85,8 @@ public class ChangepwActivity extends AppCompatActivity {
         });
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText("個人設定");
-        tvbackdummy.setText("個人設定");
+        tvback.setText(getString(R.string.personalsettings));
+        tvbackdummy.setText(getString(R.string.personalsettings));
 
         changePassword=findViewById(R.id.bu_pwc);
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,7 @@ public class ChangepwActivity extends AppCompatActivity {
         }
 
         // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString("パスワード");
+        SpannableString ee = new SpannableString(getString(R.string.password));
         // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -118,7 +118,7 @@ public class ChangepwActivity extends AppCompatActivity {
         // 设置hint属性
         etpasswordNew.setHint(new SpannedString(ee));//转码
         // 新建一个可以添加文本的对象
-        SpannableString eec = new SpannableString("確認のためもう一度、入力してください");
+        SpannableString eec = new SpannableString(getString(R.string.Spannable));
         // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
         // 将字体大小附加到文本的属性
@@ -139,7 +139,7 @@ public class ChangepwActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                mMyApplication.setAct("Search");
+                mMyApplication.setAct(getString(R.string.Search));
                 if(mMyApplication.getSURL(0).equals("0")){
                     if(mMyApplication.getSApply(0).equals("0")){
                         if(mMyApplication.getSearchResults(0).equals("0")){
@@ -165,7 +165,7 @@ public class ChangepwActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.ll_b_mylist:
-                mMyApplication.setAct("Apply");
+                mMyApplication.setAct(getString(R.string.Apply));
                 if(mMyApplication.getMURL(0).equals("0")){
                     if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(ChangepwActivity.this, MylistActivity.class);
@@ -257,10 +257,10 @@ public class ChangepwActivity extends AppCompatActivity {
     //本地情报取得
     public void load(){
         SharedPreferences object = getSharedPreferences("Information", Context.MODE_PRIVATE);
-        deviceId = object.getString("deviceId","A");
-        AesKey = object.getString("aesKey","A");
-        UserId = object.getString("userid","A");
-        token = object.getString("token","A");
+        deviceId = object.getString(getString(R.string.Information_Name_deviceId),"A");
+        AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
+        UserId = object.getString(getString(R.string.userid),"A");
+        token = object.getString(getString(R.string.token),"A");
     }
 
     //访问服务器，并取得访问结果
@@ -269,8 +269,8 @@ public class ChangepwActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             Log.d("****file****", file);
             Log.d("****data****", data);
             URL searchUrl = buildUrl(file);
@@ -290,8 +290,8 @@ public class ChangepwActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    String message = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
                     Log.d("***+++msg+++***", message);
                     if(processResult == true) {
                         Intent intent_personalsettings = new Intent();

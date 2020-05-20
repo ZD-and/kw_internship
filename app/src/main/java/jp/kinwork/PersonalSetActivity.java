@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class PersonalSetActivity extends AppCompatActivity{
+public class PersonalSetActivity extends AppCompatActivity {
 
 
     private TextView tvtitle;
@@ -72,7 +72,7 @@ public class PersonalSetActivity extends AppCompatActivity{
         tvResumeSet2.setOnClickListener(resumeListener);
         tvResumeSet3.setOnClickListener(resumeListener);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
-        tvtitle.setText("個人設定");
+        tvtitle.setText(getString(R.string.personalsettings));
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -86,12 +86,12 @@ public class PersonalSetActivity extends AppCompatActivity{
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                myApplication.setAct("Search");
+                myApplication.setAct(getString(R.string.Search));
                 if(myApplication.getSURL(0).equals("0")){
                     if(myApplication.getSApply(0).equals("0")){
                         if(myApplication.getSearchResults(0).equals("0")){
                             intent.setClass(PersonalSetActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
+                            intent.putExtra(getString(R.string.act),"");
                         } else {
                             intent.setClass(PersonalSetActivity.this, SearchResultsActivity.class);
                         }
@@ -112,7 +112,7 @@ public class PersonalSetActivity extends AppCompatActivity{
                 }
                 break;
             case R.id.ll_b_mylist:
-                myApplication.setAct("Apply");
+                myApplication.setAct(getString(R.string.Apply));
                 if(myApplication.getMURL(0).equals("0")){
                     if(myApplication.getMApply(0).equals("0")){
                         intent.setClass(PersonalSetActivity.this, MylistActivity.class);
@@ -166,7 +166,7 @@ public class PersonalSetActivity extends AppCompatActivity{
         public void onClick(View View) {
             String ResumeIdNum = "";
             String ResumeStatus = "";
-            PreferenceUtils.setsaveid("ll_personalsettings");
+            PreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(PersonalSetActivity.this, ResumeActivity.class);
@@ -174,26 +174,26 @@ public class PersonalSetActivity extends AppCompatActivity{
                 //検索画面に
                 case R.id.tv_ResumeSet_1:
                     ResumeIdNum = "1";
-                    if (tvResumeSet1.getText().toString().equals("新規作成")) {
-                        ResumeStatus = "add";
+                    if(tvResumeSet1.getText().toString().equals(getString(R.string.tvResumeSet))){
+                        ResumeStatus = getString(R.string.add);
                     } else {
-                        ResumeStatus = "upd";
+                        ResumeStatus = getString(R.string.upd);
                     }
                     break;
                 case R.id.tv_ResumeSet_2:
                     ResumeIdNum = "2";
-                    if (tvResumeSet2.getText().toString().equals("新規作成")) {
-                        ResumeStatus = "add";
+                    if(tvResumeSet2.getText().toString().equals(getString(R.string.tvResumeSet))){
+                        ResumeStatus = getString(R.string.add);
                     } else {
-                        ResumeStatus = "upd";
+                        ResumeStatus = getString(R.string.upd);
                     }
                     break;
                 case R.id.tv_ResumeSet_3:
                     ResumeIdNum = "3";
-                    if (tvResumeSet3.getText().toString().equals("新規作成")) {
-                        ResumeStatus = "add";
+                    if(tvResumeSet3.getText().toString().equals(getString(R.string.tvResumeSet))){
+                        ResumeStatus = getString(R.string.add);
                     } else {
-                        ResumeStatus = "upd";
+                        ResumeStatus = getString(R.string.upd);
                     }
                     break;
             }
@@ -215,19 +215,19 @@ public class PersonalSetActivity extends AppCompatActivity{
         Log.d("***resumeNumber***", "" + resumeNumber);
         switch (resumeNumber){
             case 0:
-                tvResumeSet1.setText("新規作成");
+                tvResumeSet1.setText(getString(R.string.tvResumeSet));
                 tvResumeSet2.setVisibility(View.GONE);
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 1:
                 tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText("新規作成");
+                tvResumeSet2.setText(getString(R.string.tvResumeSet));
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 2:
                 tvResumeSet1.setText(myApplication.getresume_name("1"));
                 tvResumeSet2.setText(myApplication.getresume_name("2"));
-                tvResumeSet3.setText("新規作成");
+                tvResumeSet3.setText(getString(R.string.tvResumeSet));
                 break;
             case 3:
                 tvResumeSet1.setText(myApplication.getresume_name("1"));

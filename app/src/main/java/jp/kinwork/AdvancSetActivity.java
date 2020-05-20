@@ -37,13 +37,7 @@ public class AdvancSetActivity extends AppCompatActivity {
     //初期化
     public void Initialization(){
         tvback = (TextView) findViewById(R.id.tv_back);
-        tvback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_back();
-            }
-        });
-        tvback.setText("検索");
+        tvback.setText(getString(R.string.Search));
         etJobname = (EditText) findViewById(R.id.et_Jobname);
         etaddress = (EditText) findViewById(R.id.et_address);
         tvshowemploymentstatus = (Spinner) findViewById(R.id.tv_show_employmentstatus);
@@ -74,10 +68,10 @@ public class AdvancSetActivity extends AppCompatActivity {
         yearlyIncome = tvshowannualincome.getSelectedItem().toString();
         myApplication.setkeyword(keyword);
         myApplication.setaddress(address);
-        if(! employmentStatus.equals("雇用形態を選択してください")){
+        if(! employmentStatus.equals(getString(R.string.employmentStatuslist))){
             myApplication.setemploymentStatus(employmentStatus);
         }
-        if(! yearlyIncome.equals("推定年収を選択してください")){
+        if(! yearlyIncome.equals(getString(R.string.yearlyIncome))){
             myApplication.setyearlyIncome(yearlyIncome);
         }
         myApplication.setpage("1");

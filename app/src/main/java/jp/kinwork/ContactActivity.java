@@ -82,7 +82,7 @@ public class ContactActivity extends AppCompatActivity {
         ivbcontact.setImageResource(R.mipmap.blue_contact);
         tvbcontact.setTextColor(Color.parseColor("#5EACE2"));
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
-        tvtitle.setText("連絡");
+        tvtitle.setText(getString(R.string.title_contact));
         tlcontact = (TableLayout) findViewById(R.id.tl_contact);
         tlcontact.setOnClickListener(Listener);
         deviceId = mPreferenceUtils.getdeviceId();
@@ -103,12 +103,12 @@ public class ContactActivity extends AppCompatActivity {
         switch (View.getId()) {
             //检索画面に移動
             case R.id.ll_b_search:
-                mMyApplication.setAct("Search");
+                mMyApplication.setAct(getString(R.string.Search));
                 if(mMyApplication.getSURL(0).equals("0")){
                     if(mMyApplication.getSApply(0).equals("0")){
                         if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(ContactActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
+                            intent.putExtra(getString(R.string.act),"");
                         } else {
                             intent.setClass(ContactActivity.this, SearchResultsActivity.class);
                         }
@@ -124,7 +124,7 @@ public class ContactActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_mylist:
-                mMyApplication.setAct("Apply");
+                mMyApplication.setAct(getString(R.string.Apply));
                 if(mMyApplication.getMURL(0).equals("0")){
                     if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(ContactActivity.this, MylistActivity.class);
@@ -171,8 +171,8 @@ public class ContactActivity extends AppCompatActivity {
         String data = enString.replace("\n", "").replace("+","%2B");
 
         Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
+        param.put(getString(R.string.file),PARAM_File);
+        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -183,8 +183,8 @@ public class ContactActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = NetworkUtils.buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -201,10 +201,10 @@ public class ContactActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean("processResult");
-                    String message = obj.getString("message");
+                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        String returnData = obj.getString("returnData");
+                        String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
                         alertdialog(message);
@@ -238,12 +238,12 @@ public class ContactActivity extends AppCompatActivity {
             try {
                 JSONObject obj = data.getJSONObject(i);
                 Log.d("***obj***", obj.toString());
-                Log.d("***Dialog***", obj.getString("Dialog"));
-                Log.d("***other***", obj.getString("other"));
-                Log.d("***MyMail***", obj.getString("MyMail"));
-                JSONObject objDialog = obj.getJSONObject("Dialog");
-                JSONObject objother = obj.getJSONObject("other");
-                JSONObject objMyMail = obj.getJSONObject("MyMail");
+                Log.d("***Dialog***", obj.getString(getString(R.string.Dialog)));
+                Log.d("***other***", obj.getString(getString(R.string.other)));
+                Log.d("***MyMail***", obj.getString(getString(R.string.MyMail)));
+                JSONObject objDialog = obj.getJSONObject(getString(R.string.Dialog));
+                JSONObject objother = obj.getJSONObject(getString(R.string.other));
+                JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
                 Log.d("**objDialog**", objDialog.toString());
                 Log.d("***objother***", objother.toString());
                 Log.d("***objMyMail***", objMyMail.toString());
@@ -256,7 +256,7 @@ public class ContactActivity extends AppCompatActivity {
                 TextView tvlatesttime = (TextView) contact.findViewById(R.id.tv_latesttime);
                 TextView tvmailtitle = (TextView) contact.findViewById(R.id.tv_mailtitle);
                 TextView tvmailContent = (TextView) contact.findViewById(R.id.tv_mailContent);
-                String SnotReadedCount = objother.getString("notReadedCount");
+                String SnotReadedCount = objother.getString(getString(R.string.SnotReadedCount));
                 int InotReadedCount = Integer.parseInt(SnotReadedCount);
                 if(InotReadedCount > 0){
                     BadgeView badgeView = new BadgeView(this);
@@ -272,16 +272,16 @@ public class ContactActivity extends AppCompatActivity {
 //                    mailContent = mailContent.replace("\n", "");
 //                    Log.d("***mailTitle***", Title);
 //                    Log.d("***mailContent***", Content);
-                tvcompanyname.setText(objother.getString("employer_user_name"));
-                tvmailtitle.setText(objMyMail.getString("mail_title"));
-                tvmailContent.setText(objMyMail.getString("mail_content"));
-                tvlatesttime.setText(objMyMail.getString("send_time"));
+                tvcompanyname.setText(objother.getString(getString(R.string.employer_user_name)));
+                tvmailtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
+                tvmailContent.setText(objMyMail.getString(getString(R.string.mail_content)));
+                tvlatesttime.setText(objMyMail.getString(getString(R.string.send_time)));
                 contact.setLayoutParams(tlparams);
                 tlcontact.addView(contact,i);
                 listTL_info.add(i,information);
-                list_employer_id.add(i,objDialog.getString("employer_user_id"));
-                list_company_name.add(i,objother.getString("employer_user_name"));
-                list_address.add(i,objDialog.getString("employer_email"));
+                list_employer_id.add(i,objDialog.getString(getString(R.string.employer_user_id)));
+                list_company_name.add(i,objother.getString(getString(R.string.employer_user_name)));
+                list_address.add(i,objDialog.getString(getString(R.string.employer_email)));
                 x += 1;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -301,7 +301,7 @@ public class ContactActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -333,10 +333,10 @@ public class ContactActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(ContactActivity.this, ContactDialogActivity.class);
-                intent.putExtra("Act", "Contact");
-                intent.putExtra("ID", employer_id);
-                intent.putExtra("company_name", company_name);
-                intent.putExtra("mailaddress", mailaddress);
+                intent.putExtra(getString(R.string.Act),getString(R.string.Contact));
+                intent.putExtra(getString(R.string.ID),employer_id);
+                intent.putExtra(getString(R.string.company_name),company_name);
+                intent.putExtra(getString(R.string.mailaddress),mailaddress);
                 startActivity(intent);
             }
         }
