@@ -306,10 +306,10 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         else if(sfname.length() ==0 ){
             alertdialog("名を入力してください。");
         }
-        else if(sfname_kana.length() ==0 ){
+        else if(slname_kana.length() ==0 ){
             alertdialog("姓（カタカナ）を入力してください。");
         }
-        else if(slname_kana.length() ==0 ){
+        else if(sfname_kana.length() ==0 ){
             alertdialog("名（カタカナ）を入力してください。");
         }
         else if(selectedFruitIndex == 0 || selectedFruitIndex == 3) {

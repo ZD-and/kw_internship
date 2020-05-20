@@ -53,7 +53,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:textSize="15sp"
-            android:text="aaa"
+            android:hint="現在のパスワード"
             android:padding="5dp" />
 
         <TextView
