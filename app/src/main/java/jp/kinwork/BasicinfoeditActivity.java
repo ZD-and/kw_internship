@@ -105,7 +105,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String resume_status;
     private String resume_Num;
 
-    private String[] sexArry = new String[]{getString(R.string.sexArry)};// 性别选择
+    private String[] sexArry = new String[]{ "未選択","男","女"};// 性别选择
     private String[] CountryData;
 
     private int mYear, mMonth, mDay;
@@ -424,7 +424,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                             mMonth = startMonthOfYear + 1;
                             mDay = startDayOfMonth;
                             String Startdate = String.valueOf(startYear) + "-" + String.valueOf(startMonthOfYear + 1) + "-" + String.valueOf(startDayOfMonth);
-                            SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.formatter));
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                             ParsePosition pos = new ParsePosition(0);
                             Date strtodate = formatter.parse(Startdate, pos);
                             Startdate = formatter.format(strtodate);
