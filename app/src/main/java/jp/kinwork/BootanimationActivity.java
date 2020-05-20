@@ -54,14 +54,14 @@ public class BootanimationActivity extends AppCompatActivity {
     private String loadUserId;
     private String loadToken;
     private String AccessFineFocation = "";
-    private String Initial_Name = "Initial";
-    private String Information_Name = "Information";
+    private String Initial_Name = getString(R.string.Initial);
+    private String Information_Name = getString(R.string.Information);
     private String flg = "";
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
     private LocationManager mLocationManager;
 
-    private String TAG = "BootanimationActivity";
+    private String TAG = getString(R.string.BootanimationActivity);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +69,7 @@ public class BootanimationActivity extends AppCompatActivity {
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(BootanimationActivity.this);
         load();
-        SaveDate(Initial_Name,"Result","1");
+        SaveDate(Initial_Name,getString(R.string.Result),"1");
         mMyApplication.setSearchResults("0",0);
         mMyApplication.setContactDialog("0",0);
         mMyApplication.setSApply("0",0);
@@ -127,8 +127,8 @@ public class BootanimationActivity extends AppCompatActivity {
         {
             urllodad();
         }else {
-            SaveDate(Information_Name,"aesKey",loadAesKey);
-            SaveDate(Information_Name,"deviceId",loaddeviceId);
+            SaveDate(Information_Name,getString(R.string.Information_Name_aesKey),loadAesKey);
+            SaveDate(Information_Name,getString(R.string.Information_Name_deviceId),loaddeviceId);
             urlMypageData();
         }
     }
@@ -144,10 +144,10 @@ public class BootanimationActivity extends AppCompatActivity {
 
     //设备IDと対象Key取得
     public void load(){
-        SharedPreferences Initial_object = getSharedPreferences("Initial", Context.MODE_PRIVATE);
+        SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
         loaddeviceId = Initial_object.getString("deviceId","A");
         loadAesKey = Initial_object.getString("aesKey","A");
-        SharedPreferences Information_object = getSharedPreferences("Information", Context.MODE_PRIVATE);
+        SharedPreferences Information_object = getSharedPreferences(getString(R.string.Information), Context.MODE_PRIVATE);
         loadUserId = Information_object.getString("userid","A");
         loadToken = Information_object.getString("token","A");
         mMyApplication.setuser_id(loadUserId);
@@ -157,8 +157,8 @@ public class BootanimationActivity extends AppCompatActivity {
     //初次通信
     public void urllodad() {
         Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_A);
-        param.put("data","2");
+        param.put(getString(R.string.file),PARAM_A);
+        param.put(getString(R.string.data),"2");
         flg = "1";
         new GithubQueryTask().execute(param);
     }
@@ -172,8 +172,8 @@ public class BootanimationActivity extends AppCompatActivity {
             //Json格式转换并且加密
             String data = JsonChnge(loadAesKey,loadUserId,loadToken);
             Map<String,String> param = new HashMap<String, String>();
-            param.put("file",PARAM_B);
-            param.put("data",data);
+            param.put(getString(R.string.file),PARAM_B);
+            param.put(getString(R.string.data),data);
             flg = "2";
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
@@ -211,53 +211,53 @@ public class BootanimationActivity extends AppCompatActivity {
         Log.d(TAG+"***+++解密datas+++***", datas);
         try {
             JSONObject obj = new JSONObject(datas);
-            if(obj.has("id")){
+            if(obj.has(getString(R.string.id))){
                 mMyApplication.setMyApplicationFlg("1");
-                mPreferenceUtils.setbasicInfoID(obj.getString("id"));
+                mPreferenceUtils.setbasicInfoID(obj.getString(getString(R.string.id)));
             }
-            if(obj.has("user_id")){
-                mMyApplication.setuser_id(obj.getString("user_id"));
+            if(obj.has(getString(R.string.user_id))){
+                mMyApplication.setuser_id(obj.getString(getString(R.string.user_id)));
             }
-            if(obj.has("first_name")){
-                mMyApplication.setfirst_name(obj.getString("first_name"));
+            if(obj.has(getString(R.string.first_name))){
+                mMyApplication.setfirst_name(obj.getString(getString(R.string.first_name)));
             }
-            if(obj.has("last_name")){
-                mMyApplication.setlast_name(obj.getString("last_name"));
+            if(obj.has(getString(R.string.last_name))){
+                mMyApplication.setlast_name(obj.getString(getString(R.string.last_name)));
             }
-            if(obj.has("first_name_kana")){
-                mMyApplication.setfirst_name_kana(obj.getString("first_name_kana"));
+            if(obj.has(getString(R.string.first_name_kana))){
+                mMyApplication.setfirst_name_kana(obj.getString(getString(R.string.first_name_kana)));
             }
-            if(obj.has("last_name_kana")){
-                mMyApplication.setlast_name_kana(obj.getString("last_name_kana"));
+            if(obj.has(getString(R.string.last_name_kana))){
+                mMyApplication.setlast_name_kana(obj.getString(getString(R.string.last_name_kana)));
             }
-            if(obj.has("birthday")){
-                mMyApplication.setbirthday(obj.getString("birthday"));
+            if(obj.has(getString(R.string.birthday))){
+                mMyApplication.setbirthday(obj.getString(getString(R.string.birthday)));
             }
-            if(obj.has("sex_div")){
-                mMyApplication.setsex_div(obj.getString("sex_div"));
+            if(obj.has(getString(R.string.sex_div))){
+                mMyApplication.setsex_div(obj.getString(getString(R.string.sex_div)));
             }
-            if(obj.has("country")){
-                mMyApplication.setcountry(obj.getString("country"));
+            if(obj.has(getString(R.string.country))){
+                mMyApplication.setcountry(obj.getString(getString(R.string.country)));
             }
-            if(obj.has("post_code")){
-                mMyApplication.setpost_code(obj.getString("post_code"));
+            if(obj.has(getString(R.string.post_code))){
+                mMyApplication.setpost_code(obj.getString(getString(R.string.post_code)));
             }
-            if(obj.has("add_1")){
-                mMyApplication.setadd_1(obj.getString("add_1"));
+            if(obj.has(getString(R.string.add_1))){
+                mMyApplication.setadd_1(obj.getString(getString(R.string.add_1)));
             }
-            if(obj.has("add_2")){
-                mMyApplication.setadd_2(obj.getString("add_2"));
+            if(obj.has(getString(R.string.add_2))){
+                mMyApplication.setadd_2(obj.getString(getString(R.string.add_2)));
             }
-            if(obj.has("add_3")){
-                mMyApplication.setadd_3(obj.getString("add_3"));
+            if(obj.has(getString(R.string.add_3))){
+                mMyApplication.setadd_3(obj.getString(getString(R.string.add_3)));
             }
-            if(obj.has("add_4")){
-                mMyApplication.setadd_4(obj.getString("add_4"));
+            if(obj.has(getString(R.string.add_4))){
+                mMyApplication.setadd_4(obj.getString(getString(R.string.add_4)));
             }
-            if(obj.has("phone_number")){
-                mMyApplication.setphone_number(obj.getString("phone_number"));
+            if(obj.has(getString(R.string.phone_number))){
+                mMyApplication.setphone_number(obj.getString(getString(R.string.phone_number)));
             }
-            setResumeInfo(obj.getJSONArray("Resumes"));
+            setResumeInfo(obj.getJSONArray(getString(R.string.Resumes)));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -269,8 +269,8 @@ public class BootanimationActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -280,7 +280,7 @@ public class BootanimationActivity extends AppCompatActivity {
                     githubSearchResults = getResponseFromHttpUrl(searchUrl,data,loaddeviceId);
                 }
             } catch (IOException e) {
-                SaveDate(Initial_Name,"Result","0");
+                SaveDate(Initial_Name,getString(R.string.Result),"0");
                 e.printStackTrace();
             }
             return githubSearchResults;
@@ -291,27 +291,27 @@ public class BootanimationActivity extends AppCompatActivity {
                 try {
                     Log.d(TAG+"***Results***", githubSearchResults);
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean("processResult");
+                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     if(processResult == true)
                     {
-                        String returnData = obj.getString("returnData");
+                        String returnData = obj.getString(getString(R.string.returnData));
                         if(flg.equals("1")){
                             JSONObject objData = new JSONObject(returnData);
-                            savedeviceId = objData.getString("deviceId");
-                            saveAesKey = objData.getString("aesKey");
-                            SaveDate(Initial_Name,"deviceId",savedeviceId);
-                            SaveDate(Initial_Name,"aesKey",saveAesKey);
-                            SaveDate(Information_Name,"deviceId",savedeviceId);
-                            SaveDate(Information_Name,"aesKey",saveAesKey);
+                            savedeviceId = objData.getString(getString(R.string.Information_Name_deviceId));
+                            saveAesKey = objData.getString(getString(R.string.Information_Name_aesKey));
+                            SaveDate(Initial_Name,getString(R.string.Information_Name_deviceId),savedeviceId);
+                            SaveDate(Initial_Name,getString(R.string.Information_Name_aesKey),saveAesKey);
+                            SaveDate(Information_Name,getString(R.string.Information_Name_deviceId),savedeviceId);
+                            SaveDate(Information_Name,getString(R.string.Information_Name_aesKey),saveAesKey);
                             urlMypageData();
                         } else {
                             decryptchange(returnData);
                         }
                     } else{
-                        JSONObject objError = new JSONObject(obj.getString("fieldErrors"));
+                        JSONObject objError = new JSONObject(obj.getString(getString(R.string.showErrors)));
                         String errorCode = "";
-                        if(objError.has("errorCode")){
-                            errorCode = objError.getString("errorCode");
+                        if(objError.has(getString(R.string.errorCode))){
+                            errorCode = objError.getString(getString(R.string.errorCode));
                             switch(errorCode){
                                 case "999":
                                     clearSP();
@@ -319,7 +319,7 @@ public class BootanimationActivity extends AppCompatActivity {
                                     break;
                             }
                         } else {
-                            SaveDate(Initial_Name,"Result","0");
+                            SaveDate(Initial_Name,getString(R.string.Result),"0");
                         }
                     }
                 }catch (Exception e){
@@ -335,13 +335,13 @@ public class BootanimationActivity extends AppCompatActivity {
         mMyApplication.setAccessFineFocation(AccessFineFocation);
         if (loaddeviceId.equals("A") || loadAesKey.equals("A")) {
             Intent SearchIntent = new Intent(BootanimationActivity.this,SearchActivity.class);
-            SearchIntent.putExtra("act","Boot");
+            SearchIntent.putExtra(getString(R.string.act),"Boot");
             startActivity(SearchIntent);
         } else {
             new android.os.Handler().postDelayed(new Runnable() {
                 public void run() {
                     Intent SearchIntent = new Intent(BootanimationActivity.this,SearchActivity.class);
-                    SearchIntent.putExtra("act","Boot");
+                    SearchIntent.putExtra(getString(R.string.act),"Boot");
                     startActivity(SearchIntent);
                 }
             }, SPLASH_DISPLAY_LENGHT);
@@ -356,18 +356,18 @@ public class BootanimationActivity extends AppCompatActivity {
                 JSONObject obj = data.getJSONObject(i);
                 Log.d(TAG+"***ResumeInfo***", data.getString(i));
                 num = num + 1;
-                if(num == 1 && obj.getString("id") != null){
-                    mPreferenceUtils.setresumeid_1(obj.getString("id"));
+                if(num == 1 && obj.getString(getString(R.string.id)) != null){
+                    mPreferenceUtils.setresumeid_1(obj.getString(getString(R.string.id)));
                     mPreferenceUtils.setresume_number(num);
-                    mMyApplication.setresume_name(obj.getString("resume_name"),"1");
-                } else if (num == 2 && obj.getString("id") != null){
-                    mPreferenceUtils.setresumeid_2(obj.getString("id"));
+                    mMyApplication.setresume_name(obj.getString(getString(R.string.resume_name)),"1");
+                } else if (num == 2 && obj.getString(getString(R.string.id)) != null){
+                    mPreferenceUtils.setresumeid_2(obj.getString(getString(R.string.id)));
                     mPreferenceUtils.setresume_number(num);
-                    mMyApplication.setresume_name(obj.getString("resume_name"),"2");
-                } else if (num == 3 && obj.getString("id") != null){
-                    mPreferenceUtils.setresumeid_3(obj.getString("id"));
+                    mMyApplication.setresume_name(obj.getString(getString(R.string.resume_name)),"2");
+                } else if (num == 3 && obj.getString(getString(R.string.id)) != null){
+                    mPreferenceUtils.setresumeid_3(obj.getString(getString(R.string.id)));
                     mPreferenceUtils.setresume_number(num);
-                    mMyApplication.setresume_name(obj.getString("resume_name"),"3");
+                    mMyApplication.setresume_name(obj.getString(getString(R.string.resume_name)),"3");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -430,9 +430,9 @@ public class BootanimationActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String url = map.get("url");
-            String itude = map.get("itude");
-            String key = map.get("key");
+            String url = map.get(getString(R.string.url));
+            String itude = map.get(getString(R.string.itude));
+            String key = map.get(getString(R.string.key));
             Log.d(TAG+"***url***", url + itude + key);
             URL searchUrl = null;
             try {
@@ -469,9 +469,9 @@ public class BootanimationActivity extends AppCompatActivity {
     private void getaddress_components(Location location){
         // 緯度の表示
         Map<String,String> param = new HashMap<String, String>();
-        param.put("url","https://maps.google.com/maps/api/geocode/json?latlng=");
-        param.put("itude",location.getLatitude() + ","+location.getLongitude());
-        param.put("key","&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
+        param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
+        param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
+        param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
 //        new GithubQueryTask2().execute(param);
         Check();
     }

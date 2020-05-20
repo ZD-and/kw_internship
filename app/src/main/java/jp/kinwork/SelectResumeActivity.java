@@ -148,8 +148,8 @@ public class SelectResumeActivity extends AppCompatActivity {
             }
         });
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText("求人詳細");
-        tvbackdummy.setText("求人詳細");
+        tvback.setText(getString(R.string.detailedinformation));
+        tvbackdummy.setText(getString(R.string.detailedinformation));
         tl_sendresume = (TableLayout) findViewById(R.id.tl_sendresume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
@@ -198,22 +198,22 @@ public class SelectResumeActivity extends AppCompatActivity {
             trresume3.setVisibility(View.VISIBLE);
         }
         if(resume_number == 0){
-            Erroralertdialog("応募する前に、履歴書をご作成ください。");
+            Erroralertdialog(getString(R.string.Erroralertdialog));
         }
         //件名设定
-        SetTitle = Jobname + "への応募の件にて/" + myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）";
+        SetTitle = Jobname + getString(R.string.SetTitle) + myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）";
         //送信内容设定
-        SetMeg = companyname + "　ご担当者様\n" +
+        SetMeg = companyname + getString(R.string.SetMeg1) +
                 "\n" +
-                "初めてご連絡させていただきます。\n" +
-                myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）と申します。\n" +
+                getString(R.string.SetMeg2) +
+                myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + getString(R.string.SetMeg3) +
                 "\n" +
-                "キンワークにて貴社の求人を拝見いたしました。 \n" +
-                "かねてより貴社の事業内容に魅力を感じておりましたので、 \n" +
-                "このたび応募させていただきました。 \n" +
-                "ぜひ一度、面接の機会をいただきたく思います。 \n" +
+                getString(R.string.SetMeg4) +
+                getString(R.string.SetMeg5)+
+                getString(R.string.SetMeg6) +
+                getString(R.string.SetMeg7) +
                 "\n" +
-                "よろしくお願い申し上げます。 ";
+                getString(R.string.SetMeg8);
         ettitle.setText(SetTitle);
         etmessage.setText(SetMeg);
     }
@@ -246,13 +246,13 @@ public class SelectResumeActivity extends AppCompatActivity {
 
     //返回检索画面
     public void Click_back(){
-        MoveIntent("back");
+        MoveIntent(getString(R.string.back));
     }
 
     //应聘按钮
     public void Click_Application(){
         if(cbresumeId.equals("")){
-            alertdialog("履歴書を選択してください。");
+            alertdialog(getString(R.string.alertdialog16));
         } else {
             setApplication();
         }
@@ -262,9 +262,9 @@ public class SelectResumeActivity extends AppCompatActivity {
     //执行应聘
     public void setApplication(){
         if(ettitle.getText().toString().equals("")){
-            alertdialog("タイトルを入力してください。");
+            alertdialog(getString(R.string.alertdialog17));
         } else if(etmessage.getText().toString().equals("")){
-            alertdialog("送信内容を入力してください。");
+            alertdialog(getString(R.string.alertdialog18));
         } else {
             PostDate Pdata = new PostDate();
             Map<String,String> param = new HashMap<String, String>();
@@ -275,9 +275,9 @@ public class SelectResumeActivity extends AppCompatActivity {
             Pdata.setmailTitle(ettitle.getText().toString());
             Pdata.setmailContent(etmessage.getText().toString());
             String data = JsonChnge(AesKey,Pdata);
-            param.put("file",PARAM);
-            param.put("data",data);
-            param.put("name","Application");
+            param.put(getString(R.string.file),PARAM);
+            param.put(getString(R.string.data),data);
+            param.put(getString(R.string.name),getString(R.string.Application));
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
@@ -306,9 +306,9 @@ public class SelectResumeActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
-            name = map.get("name");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            name = map.get(getString(R.string.name));
             Log.d("***file***", file);
             Log.d("***data***", data);
             URL searchUrl = NetworkUtils.buildUrl(file);
@@ -326,15 +326,15 @@ public class SelectResumeActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    errormeg = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    errormeg = obj.getString(getString(R.string.message));
                     if(processResult == true) {
 //                        if(Act.equals("Search")){
 //                            MoveIntent(Act);
 //                        } else {
 //                            MoveIntent("Application");
 //                        }
-                        MoveIntent("Application");
+                        MoveIntent(getString(R.string.Application));
                     } else {
                         alertdialog(errormeg);
                     }
@@ -348,14 +348,14 @@ public class SelectResumeActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
                 Log.d("**errormeg**", errormeg);
                 Log.d("**JobId**", JobId);
-                if(errormeg.equals("既にこの仕事を応募しました。")){
-                    MoveIntent("Application");
+                if(errormeg.equals(getString(R.string.errormeg))){
+                    MoveIntent(getString(R.string.Application));
                 }
             }
         }).show();
@@ -364,17 +364,17 @@ public class SelectResumeActivity extends AppCompatActivity {
     //通信结果提示
     private void Erroralertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton("作成する", new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.sakusei), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                MoveIntent("resume");
+                MoveIntent(getString(R.string.resume));
             }
-        }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //取消按钮的点击事件
-                MoveIntent("back");
+                MoveIntent(getString(R.string.back));
             }
         }).show();
     }
@@ -389,14 +389,14 @@ public class SelectResumeActivity extends AppCompatActivity {
                 break;
             case "resume":
                 myApplication.setResumeId("1");
-                myApplication.setresume_status("add");
+                myApplication.setresume_status(getString(R.string.add));
                 intent.setClass(SelectResumeActivity.this, ResumeActivity.class);
                 break;
             case "Search":
                 intent.setClass(SelectResumeActivity.this, SearchResultsActivity.class);
                 break;
             case "Application":
-                myApplication.setAct("SelectResume");
+                myApplication.setAct(getString(R.string.SelectResume));
                 intent.setClass(SelectResumeActivity.this, MylistActivity.class);
                 break;
         }

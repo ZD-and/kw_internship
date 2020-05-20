@@ -47,7 +47,7 @@ public class WebActivity extends AppCompatActivity {
         Initialization();
         dialog = new ProgressDialog(this) ;
         //dialog.setTitle("提示") ;
-        dialog.setMessage("検索中···") ;
+        dialog.setMessage(getString(R.string.kensakuchu)) ;
 //        dialog.show();
         mWebview = (WebView) findViewById(R.id.webView1);
         mWebSettings = mWebview.getSettings();
@@ -100,14 +100,14 @@ public class WebActivity extends AppCompatActivity {
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
 
-        tvbacktitle.setText("求人詳細");
+        tvbacktitle.setText(getString(R.string.detailedinformation));
         myApplication = (MyApplication) getApplication();
         Act = myApplication.getAct();
         url = myApplication.getURL();
         Log.d("Act", Act);
-        if(Act.equals("Search")){
-            tvback.setText("検索結果");
-            tvbackdummy.setText("検索結果");
+        if(Act.equals(getString(R.string.Search))){
+            tvback.setText(getString(R.string.SearchResults));
+            tvbackdummy.setText(getString(R.string.SearchResults));
             Ivsearch = (ImageView) findViewById(R.id.iv_search);
             Ivsearch.setImageResource(R.mipmap.blue_search);
             tvsearch = (TextView) findViewById(R.id.tv_search);
@@ -116,8 +116,8 @@ public class WebActivity extends AppCompatActivity {
                 url = myApplication.getSURL(1);
             }
         } else {
-            tvback.setText("マイリスト");
-            tvbackdummy.setText("マイリスト");
+            tvback.setText(getString(R.string.mylist));
+            tvbackdummy.setText(getString(R.string.mylist));
             ivmylist = (ImageView) findViewById(R.id.iv_mylist);
             tvmylist = (TextView) findViewById(R.id.tv_mylist);
             ivmylist.setImageResource(R.mipmap.blue_mylist);
@@ -132,7 +132,7 @@ public class WebActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
-            if(Act.equals("Search")){
+            if(Act.equals(getString(R.string.Search))){
                 myApplication.setSURL("0",0);
             } else {
                 myApplication.setMURL("0",0);
@@ -177,15 +177,15 @@ public class WebActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_search:
-                myApplication.setAct("Search");
+                myApplication.setAct(getString(R.string.Search));
                 myApplication.setMURL("1",0);
                 myApplication.setMURL(url,1);
-                if(! Act.equals("Search")){
+                if(! Act.equals(getString(R.string.Search))){
                     if(myApplication.getSURL(0).equals("0")){
                         if(myApplication.getSApply(0).equals("0")){
                             if(myApplication.getSearchResults(0).equals("0")){
                                 intent.setClass(WebActivity.this, SearchActivity.class);
-                                intent.putExtra("act","");
+                                intent.putExtra(getString(R.string.act),"");
                             } else {
                                 intent.setClass(WebActivity.this, SearchResultsActivity.class);
                             }
@@ -207,11 +207,11 @@ public class WebActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.ll_mylist:
-                myApplication.setAct("Apply");
+                myApplication.setAct(getString(R.string.Apply));
                 myApplication.setSURL("1",0);
                 myApplication.setSURL(url,1);
                 if(myApplication.getMURL(0).equals("0")){
-                    if(Act.equals("Search")){
+                    if(Act.equals(getString(R.string.Search))){
                         if(myApplication.getMApply(0).equals("0")){
                             intent.setClass(WebActivity.this, MylistActivity.class);
                         } else {
@@ -225,7 +225,7 @@ public class WebActivity extends AppCompatActivity {
                 break;
             //個人設定画面に移動
             case R.id.ll_personalsettings:
-                if(Act.equals("Search")){
+                if(Act.equals(getString(R.string.Search))){
                     myApplication.setSURL("1",0);
                     myApplication.setSURL(url,1);
                 } else {
