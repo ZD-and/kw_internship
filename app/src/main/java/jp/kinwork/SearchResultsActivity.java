@@ -154,8 +154,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     private ProgressDialog dialog;
     private Intent Intent;
 
-    private String[] Semploymentstatus = new String[]{getString(R.string.Semploymentstatus)};
-
     private TableRow trkeywordreset;
     private TableRow trworklocationreset;
     private TextView tvkeywordreset;

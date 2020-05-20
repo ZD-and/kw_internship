@@ -70,14 +70,17 @@ public class ApplyActivity extends AppCompatActivity {
     private ImageView ivmylist;
     private TextView tvmylist;
 
-    private String[] employmentstatus = new String[]{getString(R.string.employmentstatus)};
-    private String[] salary_type = new String[]{getString(R.string.salary_type)};
+    private String[] employmentstatus;
+    private String[] salary_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        employmentstatus = new String[]{getString(R.string.employmentstatus)};
+        salary_type = new String[]{getString(R.string.salary_type)};
+
         Initialization();
     }
 

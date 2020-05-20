@@ -97,7 +97,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private int worklocationTop = 0;
     private String etname;
 
-    public String TAG = getString(R.string.SearchActivity);
+    public String TAG = "SearchActivity";
     
 //    LocationManager locationManager;
     @Override

@@ -54,18 +54,21 @@ public class BootanimationActivity extends AppCompatActivity {
     private String loadUserId;
     private String loadToken;
     private String AccessFineFocation = "";
-    private String Initial_Name = getString(R.string.Initial);
-    private String Information_Name = getString(R.string.Information);
+    private String Initial_Name;
+    private String Information_Name;
     private String flg = "";
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
     private LocationManager mLocationManager;
 
-    private String TAG = getString(R.string.BootanimationActivity);
+    private String TAG = "BootanimationActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootanimation);
+        Initial_Name = getString(R.string.Initial);
+        Information_Name = getString(R.string.Information);
+
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(BootanimationActivity.this);
         load();
