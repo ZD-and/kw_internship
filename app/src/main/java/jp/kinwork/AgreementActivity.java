@@ -16,13 +16,13 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
 
     private TextView tvagreementname;
     private TextView tvagreementcontents;
-    private String termsofservice = getString(R.string.termsofservice);
-    private String contents_Termsofservice = getString(R.string.contentsTermsofservice);
-    private String privacypolicy = getString(R.string.privacypolicy);
-    private String contents_privacypolicy = getString(R.string.contentsprivacypolicy);
+    private String termsofservice;
+    private String contents_Termsofservice;
+    private String privacypolicy;
+    private String contents_privacypolicy;
     private String Agreement = "";
-    private String[] Termsofservice_title = new String[]{getString(R.string.Termsofservice_title)};
-    private String[] privacypolicy_title = new String[]{getString(R.string.privacypolicy_title)};
+    private String[] Termsofservice_title;
+    private String[] privacypolicy_title;
 
     private Button bu_back;
     private Button bu_ok;
@@ -33,6 +33,13 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
+        termsofservice = getString(R.string.termsofservice);
+        contents_Termsofservice = getString(R.string.contentsTermsofservice);
+        privacypolicy = getString(R.string.privacypolicy);
+        contents_privacypolicy = getString(R.string.contentsprivacypolicy);
+        Termsofservice_title = new String[]{getString(R.string.Termsofservice_title)};
+        privacypolicy_title = new String[]{getString(R.string.privacypolicy_title)};
+
         mMyApplication = (MyApplication) getApplication();
         Agreement = mMyApplication.getAgreement();
         tvagreementname = (TextView) findViewById(R.id.tv_agreement_name);
