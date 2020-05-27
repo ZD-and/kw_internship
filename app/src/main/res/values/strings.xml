@@ -155,7 +155,7 @@
     <string name="alertdialog2">未来の年月を選択できません。</string>
     <string name="alertdialog3">年月選択が不正です。</string>
     <string name="alertdialog4">学校名を入力してください</string>
-    <string name="deviceid">deviceid</string>
+    <string name="deviceid">deviceId</string>
     <string name="upd">upd</string>
     <string name="add">add</string>
     <string name="schoolCareerId">schoolCareerId</string>
