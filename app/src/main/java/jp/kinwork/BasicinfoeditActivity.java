@@ -105,7 +105,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String resume_status;
     private String resume_Num;
 
-    private String[] sexArry = new String[]{ "未選択","男","女"};// 性别选择
+    private String[] sexArry = new String[]{"未選択", "男", "女"};// 性别选择
     private String[] CountryData;
 
     private int mYear, mMonth, mDay;
@@ -132,10 +132,20 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
+
+
 
     //初期化
     public void Initialization(){
@@ -268,6 +278,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         CountryData= res.getStringArray(R.array.CountryData);
         resume_status = mMyApplication.getresume_status();
         resume_Num = mMyApplication.getResumeId();
+
+        //backボタン
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back(v);
+            }
+        });
     }
 
     public void setHW(EditText name,int w,String data){
