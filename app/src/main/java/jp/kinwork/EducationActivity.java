@@ -178,7 +178,7 @@ public class EducationActivity extends AppCompatActivity {
                 new DatePickerDialog(EducationActivity.this, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
-                                          int startDayOfMonth) {
+                                          int startDayOfMonth,boolean hidetheDay) {
                         if(startYear != 0 && startMonthOfYear != 0){
                             String textString = String.valueOf(startYear) + getString(R.string.Year) + String.valueOf(startMonthOfYear + 1) + getString(R.string.Months);
                             if ((startYear > sysYear) || (startYear == sysYear && startMonthOfYear + 1 >= sysMonth)) {
@@ -193,7 +193,7 @@ public class EducationActivity extends AppCompatActivity {
                             tveducationstart.setText("");
                         }
                     }
-                }, Start_mYear, Start_mMonth, 0).show();
+                }, Start_mYear, Start_mMonth, 0,true).show();
             }
         });
     }
@@ -209,7 +209,7 @@ public class EducationActivity extends AppCompatActivity {
                 new DatePickerDialog(EducationActivity.this, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker endDatePicker, int endYear, int endMonthOfYear,
-                                          int endDayOfMonth) {
+                                          int endDayOfMonth,boolean hidetheDay) {
                         if(endYear != 0 && endMonthOfYear != 0){
                             String textString = String.valueOf(endYear) + getString(R.string.Year) + String.valueOf(endMonthOfYear + 1) + getString(R.string.Months);
                             if ((Start_mYear > endYear) || (Start_mYear == endYear && Start_mMonth >= endMonthOfYear + 1)) {
@@ -224,7 +224,7 @@ public class EducationActivity extends AppCompatActivity {
                             tveducationend.setText("");
                         }
                     }
-                }, End_mYear, End_mMonth, 0).show();
+                }, End_mYear, End_mMonth, 0,true).show();
             }
         });
     }

@@ -27,16 +27,16 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
     private final OnDateSetListener mCallBack;
 
     public interface OnDateSetListener {
-        void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear, int startDayOfMonth);
+        void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear, int startDayOfMonth,boolean hidetheDay);
     }
 
-    public DatePickerDialog(Context context, OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
-        this(context, 0, callBack, year, monthOfYear, dayOfMonth);
+    public DatePickerDialog(Context context, OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth,boolean hidetheDay) {
+        this(context, 0, callBack, year, monthOfYear, dayOfMonth, hidetheDay);
     }
 
 
     public DatePickerDialog(Context context, int theme, OnDateSetListener callBack, int year, int monthOfYear,
-                            int dayOfMonth) {
+                            int dayOfMonth,boolean hidetheDay) {
         super(context, theme);
 
         mCallBack = callBack;
@@ -53,7 +53,11 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
         mDatePickerStart = (DatePicker) view.findViewById(R.id.datePickerStart);
         mDatePickerStart.init(year, monthOfYear, dayOfMonth, this);
 
-        hideDay(mDatePickerStart);
+        if(hidetheDay)
+        {
+            hideDay(mDatePickerStart);
+        }
+
     }
 
     private void hideDay(DatePicker mDatePicker) {
@@ -94,7 +98,7 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
             tryNotifyDateSet();
         if (which == BUTTON_NEUTRAL)
             mCallBack.onDateSet(mDatePickerStart, 0, 0,
-                    0);
+                    0,false);
     }
 
     @Override
@@ -117,7 +121,7 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
         if (mCallBack != null) {
             mDatePickerStart.clearFocus();
             mCallBack.onDateSet(mDatePickerStart, mDatePickerStart.getYear(), mDatePickerStart.getMonth(),
-                    mDatePickerStart.getDayOfMonth());
+                    mDatePickerStart.getDayOfMonth(),false);
         }
     }
 

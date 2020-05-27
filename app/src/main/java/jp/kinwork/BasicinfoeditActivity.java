@@ -430,7 +430,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 new DatePickerDialog(BasicinfoeditActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
-                                          int startDayOfMonth) {
+                                          int startDayOfMonth,boolean hidetheDay) {
                         if (startYear > sysYear ||
                                 (startYear == sysYear && startMonthOfYear +1  > sysMonth) ||
                                 (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
@@ -449,7 +449,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                             ttbirthday.setText(Startdate);
                         }
                     }
-                }, mYear, mMonth - 1, mDay).show();
+                }, mYear, mMonth - 1, mDay,false).show();
             }
         });
     }
