@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,493 +13,486 @@
     <include
         layout="@layout/include_back"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".BasicinfoeditActivity"
+    <ScrollView
+        android:id="@+id/sl_Basicinfo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <ScrollView
-            android:id="@+id/sl_Basicinfo"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="お名前＜全角＞"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="2"
+                >
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_lname"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:text="姓"
+                        android:textColor="@color/background_holo_dark" />
+
+                    <EditText
+                        android:id="@+id/et_lname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:background="@drawable/ic_shape" />
+
+                    <TextView
+                        android:id="@+id/tv_dummy"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_fname"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="名"
+                        android:textColor="@color/background_holo_dark" />
+
+                    <EditText
+                        android:id="@+id/et_fname"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:background="@drawable/ic_shape" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/tv_phonetic"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="フリガナ＜全角フリガナ＞"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="2">
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/tv_lname_kana"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:text="セイ"
+                        android:textColor="@color/background_holo_dark" />
+
+                    <EditText
+                        android:id="@+id/et_lname_kana"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:background="@drawable/ic_shape" />
+
+                    <TextView
+                        android:id="@+id/tv_kana_dummy"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_fname_kana"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="メイ"
+                        android:textColor="@color/background_holo_dark" />
+
+                    <EditText
+                        android:id="@+id/et_fname_kana"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="20dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:background="@drawable/ic_shape" />
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/tv_sex"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="性別"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tt_sex"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:hint="性別を選択してください"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp"/>
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="お名前＜全角＞"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="生年月日"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:stretchColumns="2"
-                    >
+            <TextView
+                android:id="@+id/tt_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape"
+                android:gravity="center"
+                android:hint="生年月日を選択してください"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp" />
 
-                    <TableRow>
+            <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="国籍"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_lname"
-                            android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
-                            android:gravity="center"
-                            android:text="姓"
-                            android:textColor="@color/background_holo_dark" />
+            <TextView
+                android:id="@+id/tt_country"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape"
+                android:gravity="center"
+                android:hint="国籍を選択してください"
+                android:textColor="@color/background_holo_dark"
+                android:textSize="15sp"
+                android:singleLine="true"/>
 
-                        <EditText
-                            android:id="@+id/et_lname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:singleLine="true"
-                            android:text=""
-                            android:background="@drawable/ic_shape" />
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text=" ご住所＜全角＞"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_dummy"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:id="@+id/tv_fname"
-                            android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="名"
-                            android:textColor="@color/background_holo_dark" />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
 
-                        <EditText
-                            android:id="@+id/et_fname"
-                            android:layout_width="fill_parent"
-                            android:layout_height="match_parent"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="20dp"
-                            android:singleLine="true"
-                            android:text=""
-                            android:background="@drawable/ic_shape" />
+                <TableRow>
 
-                    </TableRow>
+                    <TextView
+                        android:id="@+id/tv_postalcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:text="郵便番号"
+                        android:textColor="@color/background_holo_dark" />
 
-                </TableLayout>
+                    <EditText
+                        android:id="@+id/et_postalcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="number"
+                        android:maxLength="7"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:singleLine="true"
+                        android:background="@drawable/ic_shape" />
 
-                <TextView
-                    android:id="@+id/tv_phonetic"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="フリガナ＜全角フリガナ＞"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/bu_postalcode"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/but_blue"
+                        android:backgroundTint="@color/but_blue"
+                        android:text="住所検索"
+                        android:textColor="@color/colorLight"
+                        android:textSize="10sp" />
+                </TableRow>
 
+            </TableLayout>
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:stretchColumns="2">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
 
-                    <TableRow>
+                <TableRow>
 
-                        <TextView
-                            android:id="@+id/tv_lname_kana"
-                            android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
-                            android:gravity="center"
-                            android:text="セイ"
-                            android:textColor="@color/background_holo_dark" />
+                    <TextView
+                        android:id="@+id/tv_prefectures"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:text="都道府県"
+                        android:textColor="@color/background_holo_dark" />
 
-                        <EditText
-                            android:id="@+id/et_lname_kana"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:singleLine="true"
-                            android:text=""
-                            android:background="@drawable/ic_shape" />
+                    <EditText
+                        android:id="@+id/et_prefectures"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:background="@drawable/ic_shape" />
 
-                        <TextView
-                            android:id="@+id/tv_kana_dummy"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content" />
+                    />
+                </TableRow>
 
-                        <TextView
-                            android:id="@+id/tv_fname_kana"
-                            android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="メイ"
-                            android:textColor="@color/background_holo_dark" />
+            </TableLayout>
 
-                        <EditText
-                            android:id="@+id/et_fname_kana"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="20dp"
-                            android:singleLine="true"
-                            android:text=""
-                            android:background="@drawable/ic_shape" />
-                    </TableRow>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
 
-                </TableLayout>
+                <TableRow>
 
-                <TextView
-                    android:id="@+id/tv_sex"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="性別"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_municipality"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="市区町村"
+                        android:textColor="@color/background_holo_dark" />
 
-                <TextView
-                    android:id="@+id/tt_sex"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/ic_shape"
-                    android:gravity="center"
-                    android:hint="性別を選択してください"
-                    android:textColor="@color/background_holo_dark"
-                    android:textSize="15sp"/>
+                    <EditText
+                        android:id="@+id/et_municipality"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:background="@drawable/ic_shape" />
+                    />
+                </TableRow>
+            </TableLayout>
 
-                <TextView
-                    android:id="@+id/tv_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="生年月日"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
 
-                <TextView
-                    android:id="@+id/tt_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/ic_shape"
-                    android:gravity="center"
-                    android:hint="生年月日を選択してください"
-                    android:textColor="@color/background_holo_dark"
-                    android:textSize="15sp" />
+                <TableRow>
 
-                <TextView
-                    android:id="@+id/tv_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="国籍"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tv_town"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="町目番地"
+                        android:textColor="@color/background_holo_dark" />
 
-                <TextView
-                    android:id="@+id/tt_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/ic_shape"
-                    android:gravity="center"
-                    android:hint="国籍を選択してください"
-                    android:textColor="@color/background_holo_dark"
-                    android:textSize="15sp"
-                    android:singleLine="true"/>
+                    <EditText
+                        android:id="@+id/et_town"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:background="@drawable/ic_shape" />
+                    />
+                </TableRow>
+            </TableLayout>
 
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text=" ご住所＜全角＞"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:stretchColumns="1">
+                <TableRow>
 
-                    <TableRow>
+                    <TextView
+                        android:id="@+id/tv_bu_mansion_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="ビル・マンション・号室"
+                        android:textColor="@color/background_holo_dark" />
 
-                        <TextView
-                            android:id="@+id/tv_postalcode"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:gravity="center"
-                            android:text="郵便番号"
-                            android:textColor="@color/background_holo_dark" />
-
-                        <EditText
-                            android:id="@+id/et_postalcode"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:inputType="number"
-                            android:maxLength="7"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:singleLine="true"
-                            android:background="@drawable/ic_shape" />
-
-                        <Button
-                            android:id="@+id/bu_postalcode"
-                            android:layout_width="80dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:background="@color/but_blue"
-                            android:backgroundTint="@color/but_blue"
-                            android:text="住所検索"
-                            android:textColor="@color/colorLight"
-                            android:textSize="10sp" />
-                    </TableRow>
-
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:stretchColumns="1">
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/tv_prefectures"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:gravity="center"
-                            android:text="都道府県"
-                            android:textColor="@color/background_holo_dark" />
-
-                        <EditText
-                            android:id="@+id/et_prefectures"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:background="@drawable/ic_shape" />
-
-                        />
-                    </TableRow>
-
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:stretchColumns="1">
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/tv_municipality"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="市区町村"
-                            android:textColor="@color/background_holo_dark" />
-
-                        <EditText
-                            android:id="@+id/et_municipality"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:background="@drawable/ic_shape" />
-                        />
-                    </TableRow>
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:stretchColumns="1">
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/tv_town"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="町目番地"
-                            android:textColor="@color/background_holo_dark" />
-
-                        <EditText
-                            android:id="@+id/et_town"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:background="@drawable/ic_shape" />
-                        />
-                    </TableRow>
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:stretchColumns="1">
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/tv_bu_mansion_room"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:gravity="center"
-                            android:text="ビル・マンション・号室"
-                            android:textColor="@color/background_holo_dark" />
-
-                        <EditText
-                            android:id="@+id/et_bu_mansion_room"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:paddingLeft="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:background="@drawable/ic_shape" />
-                        />
-                    </TableRow>
-                </TableLayout>
+                    <EditText
+                        android:id="@+id/et_bu_mansion_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:singleLine="true"
+                        android:background="@drawable/ic_shape" />
+                    />
+                </TableRow>
+            </TableLayout>
 
 
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/but_blue"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="電話番号＜半角数字＞"
-                    android:textColor="@color/colorLight"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/but_blue"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="電話番号＜半角数字＞"
+                android:textColor="@color/colorLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:paddingLeft="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:maxLength="11"
-                    android:singleLine="true"
-                    android:background="@drawable/ic_shape"
-                    android:inputType="phone"
-                    android:textSize="20sp" />
-
-
-                <Button
-                    android:id="@+id/bu_Registration"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginBottom="50dp"
-                    android:backgroundTint="@color/but_blue"
-                    android:text="基本情報を登録"
-                    android:textColor="@color/colorLight" />
-            </LinearLayout>
-
-        </ScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:background="@drawable/ic_shape"
+                android:inputType="phone"
+                android:textSize="20sp" />
 
 
-</FrameLayout>
+            <Button
+                android:id="@+id/bu_Registration"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="50dp"
+                android:backgroundTint="@color/but_blue"
+                android:text="基本情報を登録"
+                android:textColor="@color/colorLight" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

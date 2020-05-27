@@ -4,15 +4,18 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+
         <DatePicker
             android:id="@+id/datePickerStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:datePickerMode="spinner"
             android:calendarViewShown="false"/>
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
