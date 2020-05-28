@@ -19,8 +19,7 @@
         android:paddingRight="15dp"
         android:background="@drawable/ic_shape_red"
         android:shrinkColumns="0"
-        android:stretchColumns="0"
-        android:onClick="Click_job">
+        android:stretchColumns="0">
 
         <TableRow android:gravity="center_vertical"
             android:layout_marginTop="5dp">
@@ -41,7 +40,6 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:backgroundTint="@color/colorLight"
-                android:onClick="Click_likejob"
                 app:srcCompat="@mipmap/app_no_like" />
         </TableRow>
 

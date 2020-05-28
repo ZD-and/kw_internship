@@ -8,7 +8,6 @@
         android:id="@+id/tl_Entered_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="Click_visibility"
         android:stretchColumns="0">
 
         <TableRow>

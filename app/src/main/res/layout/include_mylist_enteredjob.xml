@@ -13,7 +13,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/ic_shape_bule"
-        android:onClick="Click_enteredjob"
         android:shrinkColumns="0"
         android:stretchColumns="0"
         android:visibility="visible">
@@ -48,7 +47,6 @@
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:backgroundTint="@color/colorLight"
-                android:onClick="Click_ContactDialog"
                 app:srcCompat="@mipmap/send_mail" />
 
             <ImageView
@@ -57,7 +55,6 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:onClick="Click_DelApplyjob"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@drawable/ic_delete" />
 
