@@ -51,7 +51,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
-    final static String PARAM_deletelikeJob = "/JobInfosMobile/deleteLikeJobByUrl";
+    final static String PARAM_deletelikeJob = "/MypagesMobile/deleteLikeJobByUrl";
     final static String PARAM_deleteApplyJob = "/MypagesMobile/personalApplyJobListDelete";
 
 
