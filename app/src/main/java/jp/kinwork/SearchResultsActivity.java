@@ -74,7 +74,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     final static String PARAM_index = "/SearchesMobile/index";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
     final static String PARAM_likeJob = "/JobInfosMobile/likeJob";
-    final static String PARAM_deletelikeJob = "/JobInfosMobile/deleteLikeJobByUrl";
+    final static String PARAM_deletelikeJob = "/MypagesMobile/deleteLikeJobByUrl";
     final static String PARAM_KeywordHint = "/SearchesMobile/getKeywordHint";
     final static String PARAM_AddressHint = "/SearchesMobile/getAddressHint";
     private String deviceId;
