@@ -243,7 +243,7 @@ public class ResumeActivity extends AppCompatActivity {
         bu_info_qualification=findViewById(R.id.bu_info_qualification);
         bu_info_education.setOnClickListener(createListener);
         bu_info_employment.setOnClickListener(createListener);
-        bu_info_employment.setOnClickListener(createListener);
+        bu_info_qualification.setOnClickListener(createListener);
 
 
 
@@ -852,6 +852,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent_qualification.putExtra(getString(R.string.status), getString(R.string.add));
                 startActivity(intent_qualification);
                 break;
+            default:break;
         }
 
         }
