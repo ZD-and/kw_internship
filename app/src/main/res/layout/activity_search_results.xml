@@ -222,7 +222,7 @@
                 <TableLayout
                     android:id="@+id/tl_Search_contents"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -237,6 +237,7 @@
                     <TableRow>
                         <Button
                             android:id="@+id/tl_tr_bu_Before"
+                            android:layout_height="wrap_content"
                             android:text="＜ 前へ"
                             />
 
@@ -247,6 +248,8 @@
 
                         <Button
                             android:id="@+id/tl_tr_bu_leftsearch"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -256,6 +259,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theleft"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -263,6 +268,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_left"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -270,6 +277,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_centre"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -278,6 +287,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_right"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -285,6 +296,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theright"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -292,6 +305,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_rightsearch"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             />
@@ -320,7 +335,7 @@
                 <TableLayout
                     android:id="@+id/tl_Search_contents_Bottom"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -345,6 +360,8 @@
 
                         <Button
                             android:id="@+id/tl_tr_bu_leftsearch_Bottom"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -354,6 +371,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theleft_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -361,6 +380,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_left_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -368,6 +389,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_centre_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -376,6 +399,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_right_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -383,6 +408,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theright_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -390,6 +417,8 @@
                         <Button
                             android:id="@+id/tl_tr_bu_rightsearch_Bottom"
                             android:text="0"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             />
