@@ -35,7 +35,7 @@ import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends BaseActivity {
     final static String PARAM_File = "/MyMailMobile/getDialogList";
 
     private String deviceId;
@@ -95,61 +95,62 @@ public class ContactActivity extends AppCompatActivity {
             tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
             urllodad();
         }
+        init();
     }
 
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ContactActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(ContactActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ContactActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactActivity.this, WebActivity.class);
-                }
-                break;
-            case R.id.ll_b_contact:
-                intent.setClass(ContactActivity.this, ContactActivity.class);
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ContactActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ContactActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactActivity.this, WebActivity.class);
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ContactActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ContactActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ContactActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ContactActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View) {
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()) {
+//            //检索画面に移動
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(mMyApplication.getSURL(0).equals("0")){
+//                    if(mMyApplication.getSApply(0).equals("0")){
+//                        if(mMyApplication.getSearchResults(0).equals("0")){
+//                            intent.setClass(ContactActivity.this, SearchActivity.class);
+//                            intent.putExtra(getString(R.string.act),"");
+//                        } else {
+//                            intent.setClass(ContactActivity.this, SearchResultsActivity.class);
+//                        }
+//                    } else {
+//                        intent.setClass(ContactActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ContactActivity.this, WebActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_contact:
+//                intent.setClass(ContactActivity.this, ContactActivity.class);
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_mylist:
+//                mMyApplication.setAct(getString(R.string.Apply));
+//                if(mMyApplication.getMURL(0).equals("0")){
+//                    if(mMyApplication.getMApply(0).equals("0")){
+//                        intent.setClass(ContactActivity.this, MylistActivity.class);
+//                    } else {
+//                        intent.setClass(ContactActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ContactActivity.this, WebActivity.class);
+//                }
+//                break;
+//            //個人設定画面に移動
+//            case R.id.ll_b_personalsettings:
+//                if(mMyApplication.getpersonalset(0).equals("0")){
+//                    intent.setClass(ContactActivity.this, PersonalSetActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("1")){
+//                    intent.setClass(ContactActivity.this, BasicinfoeditActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("2")){
+//                    intent.setClass(ContactActivity.this, ChangepwActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("3")){
+//                    intent.setClass(ContactActivity.this, ResumeActivity.class);
+//                }
+//                break;
+//        }
+//        startActivity(intent);
+//    }
 
     //内容取得、通信
     private void urllodad() {

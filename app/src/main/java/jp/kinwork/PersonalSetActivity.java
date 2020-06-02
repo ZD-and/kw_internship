@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class PersonalSetActivity extends AppCompatActivity {
+public class PersonalSetActivity extends BaseActivity {
 
 
     private TextView tvtitle;
@@ -38,7 +38,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private TextView tvname;
     private TextView tvemail;
 
-    private MyApplication myApplication;
+    private MyApplication mMyApplication;
     private PreferenceUtils PreferenceUtils;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,59 +77,60 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
-        myApplication = (MyApplication) getApplication();
+        mMyApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        init();
     }
     //菜单栏按钮
-    public void ll_Click(View View){
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(PersonalSetActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(PersonalSetActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(PersonalSetActivity.this, WebActivity.class);
-                    Initialization();
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(PersonalSetActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(PersonalSetActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
-                        intent.setClass(PersonalSetActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(PersonalSetActivity.this, WebActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View){
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()){
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(mMyApplication.getSURL(0).equals("0")){
+//                    if(mMyApplication.getSApply(0).equals("0")){
+//                        if(mMyApplication.getSearchResults(0).equals("0")){
+//                            intent.setClass(PersonalSetActivity.this, SearchActivity.class);
+//                            intent.putExtra(getString(R.string.act),"");
+//                        } else {
+//                            intent.setClass(PersonalSetActivity.this, SearchResultsActivity.class);
+//                        }
+//                    } else {
+//                        intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(PersonalSetActivity.this, WebActivity.class);
+//                    Initialization();
+//                }
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_contact:
+//                if(mMyApplication.getContactDialog(0).equals("0")){
+//                    intent.setClass(PersonalSetActivity.this, ContactActivity.class);
+//                } else {
+//                    intent.setClass(PersonalSetActivity.this, ContactDialogActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_mylist:
+//                mMyApplication.setAct(getString(R.string.Apply));
+//                if(mMyApplication.getMURL(0).equals("0")){
+//                    if(mMyApplication.getMApply(0).equals("0")){
+//                        intent.setClass(PersonalSetActivity.this, MylistActivity.class);
+//                    } else {
+//                        intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(PersonalSetActivity.this, WebActivity.class);
+//                }
+//                break;
+//            //跳转个人设定画面
+//            case R.id.ll_b_personalsettings:
+//                intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
+//                break;
+//        }
+//        startActivity(intent);
+//    }
     //子功能画面按钮
     private View.OnClickListener Listener =new View.OnClickListener() {
         public void onClick(View View) {
@@ -197,8 +198,8 @@ public class PersonalSetActivity extends AppCompatActivity {
                     }
                     break;
             }
-            myApplication.setResumeId(ResumeIdNum);
-            myApplication.setresume_status(ResumeStatus);
+            mMyApplication.setResumeId(ResumeIdNum);
+            mMyApplication.setresume_status(ResumeStatus);
             startActivity(intent);
         }
     };
@@ -208,8 +209,8 @@ public class PersonalSetActivity extends AppCompatActivity {
         int resumeNumber = PreferenceUtils.getresume_number();
         String Email = PreferenceUtils.getEmail();
 //        deviceId = PreferenceUtils.getdeviceId();
-        if(myApplication.getlast_name().length() > 0){
-            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
+        if(mMyApplication.getlast_name().length() > 0){
+            tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
         }
         tvemail.setText(Email);
         Log.d("***resumeNumber***", "" + resumeNumber);
@@ -220,19 +221,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 1:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
                 tvResumeSet2.setText(getString(R.string.tvResumeSet));
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 2:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
                 tvResumeSet3.setText(getString(R.string.tvResumeSet));
                 break;
             case 3:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
-                tvResumeSet3.setText(myApplication.getresume_name("3"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
+                tvResumeSet3.setText(mMyApplication.getresume_name("3"));
                 break;
         }
     }

@@ -39,7 +39,7 @@ import jp.kinwork.Common.PostDate;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ChangepwActivity extends AppCompatActivity {
+public class ChangepwActivity extends BaseActivity {
     final static String PARAM_File = "/usersMobile/passwordChange";
     private EditText etpasswordOld;
     private EditText etpasswordNew;
@@ -133,63 +133,65 @@ public class ChangepwActivity extends AppCompatActivity {
         // 设置hint属性
         etpasswordNewConform.setHint(new SpannedString(eec));//转码
 
+        init();
+
     }
 
 
     //菜单栏按钮
-    public void ll_Click(View View){
-        mMyApplication.setpersonalset("2",0);
-        mMyApplication.setpersonalset(etpasswordOld.getText().toString(),1);
-        mMyApplication.setpersonalset(etpasswordNew.getText().toString(),2);
-        mMyApplication.setpersonalset(etpasswordNewConform.getText().toString(),3);
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ChangepwActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
-                        } else {
-                            intent.setClass(ChangepwActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ChangepwActivity.this, WebActivity.class);
-                    Initialization();
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ChangepwActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ChangepwActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ChangepwActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ChangepwActivity.this, WebActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                intent.setClass(ChangepwActivity.this, ChangepwActivity.class);
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View){
+//        mMyApplication.setpersonalset("2",0);
+//        mMyApplication.setpersonalset(etpasswordOld.getText().toString(),1);
+//        mMyApplication.setpersonalset(etpasswordNew.getText().toString(),2);
+//        mMyApplication.setpersonalset(etpasswordNewConform.getText().toString(),3);
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()){
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(mMyApplication.getSURL(0).equals("0")){
+//                    if(mMyApplication.getSApply(0).equals("0")){
+//                        if(mMyApplication.getSearchResults(0).equals("0")){
+//                            intent.setClass(ChangepwActivity.this, SearchActivity.class);
+//                            intent.putExtra("act","");
+//                        } else {
+//                            intent.setClass(ChangepwActivity.this, SearchResultsActivity.class);
+//                        }
+//                    } else {
+//                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ChangepwActivity.this, WebActivity.class);
+//                    Initialization();
+//                }
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_contact:
+//                if(mMyApplication.getContactDialog(0).equals("0")){
+//                    intent.setClass(ChangepwActivity.this, ContactActivity.class);
+//                } else {
+//                    intent.setClass(ChangepwActivity.this, ContactDialogActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_mylist:
+//                mMyApplication.setAct(getString(R.string.Apply));
+//                if(mMyApplication.getMURL(0).equals("0")){
+//                    if(mMyApplication.getMApply(0).equals("0")){
+//                        intent.setClass(ChangepwActivity.this, MylistActivity.class);
+//                    } else {
+//                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ChangepwActivity.this, WebActivity.class);
+//                }
+//                break;
+//            //跳转个人设定画面
+//            case R.id.ll_b_personalsettings:
+//                intent.setClass(ChangepwActivity.this, ChangepwActivity.class);
+//                break;
+//        }
+//        startActivity(intent);
+//    }
 
     public void Click_back(){
         mMyApplication.setpersonalset("0",0);

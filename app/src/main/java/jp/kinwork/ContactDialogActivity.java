@@ -45,7 +45,7 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity implements View.OnClickListener{
+public class ContactDialogActivity extends BaseActivity implements View.OnClickListener{
 
 //    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
 //    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
@@ -237,6 +237,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         param.put(getString(R.string.name),"");
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
+        init();
     }
 
     //转换为Json格式并且AES加密
@@ -681,57 +682,57 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         new GithubQueryTask().execute(param);
     }
     //菜单栏界面移动
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ContactDialogActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(ContactDialogActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            case R.id.ll_b_contact:
-                intent.setClass(ContactDialogActivity.this, ContactDialogActivity.class);
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ContactDialogActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ContactDialogActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ContactDialogActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ContactDialogActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ContactDialogActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View) {
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()) {
+//            //检索画面に移動
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(mMyApplication.getSURL(0).equals("0")){
+//                    if(mMyApplication.getSApply(0).equals("0")){
+//                        if(mMyApplication.getSearchResults(0).equals("0")){
+//                            intent.setClass(ContactDialogActivity.this, SearchActivity.class);
+//                            intent.putExtra(getString(R.string.act),"");
+//                        } else {
+//                            intent.setClass(ContactDialogActivity.this, SearchResultsActivity.class);
+//                        }
+//                    } else {
+//                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_contact:
+//                intent.setClass(ContactDialogActivity.this, ContactDialogActivity.class);
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_mylist:
+//                mMyApplication.setAct(getString(R.string.Apply));
+//                if(mMyApplication.getMURL(0).equals("0")){
+//                    if(mMyApplication.getMApply(0).equals("0")){
+//                        intent.setClass(ContactDialogActivity.this, MylistActivity.class);
+//                    } else {
+//                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
+//                }
+//                break;
+//            //個人設定画面に移動
+//            case R.id.ll_b_personalsettings:
+//                if(mMyApplication.getpersonalset(0).equals("0")){
+//                    intent.setClass(ContactDialogActivity.this, PersonalSetActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("1")){
+//                    intent.setClass(ContactDialogActivity.this, BasicinfoeditActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("2")){
+//                    intent.setClass(ContactDialogActivity.this, ChangepwActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("3")){
+//                    intent.setClass(ContactDialogActivity.this, ResumeActivity.class);
+//                }
+//                break;
+//        }
+//        startActivity(intent);
+//    }
 }

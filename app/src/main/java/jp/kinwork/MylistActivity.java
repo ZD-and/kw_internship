@@ -46,7 +46,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class MylistActivity extends AppCompatActivity implements MyScrollView.OnScrollListener {
+public class MylistActivity extends BaseActivity implements MyScrollView.OnScrollListener {
 
     final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
@@ -72,7 +72,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private TextView tvemail;
     private TextView tltvlike;
     private TextView tltvEntered;
-    private MyApplication myApplication;
+    private MyApplication mMyApplication;
     private PreferenceUtils PreferenceUtils;
 
     private TableLayout tllike;
@@ -190,15 +190,15 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         tvtitle.setText("マイリスト");
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
-        myApplication = (MyApplication) getApplication();
+        mMyApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(MylistActivity.this);
-        Act = myApplication.getAct();
+        Act = mMyApplication.getAct();
         deviceId = PreferenceUtils.getdeviceId();
         AesKey = PreferenceUtils.getAesKey();
         userId = PreferenceUtils.getuserId();
         token = PreferenceUtils.gettoken();
-        if(myApplication.getlast_name().length() > 0){
-            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
+        if(mMyApplication.getlast_name().length() > 0){
+            tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
         }
         tvemail.setText(PreferenceUtils.getEmail());
         if(Act.equals(getString(R.string.SelectResume))){
@@ -206,53 +206,54 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             tlEntered.setVisibility(View.VISIBLE);
         }
         getSearchResults();
+        init();
     }
-    //获取搜索结果菜单栏按钮
-    public void ll_Click(View View){
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_mylist:
-                intent.setClass(MylistActivity.this, MylistActivity.class);
-                break;
-            //跳转检索画面
-            case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSApply(0).equals("0")){
-                    if(myApplication.getSearchResults(0).equals("0")){
-                        intent.setClass(MylistActivity.this, SearchActivity.class);
-                        intent.putExtra(getString(R.string.act),"");
-                    } else {
-                        intent.setClass(MylistActivity.this, SearchResultsActivity.class);
-                    }
-                } else {
-                    intent.setClass(MylistActivity.this, ApplyActivity.class);
-                }
-                break;
-            //跳转联络画面
-            case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(MylistActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(MylistActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                if(myApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(MylistActivity.this, PersonalSetActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(MylistActivity.this, BasicinfoeditActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(MylistActivity.this, ChangepwActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(MylistActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        startActivity(intent);
-
-    }
+//    //获取搜索结果菜单栏按钮
+//    public void ll_Click(View View){
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()){
+//            case R.id.ll_b_mylist:
+//                intent.setClass(MylistActivity.this, MylistActivity.class);
+//                break;
+//            //跳转检索画面
+//            case R.id.ll_b_search:
+//                myApplication.setAct(getString(R.string.Search));
+//                if(myApplication.getSApply(0).equals("0")){
+//                    if(myApplication.getSearchResults(0).equals("0")){
+//                        intent.setClass(MylistActivity.this, SearchActivity.class);
+//                        intent.putExtra(getString(R.string.act),"");
+//                    } else {
+//                        intent.setClass(MylistActivity.this, SearchResultsActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(MylistActivity.this, ApplyActivity.class);
+//                }
+//                break;
+//            //跳转联络画面
+//            case R.id.ll_b_contact:
+//                if(myApplication.getContactDialog(0).equals("0")){
+//                    intent.setClass(MylistActivity.this, ContactActivity.class);
+//                } else {
+//                    intent.setClass(MylistActivity.this, ContactDialogActivity.class);
+//                }
+//                break;
+//            //跳转个人设定画面
+//            case R.id.ll_b_personalsettings:
+//                if(myApplication.getpersonalset(0).equals("0")){
+//                    intent.setClass(MylistActivity.this, PersonalSetActivity.class);
+//                } else if(myApplication.getpersonalset(0).equals("1")){
+//                    intent.setClass(MylistActivity.this, BasicinfoeditActivity.class);
+//                } else if(myApplication.getpersonalset(0).equals("2")){
+//                    intent.setClass(MylistActivity.this, ChangepwActivity.class);
+//                } else if(myApplication.getpersonalset(0).equals("3")){
+//                    intent.setClass(MylistActivity.this, ResumeActivity.class);
+//                }
+//                break;
+//        }
+//        startActivity(intent);
+//
+//    }
     //获取搜索结果
     public void getSearchResults(){
         PostDate Pdata1 = new PostDate();
@@ -415,8 +416,8 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         Log.d("***decryptdata***", decryptdata);
         try {
             JSONObject obj = new JSONObject(decryptdata);
-            myApplication.setjobinfo(obj.getString(getString(R.string.JobInfo)));
-            myApplication.setAct(getString(R.string.Apply));
+            mMyApplication.setjobinfo(obj.getString(getString(R.string.JobInfo)));
+            mMyApplication.setAct(getString(R.string.Apply));
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(MylistActivity.this, ApplyActivity.class);
@@ -688,7 +689,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 JobInfo = listlikejobinfo.get(iIndex).getJSONObject(getString(R.string.JobInfo));
             }
             if (iIndex >= 0) {
-                myApplication.setMyjob(getString(R.string.likejob));
+                mMyApplication.setMyjob(getString(R.string.likejob));
                 if(objjobinfo.getString(getString(R.string.isFromKinwork)).equals("1")){
                     if( JobInfo == null || ! JobInfo.getString(getString(R.string.status)).equals("1")) {
                         PostDate Pdata = new PostDate();
@@ -703,8 +704,8 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                         new GithubQueryTask().execute(param);
                     }
                 } else {
-                    myApplication.setURL(objjobinfo.getString(getString(R.string.url)));
-                    myApplication.setAct(getString(R.string.mylist));
+                    mMyApplication.setURL(objjobinfo.getString(getString(R.string.url)));
+                    mMyApplication.setAct(getString(R.string.mylist));
                     Intent intent = new Intent();
                     intent.setClass(MylistActivity.this, WebActivity.class);
                     startActivity(intent);
@@ -774,7 +775,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         if (iIndex >= 0) {
             PostDate Pdata = new PostDate();
             Map<String,String> param = new HashMap<String, String>();
-            myApplication.setMyjob(getString(R.string.Enteredjob));
+            mMyApplication.setMyjob(getString(R.string.Enteredjob));
             Pdata.setUserId(userId);
             Pdata.setToken(token);
             Pdata.setjobId(E_jobid);
