@@ -172,7 +172,7 @@
     <string name="alertdialog6">会社名を入力してください</string>
     <string name="alertdialog7">就職期間の終了年月が未来の場合、チェックを入れてください</string>
     <string name="professionalCareerId">professionalCareerId</string>
-    <string name="jobName">jobName</string>
+    <string name="Jobname">Jobname</string>
     <string name="Companyname">Companyname</string>
     <string name="CheckBox">CheckBox</string>
 
@@ -347,6 +347,7 @@
     <string name="isLiked">isLiked</string>
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
+    <string name="jobName">jobName</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
     <string name="maehe">＜ 前へ</string>
     <string name="tsugihe">次へ ＞</string>

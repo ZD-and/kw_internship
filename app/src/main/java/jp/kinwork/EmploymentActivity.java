@@ -364,7 +364,7 @@ public class EmploymentActivity extends AppCompatActivity {
             //对象ID
             professionalCareerId = intent.getStringExtra(getString(R.string.professionalCareerId));
             //職種名
-            etJobname.setText(intent.getStringExtra(getString(R.string.jobName)));
+            etJobname.setText(intent.getStringExtra(getString(R.string.Jobname)));
             //会社名
             etCompanyname.setText(intent.getStringExtra(getString(R.string.Companyname)));
             //会社所在地
