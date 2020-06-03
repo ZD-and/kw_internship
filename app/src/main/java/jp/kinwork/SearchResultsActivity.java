@@ -138,6 +138,11 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     private TableLayout tlsearchreset;
     private TableLayout tladvancset;
 
+    private LinearLayout ll_b_search;
+    private LinearLayout ll_b_contact;
+    private LinearLayout ll_b_mylist;
+    private LinearLayout ll_b_personalsettings;
+
     private ScrollView svsearch;
     private LinearLayout llsearcgresults;
     private ImageView Ivsearch;
@@ -370,6 +375,15 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 e.printStackTrace();
             }
         }
+        ll_b_search=findViewById(R.id.ll_b_search);
+        ll_b_contact=findViewById(R.id.ll_b_contact);
+        ll_b_mylist=findViewById(R.id.ll_b_mylist);
+        ll_b_personalsettings=findViewById(R.id.ll_b_personalsettings);
+        ll_b_search.setOnClickListener(buttomMenu);
+        ll_b_contact.setOnClickListener(buttomMenu);
+        ll_b_mylist.setOnClickListener(buttomMenu);
+        ll_b_personalsettings.setOnClickListener(buttomMenu);
+
 
     }
 
@@ -1172,32 +1186,34 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
     };
     //菜单栏按钮触发事件
-    public void ll_Click(View View){
-        String ViewID = "";
-        switch (View.getId()){
-            //連絡画面に移動
-            case R.id.ll_b_contact:
-                ViewID = getString(R.string.ll_contact);
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Search));
-                ViewID = getString(R.string.ll_mylist);
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                ViewID = getString(R.string.ll_personalsettings);
-                break;
-        }
-        if(! ViewID.equals("")){
-            PreferenceUtils.setsaveid(ViewID);
-            if(LoginFlg.equals("1")){
-                Click_intent(ViewID);
-            } else {
-                Click_intent(getString(R.string.UserLogin));
+    private View.OnClickListener buttomMenu =new View.OnClickListener() {
+        public void onClick(View View) {
+            String ViewID = "";
+            switch (View.getId()) {
+                //連絡画面に移動
+                case R.id.ll_b_contact:
+                    ViewID = getString(R.string.ll_contact);
+                    break;
+                //Myリスト画面に移動
+                case R.id.ll_b_mylist:
+                    myApplication.setAct(getString(R.string.Search));
+                    ViewID = getString(R.string.ll_mylist);
+                    break;
+                //個人設定画面に移動
+                case R.id.ll_b_personalsettings:
+                    ViewID = getString(R.string.ll_personalsettings);
+                    break;
+            }
+            if (!ViewID.equals("")) {
+                PreferenceUtils.setsaveid(ViewID);
+                if (LoginFlg.equals("1")) {
+                    Click_intent(ViewID);
+                } else {
+                    Click_intent(getString(R.string.UserLogin));
+                }
             }
         }
-    }
+    };
     //画面移动
     private void Click_intent(String name){
         Intent intent = new Intent();

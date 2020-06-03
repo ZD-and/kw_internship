@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -98,6 +99,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private String etname;
 
     public String TAG = "SearchActivity";
+
+    private LinearLayout ll_search;
+    private LinearLayout ll_contact;
+    private LinearLayout ll_mylist;
+    private LinearLayout ll_personalsettings;
     
 //    LocationManager locationManager;
     @Override
@@ -267,37 +273,47 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             ivclearworklocation.setImageResource(R.drawable.ic_cancel);
             ivclearworklocation.setTag(getString(R.string.clear));
         }
+        ll_search=findViewById(R.id.ll_search);
+        ll_contact=findViewById(R.id.ll_contact);
+        ll_mylist=findViewById(R.id.ll_mylist);
+        ll_personalsettings=findViewById(R.id.ll_personalsettings);
+        ll_search.setOnClickListener(buttomMenu);
+        ll_contact.setOnClickListener(buttomMenu);
+        ll_mylist.setOnClickListener(buttomMenu);
+        ll_personalsettings.setOnClickListener(buttomMenu);
 
     }
     //菜单栏按钮触发事件
-    public void ll_Click(View View){
-        String ViewID = "";
-        myApplication.setkeyword(etkeyword.getText().toString());
-        myApplication.setaddress(etworklocation.getText().toString());
-        Log.d(TAG+"ViewID", View.getId()+"" );
-        switch (View.getId()){
-            //連絡画面に移動
-            case R.id.ll_contact:
-                ViewID = "ll_contact";
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_mylist:
-                ViewID = "ll_mylist";
-                break;
-            //個人設定画面に移動
-            case R.id.ll_personalsettings:
-                ViewID = "ll_personalsettings";
-                break;
-        }
-        if(! ViewID.equals("")){
-            PreferenceUtils.setsaveid(ViewID);
-            if( UserLoginFlg.equals("0")) {
-                Click_intent(getString(R.string.UserLogin));
-            } else if( UserLoginFlg.equals("1")) {
-                Click_intent(ViewID);
+    private View.OnClickListener buttomMenu =new View.OnClickListener() {
+        public void onClick(View View) {
+            String ViewID = "";
+            myApplication.setkeyword(etkeyword.getText().toString());
+            myApplication.setaddress(etworklocation.getText().toString());
+            Log.d(TAG + "ViewID", View.getId() + "");
+            switch (View.getId()) {
+                //連絡画面に移動
+                case R.id.ll_contact:
+                    ViewID = "ll_contact";
+                    break;
+                //Myリスト画面に移動
+                case R.id.ll_mylist:
+                    ViewID = "ll_mylist";
+                    break;
+                //個人設定画面に移動
+                case R.id.ll_personalsettings:
+                    ViewID = "ll_personalsettings";
+                    break;
+            }
+            if (!ViewID.equals("")) {
+                PreferenceUtils.setsaveid(ViewID);
+                if (UserLoginFlg.equals("0")) {
+                    Click_intent(getString(R.string.UserLogin));
+                } else if (UserLoginFlg.equals("1")) {
+                    Click_intent(ViewID);
+                }
             }
         }
-    }
+    };
 
     //画面移动
     private void Click_intent(String name){

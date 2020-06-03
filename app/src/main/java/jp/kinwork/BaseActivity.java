@@ -53,10 +53,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         ll_b_personalsettings.setOnClickListener(this);
 
         mMyApplication = (MyApplication) getApplication();
-
-
-
     }
+    //底部のメニューの処理
     public void onClick(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -142,11 +140,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         startActivity(intent);
-
-    }//获取搜索结果菜单栏按钮
-
-
-
+    }
 }
 
 

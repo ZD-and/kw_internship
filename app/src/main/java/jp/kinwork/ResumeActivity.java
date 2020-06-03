@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ResumeActivity extends AppCompatActivity {
+public class ResumeActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String PARAM_AddResume = "/ResumesMobile/addDefaultResume";
     final static String PARAM_UpdateResume = "/ResumesMobile/updateResume";
@@ -58,7 +59,7 @@ public class ResumeActivity extends AppCompatActivity {
     final static String PARAM_delQC = "/ResumesMobile/deleteQualification";
     final static String PARAM_ResumeName = "/ResumesMobile/updateResumeName";
 
-    private MyApplication myApplication;
+    private MyApplication mMyApplication;
     private ScrollView slresume;
     private CheckBox cbone;
     private CheckBox cbtwo;
@@ -182,6 +183,11 @@ public class ResumeActivity extends AppCompatActivity {
     private JSONArray JSONArray_education;
     private JSONArray JSONArray_qualification;
 
+    private LinearLayout ll_b_search;
+    private LinearLayout ll_b_contact;
+    private LinearLayout ll_b_mylist;
+    private LinearLayout ll_b_personalsettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,10 +197,10 @@ public class ResumeActivity extends AppCompatActivity {
         //dialog.setTitle("提示") ;
         dialog.setMessage(getString(R.string.Loading)) ;
         Intent intent = getIntent();
-        myApplication = (MyApplication) getApplication();
-        IresumeIdflg = myApplication.getResumeId();
-        resume_status = myApplication.getresume_status();
-        ActCation = myApplication.getActCation();
+        mMyApplication = (MyApplication) getApplication();
+        IresumeIdflg = mMyApplication.getResumeId();
+        resume_status = mMyApplication.getresume_status();
+        ActCation = mMyApplication.getActCation();
         Initialization();
         load();
     }
@@ -352,6 +358,15 @@ public class ResumeActivity extends AppCompatActivity {
             }
         });
 
+        ll_b_search=findViewById(R.id.ll_b_search);
+        ll_b_contact=findViewById(R.id.ll_b_contact);
+        ll_b_mylist=findViewById(R.id.ll_b_mylist);
+        ll_b_personalsettings=findViewById(R.id.ll_b_personalsettings);
+        ll_b_search.setOnClickListener(this);
+        ll_b_contact.setOnClickListener(this);
+        ll_b_mylist.setOnClickListener(this);
+        ll_b_personalsettings.setOnClickListener(this);
+
     }
     //本地保存情报取得
     public void load(){
@@ -367,40 +382,40 @@ public class ResumeActivity extends AppCompatActivity {
         } else if (IresumeIdflg.equals("3")){
             resumeId = PreferenceUtils.getresumeid_3();
         }
-        if(myApplication.getpersonalset(0).equals("0")){
+        if(mMyApplication.getpersonalset(0).equals("0")){
             if(resumeId.equals("A")){
                 addDefaultResume(userId,token);
             } else {
                 getbasici();
             }
         } else {
-            resumeId = myApplication.getpersonalset(8);
-            resume_status =  myApplication.getpersonalset(13);
-            tvresumetitle.setText(myApplication.getpersonalset(1));
-            myApplication.setresume_name(myApplication.getpersonalset(1),IresumeIdflg);
-            employmentstatus = Integer.parseInt(myApplication.getpersonalset(2),10);
+            resumeId = mMyApplication.getpersonalset(8);
+            resume_status =  mMyApplication.getpersonalset(13);
+            tvresumetitle.setText(mMyApplication.getpersonalset(1));
+            mMyApplication.setresume_name(mMyApplication.getpersonalset(1),IresumeIdflg);
+            employmentstatus = Integer.parseInt(mMyApplication.getpersonalset(2),10);
             String status = Integer.toBinaryString(employmentstatus);
             getstatus(status);
-            Jobtypeexpectations = myApplication.getpersonalset(3);
+            Jobtypeexpectations = mMyApplication.getpersonalset(3);
             ethopeJobcategory.setText(Jobtypeexpectations);
-            Neareststation = myApplication.getpersonalset(4);
+            Neareststation = mMyApplication.getpersonalset(4);
             etneareststation.setText(Neareststation);
-            if(myApplication.getpersonalset(5).equals("1")){
-                Ismovingok = myApplication.getpersonalset(5);
+            if(mMyApplication.getpersonalset(5).equals("1")){
+                Ismovingok = mMyApplication.getpersonalset(5);
                 cbcanmove.setChecked(true);
                 canmove = Ismovingok;
             }
-            AspirationPR = myApplication.getpersonalset(6);
+            AspirationPR = mMyApplication.getpersonalset(6);
             etAspirationPR.setText(AspirationPR);
-            hobbySkill = myApplication.getpersonalset(7);
+            hobbySkill = mMyApplication.getpersonalset(7);
             ethobbySkill.setText(hobbySkill);
             try {
-                JSONObject_resume = new JSONObject(myApplication.getpersonalset(9));
+                JSONObject_resume = new JSONObject(mMyApplication.getpersonalset(9));
                 Setbasici(JSONObject_resume);
                 if(!resume_status.equals(getString(R.string.add))){
-                    JSONArray_education = new JSONArray(myApplication.getpersonalset(10));
-                    JSONArray_employment = new JSONArray(myApplication.getpersonalset(11));
-                    JSONArray_qualification = new JSONArray(myApplication.getpersonalset(12));
+                    JSONArray_education = new JSONArray(mMyApplication.getpersonalset(10));
+                    JSONArray_employment = new JSONArray(mMyApplication.getpersonalset(11));
+                    JSONArray_qualification = new JSONArray(mMyApplication.getpersonalset(12));
                     educationInfo(JSONArray_education);
                     employmentInfo(JSONArray_employment);
                     qualificationInfo(JSONArray_qualification);
@@ -787,7 +802,7 @@ public class ResumeActivity extends AppCompatActivity {
                      nine_256;
         String employment_status = String.valueOf(status_sum);
         Log.d("employment_status", employment_status);
-        myApplication.setresume_name(tvresumetitle.getText().toString(),IresumeIdflg);
+        mMyApplication.setresume_name(tvresumetitle.getText().toString(),IresumeIdflg);
         PostDate Pdata = new PostDate();
         Resume Resume = new Resume();
         Resume.setId(resumeId);
@@ -817,7 +832,7 @@ public class ResumeActivity extends AppCompatActivity {
             //職歴画面に
             case R.id.bu_info_employment:
 //                myApplication.setnum(listIBTNDel_employment.size());
-                myApplication.setActCation(getString(R.string.emp));
+                mMyApplication.setActCation(getString(R.string.emp));
                 Intent intent_employment = new Intent();
                 intent_employment.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent_employment.setClass(ResumeActivity.this, EmploymentActivity.class);
@@ -827,7 +842,7 @@ public class ResumeActivity extends AppCompatActivity {
             //学歴画面に
             case R.id.bu_info_education:
 //                myApplication.setnum(listIBTNDel_employment.size());
-                myApplication.setActCation(getString(R.string.edu));
+                mMyApplication.setActCation(getString(R.string.edu));
                 Intent intent_education = new Intent();
                 intent_education.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent_education.setClass(ResumeActivity.this, EducationActivity.class);
@@ -837,7 +852,7 @@ public class ResumeActivity extends AppCompatActivity {
             //資格画面に
             case R.id.bu_info_qualification:
 //                myApplication.setnum(listIBTNDel_employment.size());
-                myApplication.setActCation(getString(R.string.qua));
+                mMyApplication.setActCation(getString(R.string.qua));
                 Intent intent_qualification = new Intent();
                 intent_qualification.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent_qualification.setClass(ResumeActivity.this, QualificationActivity.class);
@@ -880,7 +895,7 @@ public class ResumeActivity extends AppCompatActivity {
 
             //国籍
 //            if(! obj.getString("").equals("")){
-                tltrtvcountry.setText(getString(R.string.kokuseki) + myApplication.getcountry());
+                tltrtvcountry.setText(getString(R.string.kokuseki) + mMyApplication.getcountry());
 //            }
             //住所
             if(! obj.getString(getString(R.string.add_1)).equals("") && ! obj.getString(getString(R.string.add_2)).equals("") && ! obj.getString(getString(R.string.add_3)).equals("")){
@@ -927,7 +942,7 @@ public class ResumeActivity extends AppCompatActivity {
                     Log.d("***Resume***", obj.getString("Resume"));
                     if(! JSONObject_resume.getString(getString(R.string.resume_name)).equals("") && ! JSONObject_resume.getString(getString(R.string.resume_name)).equals("null")){
                         tvresumetitle.setText(JSONObject_resume.getString(getString(R.string.resume_name)));
-                        myApplication.setresume_name(JSONObject_resume.getString(getString(R.string.resume_name)),IresumeIdflg);
+                        mMyApplication.setresume_name(JSONObject_resume.getString(getString(R.string.resume_name)),IresumeIdflg);
                     }
                     Log.d("***ResumegetString***", "["+JSONObject_resume.getString(getString(R.string.employment_status)) + "]");
                     if(! JSONObject_resume.getString(getString(R.string.employment_status)).equals("") && ! JSONObject_resume.getString(getString(R.string.employment_status)).equals("null")){
@@ -1027,7 +1042,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
         if (iIndex >= 0) {
             try {
-                myApplication.setActCation(getString(R.string.emp));
+                mMyApplication.setActCation(getString(R.string.emp));
                 JSONObject obj = JSONArray_employment.getJSONObject(iIndex);
                 Gson gson = new Gson();
                 professionalCareer = gson.fromJson(obj.getString(getString(R.string.professionalCareer)),ProfessionalCareer.class);
@@ -1146,7 +1161,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
         if (iIndex >= 0) {
             try {
-                myApplication.setActCation(getString(R.string.edu));
+                mMyApplication.setActCation(getString(R.string.edu));
                 JSONObject obj = JSONArray_education.getJSONObject(iIndex);
                 Gson gson = new Gson();
                 schoolCareer = gson.fromJson(obj.getString(getString(R.string.SchoolCareer)),SchoolCareer.class);
@@ -1255,7 +1270,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
         if (iIndex >= 0) {
             try {
-                myApplication.setActCation("qua");
+                mMyApplication.setActCation("qua");
                 JSONObject obj = JSONArray_qualification.getJSONObject(iIndex);
                 Log.d("***Updqualification***", obj.getString(getString(R.string.Qualification)));
                 Gson gson = new Gson();
@@ -1304,7 +1319,7 @@ public class ResumeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                myApplication.setpersonalset("0",0);
+                mMyApplication.setpersonalset("0",0);
                 Deleteprocessing(name,DeleteIndex);
             }
         }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
@@ -1403,7 +1418,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //個人設定画面に移動
     public void NewIntent(){
-        myApplication.setActCation("");
+        mMyApplication.setActCation("");
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 //        if(saveID.equals("SelectResume")){
@@ -1495,7 +1510,7 @@ public class ResumeActivity extends AppCompatActivity {
                 case R.id.tv_Confirmation:
                     ResumeName_new = etresumename.getText().toString().replace(" ", "").replace("　", "");
                     tvresumetitle.setText(ResumeName_new);
-                    myApplication.setresume_name(tvresumetitle.getText().toString(), IresumeIdflg);
+                    mMyApplication.setresume_name(tvresumetitle.getText().toString(), IresumeIdflg);
                     tlResumename.setVisibility(android.view.View.VISIBLE);
                     tlrenameresume.setVisibility(android.view.View.GONE);
                     if (!ResumeName_old.equals(ResumeName_new)) {
@@ -1518,7 +1533,7 @@ public class ResumeActivity extends AppCompatActivity {
     };
 
     //菜单栏按钮
-    public void ll_Click(View View){
+    public void onClick(View View){
         status_sum = one_1      +
                     two_2      +
                     three_4    +
@@ -1528,29 +1543,29 @@ public class ResumeActivity extends AppCompatActivity {
                     seven_64   +
                     eight_128  +
                     nine_256;
-        myApplication.setpersonalset("3",0);
-        myApplication.setpersonalset(tvresumetitle.getText().toString(),1);//履歴書名
-        myApplication.setpersonalset(String.valueOf(status_sum),2);//雇用形態
-        myApplication.setpersonalset(ethopeJobcategory.getText().toString(),3);//希望の職種
-        myApplication.setpersonalset(etneareststation.getText().toString(),4);//最寄駅
-        myApplication.setpersonalset(canmove,5);//転居可能フラグ
-        myApplication.setpersonalset(etAspirationPR.getText().toString(),6);//志望動機・自己RP
-        myApplication.setpersonalset(ethobbySkill.getText().toString(),7);//趣味・特技
-        myApplication.setpersonalset(resumeId,8);//履歴書ID
+        mMyApplication.setpersonalset("3",0);
+        mMyApplication.setpersonalset(tvresumetitle.getText().toString(),1);//履歴書名
+        mMyApplication.setpersonalset(String.valueOf(status_sum),2);//雇用形態
+        mMyApplication.setpersonalset(ethopeJobcategory.getText().toString(),3);//希望の職種
+        mMyApplication.setpersonalset(etneareststation.getText().toString(),4);//最寄駅
+        mMyApplication.setpersonalset(canmove,5);//転居可能フラグ
+        mMyApplication.setpersonalset(etAspirationPR.getText().toString(),6);//志望動機・自己RP
+        mMyApplication.setpersonalset(ethobbySkill.getText().toString(),7);//趣味・特技
+        mMyApplication.setpersonalset(resumeId,8);//履歴書ID
         if(!resume_status.equals(getString(R.string.add))){
-            myApplication.setpersonalset(JSONObject_resume.toString(),9);//基本情報
-            myApplication.setpersonalset(JSONArray_education.toString(),10);//学歴
-            myApplication.setpersonalset(JSONArray_employment.toString(),11);//職歴
-            myApplication.setpersonalset(JSONArray_qualification.toString(),12);//資格
+            mMyApplication.setpersonalset(JSONObject_resume.toString(),9);//基本情報
+            mMyApplication.setpersonalset(JSONArray_education.toString(),10);//学歴
+            mMyApplication.setpersonalset(JSONArray_employment.toString(),11);//職歴
+            mMyApplication.setpersonalset(JSONArray_qualification.toString(),12);//資格
         }
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Search));
+                if(mMyApplication.getSURL(0).equals("0")){
+                    if(mMyApplication.getSApply(0).equals("0")){
+                        if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(ResumeActivity.this, SearchActivity.class);
                             intent.putExtra(getString(R.string.act),"");
                         } else {
@@ -1566,16 +1581,16 @@ public class ResumeActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
+                if(mMyApplication.getContactDialog(0).equals("0")){
                     intent.setClass(ResumeActivity.this, ContactActivity.class);
                 } else {
                     intent.setClass(ResumeActivity.this, ContactDialogActivity.class);
                 }
                 break;
             case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Apply));
+                if(mMyApplication.getMURL(0).equals("0")){
+                    if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(ResumeActivity.this, MylistActivity.class);
                     } else {
                         intent.setClass(ResumeActivity.this, ApplyActivity.class);

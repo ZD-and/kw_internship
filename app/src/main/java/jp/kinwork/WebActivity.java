@@ -13,13 +13,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import jp.kinwork.Common.MyApplication;
 
-public class WebActivity extends AppCompatActivity {
+public class WebActivity extends AppCompatActivity implements View.OnClickListener{
 
     private WebView wvurl;
     private MyApplication myApplication;
@@ -37,6 +38,11 @@ public class WebActivity extends AppCompatActivity {
     private TextView tvsearch;
     private ImageView ivmylist;
     private TextView tvmylist;
+
+    private LinearLayout ll_search;
+    private LinearLayout ll_contact;
+    private LinearLayout ll_mylist;
+    private LinearLayout ll_personalsettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +132,14 @@ public class WebActivity extends AppCompatActivity {
                 url = myApplication.getMURL(1);
             }
         }
+        ll_search=findViewById(R.id.ll_search);
+        ll_contact=findViewById(R.id.ll_contact);
+        ll_mylist=findViewById(R.id.ll_mylist);
+        ll_personalsettings=findViewById(R.id.ll_personalsettings);
+        ll_search.setOnClickListener(this);
+        ll_contact.setOnClickListener(this);
+        ll_mylist.setOnClickListener(this);
+        ll_personalsettings.setOnClickListener(this);
     }
 
     //点击返回上一页面而不是退出浏览器
@@ -172,7 +186,7 @@ public class WebActivity extends AppCompatActivity {
     }
 
     //获取搜索结果菜单栏按钮
-    public void ll_Click(View View){
+    public void onClick(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){

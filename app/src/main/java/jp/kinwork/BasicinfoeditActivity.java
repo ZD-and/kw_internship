@@ -53,7 +53,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class BasicinfoeditActivity extends AppCompatActivity {
+public class BasicinfoeditActivity extends BaseActivity {
     final static String PARAM_personaInfo = "/MypagesMobile/personalInfo";
     final static String PARAM_personaInfoUpdate = "/MypagesMobile/personalInfoUpdate";
     final static String PARAM_Address = "/CommonMobile/getAddressByPostcode";
@@ -128,6 +128,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         showSex();
         showCountry();
         setBasicinfo();
+        init();
     }
 
     @Override
@@ -765,69 +766,69 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     }
 
     //菜单栏按钮
-    public void ll_Click(View View){
-        mMyApplication.setpersonalset("1",0);//姓
-        mMyApplication.setpersonalset(etfname.getText().toString(),1);//姓
-        mMyApplication.setpersonalset(etlname.getText().toString(),2);//名
-        mMyApplication.setpersonalset(etfname_kana.getText().toString(),3);//セイ
-        mMyApplication.setpersonalset(etlname_kana.getText().toString(),4);//メイ
-        mMyApplication.setpersonalset(ttbirthday.getText().toString(),5);//生年月日
-        mMyApplication.setpersonalset(ttcountry.getText().toString(),6);//国籍
-        mMyApplication.setpersonalset(String.valueOf(selectedFruitIndex),7);//性別
-        mMyApplication.setpersonalset(etpostalcode.getText().toString(),8);//郵便番号
-        mMyApplication.setpersonalset(etprefectures.getText().toString(),9);//都道府県
-        mMyApplication.setpersonalset(etmunicipality.getText().toString(),10);//市区町村
-        mMyApplication.setpersonalset(ettown.getText().toString(),11);//町目番地
-        mMyApplication.setpersonalset(etbu_mansion_room.getText().toString(),12);//ビル・マンション・号室
-        mMyApplication.setpersonalset(etphone.getText().toString(),13);//電話
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(BasicinfoeditActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(BasicinfoeditActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(BasicinfoeditActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(BasicinfoeditActivity.this, WebActivity.class);
-                    Initialization();
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(BasicinfoeditActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(BasicinfoeditActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                Log.d("getMURL", mMyApplication.getMURL(0));
-                Log.d("getMURL", mMyApplication.getMApply(0));
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(BasicinfoeditActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(BasicinfoeditActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(BasicinfoeditActivity.this, WebActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                intent.setClass(BasicinfoeditActivity.this, BasicinfoeditActivity.class);
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View){
+//        mMyApplication.setpersonalset("1",0);//姓
+//        mMyApplication.setpersonalset(etfname.getText().toString(),1);//姓
+//        mMyApplication.setpersonalset(etlname.getText().toString(),2);//名
+//        mMyApplication.setpersonalset(etfname_kana.getText().toString(),3);//セイ
+//        mMyApplication.setpersonalset(etlname_kana.getText().toString(),4);//メイ
+//        mMyApplication.setpersonalset(ttbirthday.getText().toString(),5);//生年月日
+//        mMyApplication.setpersonalset(ttcountry.getText().toString(),6);//国籍
+//        mMyApplication.setpersonalset(String.valueOf(selectedFruitIndex),7);//性別
+//        mMyApplication.setpersonalset(etpostalcode.getText().toString(),8);//郵便番号
+//        mMyApplication.setpersonalset(etprefectures.getText().toString(),9);//都道府県
+//        mMyApplication.setpersonalset(etmunicipality.getText().toString(),10);//市区町村
+//        mMyApplication.setpersonalset(ettown.getText().toString(),11);//町目番地
+//        mMyApplication.setpersonalset(etbu_mansion_room.getText().toString(),12);//ビル・マンション・号室
+//        mMyApplication.setpersonalset(etphone.getText().toString(),13);//電話
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()){
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(mMyApplication.getSURL(0).equals("0")){
+//                    if(mMyApplication.getSApply(0).equals("0")){
+//                        if(mMyApplication.getSearchResults(0).equals("0")){
+//                            intent.setClass(BasicinfoeditActivity.this, SearchActivity.class);
+//                            intent.putExtra(getString(R.string.act),"");
+//                        } else {
+//                            intent.setClass(BasicinfoeditActivity.this, SearchResultsActivity.class);
+//                        }
+//                    } else {
+//                        intent.setClass(BasicinfoeditActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(BasicinfoeditActivity.this, WebActivity.class);
+//                    Initialization();
+//                }
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_contact:
+//                if(mMyApplication.getContactDialog(0).equals("0")){
+//                    intent.setClass(BasicinfoeditActivity.this, ContactActivity.class);
+//                } else {
+//                    intent.setClass(BasicinfoeditActivity.this, ContactDialogActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_mylist:
+//                Log.d("getMURL", mMyApplication.getMURL(0));
+//                Log.d("getMURL", mMyApplication.getMApply(0));
+//                mMyApplication.setAct(getString(R.string.Apply));
+//                if(mMyApplication.getMURL(0).equals("0")){
+//                    if(mMyApplication.getMApply(0).equals("0")){
+//                        intent.setClass(BasicinfoeditActivity.this, MylistActivity.class);
+//                    } else {
+//                        intent.setClass(BasicinfoeditActivity.this, ApplyActivity.class);
+//                    }
+//                } else {
+//                    intent.setClass(BasicinfoeditActivity.this, WebActivity.class);
+//                }
+//                break;
+//            //跳转个人设定画面
+//            case R.id.ll_b_personalsettings:
+//                intent.setClass(BasicinfoeditActivity.this, BasicinfoeditActivity.class);
+//                break;
+//        }
+//        startActivity(intent);
+//    }
 }

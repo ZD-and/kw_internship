@@ -35,7 +35,6 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:onClick="ll_Click"
             android:orientation="vertical">
 
             <ImageView
@@ -61,7 +60,6 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:onClick="ll_Click"
             android:orientation="vertical">
 
             <ImageView
@@ -87,7 +85,6 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:onClick="ll_Click"
             android:orientation="vertical">
 
             <ImageView
@@ -113,7 +110,6 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:onClick="ll_Click"
             android:orientation="vertical">
 
             <ImageView

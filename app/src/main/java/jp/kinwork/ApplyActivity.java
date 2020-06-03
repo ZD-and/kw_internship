@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
 
-public class ApplyActivity extends AppCompatActivity {
+public class ApplyActivity extends BaseActivity   {
     final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
 
     private TableLayout tlapplyemploymentstatus;
@@ -82,6 +82,7 @@ public class ApplyActivity extends AppCompatActivity {
         salary_type = new String[]{getString(R.string.salary_type)};
 
         Initialization();
+        init();
     }
 
     //初期化
@@ -282,99 +283,99 @@ public class ApplyActivity extends AppCompatActivity {
         }
     }
 
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(! Act.equals(getString(R.string.Search))){
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                    if(mMyApplication.getSURL(0).equals("0")){
-                        if(mMyApplication.getSApply(0).equals("0")){
-                            if(mMyApplication.getSearchResults(0).equals("0")){
-                                intent.setClass(ApplyActivity.this, SearchActivity.class);
-                                intent.putExtra("act","");
-                            } else {
-                                intent.setClass(ApplyActivity.this, SearchResultsActivity.class);
-                            }
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ApplyActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct("Apply");
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                    if(mMyApplication.getMURL(0).equals("0")){
-                        if(mMyApplication.getMApply(0).equals("0")){
-                            intent.setClass(ApplyActivity.this, MylistActivity.class);
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ApplyActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ApplyActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ApplyActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        startActivity(intent);
-    }
+//    public void ll_Click(View View) {
+//        Intent intent = new Intent();
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        switch (View.getId()) {
+//            //检索画面に移動
+//            case R.id.ll_b_search:
+//                mMyApplication.setAct(getString(R.string.Search));
+//                if(! Act.equals(getString(R.string.Search))){
+//                    mMyApplication.setMApply("1",0);
+//                    mMyApplication.setMApply(JobInfo,1);
+//                    mMyApplication.setMApply(Act,2);
+//                    mMyApplication.setMApply(jobflg,3);
+//                    if(mMyApplication.getSURL(0).equals("0")){
+//                        if(mMyApplication.getSApply(0).equals("0")){
+//                            if(mMyApplication.getSearchResults(0).equals("0")){
+//                                intent.setClass(ApplyActivity.this, SearchActivity.class);
+//                                intent.putExtra("act","");
+//                            } else {
+//                                intent.setClass(ApplyActivity.this, SearchResultsActivity.class);
+//                            }
+//                        } else {
+//                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
+//                            Initialization();
+//                        }
+//                    } else {
+//                        intent.setClass(ApplyActivity.this, WebActivity.class);
+//                    }
+//                }
+//                break;
+//            //Myリスト画面に移動
+//            case R.id.ll_b_contact:
+//                if(Act.equals(getString(R.string.Search))){
+//                    mMyApplication.setSApply("1",0);
+//                    mMyApplication.setSApply(JobInfo,1);
+//                    mMyApplication.setSApply(Act,2);
+//                    mMyApplication.setSApply(jobflg,3);
+//                } else {
+//                    mMyApplication.setMApply("1",0);
+//                    mMyApplication.setMApply(JobInfo,1);
+//                    mMyApplication.setMApply(Act,2);
+//                    mMyApplication.setMApply(jobflg,3);
+//                }
+//                if(mMyApplication.getContactDialog(0).equals("0")){
+//                    intent.setClass(ApplyActivity.this, ContactActivity.class);
+//                } else {
+//                    intent.setClass(ApplyActivity.this, ContactDialogActivity.class);
+//                }
+//                break;
+//            case R.id.ll_b_mylist:
+//                mMyApplication.setAct("Apply");
+//                if(Act.equals(getString(R.string.Search))){
+//                    mMyApplication.setSApply("1",0);
+//                    mMyApplication.setSApply(JobInfo,1);
+//                    mMyApplication.setSApply(Act,2);
+//                    mMyApplication.setSApply(jobflg,3);
+//                    if(mMyApplication.getMURL(0).equals("0")){
+//                        if(mMyApplication.getMApply(0).equals("0")){
+//                            intent.setClass(ApplyActivity.this, MylistActivity.class);
+//                        } else {
+//                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
+//                            Initialization();
+//                        }
+//                    } else {
+//                        intent.setClass(ApplyActivity.this, WebActivity.class);
+//                    }
+//                }
+//                break;
+//            //個人設定画面に移動
+//            case R.id.ll_b_personalsettings:
+//                if(Act.equals(getString(R.string.Search))){
+//                    mMyApplication.setSApply("1",0);
+//                    mMyApplication.setSApply(JobInfo,1);
+//                    mMyApplication.setSApply(Act,2);
+//                    mMyApplication.setSApply(jobflg,3);
+//                } else {
+//                    mMyApplication.setMApply("1",0);
+//                    mMyApplication.setMApply(JobInfo,1);
+//                    mMyApplication.setMApply(Act,2);
+//                    mMyApplication.setMApply(jobflg,3);
+//                }
+//                if(mMyApplication.getpersonalset(0).equals("0")){
+//                    intent.setClass(ApplyActivity.this, PersonalSetActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("1")){
+//                    intent.setClass(ApplyActivity.this, BasicinfoeditActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("2")){
+//                    intent.setClass(ApplyActivity.this, ChangepwActivity.class);
+//                } else if(mMyApplication.getpersonalset(0).equals("3")){
+//                    intent.setClass(ApplyActivity.this, ResumeActivity.class);
+//                }
+//                break;
+//        }
+//        startActivity(intent);
+//    }
 
 //    public void Click_setSendMeg(View View){
 //        PostDate Pdata = new PostDate();
