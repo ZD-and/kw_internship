@@ -27,6 +27,371 @@
     <string name="title_In_mail_set">受信メール設定</string>
     <string name="title_edit_resume">履歴書編集</string>
 
+    <!-- Strings related to AdvancSet -->
+    <string name="Search">検索</string>
+    <string name="employmentStatuslist">employmentStatus</string>
+    <string name="yearlyIncome">yearlyIncome</string>
+
+    <!-- Strings related to Agreement -->
+    <string name="termsofservice">利用規約</string>
+    <string name="contentsTermsofservice">KinWork へようこそ\\nKinWork のWeb サイトまたはモバイルアプリケーションにて提供するサービス（以下「本サービス」）をご利用いただきありがとうございます。\\n第1条（本サービスのご利用）\\n本サービス内で入手できるすべてのポリシーを遵守してください。\\nユーザーは、本利用規約にご同意いただくことによって、当社のサービスをご利用いただくことができます。\\nユーザーが KinWork の規約やポリシーを遵守しない場合、または KinWork が不正行為と疑う行為について調査を行う場合に、KinWork はユーザーに対する本サービスの提供を一時停止または停止することができます。\\n当社は提供するサービスの内容について、瑕疵（かし）やバグがないことは保証しておりません。\\nまた当社は、お客様にあらかじめ通知することなくサービスの内容や仕様を変更したり、提供を停止したり中止したりすることができるものとします。\\n本サービスで表示されるコンテンツの一部は、KinWork の所有物ではありません。こうしたコンテンツについては、そのコンテンツを提供する当事者が単独で責任を負います。\\n本サービスの利用に関して、KinWork はユーザーに対してサービスの告知、管理上のメッセージ、およびその他の情報を送信することができます。ユーザーは、これらの通知について、受け取らないことを選択できる場合があります。\\n本サービスの一部は携帯端末でご利用いただけます。注意散漫になり交通や安全に関する法律を遵守できなくなる状態で本サービスを利用しないでください。\\n第2条（ユーザーの KinWork アカウント）\\n本サービスを利用するために、KinWork アカウントが必要になる場合があります。\\nKinWork アカウントを保護するため、パスワードは他人に知らせないでください。KinWork アカウント上や KinWork アカウントを通じての行動に対する責任はユーザー自身にあります。KinWork アカウントのパスワードを第三者のアプリケーションで再利用することは避けるようにしてください。\\nお客様を特定する所定の認証方法によりログインされた場合には、当社は、当該お客様ご自身によるご利用であるとみなします。サービスの利用などによって料金が発生した場合には、当該お客様に課金いたします。\\n第3条（プライバシー ポリシー）\\nKinWork の（プライバシーポリシー）では、本サービスの利用におけるユーザーの個人データの取り扱いとプライバシーの保護について記載しています。ユーザーは、本サービスを利用することにより、KinWork の（プライバシーポリシー）に従って、KinWork がユーザーの個人データを利用できることに同意することになります。\\n第4条（本サービス内のユーザーのコンテンツ）\\n本サービスの一部では、ユーザーがコンテンツをアップロード、提供、保存、送信、または受信することができます。ユーザーは、そのコンテンツに対して保有する知的財産権を引き続き保持します。つまり、ユーザーのものは、そのままユーザーが所有します。\\n第5条（本サービスの変更または終了）\\nKinWork は、常に本サービスの変更および改善を行っています。KinWork は、機能性や機能の追加や削除を行うことができ、本サービス全体を一時停止または終了することができます。 それによりお客様や第三者が損害を被った場合でも当社は一切の責任を負いかねます。\\nユーザーはいつでも本サービスの利用を終了することができます。KinWork もいつでも、ユーザーに対する本サービスの提供を停止し、または、本サービスに対する制限を追加または新規に設定することができます。\\nKinWork は、ユーザーが自身のデータを所有し、そのデータにユーザーが常にアクセスできるようにすることが重要であると考えています。KinWork が本サービスを中断する場合、合理的に可能なときには、KinWork はユーザーに対して、合理的な事前の通知を行い、ユーザーが本サービスから情報を取得する機会を提供します。\\n第6条（ソーシャルボタンのご利用について）\\nサイトの一部には外部サイトと連携するソーシャルボタンを設置しております。ご利用にあたっては、サービス提供元の規定が適用されます。\\n第7条（保証）\\nKinWork は、商業上合理的な水準の技術および注意のもとに本サービスを提供し、ユーザーに本サービスの利用を楽しんでいただくことを望んでいますが、本サービスについて約束できないことがあります。\\n本規約または追加規定に明示的に規定されている場合を除き、KinWork またはそのサプライヤーもしくはディストリビューターのいずれも、本サービスについて具体的な保証を行いません。たとえば KinWork は、本サービス内のコンテンツ、本サービスの特定の機能、その信頼性、利用可能性、またはユーザーのニーズに応える能力について、何らの約束もしません。本サービスは「現状有姿で」提供されます。\\n一部の法域においては、商品性、特定の目的への適合性、および権利の侵害がないことに関する黙示保証などの保証が認められることがあります。法律で許されている範囲内で、KinWork はすべての保証を排除します。\\n第8条（お客様へのご連絡手段）\\n当社からのご連絡、通知は、当社所定のサイトへの掲載又はメールを送信することをもって行うことします。但し、当社が必要と判断した場合は、郵便や電話など他の手段も使用する場合があります。\\n第9条（免責事項）\\n本サービスのご利用は、お客様ご自身の判断と責任において、下記の項目を承諾した上でご利用いただくものとします。\\n1.当社は、情報の取り扱いを充分に注意し、確認した上で掲載しておりますが、いかなる状況においても、またいかなる人物または法人に対しても、以下の各号について一切の責任を負いかねます。\\n　I.本サービスの提供する一切の情報の入手及び利用の結果または利用不可能により生じた損失または損害（全部または一部を問いません）。\\n　II.本サービスに含まれる一切の情報の誤り（当社の過失の有無を問いません）により生じた損失または損害（全部または一部を問いません）。\\n　III.本サービスの提供する情報がリンク切れ、または時間の経過に伴う情報の差異、またはその他の状況により生じた損失または損害（全部または一部を問いません）。\\n2.KinWorkおよびそのアフィリエイト、またそれらの第三者ライセンサーは、ユーザーによる本サイトの利用または誤用、または信頼に起因する請求について、いかなるユーザーに対しても一切責任を負いません。\\n3.本サービス中に掲載される広告（その形態は問いません）や本サービス中にリンクされた外部サイトについて、当社は、その内容の正確性、速報性、完全性、または合目的性等について、いかなる保証（明示的、黙示的を問いません）もいたしません。また、お客様や第三者に損害や不利益が発生した場合でも、当社は一切の責任を負いかねます。お客様は、広告内容及びリンクされた外部サイトに関してもご自身の判断と責任でご利用ください。\\n4.上記を制限することなく、いかなる状況下においても、KinWorkおよびそのアフィリエイト、またそれらの第三者ライセンサーは、天災、外圧、またはその合理的な支配を超えるものに直接的または間接的に起因する遅延や不履行に対して一切責任を負いません。\\n第10条（本規約について）\\nKinWork は、たとえば、法律の改正または本サービスの変更を反映するために、本サービスに適用する本規約または特定の本サービスについての追加規定を修正することがあります。ユーザーは定期的に本規約をご確認ください。KinWork は、本規約の修正に関する通知をこのページに表示します。本サービスに関する修正された規定に同意しないユーザーは、本サービスの利用を停止してください。\\n本規約と追加規定との間に矛盾が存在する場合には、追加規定が本規約に優先します。\\nユーザーが本規約を遵守しない場合に、KinWork が直ちに法的措置を講じないことがあったとしても、そのことによって、KinWork が有している権利（たとえば、将来において、法的措置を講じる権利）を放棄しようとしていることを意味するものではありません。\\n第11条（準拠法、裁判管轄）\\n本規約は、日本法に基づき解釈されるものとします。本規約に関して訴訟の必要が生じた場合には、訴額に応じて東京簡易裁判所または東京地方裁判所を第一審の専属的合意管轄裁判所とします。</string>
+    <string name="privacypolicy">プライバシー ポリシー</string>
+    <string name="contentsprivacypolicy">KinWork では、個人情報へのアクセスを提供された際に、ユーザーおよびお客様から寄せられた信頼を重視しています。本プライバシー規約では、以下の個人情報保護方針を定め、当社で勤務するすべての役職員に周知し、この方針にしたがった個人情報の適切な保護に努めます。\\n1. パーソナルデータの取得\\nKinWorkは、以下の場合にパーソナルデータを取得させていただきます。\\n（1）端末操作を通じてお客様にご入力いただく場合\\n（2）お客様から直接または書面等の媒体を通じてご提供いただく場合\\n（3）お客様によるサービス、商品、広告、コンテンツ（以下これらをまとめて「サービス等」（*）といいます）の利用・閲覧に伴って自動的に送信される場合\\n（4）上記の他、お客様の同意を得た第三者から提供を受ける場合など、適法に取得する場合\\n* サービス等は、個人のお客様向けのサービス、商品、広告、コンテンツに限りません。\\n2. パーソナルデータの利用目的\\n当社は、以下のことを行うためパーソナルデータを利用させていただきます。\\n（1）お客様に適したサービス等をご提供するため\\n（2）お客様からのお問い合わせに対応するため\\n（3）代金請求、ポイント付与等をするため\\n（4）お客様にサービス等に関するお知らせをするため\\n（5）サービス等を安全にご提供するため。これには、利用規約に違反しているお客様を発見して当該お客様に通知をしたり、サービス等を悪用した詐欺や不正アクセスなどの不正行為を調査・検出・予防したり、これらに対応することが含まれます\\n（6）サービス等の改善および新たなサービス等を検討するため\\n（7）サービス等のご利用状況等を調査、分析するため\\n上記にかかわらず、KinWorkが第三者からパーソナルデータの提供を受ける際に、当該パーソナルデータの利用目的について別途定めがある場合は、その定めに従い当該パーソナルデータを利用します。\\n3. 個人情報の提供の同意\\n法令で認められた場合のほか、お客様の同意をいただいた場合は、KinWorkは採用企業等の第三者に対して個人情報を提供させていただきます。\\n4. 安全管理の実施\\nKinWorkは、個人情報の正確性及び安全性を確保するため、想定されるリスクに見合う合理的な対策として、個人情報へのアクセス管理、個人情報の持ち出し手段の制限、外部からの不正アクセス防止策等を実施し、個人情報の漏洩、滅失又は毀損の防止に努めます。これらの安全策は定期的に見直すとともに、是正を行います。\\n5. パーソナルデータに関する開示等、苦情および相談への対応\\nKinWorkは、個人情報に関して本人から自己の情報の開示、訂正・追加・削除、または利用若しくは提供の拒否、並びに苦情及び相談の申し出を受けた場合、適切な本人確認を実施した上、すみやかに対応します。</string>
+    <string name="Termsofservice_title">KinWork へようこそ","第1条（本サービスのご利用）","第2条（ユーザーの KinWork アカウント）","第3条（プライバシー ポリシー）","第4条（本サービス内のユーザーのコンテンツ）","第5条（本サービスの変更または終了）","第6条（ソーシャルボタンのご利用について）","第7条（保証）","第8条（お客様へのご連絡手段）","第9条（免責事項）","第10条（本規約について）","第11条（準拠法、裁判管轄）</string>
+    <string name="privacypolicy_title">1. パーソナルデータの取得","2. パーソナルデータの利用目的","3. 個人情報の提供の同意","4. 安全管理の実施","5. パーソナルデータに関する開示等、苦情および相談への対応</string>
+    <string name="welcometoKinwork">KinWork へようこそ</string>
+
+    <!-- Strings related to Apply -->
+    <string name="employmentstatus">正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
+    <string name="salary_type"> ,月給,年給,周給,日給,時給</string>
+    <string name="SearchResults">検索結果</string>
+    <string name="mylist">マイリスト</string>
+    <string name="Enteredjob">Enteredjob</string>
+    <string name="jobinformation">求人情報</string>
+    <string name="detailedinformation">求人詳細</string>
+    <string name="sendanemailtocompany">会社へメールを送信する</string>
+    <string name="checkloginstatus">未ログインです。\nログイン画面に遷移しますか？</string>
+    <string name="Yes">はい</string>
+    <string name="Apply">Apply</string>
+    <string name="Activity">Activity</string>
+    <string name="Cancel">キャンセル</string>
+
+    <!-- Strings related to Basicinfoedit -->
+    <string name="sexArry">未選択,男,女</string>
+    <string name="profilechange">個人情報編集</string>
+    <string name="personalsettings">個人設定</string>
+    <string name="slname">姓を入力してください。</string>
+    <string name="sfname">名を入力してください。</string>
+    <string name="slname_kana">姓（カタカナ）を入力してください</string>
+    <string name="sfname_kana">名（カタカナ）を入力してください</string>
+    <string name="selectedFruitIndex">性別を選択してください。</string>
+    <string name="birthdayselect">生年月日を選択してください。</string>
+    <string name="scountry">国籍を入力してください。</string>
+    <string name="spostalcode">郵便番号を入力してください。</string>
+    <string name="sprefectures">都道府県を入力してください。</string>
+    <string name="smunicipality">市区町村を入力してください。</string>
+    <string name="stown">町目番地を入力してください。</string>
+    <string name="sphone">電話番号を入力してください。</string>
+    <string name="alertdialog">未来の年月を選択できません。</string>
+    <string name="formatter">yyyy-MM-dd</string>
+    <string name="file">file</string>
+    <string name="data">data</string>
+    <string name="processResult">processResult</string>
+    <string name="message">message</string>
+    <string name="returnData">returnData</string>
+    <string name="showErrors">fieldErrors</string>
+    <string name="add_1">add_1</string>
+    <string name="add_2">add_2</string>
+    <string name="add_3">add_3</string>
+    <string name="add_4">add_4</string>
+    <string name="first_name">first_name</string>
+    <string name="last_name">last_name</string>
+    <string name="first_name_kana">first_name_kana</string>
+    <string name="last_name_kana">last_name_kana</string>
+    <string name="post_code">post_code</string>
+    <string name="phone_number">phone_number</string>
+    <string name="act">act</string>
+
+    <!-- Strings related to Bootanimation -->
+    <string name="Initial">Initial</string>
+    <string name="Information">Information</string>
+    <string name="BootanimationActivity">BootanimationActivity</string>
+    <string name="Result">Result</string>
+    <string name="Information_Name_aesKey">aesKey</string>
+    <string name="Information_Name_deviceId">deviceId</string>
+    <string name="id">id</string>
+    <string name="user_id">user_id</string>
+    <string name="birthday">birthday</string>
+    <string name="sex_div">sex_div</string>
+    <string name="country">country</string>
+    <string name="Resumes">Resumes</string>
+    <string name="errorCode">errorCode</string>
+    <string name="resume_name">resume_name</string>
+    <string name="url">url</string>
+    <string name="itude">itude</string>
+    <string name="key">key</string>
+
+    <!-- Strings related to Changepw -->
+    <string name="password">パスワード</string>
+    <string name="Spannable">確認のためもう一度、入力してください</string>
+    <string name="userid">userid</string>
+    <string name="token">token</string>
+
+    <!-- Strings related to Contact -->
+    <string name="Dialog">Dialog</string>
+    <string name="other">other</string>
+    <string name="MyMail">MyMail</string>
+    <string name="SnotReadedCount">notReadedCount</string>
+    <string name="employer_user_id">employer_user_id</string>
+    <string name="employer_user_name">employer_user_name</string>
+    <string name="employer_email">employer_email</string>
+    <string name="mail_title">mail_title</string>
+    <string name="mail_content">mail_content</string>
+    <string name="send_time">send_time</string>
+    <string name="Act">Act</string>
+    <string name="Contact">Contact</string>
+    <string name="ID">ID</string>
+    <string name="company_name">company_name</string>
+    <string name="mailaddress">mailaddress</string>
+
+    <!-- Strings related to ContactDialog -->
+    <string name="tv_allEmail">tv_allEmail</string>
+    <string name="tv_sendEmail">tv_sendEmail</string>
+    <string name="tv_ReceptionEmail">tv_ReceptionEmail</string>
+    <string name="tvbacktitle">メール一覧</string>
+    <string name="name">name</string>
+    <string name="isReaded">isReaded</string>
+    <string name="SendMeg">SendMeg</string>
+    <string name="PendingMail">PendingMail</string>
+    <string name="is_readed">is_readed</string>
+    <string name="direction">direction</string>
+    <string name="setMessage">そのまま取消でもよろしいでしょうか？</string>
+    <string name="my_mail_id">my_mail_id</string>
+
+    <!-- Strings related to Education -->
+    <string name="status">status</string>
+    <string name="Year">年</string>
+    <string name="Months">月</string>
+    <string name="alertdialog2">未来の年月を選択できません。</string>
+    <string name="alertdialog3">年月選択が不正です。</string>
+    <string name="alertdialog4">学校名を入力してください</string>
+    <string name="deviceid">deviceId</string>
+    <string name="upd">upd</string>
+    <string name="add">add</string>
+    <string name="schoolCareerId">schoolCareerId</string>
+    <string name="School_name">School_name</string>
+    <string name="Degree">Degree</string>
+    <string name="Major_field">Major_field</string>
+    <string name="Start_Y">Start_Y</string>
+    <string name="Start_M">Start_M</string>
+    <string name="End_Y">End_Y</string>
+    <string name="End_M">End_M</string>
+
+    <!-- Strings related to Employment -->
+    <string name="alertdialog5">職業名を入力してください</string>
+    <string name="alertdialog6">会社名を入力してください</string>
+    <string name="alertdialog7">就職期間の終了年月が未来の場合、チェックを入れてください</string>
+    <string name="professionalCareerId">professionalCareerId</string>
+    <string name="jobName">jobName</string>
+    <string name="Companyname">Companyname</string>
+    <string name="CheckBox">CheckBox</string>
+
+    <!-- Strings related to MainKinWork -->
+    <string name="login">ログイン中…</string>
+    <string name="error">エラー</string>
+    <string name="mailinput">メールアドレスを入力してください。</string>
+    <string name="alertdialog8">送信されました。ご確認ください。</string>
+    <string name="User">User</string>
+    <string name="UserToken">UserToken</string>
+    <string name="alertdialog9">本アプリは個人ユーザー向けのため、企業ユーザーはウェブ側でご利用ください。</string>
+
+    <!-- Strings related to MakeUser -->
+    <string name="buildermessage">新規作成をやめますか？</string>
+    <string name="sendValidateEmail">sendValidateEmail</string>
+    <string name="checkValidateCode">checkValidateCode</string>
+    <string name="mailaddressnihongo">メールアドレス</string>
+    <string name="bubutton">検証コードを取得</string>
+    <string name="tvinputA">検証コードを入力してください。</string>
+    <string name="bubutton2">bubutton2</string>
+    <string name="Spannableee">検証コード</string>
+    <string name="kakunin">確認</string>
+    <string name="setPassword">setPassword</string>
+    <string name="alertdialog10">利用契約を同意してください。</string>
+    <string name="Agreement">Agreement</string>
+    <string name="fieldErrors">fieldErrors</string>
+    <string name="email">email</string>
+    <string name="emailConfirm">emailConfirm</string>
+    <string name="teiji">提示</string>
+    <string name="kakutei">确定</string>
+
+    <!-- Strings related to Mylist -->
+    <string name="SelectResume">SelectResume</string>
+    <string name="alertdialog11">対象データ存在しません。</string>
+    <string name="likejob">likejob</string>
+    <string name="deletelikejob">deletelikejob</string>
+    <string name="deleteApplyjob">deleteApplyjob</string>
+    <string name="dataList">dataList</string>
+    <string name="SavedLikedJob">SavedLikedJob</string>
+    <string name="pageCount">pageCount</string>
+    <string name="count">count</string>
+    <string name="JobInfo">JobInfo</string>
+    <string name="kinworkTag">kinworkTag</string>
+    <string name="kyuubo">急募</string>
+    <string name="kigenkire">【期限切れ】</string>
+    <string name="title">title</string>
+    <string name="kinmusaki">勤務先：</string>
+    <string name="address">address</string>
+    <string name="contentShorts">contentShorts</string>
+    <string name="kessaibi">掲載日：</string>
+    <string name="releaseDate">releaseDate</string>
+    <string name="kessaikaisha">掲載会社：</string>
+    <string name="company">company</string>
+    <string name="from">from</string>
+    <string name="kyujinsite">求人サイト：</string>
+    <string name="SavedResume">SavedResume</string>
+    <string name="occupation_name">occupation_name</string>
+    <string name="salary_type0">salary_type</string>
+    <string name="salary_from">salary_from</string>
+    <string name="salary_to">salary_to</string>
+    <string name="oobobi">応募日：</string>
+    <string name="created_date">created_date</string>
+    <string name="isFromKinwork">isFromKinwork</string>
+    <string name="job_info_id">job_info_id</string>
+    <string name="buildermessage2">お気に入りを取消しますか？</string>
+    <string name="buildermessage3">この仕事を取消しますか？</string>
+    <string name="employer_id">employer_id</string>
+
+    <!-- Strings related to PersonalSet -->
+    <string name="PreferenceUtils">ll_personalsettings</string>
+    <string name="tvResumeSet">新規作成</string>
+
+    <!-- Strings related to Qualification -->
+    <string name="yyyyMMdd">yyyy-MM-dd</string>
+    <string name="alertdialog12">資格名称を入力してください</string>
+    <string name="qualificationId">qualificationId</string>
+    <string name="Qualification_name">Qualification_name</string>
+    <string name="From_date">From_date</string>
+
+    <!-- Strings related to Resume -->
+    <string name="Loading">読み込み中···</string>
+    <string name="editprofile">履歴書編集</string>
+    <string name="edu">edu</string>
+    <string name="emp">emp</string>
+    <string name="qua">qua</string>
+    <string name="Delalertdialog">この履歴を削除してもよろしいですか？</string>
+    <string name="ResumeName">ResumeName</string>
+    <string name="employment">employment</string>
+    <string name="education">education</string>
+    <string name="qualification">qualification</string>
+    <string name="addedResume">addedResume</string>
+    <string name="resumeInfo">resumeInfo</string>
+    <string name="professionalCareer">professionalCareer</string>
+    <string name="schoolCareer">schoolCareer</string>
+    <string name="seimei_">姓名: </string>
+    <string name="seimei_kana">セイメイ:</string>
+    <string name="seibetsu">性別:</string>
+    <string name="sex_man">男</string>
+    <string name="sex_woman">女</string>
+    <string name="birthday_nihongo">生年月日:</string>
+    <string name="kokuseki">国籍:</string>
+    <string name="address_nihongo">住所: </string>
+    <string name="phone_number_nihongo">電話番号: </string>
+    <string name="Resume">Resume</string>
+    <string name="employment_status">employment_status</string>
+    <string name="job_type_expectations">job_type_expectations</string>
+    <string name="nearest_station">nearest_station</string>
+    <string name="is_moving_ok">is_moving_ok</string>
+    <string name="individual_pr">individual_pr</string>
+    <string name="hoby">hoby</string>
+    <string name="ProfessionalCareer">ProfessionalCareer</string>
+    <string name="shokushuumei">職種名:</string>
+    <string name="kaishamei">会社名:</string>
+    <string name="shuushokukikan">就職期間:</string>
+    <string name="Delalertdialog2">この職歴を削除してもよろしいですか？</string>
+    <string name="SchoolCareer">SchoolCareer</string>
+    <string name="gakkomei">学校名:</string>
+    <string name="gakui">学位:</string>
+    <string name="senkoubunya">専攻分野:</string>
+    <string name="zaigakukikan">在学期間:</string>
+    <string name="Delalertdialog3">この学歴を削除してもよろしいですか？</string>
+    <string name="Qualification">Qualification</string>
+    <string name="shikakumeishou">資格名称:</string>
+    <string name="shutokubi">取得日:</string>
+    <string name="Id_resume">Id_resume</string>
+    <string name="User_id">User_id</string>
+    <string name="Delalertdialog4">この資格を削除してもよろしいですか？</string>
+    <string name="Back">Back</string>
+    <string name="resumeid_1">resumeid_1</string>
+    <string name="resumeid_2">resumeid_2</string>
+    <string name="resumeid_3">resumeid_3</string>
+    <string name="Delalertdialog5">履歴書の作成を中止してよろしいですか？</string>
+    <string name="Delalertdialog6">編集した内容を保存しなくてもよろしいですか？</string>
+    <string name="resume">resume</string>
+
+    <!-- Strings related to Search -->
+    <string name="SearchActivity">SearchActivity</string>
+    <string name="shigotosagasu">仕事を探す</string>
+    <string name="Boot">Boot</string>
+    <string name="clear">clear</string>
+    <string name="UserLogin">UserLogin</string>
+    <string name="tsushinshippai">通信が失敗しました。</string>
+    <string name="address_components">address_components</string>
+    <string name="long_name">long_name</string>
+    <string name="nihon">日本</string>
+    <string name="location">location</string>
+    <string name="yyyyMMddHHmmssSSS">yyyyMMddHHmmssSSS</string>
+    <string name="Latitude">Latitude:</string>
+    <string name="Longtude">Longtude:</string>
+    <string name="keyword">keyword</string>
+    <string name="worklocation">worklocation</string>
+
+    <!-- Strings related to SearchResults-->
+    <string name="Semploymentstatus">すべて,正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
+    <string name="kensaku">検索</string>
+    <string name="kensakukekka">検索結果</string>
+    <string name="job">job</string>
+    <string name="alertdialog13">お気に入り</string>
+    <string name="alertdialog14">保存しました。</string>
+    <string name="alertdialog15">削除しました。</string>
+    <string name="numFound">numFound</string>
+    <string name="pagenation">pagenation</string>
+    <string name="numOfPage">numOfPage</string>
+    <string name="currentPage">currentPage</string>
+    <string name="jobList">jobList</string>
+    <string name="tsushinshierror">通信失敗</string>
+    <string name="ken">件</string>
+    <string name="pagemei">ページ目/</string>
+    <string name="page">ページ</string>
+    <string name="isPaid">isPaid</string>
+    <string name="kinworktag">kinworktag</string>
+    <string name="isLiked">isLiked</string>
+    <string name="highlightKeywords">highlightKeywords</string>
+    <string name="jobId">jobId</string>
+    <string name="contentShortsHighlight">contentShortsHighlight</string>
+    <string name="maehe">＜ 前へ</string>
+    <string name="tsugihe">次へ ＞</string>
+    <string name="leftsearch">leftsearch</string>
+    <string name="theleft">theleft</string>
+    <string name="left">left</string>
+    <string name="right">right</string>
+    <string name="theright">theright</string>
+    <string name="rightsearch">rightsearch</string>
+    <string name="centre">centre</string>
+    <string name="ll_contact">ll_contact</string>
+    <string name="ll_mylist">ll_mylist</string>
+    <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="results">results</string>
+
+    <!-- Strings related to SelectResume -->
+    <string name="Erroralertdialog">応募する前に、履歴書をご作成ください。</string>
+    <string name="SetTitle">への応募の件にて/</string>
+    <string name="SetMeg1">ご担当者様
+</string>
+    <string name="SetMeg2">初めてご連絡させていただきます。
+</string>
+    <string name="SetMeg3">）と申します。
+</string>
+    <string name="SetMeg4">キンワークにて貴社の求人を拝見いたしました。
+</string>
+    <string name="SetMeg5">かねてより貴社の事業内容に魅力を感じておりましたので、
+</string>
+    <string name="SetMeg6">このたび応募させていただきました。
+</string>
+    <string name="SetMeg7">ぜひ一度、面接の機会をいただきたく思います。
+</string>
+    <string name="SetMeg8">よろしくお願い申し上げます。</string>
+    <string name="back">back</string>
+    <string name="alertdialog16">履歴書を選択してください。</string>
+    <string name="alertdialog17">タイトルを入力してください。</string>
+    <string name="alertdialog18">送信内容を入力してください。</string>
+    <string name="Application">Application</string>
+    <string name="errormeg">既にこの仕事を応募しました。</string>
+    <string name="sakusei">作成する</string>
+
+
+    <!-- Strings related to Web -->
+    <string name="kensakuchu">検索中···</string>
+
     <string-array name="employmentstatus">
         <item>雇用形態を選択してください</item>
         <item>ボランティア</item>

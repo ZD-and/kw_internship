@@ -77,7 +77,7 @@ public class QualificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qualification);
         intent = getIntent();
-        status = intent.getStringExtra("status");
+        status = intent.getStringExtra(getString(R.string.status));
         myApplication = (MyApplication) getApplication();
         IresumeIdflg = myApplication.getResumeId();
         resumestatus = myApplication.getresume_status();
@@ -90,7 +90,14 @@ public class QualificationActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -165,13 +172,13 @@ public class QualificationActivity extends AppCompatActivity {
                                     (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
                                     ) {
                                 tvQualificationstart.setText("");
-                                alertdialog("未来の年月を選択できません。");
+                                alertdialog(getString(R.string.alertdialog2));
                             } else {
                                 Start_mYear = startYear;
                                 Start_mMonth = startMonthOfYear + 1;
                                 Start_mDay = startDayOfMonth;
                                 String Startdate = String.valueOf(startYear) + "-" + String.valueOf(startMonthOfYear + 1) + "-" + String.valueOf(startDayOfMonth);
-                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.yyyyMMdd));
                                 ParsePosition pos = new ParsePosition(0);
                                 Date strtodate = formatter.parse(Startdate, pos);
                                 Startdate = formatter.format(strtodate);
@@ -187,7 +194,7 @@ public class QualificationActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -207,13 +214,13 @@ public class QualificationActivity extends AppCompatActivity {
     //内容取得、通信
     public void saveurl() {
         if(etQualificationname.getText().toString().equals("")){
-            alertdialog("資格名称を入力してください");
+            alertdialog(getString(R.string.alertdialog12));
         } else {
             //Json格式转换
             Gson Gson = new Gson();
             PostDate postdate = new PostDate();
             Qualification Qualification = new Qualification();
-            if(status.equals("upd")){
+            if(status.equals(getString(R.string.upd))){
                 Qualification.setId(QualificationId);
             }
             Qualification.setId_resume(resumeId);
@@ -227,13 +234,13 @@ public class QualificationActivity extends AppCompatActivity {
             //AES加密
             String data = AesChnge(AesKey, sdPdata);
             Map<String,String> param = new HashMap<String, String>();
-            if (status.equals("add")){
-                param.put("file",PARAM_add);
-            } else if (status.equals("upd")){
-                param.put("file",PARAM_Upd);
+            if (status.equals(getString(R.string.add))){
+                param.put(getString(R.string.file),PARAM_add);
+            } else if (status.equals(getString(R.string.upd))){
+                param.put(getString(R.string.file),PARAM_Upd);
             }
-            param.put("data",data);
-            param.put("deviceid",deviceId);
+            param.put(getString(R.string.data),data);
+            param.put(getString(R.string.deviceid),deviceId);
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
@@ -260,9 +267,9 @@ public class QualificationActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
-            String deviceId = map.get("deviceid");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            String deviceId = map.get(getString(R.string.deviceid));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -279,11 +286,11 @@ public class QualificationActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean("processResult");
+                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     if(processResult == true) {
                         NewIntent();
                     } else {
-                        alertdialog(obj.getString("message"));
+                        alertdialog(obj.getString(getString(R.string.message)));
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -296,10 +303,10 @@ public class QualificationActivity extends AppCompatActivity {
 
     //创建、更新判定
     public void getstatus(String data){
-        if(data.equals("upd")){
-            QualificationId = intent.getStringExtra("qualificationId");
-            String qualification_name = intent.getStringExtra("Qualification_name");
-            String From_date = intent.getStringExtra("From_date");
+        if(data.equals(getString(R.string.upd))){
+            QualificationId = intent.getStringExtra(getString(R.string.qualificationId));
+            String qualification_name = intent.getStringExtra(getString(R.string.Qualification_name));
+            String From_date = intent.getStringExtra(getString(R.string.From_date));
             etQualificationname.setText(qualification_name);//資格名
             if(From_date.length() > 0){
                 Start_mYear = Integer.parseInt(From_date.substring(0,4));

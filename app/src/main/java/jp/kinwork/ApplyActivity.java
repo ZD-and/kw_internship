@@ -70,14 +70,17 @@ public class ApplyActivity extends AppCompatActivity {
     private ImageView ivmylist;
     private TextView tvmylist;
 
-    private String[] employmentstatus = new String[]{"正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
-    private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
+    private String[] employmentstatus;
+    private String[] salary_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        employmentstatus = new String[]{getString(R.string.employmentstatus)};
+        salary_type = new String[]{getString(R.string.salary_type)};
+
         Initialization();
     }
 
@@ -126,9 +129,9 @@ public class ApplyActivity extends AppCompatActivity {
         Act = mMyApplication.getAct();
         JobInfo = mMyApplication.getjobinfo();
         jobflg = mMyApplication.getMyjob();
-        if(Act.equals("Search")){
-            tvback.setText("検索結果");
-            tvbackdummy.setText("検索結果");
+        if(Act.equals(getString(R.string.Search))){
+            tvback.setText(getString(R.string.SearchResults));
+            tvbackdummy.setText(getString(R.string.SearchResults));
             Ivsearch = (ImageView) findViewById(R.id.iv_b_search);
             Ivsearch.setImageResource(R.mipmap.blue_search);
             tvsearch = (TextView) findViewById(R.id.tv_b_search);
@@ -140,8 +143,8 @@ public class ApplyActivity extends AppCompatActivity {
             }
 
         } else {
-            tvback.setText("マイリスト");
-            tvbackdummy.setText("マイリスト");
+            tvback.setText(getString(R.string.mylist));
+            tvbackdummy.setText(getString(R.string.mylist));
             ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
             tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
             ivmylist.setImageResource(R.mipmap.blue_mylist);
@@ -152,13 +155,13 @@ public class ApplyActivity extends AppCompatActivity {
                 jobflg = mMyApplication.getMApply(3);
             }
         }
-        if(jobflg.equals("Enteredjob")){
-            tvbacktitle.setText("求人情報");
+        if(jobflg.equals(getString(R.string.Enteredjob))){
+            tvbacktitle.setText(getString(R.string.jobinformation));
         } else {
-            tvbacktitle.setText("求人詳細");
+            tvbacktitle.setText(getString(R.string.detailedinformation));
         }
-        bucreatetop.setText("会社へメールを送信する");
-        bucreateBottom.setText("会社へメールを送信する");
+        bucreatetop.setText(getString(R.string.sendanemailtocompany));
+        bucreateBottom.setText(getString(R.string.sendanemailtocompany));
         Log.d("jobflg", jobflg);
         Log.d("JobInfo", JobInfo);
         setjobinfo(JobInfo);
@@ -178,24 +181,24 @@ public class ApplyActivity extends AppCompatActivity {
 
         } else {
             TextView msg = new TextView(this);
-            msg.setText("未ログインです。\nログイン画面に遷移しますか？");
+            msg.setText(getString(R.string.checkloginstatus));
             msg.setGravity(Gravity.CENTER);
             msg.setTextSize(15);
             msg.setTextColor(Color.parseColor("#000000"));
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("").setView(msg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+            builder.setTitle("").setView(msg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //确定按钮的点击事件
-                    mPreferenceUtils.setsaveid("Apply");
+                    mPreferenceUtils.setsaveid(getString(R.string.Apply));
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ApplyActivity.this, MainKinWork.class);
-                    intent.putExtra("Activity","Apply");
+                    intent.putExtra(getString(R.string.Activity),getString(R.string.Apply));
                     startActivity(intent);
 
                 }
-            }).setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+            }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //取消按钮的点击事件
@@ -208,7 +211,7 @@ public class ApplyActivity extends AppCompatActivity {
     public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        if(Act.equals("Search")){
+        if(Act.equals(getString(R.string.Search))){
             mMyApplication.setSApply("0",0);
             intent.setClass(ApplyActivity.this, SearchResultsActivity.class);
         } else {
@@ -285,8 +288,8 @@ public class ApplyActivity extends AppCompatActivity {
         switch (View.getId()) {
             //检索画面に移動
             case R.id.ll_b_search:
-                mMyApplication.setAct("Search");
-                if(! Act.equals("Search")){
+                mMyApplication.setAct(getString(R.string.Search));
+                if(! Act.equals(getString(R.string.Search))){
                     mMyApplication.setMApply("1",0);
                     mMyApplication.setMApply(JobInfo,1);
                     mMyApplication.setMApply(Act,2);
@@ -310,7 +313,7 @@ public class ApplyActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_contact:
-                if(Act.equals("Search")){
+                if(Act.equals(getString(R.string.Search))){
                     mMyApplication.setSApply("1",0);
                     mMyApplication.setSApply(JobInfo,1);
                     mMyApplication.setSApply(Act,2);
@@ -329,7 +332,7 @@ public class ApplyActivity extends AppCompatActivity {
                 break;
             case R.id.ll_b_mylist:
                 mMyApplication.setAct("Apply");
-                if(Act.equals("Search")){
+                if(Act.equals(getString(R.string.Search))){
                     mMyApplication.setSApply("1",0);
                     mMyApplication.setSApply(JobInfo,1);
                     mMyApplication.setSApply(Act,2);
@@ -348,7 +351,7 @@ public class ApplyActivity extends AppCompatActivity {
                 break;
             //個人設定画面に移動
             case R.id.ll_b_personalsettings:
-                if(Act.equals("Search")){
+                if(Act.equals(getString(R.string.Search))){
                     mMyApplication.setSApply("1",0);
                     mMyApplication.setSApply(JobInfo,1);
                     mMyApplication.setSApply(Act,2);

@@ -105,7 +105,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String resume_status;
     private String resume_Num;
 
-    private String[] sexArry = new String[]{ "未選択","男","女"};// 性别选择
+    private String[] sexArry = new String[]{"未選択", "男", "女"};// 性别选择
     private String[] CountryData;
 
     private int mYear, mMonth, mDay;
@@ -132,10 +132,20 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
+
+
 
     //初期化
     public void Initialization(){
@@ -143,7 +153,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         tvback             = (TextView) findViewById(R.id.tv_back);
         tvbacktitle        = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy        = (TextView) findViewById(R.id.tv_back_dummy);
-        tvbacktitle.setText("個人情報編集");
+        tvbacktitle.setText(getString(R.string.profilechange));
 
 //        ViewGroup.LayoutParams params = slBasicinfo.getLayoutParams();
 //        ViewGroup.MarginLayoutParams marginParams = null;
@@ -151,8 +161,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 //        View include_title = (View) findViewById(R.id.include_b_title);
 
 //        if(Act.equals("person")){
-        tvback.setText("個人設定");
-        tvbackdummy.setText("個人設定");
+        tvback.setText(getString(R.string.personalsettings));
+        tvbackdummy.setText(getString(R.string.personalsettings));
 //        }
 //        else {
 //            tvback.setText("履歴書");
@@ -268,6 +278,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         CountryData= res.getStringArray(R.array.CountryData);
         resume_status = mMyApplication.getresume_status();
         resume_Num = mMyApplication.getResumeId();
+
+        //backボタン
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back(v);
+            }
+        });
     }
 
     public void setHW(EditText name,int w,String data){
@@ -301,40 +319,40 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         PdataUserBasic.setUser_id(userId);
         if(slname.length() ==0 ){
-            alertdialog("姓を入力してください。");
+            alertdialog(getString(R.string.slname));
         }
         else if(sfname.length() ==0 ){
-            alertdialog("名を入力してください。");
+            alertdialog(getString(R.string.sfname));
         }
         else if(slname_kana.length() ==0 ){
-            alertdialog("姓（カタカナ）を入力してください。");
+            alertdialog(getString(R.string.slname_kana));
         }
         else if(sfname_kana.length() ==0 ){
-            alertdialog("名（カタカナ）を入力してください。");
+            alertdialog(getString(R.string.sfname_kana));
         }
         else if(selectedFruitIndex == 0 || selectedFruitIndex == 3) {
-            alertdialog("性別を選択してください。");
+            alertdialog(getString(R.string.selectedFruitIndex));
         }
         else if(birthday.equals("") ){
-            alertdialog("生年月日を選択してください。");
+            alertdialog(getString(R.string.birthdayselect));
         }
         else if(scountry.length() ==0 ){
-            alertdialog("国籍を入力してください。");
+            alertdialog(getString(R.string.scountry));
         }
         else if(spostalcode.length() ==0 ){
-            alertdialog("郵便番号を入力してください。");
+            alertdialog(getString(R.string.spostalcode));
         }
         else if(sprefectures.length() ==0 ){
-            alertdialog("都道府県を入力してください。");
+            alertdialog(getString(R.string.sprefectures));
         }
         else if(smunicipality.length() ==0 ){
-            alertdialog("市区町村を入力してください。");
+            alertdialog(getString(R.string.smunicipality));
         }
         else if(stown.length() ==0 ){
-            alertdialog("町目番地を入力してください。");
+            alertdialog(getString(R.string.stown));
         }
         else if(sphone.length() ==0 ){
-            alertdialog("電話番号を入力してください。");
+            alertdialog(getString(R.string.sphone));
         }else {
             PdataUserBasic.setFirst_name(sfname);
             PdataUserBasic.setLast_name(slname);
@@ -412,13 +430,13 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 new DatePickerDialog(BasicinfoeditActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
-                                          int startDayOfMonth) {
+                                          int startDayOfMonth,boolean hidetheDay) {
                         if (startYear > sysYear ||
                                 (startYear == sysYear && startMonthOfYear +1  > sysMonth) ||
                                 (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
                         ) {
                             ttbirthday.setText("");
-                            alertdialog("未来の年月を選択できません。");
+                            alertdialog(getString(R.string.alertdialog));
                         } else {
                             mYear = startYear;
                             mMonth = startMonthOfYear + 1;
@@ -431,7 +449,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                             ttbirthday.setText(Startdate);
                         }
                     }
-                }, mYear, mMonth - 1, mDay).show();
+                }, mYear, mMonth - 1, mDay,false).show();
             }
         });
     }
@@ -581,8 +599,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         //Json格式转换并且加密
         String data = JsonChnge(AesKey,sdPdata);
         Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_Address);
-        param.put("data",data);
+        param.put(getString(R.string.file),PARAM_Address);
+        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -609,8 +627,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
-            String file = map.get("file");
-            String data = map.get("data");
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -626,13 +644,20 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean("processResult");
-                    String message = obj.getString("message");
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        String returnData = obj.getString("returnData");
-                        decryptchange(returnData);
+                        if(buttonflg.equals("0")){
+                            String returnData = obj.getString(getString(R.string.returnData));
+                            decryptchange(returnData);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(BasicinfoeditActivity.this, PersonalSetActivity.class);
+                            startActivity(intent);
+                        }
+
                     } else {
-                        showErrors(obj.getString("fieldErrors"));
+                        showErrors(obj.getString(getString(R.string.showErrors)));
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -646,71 +671,58 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
         Log.d("***datas***", datas);
-        if(buttonflg.equals("0")){
-            try {
-                JSONObject obj = new JSONObject(datas);
-                etprefectures.setText(obj.getString("add_1"));
-                etmunicipality.setText(obj.getString("add_2"));
-                ettown.setText(obj.getString("add_3"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent intent = new Intent();
-//            if(Act.equals("person")){
-            intent.setClass(BasicinfoeditActivity.this, PersonalSetActivity.class);
-//            } else {
-//                intent.setClass(BasicinfoeditActivity.this, ResumeActivity.class);
-//                mMyApplication.setresume_status(resume_status);
-//                mMyApplication.setResumeId(resume_Num);
-//            }
-            startActivity(intent);
+        try {
+            JSONObject obj = new JSONObject(datas);
+            etprefectures.setText(obj.getString(getString(R.string.add_1)));
+            etmunicipality.setText(obj.getString(getString(R.string.add_2)));
+            ettown.setText(obj.getString(getString(R.string.add_3)));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
     }
 
     //エラーメッセージを設定
     private void showErrors(String error){
         try {
             JSONObject obj = new JSONObject(error);
-            if(obj.has("first_name")){
-                JSONArray ja = obj.getJSONArray("first_name");
+            if(obj.has(getString(R.string.first_name))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.first_name));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("last_name")){
-                JSONArray ja = obj.getJSONArray("last_name");
+            else if(obj.has(getString(R.string.last_name))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.last_name));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("first_name_kana")){
-                JSONArray ja = obj.getJSONArray("first_name_kana");
+            else if(obj.has(getString(R.string.first_name_kana))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.first_name_kana));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("last_name_kana")){
-                JSONArray ja = obj.getJSONArray("last_name_kana");
+            else if(obj.has(getString(R.string.last_name_kana))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.last_name_kana));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("post_code")){
-                JSONArray ja = obj.getJSONArray("post_code");
+            else if(obj.has(getString(R.string.post_code))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.post_code));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("add_1")){
-                JSONArray ja = obj.getJSONArray("add_1");
+            else if(obj.has(getString(R.string.add_1))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.add_1));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("add_2")){
-                JSONArray ja = obj.getJSONArray("add_2");
+            else if(obj.has(getString(R.string.add_2))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.add_2));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("add_3")){
-                JSONArray ja = obj.getJSONArray("add_3");
+            else if(obj.has(getString(R.string.add_3))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.add_3));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("add_4")){
-                JSONArray ja = obj.getJSONArray("add_4");
+            else if(obj.has(getString(R.string.add_4))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.add_4));
                 alertdialog(ja.getString(0));
             }
-            else if(obj.has("phone_number")){
-                JSONArray ja = obj.getJSONArray("phone_number");
+            else if(obj.has(getString(R.string.phone_number))){
+                JSONArray ja = obj.getJSONArray(getString(R.string.phone_number));
                 alertdialog(ja.getString(0));
             }
 
@@ -722,7 +734,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
@@ -772,12 +784,12 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                mMyApplication.setAct("Search");
+                mMyApplication.setAct(getString(R.string.Search));
                 if(mMyApplication.getSURL(0).equals("0")){
                     if(mMyApplication.getSApply(0).equals("0")){
                         if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(BasicinfoeditActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
+                            intent.putExtra(getString(R.string.act),"");
                         } else {
                             intent.setClass(BasicinfoeditActivity.this, SearchResultsActivity.class);
                         }
@@ -800,7 +812,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             case R.id.ll_b_mylist:
                 Log.d("getMURL", mMyApplication.getMURL(0));
                 Log.d("getMURL", mMyApplication.getMApply(0));
-                mMyApplication.setAct("Apply");
+                mMyApplication.setAct(getString(R.string.Apply));
                 if(mMyApplication.getMURL(0).equals("0")){
                     if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(BasicinfoeditActivity.this, MylistActivity.class);
