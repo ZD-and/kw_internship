@@ -171,7 +171,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         tltvlike.setOnClickListener(Click_getmore);
         tltvEntered.setOnClickListener(Click_getmore);
 
-        tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title);
+        tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title_Top);
         tlliketitle=findViewById(R.id.tl_like_title);
         tlEnteredtitle.setOnClickListener(Click_visibility);
         tlliketitle.setOnClickListener(Click_visibility);
@@ -595,7 +595,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                         }
                     }
                     break;
-                case R.id.tl_Entered_title:
+                case R.id.tl_Entered_title_Top:
                     if (tlEntered.getVisibility() == View.GONE) {
                         tlEntered.setVisibility(View.VISIBLE);
                     } else {
