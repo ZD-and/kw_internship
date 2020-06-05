@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,6 +78,8 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String SetTitle = "";
     private String SetMeg = "";
 
+    private Button application;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +141,12 @@ public class SelectResumeActivity extends AppCompatActivity {
     //初期化
     private void Initialization(){
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.detailedinformation));
         tvbackdummy.setText(getString(R.string.detailedinformation));
@@ -150,6 +159,17 @@ public class SelectResumeActivity extends AppCompatActivity {
         cbresume1 = (CheckBox) findViewById(R.id.cb_resume1);
         cbresume2 = (CheckBox) findViewById(R.id.cb_resume2);
         cbresume3 = (CheckBox) findViewById(R.id.cb_resume3);
+        cbresume1.setOnClickListener(Click_CheckBox);
+        cbresume2.setOnClickListener(Click_CheckBox);
+        cbresume3.setOnClickListener(Click_CheckBox);
+
+        application=findViewById(R.id.bu_Application);
+        application.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Application();
+            }
+        });
         myApplication = (MyApplication) getApplication();
         String flg = myApplication.getMyjob();
         companyname = myApplication.getcompany_name();
@@ -199,36 +219,38 @@ public class SelectResumeActivity extends AppCompatActivity {
     }
 
     //履歴書選択按钮
-    public void Click_CheckBox(View View){
-        switch (View.getId()){
-            case R.id.cb_resume1:
-                cbresumeId = resumeId_1;
-                cbresume1.setChecked(true);
-                cbresume2.setChecked(false);
-                cbresume3.setChecked(false);
-                break;
-            case R.id.cb_resume2:
-                cbresumeId = resumeId_2;
-                cbresume1.setChecked(false);
-                cbresume2.setChecked(true);
-                cbresume3.setChecked(false);
-                break;
-            case R.id.cb_resume3:
-                cbresumeId = resumeId_3;
-                cbresume1.setChecked(false);
-                cbresume2.setChecked(false);
-                cbresume3.setChecked(true);
-                break;
+    private View.OnClickListener Click_CheckBox =new View.OnClickListener() {
+        public void onClick(View View) {
+            switch (View.getId()) {
+                case R.id.cb_resume1:
+                    cbresumeId = resumeId_1;
+                    cbresume1.setChecked(true);
+                    cbresume2.setChecked(false);
+                    cbresume3.setChecked(false);
+                    break;
+                case R.id.cb_resume2:
+                    cbresumeId = resumeId_2;
+                    cbresume1.setChecked(false);
+                    cbresume2.setChecked(true);
+                    cbresume3.setChecked(false);
+                    break;
+                case R.id.cb_resume3:
+                    cbresumeId = resumeId_3;
+                    cbresume1.setChecked(false);
+                    cbresume2.setChecked(false);
+                    cbresume3.setChecked(true);
+                    break;
+            }
         }
-    }
+    };
 
     //返回检索画面
-    public void Click_back(View View){
+    public void Click_back(){
         MoveIntent(getString(R.string.back));
     }
 
     //应聘按钮
-    public void Click_Application(View View){
+    public void Click_Application(){
         if(cbresumeId.equals("")){
             alertdialog(getString(R.string.alertdialog16));
         } else {

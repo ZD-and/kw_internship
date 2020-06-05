@@ -53,7 +53,7 @@
             android:ems="10"
             android:inputType="textPassword"
             android:textSize="15sp"
-            android:text="aaa"
+            android:hint="現在のパスワード"
             android:padding="5dp" />
 
         <TextView
@@ -97,28 +97,27 @@
             android:id="@+id/et_newpwConform"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/ic_shape"
             android:ems="10"
             android:hint="確認のためもう一度、入力してください"
-            android:textSize="15sp"
             android:inputType="textPassword"
             android:padding="5dp"
-            android:text=""/>
+            android:text=""
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/bu_pwc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
             android:layout_marginStart="60dp"
             android:layout_marginTop="60dp"
+            android:layout_marginEnd="60dp"
+            android:backgroundTint="@color/but_blue"
             android:text="パスワード変更"
-            android:textColor="@color/colorLight"
-            android:onClick="Click_changepw"
-            android:backgroundTint="@color/but_blue" />
+            android:textColor="@color/colorLight" />
 
     </LinearLayout>
 <!--    <TextView-->

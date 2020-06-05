@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Button;
 
 import jp.kinwork.Common.MyApplication;
 
@@ -24,6 +25,8 @@ public class AdvancSetActivity extends AppCompatActivity {
     private EditText etaddress;
     private MyApplication myApplication;
 
+    Button Search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +42,18 @@ public class AdvancSetActivity extends AppCompatActivity {
         etaddress = (EditText) findViewById(R.id.et_address);
         tvshowemploymentstatus = (Spinner) findViewById(R.id.tv_show_employmentstatus);
         tvshowannualincome = (Spinner) findViewById(R.id.tv_show_annualincome);
+        Search.findViewById(R.id.button);
+        Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Search();
+            }
+        });
         myApplication = (MyApplication) getApplication();
     }
 
     //菜单栏按钮触发事件
-    public void Click_back(View View){
+    public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.setClass(AdvancSetActivity.this, SearchActivity.class);
@@ -51,7 +61,7 @@ public class AdvancSetActivity extends AppCompatActivity {
     }
 
     //检索结果画面移动
-    public void Click_Search(View View){
+    public void Click_Search(){
         keyword = etJobname.getText().toString();
         address = etaddress.getText().toString();
         employmentStatus = tvshowemploymentstatus.getSelectedItem().toString();

@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 
@@ -56,10 +57,14 @@ public class EducationActivity extends AppCompatActivity {
     private TextView tvMajorfield;
     private TextView tvdateeducation;
 
+    private TextView cancel;
+
     private EditText etDegree;
     private EditText etSchoolname;
     private EditText etMajorfield;
 //    private EditText etSchoollocation;
+
+    private Button save;
 
     private String deviceId;
     private String AesKey;
@@ -94,12 +99,34 @@ public class EducationActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
     //初期化
     public void Initialization(){
+        cancel=findViewById(R.id.bu_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+        save=findViewById(R.id.bu_button);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveurl();
+            }
+        });
+
         tvSchoolname = (TextView) findViewById(R.id.tv_School_name);
         SetStyle(tvSchoolname,"（必須）","0");
         tvDegree = (TextView) findViewById(R.id.tv_Degree);
@@ -158,7 +185,7 @@ public class EducationActivity extends AppCompatActivity {
                 new DatePickerDialog(EducationActivity.this, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
-                                          int startDayOfMonth) {
+                                          int startDayOfMonth,boolean hidetheDay) {
                         if(startYear != 0 && startMonthOfYear != 0){
                             String textString = String.valueOf(startYear) + getString(R.string.Year) + String.valueOf(startMonthOfYear + 1) + getString(R.string.Months);
                             if ((startYear > sysYear) || (startYear == sysYear && startMonthOfYear + 1 >= sysMonth)) {
@@ -173,7 +200,7 @@ public class EducationActivity extends AppCompatActivity {
                             tveducationstart.setText("");
                         }
                     }
-                }, Start_mYear, Start_mMonth, 0).show();
+                }, Start_mYear, Start_mMonth, 0,true).show();
             }
         });
     }
@@ -189,7 +216,7 @@ public class EducationActivity extends AppCompatActivity {
                 new DatePickerDialog(EducationActivity.this, 0, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker endDatePicker, int endYear, int endMonthOfYear,
-                                          int endDayOfMonth) {
+                                          int endDayOfMonth,boolean hidetheDay) {
                         if(endYear != 0 && endMonthOfYear != 0){
                             String textString = String.valueOf(endYear) + getString(R.string.Year) + String.valueOf(endMonthOfYear + 1) + getString(R.string.Months);
                             if ((Start_mYear > endYear) || (Start_mYear == endYear && Start_mMonth >= endMonthOfYear + 1)) {
@@ -204,7 +231,7 @@ public class EducationActivity extends AppCompatActivity {
                             tveducationend.setText("");
                         }
                     }
-                }, End_mYear, End_mMonth, 0).show();
+                }, End_mYear, End_mMonth, 0,true).show();
             }
         });
     }
@@ -219,13 +246,9 @@ public class EducationActivity extends AppCompatActivity {
             }
         }).show();
     }
-    //按钮点击触发事件
-    public void bt_Click(View View) {
-        saveurl();
-    }
 
     //关闭，履历书画面
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         NewIntent();
     }
     //内容取得、通信

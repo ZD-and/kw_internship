@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,6 +55,9 @@ public class QualificationActivity extends AppCompatActivity {
     private TextView tvQualificationstart;
     private TextView tvQualificationname;
     private TextView tvdateQualification;
+    private TextView bucancel;
+
+    private Button bu_button;
 
     private String deviceId;
     private String AesKey;
@@ -86,12 +90,35 @@ public class QualificationActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
     //初期化
     private void Initialization(){
+        bucancel=findViewById(R.id.bu_cancel);
+        bucancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_cancel();
+            }
+        });
+        bu_button=findViewById(R.id.bu_button);
+        bu_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt_Click();
+            }
+        });
+
+
         tvQualificationname = (TextView) findViewById(R.id.tv_Qualification_name);
         SetStyle(tvQualificationname,"（必須）","0");
         tvdateQualification = (TextView) findViewById(R.id.tv_date_Qualification);
@@ -176,12 +203,12 @@ public class QualificationActivity extends AppCompatActivity {
     }
 
     //按钮点击触发事件
-    public void bt_Click(View View) {
+    public void bt_Click() {
         saveurl();
     }
 
     //关闭，履历书画面
-    public void Click_cancel(View View){
+    public void Click_cancel(){
         NewIntent();
     }
     //内容取得、通信

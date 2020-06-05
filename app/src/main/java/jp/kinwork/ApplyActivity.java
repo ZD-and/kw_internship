@@ -70,20 +70,29 @@ public class ApplyActivity extends AppCompatActivity {
     private ImageView ivmylist;
     private TextView tvmylist;
 
-    private String[] employmentstatus = new String[]{getString(R.string.employmentstatus)};
-    private String[] salary_type = new String[]{getString(R.string.salary_type)};
+    private String[] employmentstatus;
+    private String[] salary_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        employmentstatus = new String[]{getString(R.string.employmentstatus)};
+        salary_type = new String[]{getString(R.string.salary_type)};
+
         Initialization();
     }
 
     //初期化
     private void Initialization(){
         tvback                    = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tlapplyemploymentstatus   = (TableLayout) findViewById(R.id.tl_apply_employmentstatus);
@@ -101,7 +110,19 @@ public class ApplyActivity extends AppCompatActivity {
         tvapplytreatment          = (TextView) findViewById(R.id.tv_apply_treatment       );
         tvapplyOther              = (TextView) findViewById(R.id.tv_apply_Other           );
         bucreatetop                  = (Button) findViewById(R.id.bu_create_top);
+        bucreatetop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_selectresume();
+            }
+        });
         bucreateBottom                  = (Button) findViewById(R.id.bu_create_Bottom);
+        bucreateBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_selectresume();
+            }
+        });
         mPreferenceUtils = new PreferenceUtils(ApplyActivity.this);
         UserFlg                   = mPreferenceUtils.getUserFlg();
         mMyApplication = (MyApplication) getApplication();
@@ -146,7 +167,7 @@ public class ApplyActivity extends AppCompatActivity {
         setjobinfo(JobInfo);
     }
 
-    public void Click_selectresume(View View){
+    public void Click_selectresume(){
         mMyApplication.setjobinfo(JobInfo);
         mMyApplication.setJobId(JobId);
         mMyApplication.setcompany_name(tvapplycompanyname.getText().toString());
@@ -187,7 +208,7 @@ public class ApplyActivity extends AppCompatActivity {
     }
 
     //返回检索画面
-    public void Click_back(View View){
+    public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         if(Act.equals(getString(R.string.Search))){

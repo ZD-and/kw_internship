@@ -40,7 +40,7 @@
                 android:text="お名前＜全角＞"
                 android:textColor="@color/colorLight"
                 android:textSize="15sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -493,4 +493,6 @@
         </LinearLayout>
 
     </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 
@@ -56,7 +57,7 @@ public class ChangepwActivity extends AppCompatActivity {
     private String AesKey;
     private String token;
     private MyApplication mMyApplication;
-
+    private Button changePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +70,38 @@ public class ChangepwActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
     public void Initialization(){
         load();
         tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back();
+            }
+        });
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.personalsettings));
         tvbackdummy.setText(getString(R.string.personalsettings));
+
+        changePassword=findViewById(R.id.bu_pwc);
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_changepw();
+            }
+        });
 
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
@@ -169,7 +191,7 @@ public class ChangepwActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void Click_back(View View){
+    public void Click_back(){
         mMyApplication.setpersonalset("0",0);
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -177,7 +199,7 @@ public class ChangepwActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void Click_changepw(View View){
+    public void Click_changepw(){
         passwordOld = etpasswordOld.getText().toString();
         passwordNew = etpasswordNew.getText().toString();
         passwordNewConform = etpasswordNewConform.getText().toString();

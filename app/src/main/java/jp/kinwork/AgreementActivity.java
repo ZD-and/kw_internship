@@ -8,21 +8,24 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 
 import jp.kinwork.Common.MyApplication;
 
-public class AgreementActivity extends AppCompatActivity {
+public class AgreementActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvagreementname;
     private TextView tvagreementcontents;
-    private String termsofservice = getString(R.string.termsofservice);
-    private String contents_Termsofservice = getString(R.string.contentsTermsofservice);
-    private String privacypolicy = getString(R.string.privacypolicy);
-    private String contents_privacypolicy = getString(R.string.contentsprivacypolicy);
+    private String termsofservice;
+    private String contents_Termsofservice;
+    private String privacypolicy;
+    private String contents_privacypolicy;
     private String Agreement = "";
-    private String[] Termsofservice_title = new String[]{getString(R.string.Termsofservice_title)};
-    private String[] privacypolicy_title = new String[]{getString(R.string.privacypolicy_title)};
+    private String[] Termsofservice_title;
+    private String[] privacypolicy_title;
 
+    private Button bu_back;
+    private Button bu_ok;
     private MyApplication mMyApplication;
 
 
@@ -30,10 +33,21 @@ public class AgreementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
+        termsofservice = getString(R.string.termsofservice);
+        contents_Termsofservice = getString(R.string.contentsTermsofservice);
+        privacypolicy = getString(R.string.privacypolicy);
+        contents_privacypolicy = getString(R.string.contentsprivacypolicy);
+        Termsofservice_title = new String[]{getString(R.string.Termsofservice_title)};
+        privacypolicy_title = new String[]{getString(R.string.privacypolicy_title)};
+
         mMyApplication = (MyApplication) getApplication();
         Agreement = mMyApplication.getAgreement();
         tvagreementname = (TextView) findViewById(R.id.tv_agreement_name);
         tvagreementcontents = (TextView) findViewById(R.id.tv_agreement_contents);
+        bu_back=findViewById(R.id.bu_back);
+        bu_ok=findViewById(R.id.bu_ok);
+        bu_back.setOnClickListener(this);
+        bu_ok.setOnClickListener(this);
         String text = "";
         if(Agreement.equals(getString(R.string.termsofservice))){
             tvagreementname.setText(termsofservice);
@@ -47,7 +61,7 @@ public class AgreementActivity extends AppCompatActivity {
         tvagreementcontents.setText(Html.fromHtml(text));
     }
 
-    public void Clike(View View){
+    public void onClick(View View){
         mMyApplication.setAgreement(Agreement);
         switch (View.getId()){
             case R.id.bu_back:

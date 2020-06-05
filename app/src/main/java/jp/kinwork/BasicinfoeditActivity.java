@@ -105,7 +105,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String resume_status;
     private String resume_Num;
 
-    private String[] sexArry = new String[]{getString(R.string.sexArry)};// 性别选择
+    private String[] sexArry = new String[]{"未選択", "男", "女"};// 性别选择
     private String[] CountryData;
 
     private int mYear, mMonth, mDay;
@@ -132,10 +132,20 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
+
+
 
     //初期化
     public void Initialization(){
@@ -268,6 +278,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         CountryData= res.getStringArray(R.array.CountryData);
         resume_status = mMyApplication.getresume_status();
         resume_Num = mMyApplication.getResumeId();
+
+        //backボタン
+        tvback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_back(v);
+            }
+        });
     }
 
     public void setHW(EditText name,int w,String data){
@@ -412,7 +430,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 new DatePickerDialog(BasicinfoeditActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear,
-                                          int startDayOfMonth) {
+                                          int startDayOfMonth,boolean hidetheDay) {
                         if (startYear > sysYear ||
                                 (startYear == sysYear && startMonthOfYear +1  > sysMonth) ||
                                 (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
@@ -424,14 +442,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                             mMonth = startMonthOfYear + 1;
                             mDay = startDayOfMonth;
                             String Startdate = String.valueOf(startYear) + "-" + String.valueOf(startMonthOfYear + 1) + "-" + String.valueOf(startDayOfMonth);
-                            SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.formatter));
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                             ParsePosition pos = new ParsePosition(0);
                             Date strtodate = formatter.parse(Startdate, pos);
                             Startdate = formatter.format(strtodate);
                             ttbirthday.setText(Startdate);
                         }
                     }
-                }, mYear, mMonth - 1, mDay).show();
+                }, mYear, mMonth - 1, mDay,false).show();
             }
         });
     }
@@ -610,7 +628,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
-            String data = map.get(R.string.data);
+            String data = map.get(getString(R.string.data));
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -629,8 +647,15 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        String returnData = obj.getString(getString(R.string.returnData));
-                        decryptchange(returnData);
+                        if(buttonflg.equals("0")){
+                            String returnData = obj.getString(getString(R.string.returnData));
+                            decryptchange(returnData);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(BasicinfoeditActivity.this, PersonalSetActivity.class);
+                            startActivity(intent);
+                        }
+
                     } else {
                         showErrors(obj.getString(getString(R.string.showErrors)));
                     }
@@ -646,27 +671,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
         Log.d("***datas***", datas);
-        if(buttonflg.equals("0")){
-            try {
-                JSONObject obj = new JSONObject(datas);
-                etprefectures.setText(obj.getString(getString(R.string.add_1)));
-                etmunicipality.setText(obj.getString(getString(R.string.add_2)));
-                ettown.setText(obj.getString(getString(R.string.add_3)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent intent = new Intent();
-//            if(Act.equals("person")){
-            intent.setClass(BasicinfoeditActivity.this, PersonalSetActivity.class);
-//            } else {
-//                intent.setClass(BasicinfoeditActivity.this, ResumeActivity.class);
-//                mMyApplication.setresume_status(resume_status);
-//                mMyApplication.setResumeId(resume_Num);
-//            }
-            startActivity(intent);
+        try {
+            JSONObject obj = new JSONObject(datas);
+            etprefectures.setText(obj.getString(getString(R.string.add_1)));
+            etmunicipality.setText(obj.getString(getString(R.string.add_2)));
+            ettown.setText(obj.getString(getString(R.string.add_3)));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
     }
 
     //エラーメッセージを設定

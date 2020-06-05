@@ -121,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:onClick="Click_CheckBox" />
+                       />
 
                     <TextView
                         android:id="@+id/tv_resume1"
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:onClick="Click_CheckBox" />
+                         />
 
                     <TextView
                         android:id="@+id/tv_resume2"
@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:onClick="Click_CheckBox" />
+                        />
 
                     <TextView
                         android:id="@+id/tv_resume3"
@@ -195,7 +195,6 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:backgroundTint="@color/but_blue"
-                    android:onClick="Click_Application"
                     android:text="応募"
                     android:textColor="@color/colorLight" />
             </TableLayout>

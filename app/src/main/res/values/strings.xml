@@ -28,7 +28,7 @@
     <string name="title_edit_resume">履歴書編集</string>
 
     <!-- Strings related to AdvancSet -->
-    <string name="Search">検索</string>
+    <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
 
@@ -155,7 +155,7 @@
     <string name="alertdialog2">未来の年月を選択できません。</string>
     <string name="alertdialog3">年月選択が不正です。</string>
     <string name="alertdialog4">学校名を入力してください</string>
-    <string name="deviceid">deviceid</string>
+    <string name="deviceid">deviceId</string>
     <string name="upd">upd</string>
     <string name="add">add</string>
     <string name="schoolCareerId">schoolCareerId</string>
@@ -172,7 +172,7 @@
     <string name="alertdialog6">会社名を入力してください</string>
     <string name="alertdialog7">就職期間の終了年月が未来の場合、チェックを入れてください</string>
     <string name="professionalCareerId">professionalCareerId</string>
-    <string name="Jobname">Jobname</string>
+    <string name="jobName">jobName</string>
     <string name="Companyname">Companyname</string>
     <string name="CheckBox">CheckBox</string>
 
@@ -347,7 +347,6 @@
     <string name="isLiked">isLiked</string>
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
-    <string name="jobName">jobName</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
     <string name="maehe">＜ 前へ</string>
     <string name="tsugihe">次へ ＞</string>
