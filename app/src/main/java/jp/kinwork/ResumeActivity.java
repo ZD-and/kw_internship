@@ -202,7 +202,15 @@ public class ResumeActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -235,7 +243,7 @@ public class ResumeActivity extends AppCompatActivity {
         bu_info_qualification=findViewById(R.id.bu_info_qualification);
         bu_info_education.setOnClickListener(createListener);
         bu_info_employment.setOnClickListener(createListener);
-        bu_info_employment.setOnClickListener(createListener);
+        bu_info_qualification.setOnClickListener(createListener);
 
 
 
@@ -844,6 +852,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent_qualification.putExtra(getString(R.string.status), getString(R.string.add));
                 startActivity(intent_qualification);
                 break;
+            default:break;
         }
 
         }

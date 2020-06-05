@@ -57,7 +57,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     final static String PARAM_personaInfo = "/MypagesMobile/personalInfo";
     final static String PARAM_personaInfoUpdate = "/MypagesMobile/personalInfoUpdate";
     final static String PARAM_Address = "/CommonMobile/getAddressByPostcode";
-    private ScrollView slBasicinfo;
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
     private TextView tvname;
@@ -74,8 +73,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private TextView ttsex;
     private TextView ttbirthday;
     private TextView ttcountry;
-    private TextView tvdummy;
-    private TextView tvkanadummy;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
@@ -101,9 +98,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String basicInfo;
     private String buttonflg;
     private String BasicinfoData;
-    private String Act;
-    private String resume_status;
-    private String resume_Num;
 
     private String[] sexArry = new String[]{"未選択", "男", "女"};// 性别选择
     private String[] CountryData;
@@ -122,12 +116,41 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_basicinfoedit);
         Intent intent = getIntent();
-        Act = intent.getStringExtra("Act");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
         showBirthday();
         showSex();
         showCountry();
         setBasicinfo();
+        etlname.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = etlname.getMeasuredWidth();
+                String sfname = "";
+                String slname = "";
+                String sfname_kana = "";
+                String slname_kana = "";
+                if(mMyApplication.getpersonalset(0).equals("0")){
+                    sfname = mMyApplication.getfirst_name();//必須項目_名
+                    slname = mMyApplication.getlast_name();//必須項目_姓
+                    sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
+                    slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
+                } else {
+                    sfname = mMyApplication.getpersonalset(1);
+                    slname = mMyApplication.getpersonalset(2);
+                    sfname_kana = mMyApplication.getpersonalset(3);
+                    slname_kana = mMyApplication.getpersonalset(4);
+                }
+                setHW(etfname,width,sfname);
+                setHW(etlname,width,slname);
+                setHW(etfname_kana,width,sfname_kana);
+                setHW(etlname_kana,width,slname_kana);
+            }
+        });
     }
 
     @Override
@@ -149,7 +172,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     //初期化
     public void Initialization(){
-        slBasicinfo        = (ScrollView) findViewById(R.id.sl_Basicinfo);
         tvback             = (TextView) findViewById(R.id.tv_back);
         tvbacktitle        = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy        = (TextView) findViewById(R.id.tv_back_dummy);
@@ -176,8 +198,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
-        tvdummy            = (TextView) findViewById(R.id.tv_dummy);
-        tvkanadummy        = (TextView) findViewById(R.id.tv_kana_dummy);
 
         tvname             = (TextView) findViewById(R.id.tv_name);
         tvphonetic         = (TextView) findViewById(R.id.tv_phonetic);
@@ -238,47 +258,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         userId = mPreferenceUtils.getuserId();
         token = mPreferenceUtils.gettoken();
         basicInfo = mPreferenceUtils.getbasicInfoID();
-
-        tvdummy.post(new Runnable() {
-            @Override
-            public void run() {
-                int Width = tvdummy.getMeasuredWidth();
-                String sfname = "";
-                String slname = "";
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    sfname = mMyApplication.getfirst_name();//必須項目_名
-                    slname = mMyApplication.getlast_name();//必須項目_姓
-                } else {
-                    sfname = mMyApplication.getpersonalset(1);
-                    slname = mMyApplication.getpersonalset(2);
-                }
-                setHW(etfname,Width,sfname);
-                setHW(etlname,Width,slname);
-            }
-        });
-
-        tvkanadummy.post(new Runnable() {
-            @Override
-            public void run() {
-                int Width = tvkanadummy.getMeasuredWidth();
-                String sfname_kana = "";
-                String slname_kana = "";
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
-                    slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
-                } else {
-                    sfname_kana = mMyApplication.getpersonalset(3);
-                    slname_kana = mMyApplication.getpersonalset(4);
-                }
-                setHW(etfname_kana,Width,sfname_kana);
-                setHW(etlname_kana,Width,slname_kana);
-            }
-        });
         Resources res = getResources();
         CountryData= res.getStringArray(R.array.CountryData);
-        resume_status = mMyApplication.getresume_status();
-        resume_Num = mMyApplication.getResumeId();
-
         //backボタン
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,9 +270,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     }
 
     public void setHW(EditText name,int w,String data){
-        int Width = w / 2;
         ViewGroup.LayoutParams lp = name.getLayoutParams();
-        lp.width = Width;
+        lp.width = w;
         name.setLayoutParams(lp);
         name.setText(data);
     }

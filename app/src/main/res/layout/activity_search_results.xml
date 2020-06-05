@@ -227,7 +227,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@color/backgroundblue"
                     android:backgroundTint="@color/backgroundblue"
                     android:gravity="center_horizontal"

@@ -28,7 +28,7 @@
     <string name="title_edit_resume">履歴書編集</string>
 
     <!-- Strings related to AdvancSet -->
-    <string name="Search">検索</string>
+    <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
 
