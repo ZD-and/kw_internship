@@ -54,6 +54,8 @@ public class PostDate {
     private String kinworkTag;
     private String contentShorts;
     private String contentShortsHighlight;
+    private String order;
+    private String flag;
 
     private LinkedList<String> details = new LinkedList<String>();
 
@@ -243,5 +245,11 @@ public class PostDate {
     }
     public void setdetails(int i,String value) {
         this.details.add(i,value);
+    }
+    public void setOrder(String order) {
+        this.order = order;
+    }
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }
