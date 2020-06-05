@@ -232,12 +232,12 @@
                     android:backgroundTint="@color/backgroundblue"
                     android:gravity="center_horizontal"
                     android:stretchColumns="1,9"
+                    android:shrinkColumns="2,3,4,5,6,7,8"
                     >
 
                     <TableRow>
                         <Button
                             android:id="@+id/tl_tr_bu_Before"
-                            android:layout_height="wrap_content"
                             android:text="＜ 前へ"
                             />
 
@@ -248,8 +248,6 @@
 
                         <Button
                             android:id="@+id/tl_tr_bu_leftsearch"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -259,8 +257,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theleft"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -268,8 +264,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_left"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -277,8 +271,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_centre"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -287,8 +279,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_right"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -296,8 +286,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_theright"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
@@ -305,8 +293,6 @@
                         <Button
                             android:id="@+id/tl_tr_bu_rightsearch"
                             android:text="0"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             />
