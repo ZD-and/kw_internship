@@ -45,11 +45,11 @@
                 android:textSize="15sp" />
 
             <!--填充用star-->
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                android:background="@drawable/ic_shape" />
+<!--            <EditText-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:visibility="gone"-->
+<!--                android:background="@drawable/ic_shape" />-->
             <!--填充用end-->
             <TableLayout
                 android:id="@+id/tl_keyword"
@@ -137,7 +137,7 @@
                     <ImageView
                         android:id="@+id/iv_clear_worklocation"
                         android:layout_width="wrap_content"
-                        android:layout_height="34dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"
