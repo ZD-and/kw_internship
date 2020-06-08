@@ -70,16 +70,14 @@ public class ApplyActivity extends AppCompatActivity {
     private ImageView ivmylist;
     private TextView tvmylist;
 
-    private String[] employmentstatus;
-    private String[] salary_type;
+    private String[] employmentstatus = new String[]{"正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
+    private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        employmentstatus = new String[]{getString(R.string.employmentstatus)};
-        salary_type = new String[]{getString(R.string.salary_type)};
 
         Initialization();
     }
