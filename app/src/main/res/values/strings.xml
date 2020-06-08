@@ -326,7 +326,6 @@
     <string name="worklocation">worklocation</string>
 
     <!-- Strings related to SearchResults-->
-    <string name="Semploymentstatus">すべて,正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
     <string name="kensaku">検索</string>
     <string name="kensakukekka">検索結果</string>
     <string name="job">job</string>

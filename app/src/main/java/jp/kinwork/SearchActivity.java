@@ -104,7 +104,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Log.d(TAG+TAG+"onCreate", "onCreate-SearchActivity" );
+        Log.d(TAG, "onCreate" );
         Intent  = getIntent();
         load();
         Initialization();
@@ -158,7 +158,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG+"onRequestrequestCode", requestCode+"");
+        Log.d(TAG, "onRequestrequestCode:" + requestCode+"");
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -188,27 +188,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         keywordTop= dp2px(SearchActivity.this, 10);
-        Log.d(TAG+"keywordTop", keywordTop + "");
-        tvkeyword.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG+"tvkeywordgetHeight", tvkeyword.getHeight() + "");
-                Log.d(TAG+"getMeasuredHeight", tvkeyword.getMeasuredHeight() + "");
-                Log.d(TAG+"keywordTop", keywordTop + "");
-                keywordTop = keywordTop + tvkeyword.getMeasuredHeight();
-                Log.d(TAG+"tvkeyword", keywordTop + "");
-            }
-        });
-        tlkeyword.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG+"tlkeywordgetHeight", tlkeyword.getHeight() + "");
-                Log.d(TAG+"getMeasuredHeight", tlkeyword.getMeasuredHeight() + "");
-                Log.d(TAG+"keywordTop", keywordTop + "");
-                keywordTop = keywordTop + tlkeyword.getMeasuredHeight();
-                Log.d(TAG+"tlkeyword", keywordTop + "");
-            }
-        });
 
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tlworklocation = (TableLayout) findViewById(R.id.tl_worklocation);
@@ -216,26 +195,28 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         worklocationTop= dp2px(SearchActivity.this, 50);
         worklocationTop = worklocationTop + keywordTop;
-        Log.d(TAG+"worklocationTop", worklocationTop + "");
+        tvkeyword.post(new Runnable() {
+            @Override
+            public void run() {
+                keywordTop = keywordTop + tvkeyword.getMeasuredHeight();
+            }
+        });
+        tlkeyword.post(new Runnable() {
+            @Override
+            public void run() {
+                keywordTop = keywordTop + tlkeyword.getMeasuredHeight();
+            }
+        });
         tvworklocation.post(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG+"tlworklocationgetHeight", tvworklocation.getHeight() + "");
-                Log.d(TAG+"getMeasuredHeight", tvworklocation.getMeasuredHeight() + "");
-                Log.d(TAG+"worklocationTop", worklocationTop + "");
                 worklocationTop = worklocationTop + tvworklocation.getMeasuredHeight();
-                Log.d(TAG+"tvworklocation", worklocationTop + "");
             }
         });
         tlworklocation.post(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG+"tlworklocationgetHeight", tlworklocation.getHeight() + "");
-                Log.d(TAG+"getMeasuredHeight", tlworklocation.getMeasuredHeight() + "");
-                Log.d(TAG+"worklocationTop", worklocationTop + "");
                 worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight();
-                worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight();
-                Log.d(TAG+"tlworklocation", worklocationTop + "");
             }
         });
 
@@ -274,7 +255,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         String ViewID = "";
         myApplication.setkeyword(etkeyword.getText().toString());
         myApplication.setaddress(etworklocation.getText().toString());
-        Log.d(TAG+"ViewID", View.getId()+"" );
         switch (View.getId()){
             //連絡画面に移動
             case R.id.ll_contact:
@@ -381,11 +361,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
     //设置当前位置
     private void SetAddress(String date){
-        Log.d(TAG+"date", date);
+        Log.d(TAG, "date:"+date);
         try {
             JSONObject obj = new JSONObject(date);
             JSONArray results = obj.getJSONArray(getString(R.string.address_components));
-            Log.d(TAG+"results", results.toString());
+            Log.d(TAG, "results:" +results.toString());
             int iIndex = -1;
             String add_1 = "";
             String add_2 = "";
@@ -410,7 +390,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 ivclearworklocation.setImageResource(R.drawable.ic_cancel);
                 ivclearworklocation.setTag(getString(R.string.clear));
             }
-            Log.d(TAG+"etworklocation", etworklocation.getText().toString());
+            Log.d(TAG, "etworklocation:" +etworklocation.getText().toString());
             initData();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -419,46 +399,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     //输入框监视，有数据的时候显示清空按钮
     public void initData(){
 
-        etkeyword.setOnTouchListener(new View.OnTouchListener() {
-            int flg = 0;
-
-            @Override
-            public boolean onTouch(View view,MotionEvent event){
-                Log.d(TAG+"onTouchflg1: ", flg+"");
-                flg = flg +1;
-                if(flg == 1){
-                    Log.d(TAG+"onTouchflg2: ", flg+"");
-                    ivkinwork.setVisibility(View.GONE);
-                    lvgethint.setVisibility(View.GONE);
-                    etkeyword.setCursorVisible(true);
-                    flg = 0;
-                }
-                return false;
-            }
-        });
-
-        etworklocation.setOnTouchListener(new View.OnTouchListener() {
-            int flg = 0;
-            @Override
-            public boolean onTouch(View view,MotionEvent event){
-
-                Log.d(TAG+"onTouchflg1: ", flg+"");
-                flg = flg +1;
-                if(flg == 1){
-                    Log.d(TAG+"onTouchflg2: ", flg+"");
-                    ivkinwork.setVisibility(View.GONE);
-                    lvgethint.setVisibility(View.GONE);
-                    etworklocation.setCursorVisible(true);
-                    flg = 0;
-                }
-                Log.d(TAG+"onTouchflg2: ", flg+"");
-                return false;
-            }
-        });
+        etkeyword.setOnTouchListener(touchListener);
+        etworklocation.setOnTouchListener(touchListener);
 
         tllayoutsearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tlkeyword.setBackgroundResource(R.drawable.ic_shape);
+                tlworklocation.setBackgroundResource(R.drawable.ic_shape);
                 ivkinwork.setVisibility(View.VISIBLE);
                 etkeyword.setCursorVisible(false);
                 etworklocation.setCursorVisible(false);
@@ -522,15 +470,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 //获取当前选择的值
                 String data=(String) adapter.getItem(position);
                 Log.d(TAG+"etname", etname);
-
-                SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.yyyyMMddHHmmssSSS));
-                Date curDate =  new Date(System.currentTimeMillis());
-                String strDate = formatter.format(curDate);
-                Log.d(TAG+"***lvgethintDate1***", strDate);
-
-               curDate =  new Date(System.currentTimeMillis());
-               strDate = formatter.format(curDate);
-                Log.d(TAG+"***lvgethintDate2***", strDate);
                 if(etname.equals("keyword")){
                     blkeyword = true;
                     etkeyword.setText(data);
@@ -545,8 +484,30 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            ivkinwork.setVisibility(View.GONE);
+            lvgethint.setVisibility(View.GONE);
+            switch (view.getId()){
+                case R.id.et_keyword:
+                    tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
+                    tlworklocation.setBackgroundResource(R.drawable.ic_shape);
+                    etkeyword.setCursorVisible(true);
+                    break;
+                case R.id.et_worklocation:
+                    tlkeyword.setBackgroundResource(R.drawable.ic_shape);
+                    tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
+                    etworklocation.setCursorVisible(true);
+                    break;
+            }
+            return false;
+        }
+    };
     //输入框的清空处理
     public void onClick(View View){
+        Log.d(TAG, "onClick: ");
         switch (View.getId()){
             case R.id.iv_clear_keyword:
                 etkeyword.setText("");
@@ -572,11 +533,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
                 break;
+
         }
     }
     //当前位置经纬度取得
     private void locationStart(){
-        Log.d(TAG+"debug","locationStart()");
+        Log.d(TAG,"locationStart()");
         // LocationManager インスタンス生成
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this,
@@ -584,7 +546,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            Log.d(TAG+"debug", "checkSelfPermission false");
+            Log.d(TAG, "checkSelfPermission false");
             return;
         }
 
@@ -602,15 +564,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if(location != null){
             // 緯度の表示
             String str1 = getString(R.string.Latitude)+location.getLatitude();
-            Log.d(TAG+"str1", str1);
+            Log.d(TAG, "getaddress_components str1:"+str1);
             // 経度の表示
             String str2 = getString(R.string.Longtude)+location.getLongitude();
-            Log.d(TAG+"str2", str2);
+            Log.d(TAG, "getaddress_components str2:"+str2);
             Map<String,String> param = new HashMap<String, String>();
             param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
             param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
             param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
-//            new GithubQueryTask2().execute(param);
+            new GithubQueryTask2().execute(param);
         }
 
     }
@@ -623,7 +585,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             String url = map.get(getString(R.string.url));
             String itude = map.get(getString(R.string.itude));
             String key = map.get(getString(R.string.key));
-            Log.d(TAG+"***url***", url + itude + key);
+            Log.d(TAG, "url:" +url + itude + key);
             URL searchUrl = null;
             try {
                 searchUrl = new URL(url + itude + key);
@@ -641,12 +603,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d(TAG+"***Results***", githubSearchResults);
+                Log.d(TAG, "Results:" +githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     JSONArray job = obj.getJSONArray("results");
                     myApplication.setaddress_components(job.get(0).toString());
-                    Log.d(TAG+"***job***", job.get(0).toString());
                     SetAddress(job.get(0).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -678,7 +639,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
-        Log.d(TAG+"sdPdata", sdPdata);
+        Log.d(TAG, "sdPdata:"+sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -713,20 +674,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d(TAG+"***Results***", githubSearchResults);
+                Log.d(TAG, "Results:"+githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
                     if(processResult == true) {
-                        Log.d(TAG+"***returnData***", obj.getString("returnData"));
+                        Log.d(TAG, "returnData:"+obj.getString("returnData"));
                         JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
                         ArrayList<String> stringArrayList = new ArrayList<String>();
                         String[] Stringdata = {};
                         int length = returnData.length();
                         if(!obj.getString(getString(R.string.returnData)).equals("[]")){
                             for (int i=0; i< length; i++) {
-                                Log.d(TAG+"***i***", i+"");
                                 if( i < 6){
                                     stringArrayList.add(returnData.getString(i)); //add to arraylist
                                 } else {
@@ -735,7 +695,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         }
                         Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
-                        Log.d(TAG+"***name***", name);
                         getItem(Stringdata,name);
                     }
                 }catch (Exception e){
@@ -747,13 +706,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     //联想关键字设定悬浮窗
     public void getItem(String []Stringdata,String name){
         int top= 0;
-        Log.d(TAG+"***name***", name);
         if(name.equals(getString(R.string.keyword))){
             top= keywordTop;
         } else {
             top= worklocationTop;
         }
-        Log.d(TAG+"***top***", top+"");
         int left_right= dp2px(SearchActivity.this, 30);
         FrameLayout.LayoutParams flparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         flparams.setMargins(left_right,top,left_right,0);
@@ -761,11 +718,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         adapter = new ArrayAdapter<>(this, R.layout.list_item, Stringdata);
         lvgethint.setAdapter(adapter);
         lvgethint.setVisibility(View.VISIBLE);
-//        initData();
     }
     //位置取得权限是否取得
     private void AccessPermission() {
-//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -773,7 +728,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 locationStart();
             }
         }else {
-            Log.d(TAG+"AskForPermission4-2", "AskForPermission4");
             locationStart();
         }
     }
