@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:stretchColumns="*"
-            android:onClick="Click_back"
             android:background="@drawable/frame_bottom_bule">
 
             <include

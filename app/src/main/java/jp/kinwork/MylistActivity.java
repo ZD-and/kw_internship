@@ -442,6 +442,12 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 String likejobflg = "0";
                 likejob = getLayoutInflater().inflate(R.layout.include_mylist_likejob, null);
                 TableLayout information = (TableLayout) likejob.findViewById(R.id.tl_information);
+                information.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_likejob(v);
+                    }
+                });
                 TextView tvtitle = (TextView) likejob.findViewById(R.id.tv_title);
                 TextView tvcompanyname = (TextView) likejob.findViewById(R.id.tv_company_name);
                 TextView tvJobname = (TextView) likejob.findViewById(R.id.tv_Jobname);
@@ -449,6 +455,12 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 TextView tvPublishedcompany = (TextView) likejob.findViewById(R.id.tv_Published_company);
                 TextView tvRecruitmentsite = (TextView) likejob.findViewById(R.id.tv_Recruitment_site);
                 ImageView ibucontact = (ImageView) likejob.findViewById(R.id.ibu_contact);
+                ibucontact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_Dellikejob(v);
+                    }
+                });
                 HorizontalScrollView hsvtag = (HorizontalScrollView) likejob.findViewById(R.id.hsv_tag);
                 TableRow trtag = (TableRow) likejob.findViewById(R.id.tr_tag);
 
@@ -536,13 +548,31 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 tlparams.setMargins(0,0,0,top);
                 View mylist = getLayoutInflater().inflate(R.layout.include_mylist_enteredjob, null);
                 TableLayout Enteredjobinfo = mylist.findViewById(R.id.tl_e_basicinformation);
+                Enteredjobinfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_enteredjob(v);
+                    }
+                });
                 TextView tvecompanyname = (TextView) mylist.findViewById(R.id.tv_e_company_name);
                 TextView tveJobname = (TextView) mylist.findViewById(R.id.tv_e_Jobname);
                 TextView tveaddress = (TextView) mylist.findViewById(R.id.tv_e_address);
                 TextView tvedate = (TextView) mylist.findViewById(R.id.tv_e_date);
                 TextView tvesalary = (TextView) mylist.findViewById(R.id.tv_e_salary);
                 ImageView ibucontact = (ImageView) mylist.findViewById(R.id.ibu_e_contact);
+                ibucontact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_ContactDialog(v);
+                    }
+                });
                 ImageView ibuedel = (ImageView) mylist.findViewById(R.id.ibu_e_del);
+                ibuedel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_DelApplyjob(v);
+                    }
+                });
                 tvecompanyname.setText(objJobInfo.getString(getString(R.string.company_name)));
                 tveJobname.setText(objJobInfo.getString(getString(R.string.occupation_name)));
                 tveaddress.setText(objJobInfo.getString(getString(R.string.add_1)) +
