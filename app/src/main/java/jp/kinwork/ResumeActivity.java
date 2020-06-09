@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.sip.SipSession;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -203,7 +202,15 @@ public class ResumeActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -236,7 +243,7 @@ public class ResumeActivity extends AppCompatActivity {
         bu_info_qualification=findViewById(R.id.bu_info_qualification);
         bu_info_education.setOnClickListener(createListener);
         bu_info_employment.setOnClickListener(createListener);
-        bu_info_employment.setOnClickListener(createListener);
+        bu_info_qualification.setOnClickListener(createListener);
 
 
 
@@ -844,6 +851,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent_qualification.putExtra(getString(R.string.status), getString(R.string.add));
                 startActivity(intent_qualification);
                 break;
+            default:break;
         }
 
         }
@@ -1048,7 +1056,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent.setClass(ResumeActivity.this, EmploymentActivity.class);
                 intent.putExtra(getString(R.string.status), getString(R.string.upd));
                 intent.putExtra(getString(R.string.professionalCareerId), professionalCareer.getId());
-                intent.putExtra(getString(R.string.Jobname), professionalCareer.getJob_name());
+                intent.putExtra(getString(R.string.jobName), professionalCareer.getJob_name());
                 intent.putExtra(getString(R.string.Companyname), professionalCareer.getJob_name());
                 if(professionalCareer.getFrom_year() != null && professionalCareer.getFrom_month() !=null){
                     intent.putExtra(getString(R.string.Start_Y), professionalCareer.getFrom_year());

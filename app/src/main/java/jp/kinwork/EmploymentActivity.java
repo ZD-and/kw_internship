@@ -97,7 +97,14 @@ public class EmploymentActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -364,7 +371,7 @@ public class EmploymentActivity extends AppCompatActivity {
             //对象ID
             professionalCareerId = intent.getStringExtra(getString(R.string.professionalCareerId));
             //職種名
-            etJobname.setText(intent.getStringExtra(getString(R.string.Jobname)));
+            etJobname.setText(intent.getStringExtra(getString(R.string.jobName)));
             //会社名
             etCompanyname.setText(intent.getStringExtra(getString(R.string.Companyname)));
             //会社所在地

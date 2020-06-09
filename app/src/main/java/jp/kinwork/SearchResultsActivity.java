@@ -620,7 +620,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             try {
                 JSONObject obj = data.getJSONObject(i);
                 Log.d("***addresults***", data.getString(i));
-                JSONArray jobName = obj.getJSONArray(getString(R.string.Jobname));
+                JSONArray jobName = obj.getJSONArray(getString(R.string.jobName));
                 View searchresults;
                 String likejobflg = "0";
                 if(obj.getString(getString(R.string.isPaid)).equals("1")){

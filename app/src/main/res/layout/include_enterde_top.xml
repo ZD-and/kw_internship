@@ -5,7 +5,7 @@
     android:layout_height="wrap_content" >
 
     <TableLayout
-        android:id="@+id/tl_Entered_title"
+        android:id="@+id/tl_Entered_title_Top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="0">

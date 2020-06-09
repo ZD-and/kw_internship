@@ -28,7 +28,7 @@
     <string name="title_edit_resume">履歴書編集</string>
 
     <!-- Strings related to AdvancSet -->
-    <string name="Search">検索</string>
+    <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
 
@@ -172,7 +172,7 @@
     <string name="alertdialog6">会社名を入力してください</string>
     <string name="alertdialog7">就職期間の終了年月が未来の場合、チェックを入れてください</string>
     <string name="professionalCareerId">professionalCareerId</string>
-    <string name="Jobname">Jobname</string>
+    <string name="jobName">jobName</string>
     <string name="Companyname">Companyname</string>
     <string name="CheckBox">CheckBox</string>
 
@@ -326,7 +326,6 @@
     <string name="worklocation">worklocation</string>
 
     <!-- Strings related to SearchResults-->
-    <string name="Semploymentstatus">すべて,正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
     <string name="kensaku">検索</string>
     <string name="kensakukekka">検索結果</string>
     <string name="job">job</string>
@@ -347,7 +346,6 @@
     <string name="isLiked">isLiked</string>
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
-    <string name="jobName">jobName</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
     <string name="maehe">＜ 前へ</string>
     <string name="tsugihe">次へ ＞</string>
