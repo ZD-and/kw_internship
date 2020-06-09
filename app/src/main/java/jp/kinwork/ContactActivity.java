@@ -52,6 +52,8 @@ public class ContactActivity extends AppCompatActivity {
     private TextView tvshow;
 
     private TableLayout tlcontact;
+    private TableLayout tlcontact_son;
+
 
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
@@ -84,7 +86,7 @@ public class ContactActivity extends AppCompatActivity {
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText(getString(R.string.title_contact));
         tlcontact = (TableLayout) findViewById(R.id.tl_contact);
-        tlcontact.setOnClickListener(Listener);
+        //tlcontact.setOnClickListener(Listener);
         deviceId = mPreferenceUtils.getdeviceId();
         AesKey = mPreferenceUtils.getAesKey();
         userId = mPreferenceUtils.getuserId();
@@ -244,6 +246,10 @@ public class ContactActivity extends AppCompatActivity {
                 JSONObject objDialog = obj.getJSONObject(getString(R.string.Dialog));
                 JSONObject objother = obj.getJSONObject(getString(R.string.other));
                 JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
+                if(objMyMail == null)
+                {
+                    continue;
+                }
                 Log.d("**objDialog**", objDialog.toString());
                 Log.d("***objother***", objother.toString());
                 Log.d("***objMyMail***", objMyMail.toString());
@@ -251,7 +257,8 @@ public class ContactActivity extends AppCompatActivity {
                 TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
                 tlparams.setMargins(0,0,0,top);
                 View contact = getLayoutInflater().inflate(R.layout.include_contact, null);
-                TableLayout information = (TableLayout) contact.findViewById(R.id.tl_contact);
+                TableLayout information = (TableLayout) contact.findViewById(R.id.tl_contact_son);
+                information.setOnClickListener(Listener);
                 TextView tvcompanyname = (TextView) contact.findViewById(R.id.tv_companyname);
                 TextView tvlatesttime = (TextView) contact.findViewById(R.id.tv_latesttime);
                 TextView tvmailtitle = (TextView) contact.findViewById(R.id.tv_mailtitle);
