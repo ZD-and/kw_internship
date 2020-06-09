@@ -563,6 +563,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
         TableLayout tltlTableLayout = (TableLayout) dialog.findViewById(R.id.tl_tl_TableLayout);
         TableLayout tlnamedata = (TableLayout) dialog.findViewById(R.id.tl_name_data);
+        tlnamedata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_meg_visibility(v);
+            }
+        });
         TextView tvcompany_name = (TextView) dialog.findViewById(R.id.tl_tv_company_name);
         TextView tvisReaded = (TextView) dialog.findViewById(R.id.tv_isReaded);
         ImageView ivread = (ImageView) dialog.findViewById(R.id.iv_read);
@@ -571,7 +577,19 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         TextView tvsubtitle = (TextView) dialog.findViewById(R.id.tl_tv_sub_title);
         TextView tvmeg = (TextView) dialog.findViewById(R.id.tl_tv_meg);
         TableLayout tlreply = (TableLayout) dialog.findViewById(R.id.tl_reply);
+        tlreply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_setmeg(v);
+            }
+        });
         TableLayout tlnew = (TableLayout) dialog.findViewById(R.id.tl_new);
+        tlnew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_setmeg(v);
+            }
+        });
         tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule_green);
         tvcompany_name.setText(Email);
         tvcompany_name.setGravity(Gravity.RIGHT);

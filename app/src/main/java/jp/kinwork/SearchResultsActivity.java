@@ -630,6 +630,12 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 }
 
                 TableLayout information = (TableLayout) searchresults.findViewById(R.id.tl_information);
+                information.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_job(v);
+                    }
+                });
                 TextView tvtitle = (TextView) searchresults.findViewById(R.id.tv_title);
                 TextView tvcompanyname = (TextView) searchresults.findViewById(R.id.tv_company_name);
                 TextView tvJobname = (TextView) searchresults.findViewById(R.id.tv_Jobname);
@@ -637,6 +643,12 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 TextView tvPublishedcompany = (TextView) searchresults.findViewById(R.id.tv_Published_company);
                 TextView tvRecruitmentsite = (TextView) searchresults.findViewById(R.id.tv_Recruitment_site);
                 ImageView ibucontact = (ImageView) searchresults.findViewById(R.id.ibu_contact);
+                ibucontact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_likejob(v);
+                    }
+                });
                 HorizontalScrollView hsvtag = (HorizontalScrollView) searchresults.findViewById(R.id.hsv_tag);
                 TableRow trtag = (TableRow) searchresults.findViewById(R.id.tr_tag);
 
