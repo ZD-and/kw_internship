@@ -800,7 +800,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         Pdata.setreleaseDate(objjobinfo.getString(getString(R.string.releaseDate)));
                         Pdata.setaddress(objjobinfo.getString(getString(R.string.address)));
                         Pdata.setcompany(objjobinfo.getString(getString(R.string.company)));
-                        Pdata.setemploymentStatus(objjobinfo.getString(getString(R.string.employmentstatus)));
+                        Pdata.setemploymentStatus(objjobinfo.getString(getString(R.string.employmentStatus)));
                         Pdata.setfrom(objjobinfo.getString(getString(R.string.from)));
                         String str = "";
                         if(objjobinfo.getString(getString(R.string.isPaid)).equals("1")){
