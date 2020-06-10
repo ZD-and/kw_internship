@@ -42,8 +42,6 @@
     <string name="welcometoKinwork">KinWork へようこそ</string>
 
     <!-- Strings related to Apply -->
-    <string name="employmentstatus">正社員,契約社員,アルバイト･パート,派遣社員,業務委託,嘱託社員,ボランティア,請負,インターン</string>
-    <string name="salary_type"> ,月給,年給,周給,日給,時給</string>
     <string name="SearchResults">検索結果</string>
     <string name="mylist">マイリスト</string>
     <string name="Enteredjob">Enteredjob</string>
@@ -57,7 +55,6 @@
     <string name="Cancel">キャンセル</string>
 
     <!-- Strings related to Basicinfoedit -->
-    <string name="sexArry">未選択,男,女</string>
     <string name="profilechange">個人情報編集</string>
     <string name="personalsettings">個人設定</string>
     <string name="slname">姓を入力してください。</string>
@@ -192,7 +189,7 @@
     <string name="mailaddressnihongo">メールアドレス</string>
     <string name="bubutton">検証コードを取得</string>
     <string name="tvinputA">検証コードを入力してください。</string>
-    <string name="bubutton2">bubutton2</string>
+    <string name="bubutton2">次へ</string>
     <string name="Spannableee">検証コード</string>
     <string name="kakunin">確認</string>
     <string name="setPassword">setPassword</string>
@@ -337,6 +334,7 @@
     <string name="numOfPage">numOfPage</string>
     <string name="currentPage">currentPage</string>
     <string name="jobList">jobList</string>
+    <string name="employmentStatus">employmentStatus</string>
     <string name="tsushinshierror">通信失敗</string>
     <string name="ken">件</string>
     <string name="pagemei">ページ目/</string>
