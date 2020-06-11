@@ -65,7 +65,7 @@
                             android:enabled="false"
                             android:hint="詳細設定"
                             android:textColor="@color/hint_foreground_holo_dark"
-                            android:background="@color/colorLight"
+                            android:background="@drawable/ic_shape"
                             android:textSize="20sp" />
 
                     </TableRow>
@@ -112,7 +112,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:padding="5dp"
-                                    android:background="@null"
+                                    android:background="@drawable/ic_shape"
                                     android:text=""
                                     android:maxLines="1"
                                     android:lines="1"
@@ -164,7 +164,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:padding="5dp"
-                                    android:background="@null"
+                                    android:background="@drawable/ic_shape"
                                     android:text=""
                                     android:maxLines="1"
                                     android:lines="1"
