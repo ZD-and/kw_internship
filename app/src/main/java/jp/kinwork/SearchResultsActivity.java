@@ -519,7 +519,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                 IBNlikejob.setImageResource(R.mipmap.app_like);
                             } else if (urlFlg.equals(getString(R.string.deletelikejob))) {
                                 IBNlikejob.setImageResource(R.mipmap.app_no_like);
-                                alertdialog(getString(R.string.alertdialog14), getString(R.string.alertdialog15));
+                                alertdialog(getString(R.string.alertdialog13), getString(R.string.alertdialog15));
                             } else {
                                 JSONObject Data = new JSONObject(obj.getString(getString(R.string.returnData)));
                                 String numFound = Data.getString(getString(R.string.numFound));
