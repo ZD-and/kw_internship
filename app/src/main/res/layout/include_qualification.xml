@@ -37,7 +37,6 @@
                 android:id="@+id/I_ibu_qualificationcreate"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:onClick="Updqualification"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@mipmap/app_up_s" />
 
@@ -45,7 +44,6 @@
                 android:id="@+id/I_ibu_qualificationdelete"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:onClick="Delqualification"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@mipmap/app_del_s" />
 

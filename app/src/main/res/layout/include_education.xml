@@ -40,7 +40,6 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
                 android:backgroundTint="@color/colorLight"
-                android:onClick="Updeducation"
                 app:srcCompat="@mipmap/app_up_s" />
 
             <ImageView
@@ -48,7 +47,6 @@
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:onClick="Deleducation"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@mipmap/app_del_s" />
 

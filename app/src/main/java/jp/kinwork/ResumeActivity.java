@@ -819,7 +819,6 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //職歴追加
     private View.OnClickListener createListener =new View.OnClickListener() {
-
         public void onClick(View View){
         switch (View.getId()) {
             //職歴画面に
@@ -992,7 +991,19 @@ public class ResumeActivity extends AppCompatActivity {
                 //TextView companylocation = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_companylocation);
                 TextView employmentperiod = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_employmentperiod);
                 ImageView employmentCr = (ImageView) add_employment.findViewById(R.id.I_ibu_jobcreate);
+                employmentperiod.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Updemployment(v);
+                    }
+                });
                 ImageView employmentDe = (ImageView) add_employment.findViewById(R.id.I_ibu_jobdelete);
+                employmentDe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Delemployment(v);
+                    }
+                });
                 jobtitle.setText(getString(R.string.shokushuumei) + professionalCareer.getJob_name());
                 companyname.setText(getString(R.string.kaishamei) + professionalCareer.getCompany_name());
                 String getFrom_year = "";
@@ -1104,7 +1115,19 @@ public class ResumeActivity extends AppCompatActivity {
                 //TextView schoollocation = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_schoollocation);
                 TextView durationofentrance = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_durationofentrance);
                 ImageView educationcreate = (ImageView) add_education.findViewById(R.id.I_ibu_educationcreate);
+                educationcreate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Updeducation(v);
+                    }
+                });
                 ImageView educationdelete = (ImageView) add_education.findViewById(R.id.I_ibu_educationdelete);
+                educationdelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Deleducation(v);
+                    }
+                });
                 schoolname.setText(getString(R.string.gakkomei) + schoolCareer.getSchool_name());
                 if(schoolCareer.getDegree().length() > 0 && ! schoolCareer.getDegree().equals("null")){
                     degree.setText(getString(R.string.gakui) + schoolCareer.getDegree());
@@ -1231,6 +1254,8 @@ public class ResumeActivity extends AppCompatActivity {
                 TextView period = (TextView) add_qualification.findViewById(R.id.I_tl_tr_tv_period);
                 ImageView qualificationCr = (ImageView) add_qualification.findViewById(R.id.I_ibu_qualificationcreate);
                 ImageView qualificationDe = (ImageView) add_qualification.findViewById(R.id.I_ibu_qualificationdelete);
+                qualificationCr.setOnClickListener(Updqualification);
+                qualificationDe.setOnClickListener(Delqualification);
                 listIBTNAdd_qualification.add(i,qualificationCr);
                 listIBTNDel_qualification.add(i,qualificationDe);
                 listIdDel_qualification.add(i,qualification.getId());
@@ -1250,62 +1275,66 @@ public class ResumeActivity extends AppCompatActivity {
         }
     }
     //已登录資格信息変更
-    public void Updqualification(View View){
-        if (View == null) {
-            return;
-        }
-        // 判断第几个“-”按钮触发了事件
-        int iIndex = -1;
-        for (int i = 0; i < listIBTNAdd_qualification.size(); i++) {
-            if (listIBTNAdd_qualification.get(i) == View) {
-                iIndex = i;
-                break;
+    private View.OnClickListener Updqualification =new View.OnClickListener() {
+        public void onClick(View View) {
+            if (View == null) {
+                return;
             }
-        }
-        if (iIndex >= 0) {
-            try {
-                myApplication.setActCation("qua");
-                JSONObject obj = JSONArray_qualification.getJSONObject(iIndex);
-                Log.d("***Updqualification***", obj.getString(getString(R.string.Qualification)));
-                Gson gson = new Gson();
-                qualification = gson.fromJson(obj.getString(getString(R.string.Qualification)),Qualification.class);
-                Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                intent.setClass(ResumeActivity.this, QualificationActivity.class);
-                intent.putExtra(getString(R.string.status), getString(R.string.upd));
-                intent.putExtra(getString(R.string.Id_resume), qualification.getId_resume());
-                intent.putExtra(getString(R.string.User_id), qualification.getUser_id());
-                intent.putExtra(getString(R.string.qualificationId), qualification.getId());
-                intent.putExtra(getString(R.string.Qualification_name), qualification.getQualification_name());
-                if(qualification.getFrom_date() != null){
-                    intent.putExtra(getString(R.string.From_date), qualification.getFrom_date());
-                }else {
-                    intent.putExtra(getString(R.string.From_date), "");
+            // 判断第几个“-”按钮触发了事件
+            int iIndex = -1;
+            for (int i = 0; i < listIBTNAdd_qualification.size(); i++) {
+                if (listIBTNAdd_qualification.get(i) == View) {
+                    iIndex = i;
+                    break;
                 }
-                startActivity(intent);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }
+            if (iIndex >= 0) {
+                try {
+                    myApplication.setActCation("qua");
+                    JSONObject obj = JSONArray_qualification.getJSONObject(iIndex);
+                    Log.d("***Updqualification***", obj.getString(getString(R.string.Qualification)));
+                    Gson gson = new Gson();
+                    qualification = gson.fromJson(obj.getString(getString(R.string.Qualification)), Qualification.class);
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    intent.setClass(ResumeActivity.this, QualificationActivity.class);
+                    intent.putExtra(getString(R.string.status), getString(R.string.upd));
+                    intent.putExtra(getString(R.string.Id_resume), qualification.getId_resume());
+                    intent.putExtra(getString(R.string.User_id), qualification.getUser_id());
+                    intent.putExtra(getString(R.string.qualificationId), qualification.getId());
+                    intent.putExtra(getString(R.string.Qualification_name), qualification.getQualification_name());
+                    if (qualification.getFrom_date() != null) {
+                        intent.putExtra(getString(R.string.From_date), qualification.getFrom_date());
+                    } else {
+                        intent.putExtra(getString(R.string.From_date), "");
+                    }
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
+    };
     //已登录資格信息削除
-    public void Delqualification(View v){
-        if (v == null) {
-            return;
-        }
-        // 判断第几个“-”按钮触发了事件
-        int iIndex = -1;
-        for (int i = 0; i < listIBTNDel_qualification.size(); i++) {
-            if (listIBTNDel_qualification.get(i) == v) {
-                iIndex = i;
-                DeleteIndex = i;
-                break;
+    private View.OnClickListener Delqualification =new View.OnClickListener() {
+        public void onClick(View v) {
+            if (v == null) {
+                return;
+            }
+            // 判断第几个“-”按钮触发了事件
+            int iIndex = -1;
+            for (int i = 0; i < listIBTNDel_qualification.size(); i++) {
+                if (listIBTNDel_qualification.get(i) == v) {
+                    iIndex = i;
+                    DeleteIndex = i;
+                    break;
+                }
+            }
+            if (iIndex >= 0) {
+                Delalertdialog(getString(R.string.Delalertdialog4), getString(R.string.qualification));
             }
         }
-        if (iIndex >= 0) {
-            Delalertdialog(getString(R.string.Delalertdialog4),getString(R.string.qualification));
-        }
-    }
+    };
     //削除提示
     private void Delalertdialog(String meg, final String name){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

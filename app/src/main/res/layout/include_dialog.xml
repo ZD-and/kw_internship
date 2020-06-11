@@ -25,7 +25,6 @@
                 android:id="@+id/tl_name_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="Click_meg_visibility"
                 android:stretchColumns="0"
                 android:shrinkColumns="0"
                 >
@@ -138,7 +137,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_shape_null"
-                        android:onClick="Click_setmeg"
                         android:gravity="center_vertical"
                         android:layout_marginLeft="40dp"
                         android:layout_marginRight="10dp"
@@ -167,7 +165,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/ic_shape_null"
-                        android:onClick="Click_setmeg"
                         android:gravity="center_vertical"
                         android:layout_marginRight="40dp"
                         android:layout_marginLeft="10dp"
