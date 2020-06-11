@@ -388,6 +388,7 @@
     <!-- Strings related to Web -->
     <string name="kensakuchu">検索中···</string>
 
+
     <string-array name="employmentstatus">
         <item>雇用形態を選択してください</item>
         <item>ボランティア</item>
