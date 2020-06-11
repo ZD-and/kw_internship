@@ -329,7 +329,7 @@ public class ApplyActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.ll_b_mylist:
-                mMyApplication.setAct("Apply");
+                mMyApplication.setAct(getString(R.string.Apply));
                 if(Act.equals(getString(R.string.Search))){
                     mMyApplication.setSApply("1",0);
                     mMyApplication.setSApply(JobInfo,1);
