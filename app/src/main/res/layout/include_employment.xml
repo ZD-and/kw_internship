@@ -39,7 +39,6 @@
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:onClick="Updemployment"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@mipmap/app_up_s" />
 
@@ -48,7 +47,6 @@
                 android:layout_width="40dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:onClick="Delemployment"
                 android:backgroundTint="@color/colorLight"
                 app:srcCompat="@mipmap/app_del_s" />
 

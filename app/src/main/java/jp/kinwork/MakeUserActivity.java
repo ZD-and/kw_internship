@@ -126,6 +126,8 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputA = (EditText) findViewById(R.id.ed_input_A);
         tvinputB = (TextView) findViewById(R.id.tv_input_B);
         edinputB = (EditText) findViewById(R.id.ed_input_B);
+        edinputA.setOnTouchListener(touchListener);
+        edinputB.setOnTouchListener(touchListener);
         tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
         tlmudummyview=findViewById(R.id.tl_mu_dummyview);
         tlmudummyview.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +179,23 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             setPassword();
         }
     }
+    //点击输入框变蓝
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (view.getId()){
+                case R.id.ed_input_A:
+                    edinputA.setBackgroundResource(R.drawable.ic_shape_blue);
+                    edinputB.setBackgroundResource(R.drawable.ic_shape);
+                    break;
+                case R.id.ed_input_B:
+                    edinputA.setBackgroundResource(R.drawable.ic_shape);
+                    edinputB.setBackgroundResource(R.drawable.ic_shape_blue);
+                    break;
+            }
+            return false;
+        }
+    };
     //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
