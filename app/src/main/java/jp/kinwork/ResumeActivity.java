@@ -1050,7 +1050,7 @@ public class ResumeActivity extends AppCompatActivity {
                 myApplication.setActCation(getString(R.string.emp));
                 JSONObject obj = JSONArray_employment.getJSONObject(iIndex);
                 Gson gson = new Gson();
-                professionalCareer = gson.fromJson(obj.getString(getString(R.string.professionalCareer)),ProfessionalCareer.class);
+                professionalCareer = gson.fromJson(obj.getString(getString(R.string.ProfessionalCareer)),ProfessionalCareer.class);
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(ResumeActivity.this, EmploymentActivity.class);
