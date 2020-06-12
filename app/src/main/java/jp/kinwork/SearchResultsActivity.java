@@ -1263,6 +1263,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
+        myApplication.setSearchResults("0",0);
         startActivity(intent);
     }
 

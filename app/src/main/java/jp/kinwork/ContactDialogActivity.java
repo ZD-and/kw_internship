@@ -750,6 +750,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
+        mMyApplication.setContactDialog("0",0);
         startActivity(intent);
     }
 }

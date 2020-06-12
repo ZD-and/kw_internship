@@ -1627,6 +1627,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent.setClass(ResumeActivity.this, ResumeActivity.class);
                 break;
         }
+        myApplication.setpersonalset("0",0);
         startActivity(intent);
     }
 }

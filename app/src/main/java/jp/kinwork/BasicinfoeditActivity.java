@@ -808,6 +808,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 intent.setClass(BasicinfoeditActivity.this, BasicinfoeditActivity.class);
                 break;
         }
+        mMyApplication.setpersonalset("0",0);
         startActivity(intent);
     }
 }
