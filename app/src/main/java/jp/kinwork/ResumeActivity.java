@@ -707,6 +707,22 @@ public class ResumeActivity extends AppCompatActivity {
                 educationInfo(JSONArray_education);
                 employmentInfo(JSONArray_employment);
                 qualificationInfo(JSONArray_qualification);
+                //「学歴」がない時、子科目が表示されない
+                if(JSONArray_education.length() == 0)
+                {
+                    tleducational.setVisibility(View.GONE);
+                }
+                //「職歴」がない時、子科目が表示されない
+                if(JSONArray_employment.length() == 0)
+                {
+                    tljob.setVisibility(View.GONE);
+                }
+                //「資格」がない時、子科目が表示されない
+                if(JSONArray_qualification.length() == 0)
+                {
+                    tlqualification.setVisibility(View.GONE);
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
