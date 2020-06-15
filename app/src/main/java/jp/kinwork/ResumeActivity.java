@@ -984,7 +984,7 @@ public class ResumeActivity extends AppCompatActivity {
                 //TextView companylocation = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_companylocation);
                 TextView employmentperiod = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_employmentperiod);
                 ImageView employmentCr = (ImageView) add_employment.findViewById(R.id.I_ibu_jobcreate);
-                employmentperiod.setOnClickListener(new View.OnClickListener() {
+                employmentCr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Updemployment(v);
