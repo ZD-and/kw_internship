@@ -188,6 +188,7 @@ public class ChangepwActivity extends AppCompatActivity {
                 intent.setClass(ChangepwActivity.this, ChangepwActivity.class);
                 break;
         }
+        mMyApplication.setpersonalset("0",0);
         startActivity(intent);
     }
 
