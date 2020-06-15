@@ -2,6 +2,10 @@ package jp.kinwork;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -45,7 +50,7 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity implements View.OnClickListener{
+public class ContactDialogActivity extends AppCompatActivity {
 
 //    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
 //    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
@@ -155,6 +160,56 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
 //        tltvmailaddress.setText(mailaddress);
+        setViews();
+    }
+    private void setViews() {
+        FragmentManager manager = getSupportFragmentManager();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ExampleFragmentPagerAdapter adapter = new ExampleFragmentPagerAdapter(manager);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public class ExampleFragmentPagerAdapter extends FragmentPagerAdapter {
+        public ExampleFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    educationInfo("");
+                    return ExampleFragment.newInstance(position);
+                case 1:
+                    educationInfo("1");
+                    return ExampleFragment.newInstance(position);
+                case 2:
+                    educationInfo("2");
+                    return ExampleFragment.newInstance(position);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String name = "";
+            switch (position) {
+                case 0:
+                    return "すべて";
+                case 1:
+                    return "受信トレイ";
+                case 2:
+                    return "送信済み";
+            }
+            return null;
+        }
     }
 
 //    @Override
@@ -207,12 +262,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         ettitle        = (EditText) findViewById(R.id.et_title);
         etmeg          = (EditText) findViewById(R.id.et_meg);
 
-        tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
-        tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
-        tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
-        tvallEmail.setOnClickListener(this);
-        tvsendEmail.setOnClickListener(this);
-        tvReceptionEmail.setOnClickListener(this);
+//        tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
+//        tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
+//        tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
+//        tvallEmail.setOnClickListener(this);
+//        tvsendEmail.setOnClickListener(this);
+//        tvReceptionEmail.setOnClickListener(this);
 
         tvToCompanyName  = (TextView) findViewById(R.id.tv_ToCompanyName);
         mPreferenceUtils = new PreferenceUtils(ContactDialogActivity.this);
@@ -223,6 +278,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         token = mPreferenceUtils.gettoken();
         Email = mPreferenceUtils.getEmail();
     }
+
 
     //获取搜索结果
     public void getSearchResults(){
@@ -449,54 +505,54 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
     }
     //显示邮件
-    public void onClick(View View){
-        String name = "";
-        switch (View.getId()){
-            case R.id.tv_allEmail:
-                name = getString(R.string.tv_allEmail);
-                break;
-            case R.id.tv_sendEmail:
-                name = getString(R.string.tv_sendEmail);
-                break;
-            case R.id.tv_ReceptionEmail:
-                name = getString(R.string.tv_ReceptionEmail);
-                break;
-        }
-        DisplayEmail(name);
-    }
+//    public void onClick(View View){
+//        String name = "";
+//        switch (View.getId()){
+//            case R.id.tv_allEmail:
+//                name = getString(R.string.tv_allEmail);
+//                break;
+//            case R.id.tv_sendEmail:
+//                name = getString(R.string.tv_sendEmail);
+//                break;
+//            case R.id.tv_ReceptionEmail:
+//                name = getString(R.string.tv_ReceptionEmail);
+//                break;
+//        }
+//        DisplayEmail(name);
+//    }
     //显示邮件的背景设定
     public void DisplayEmail(String name){
         switch (name){
             case "tv_allEmail":
                 //显示全部的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_bule);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-                tvallEmail.setTextColor(Color.parseColor("#ffffffff"));
-                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvallEmail.setBackgroundResource(R.drawable.frame_left_bule);
+//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
+//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
+//                tvallEmail.setTextColor(Color.parseColor("#ffffffff"));
+//                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "";
                 educationInfo("");
                 break;
             case "tv_sendEmail":
                 //显示收到的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_bule);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvsendEmail.setTextColor(Color.parseColor("#ffffffff"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
+//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_bule);
+//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
+//                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvsendEmail.setTextColor(Color.parseColor("#ffffffff"));
+//                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "1";
                 educationInfo("1");
                 break;
             case "tv_ReceptionEmail":
                 //显示发送的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_bule);
-                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#ffffffff"));
+//                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
+//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
+//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_bule);
+//                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
+//                tvReceptionEmail.setTextColor(Color.parseColor("#ffffffff"));
                 DisplayEmailFlg = "0";
                 educationInfo("0");
                 break;
