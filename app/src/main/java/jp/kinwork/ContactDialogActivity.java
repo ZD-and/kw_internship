@@ -186,7 +186,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                     educationInfo("1");
                     return ExampleFragment.newInstance(position);
                 case 2:
-                    educationInfo("2");
+                    educationInfo("0");
                     return ExampleFragment.newInstance(position);
             }
             return null;
