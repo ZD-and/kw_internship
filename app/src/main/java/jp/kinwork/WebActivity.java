@@ -243,6 +243,9 @@ public class WebActivity extends AppCompatActivity {
                 }
                 break;
         }
+        myApplication.setMURL("0",0);
+        myApplication.setMApply("0",0);
+        myApplication.setSearchResults("0",0);
         startActivity(intent);
 
     }

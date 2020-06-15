@@ -183,7 +183,15 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -1255,6 +1263,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
+        myApplication.setSearchResults("0",0);
         startActivity(intent);
     }
 

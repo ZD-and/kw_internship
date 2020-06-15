@@ -806,6 +806,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                 }
                 break;
         }
+        mMyApplication.setContactDialog("0",0);
         startActivity(intent);
     }
 }
