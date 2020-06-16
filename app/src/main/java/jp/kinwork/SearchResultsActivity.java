@@ -183,7 +183,15 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -519,7 +527,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                 IBNlikejob.setImageResource(R.mipmap.app_like);
                             } else if (urlFlg.equals(getString(R.string.deletelikejob))) {
                                 IBNlikejob.setImageResource(R.mipmap.app_no_like);
-                                alertdialog(getString(R.string.alertdialog14), getString(R.string.alertdialog15));
+                                alertdialog(getString(R.string.alertdialog13), getString(R.string.alertdialog15));
                             } else {
                                 JSONObject Data = new JSONObject(obj.getString(getString(R.string.returnData)));
                                 String numFound = Data.getString(getString(R.string.numFound));
@@ -812,7 +820,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         Pdata.setreleaseDate(objjobinfo.getString(getString(R.string.releaseDate)));
                         Pdata.setaddress(objjobinfo.getString(getString(R.string.address)));
                         Pdata.setcompany(objjobinfo.getString(getString(R.string.company)));
-                        Pdata.setemploymentStatus(objjobinfo.getString(getString(R.string.employmentstatus)));
+                        Pdata.setemploymentStatus(objjobinfo.getString(getString(R.string.employmentStatus)));
                         Pdata.setfrom(objjobinfo.getString(getString(R.string.from)));
                         String str = "";
                         if(objjobinfo.getString(getString(R.string.isPaid)).equals("1")){
@@ -878,6 +886,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             int PageNum = 0;
             int i = 0;
             String Textpage = "";
+            urlFlg = "";
             switch (View.getId()) {
                 case R.id.tl_tr_bu_Before:
                 case R.id.tl_tr_bu_Before_Bottom:
@@ -1254,6 +1263,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
+        myApplication.setSearchResults("0",0);
         startActivity(intent);
     }
 

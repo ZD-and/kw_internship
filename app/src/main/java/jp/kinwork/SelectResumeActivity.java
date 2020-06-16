@@ -57,6 +57,10 @@ public class SelectResumeActivity extends AppCompatActivity {
     private CheckBox cbresume2;
     private CheckBox cbresume3;
 
+    private TextView tvresume1;
+    private TextView tvresume2;
+    private TextView tvresume3;
+
     private String resumeId_1;
     private String resumeId_2;
     private String resumeId_3;
@@ -91,7 +95,15 @@ public class SelectResumeActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -159,9 +171,16 @@ public class SelectResumeActivity extends AppCompatActivity {
         cbresume1 = (CheckBox) findViewById(R.id.cb_resume1);
         cbresume2 = (CheckBox) findViewById(R.id.cb_resume2);
         cbresume3 = (CheckBox) findViewById(R.id.cb_resume3);
+        tvresume1 = (TextView) findViewById(R.id.tv_resume1);
+        tvresume2 = (TextView) findViewById(R.id.tv_resume2);
+        tvresume3 = (TextView) findViewById(R.id.tv_resume3);
+
         cbresume1.setOnClickListener(Click_CheckBox);
         cbresume2.setOnClickListener(Click_CheckBox);
         cbresume3.setOnClickListener(Click_CheckBox);
+        tvresume1.setOnClickListener(Click_TextView);
+        tvresume2.setOnClickListener(Click_TextView);
+        tvresume3.setOnClickListener(Click_TextView);
 
         application=findViewById(R.id.bu_Application);
         application.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +260,30 @@ public class SelectResumeActivity extends AppCompatActivity {
                     cbresume3.setChecked(true);
                     break;
             }
+        }
+    };
+
+    //履歴書選択按钮
+    private View.OnClickListener Click_TextView =new View.OnClickListener() {
+        public void onClick(View View) {
+            String ResumeIdNum = "";
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            switch (View.getId()) {
+                case R.id.tv_resume1:
+                    ResumeIdNum = "1";
+                    break;
+                case R.id.tv_resume2:
+                    ResumeIdNum = "2";
+                    break;
+                case R.id.tv_resume3:
+                    ResumeIdNum = "3";
+                    break;
+                default:break;
+            }
+            myApplication.setResumeId(ResumeIdNum);
+            intent.setClass(SelectResumeActivity.this, ResumeActivity.class);
+            startActivity(intent);
         }
     };
 

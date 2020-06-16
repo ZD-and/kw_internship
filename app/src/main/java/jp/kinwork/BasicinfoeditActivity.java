@@ -57,8 +57,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     final static String PARAM_personaInfo = "/MypagesMobile/personalInfo";
     final static String PARAM_personaInfoUpdate = "/MypagesMobile/personalInfoUpdate";
     final static String PARAM_Address = "/CommonMobile/getAddressByPostcode";
-    private ImageView ivpersonalsettings;
-    private TextView tvpersonalsettings;
     private TextView tvname;
     private TextView tvphonetic;
     private TextView tvsex;
@@ -194,10 +192,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 //            marginParams.setMargins(0, dptopx, 0, 0);
 //            slBasicinfo.setLayoutParams(marginParams);
 //        }
-        ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
-        tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
-        ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
-        tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
 
         tvname             = (TextView) findViewById(R.id.tv_name);
         tvphonetic         = (TextView) findViewById(R.id.tv_phonetic);
@@ -745,7 +739,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     }
 
     //菜单栏按钮
-    public void ll_Click(View View){
+    /*public void ll_Click(View View){
         mMyApplication.setpersonalset("1",0);//姓
         mMyApplication.setpersonalset(etfname.getText().toString(),1);//姓
         mMyApplication.setpersonalset(etlname.getText().toString(),2);//名
@@ -808,6 +802,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 intent.setClass(BasicinfoeditActivity.this, BasicinfoeditActivity.class);
                 break;
         }
+        mMyApplication.setpersonalset("0",0);
         startActivity(intent);
-    }
+    }*/
 }
