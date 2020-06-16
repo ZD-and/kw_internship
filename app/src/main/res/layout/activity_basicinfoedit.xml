@@ -6,9 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".BasicinfoeditActivity">
 
-    <include
-        android:id="@+id/include_b_title"
-        layout="@layout/title_bule"/>
+
 
     <include
         layout="@layout/include_back"/>
@@ -18,11 +16,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,8 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:stretchColumns="1,3"
-                >
+                android:stretchColumns="1,3">
 
                 <TableRow>
 
@@ -64,12 +60,13 @@
                         android:id="@+id/et_lname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
-                        android:text=""
-                        android:background="@drawable/ic_shape" />
+                        android:text="" />
+
                     <TextView
                         android:id="@+id/tv_fname"
                         android:layout_width="30dp"
@@ -82,12 +79,12 @@
                         android:id="@+id/et_fname"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
-                        android:text=""
-                        android:background="@drawable/ic_shape" />
+                        android:text="" />
 
                 </TableRow>
 
@@ -128,12 +125,12 @@
                         android:id="@+id/et_lname_kana"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
-                        android:text=""
-                        android:background="@drawable/ic_shape" />
+                        android:text="" />
 
                     <TextView
                         android:id="@+id/tv_fname_kana"
@@ -147,12 +144,12 @@
                         android:id="@+id/et_fname_kana"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
                         android:singleLine="true"
-                        android:text=""
-                        android:background="@drawable/ic_shape" />
+                        android:text="" />
                 </TableRow>
 
             </TableLayout>
@@ -175,13 +172,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/ic_shape"
                 android:gravity="center"
                 android:hint="性別を選択してください"
                 android:textColor="@color/background_holo_dark"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_birthday"
@@ -201,8 +198,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/ic_shape"
                 android:gravity="center"
                 android:hint="生年月日を選択してください"
@@ -226,16 +223,16 @@
                 android:id="@+id/tt_country"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:paddingLeft="10dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/ic_shape"
                 android:gravity="center"
                 android:hint="国籍を選択してください"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
                 android:textColor="@color/background_holo_dark"
-                android:textSize="15sp"
-                android:singleLine="true"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_address"
@@ -253,8 +250,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
@@ -275,14 +272,14 @@
                         android:id="@+id/et_postalcode"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
-                        android:inputType="number"
-                        android:maxLength="7"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:singleLine="true"
-                        android:background="@drawable/ic_shape" />
+                        android:background="@drawable/ic_shape"
+                        android:inputType="number"
+                        android:maxLength="7"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true" />
 
                     <Button
                         android:id="@+id/bu_postalcode"
@@ -303,8 +300,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
@@ -325,11 +322,11 @@
                         android:id="@+id/et_prefectures"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:background="@drawable/ic_shape" />
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true" />
 
                     />
                 </TableRow>
@@ -339,8 +336,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
@@ -351,8 +348,8 @@
                         android:id="@+id/tv_municipality"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:text="市区町村"
                         android:textColor="@color/background_holo_dark" />
@@ -361,11 +358,11 @@
                         android:id="@+id/et_municipality"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:background="@drawable/ic_shape" />
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true" />
                     />
                 </TableRow>
             </TableLayout>
@@ -373,8 +370,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
@@ -385,8 +382,8 @@
                         android:id="@+id/tv_town"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:text="町目番地"
                         android:textColor="@color/background_holo_dark" />
@@ -395,12 +392,12 @@
                         android:id="@+id/et_town"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:background="@drawable/ic_shape" />
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true" />
                     />
                 </TableRow>
             </TableLayout>
@@ -408,8 +405,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
@@ -420,8 +417,8 @@
                         android:id="@+id/tv_bu_mansion_room"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:text="ビル・マンション・号室"
                         android:textColor="@color/background_holo_dark" />
@@ -430,12 +427,12 @@
                         android:id="@+id/et_bu_mansion_room"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:paddingLeft="5dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:background="@drawable/ic_shape" />
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/ic_shape"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true" />
                     />
                 </TableRow>
             </TableLayout>
@@ -458,14 +455,14 @@
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:paddingLeft="5dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:maxLength="11"
-                android:singleLine="true"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/ic_shape"
                 android:inputType="phone"
+                android:maxLength="11"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
                 android:textSize="20sp" />
 
 
@@ -474,8 +471,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="45dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="50dp"
                 android:backgroundTint="@color/but_blue"
                 android:text="基本情報を登録"

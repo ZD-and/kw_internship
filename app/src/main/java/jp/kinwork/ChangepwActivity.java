@@ -44,8 +44,6 @@ public class ChangepwActivity extends AppCompatActivity {
     private EditText etpasswordOld;
     private EditText etpasswordNew;
     private EditText etpasswordNewConform;
-    private ImageView ivpersonalsettings;
-    private TextView tvpersonalsettings;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
@@ -103,10 +101,6 @@ public class ChangepwActivity extends AppCompatActivity {
             }
         });
 
-        ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
-        tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
-        ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
-        tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
         etpasswordOld = (EditText) findViewById(R.id.et_oldpw);
         etpasswordNew = (EditText) findViewById(R.id.et_newpw);
         etpasswordNewConform = (EditText) findViewById(R.id.et_newpwConform);
@@ -133,63 +127,6 @@ public class ChangepwActivity extends AppCompatActivity {
         // 设置hint属性
         etpasswordNewConform.setHint(new SpannedString(eec));//转码
 
-    }
-
-
-    //菜单栏按钮
-    public void ll_Click(View View){
-        mMyApplication.setpersonalset("2",0);
-        mMyApplication.setpersonalset(etpasswordOld.getText().toString(),1);
-        mMyApplication.setpersonalset(etpasswordNew.getText().toString(),2);
-        mMyApplication.setpersonalset(etpasswordNewConform.getText().toString(),3);
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ChangepwActivity.this, SearchActivity.class);
-                            intent.putExtra("act","");
-                        } else {
-                            intent.setClass(ChangepwActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ChangepwActivity.this, WebActivity.class);
-                    Initialization();
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ChangepwActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ChangepwActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ChangepwActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ChangepwActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ChangepwActivity.this, WebActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                intent.setClass(ChangepwActivity.this, ChangepwActivity.class);
-                break;
-        }
-        mMyApplication.setpersonalset("0",0);
-        startActivity(intent);
     }
 
     public void Click_back(){

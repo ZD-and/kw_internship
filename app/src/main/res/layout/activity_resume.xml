@@ -7,9 +7,6 @@
     android:background="@color/backgroundblue"
     tools:context=".ResumeActivity">
 
-    <include
-        android:id="@+id/include_r_title"
-        layout="@layout/title_bule"/>
 
     <include
         layout="@layout/include_back" />
@@ -19,7 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="0dp"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -35,13 +32,14 @@
                 android:id="@+id/tl_Resume_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:visibility="visible"
-                android:stretchColumns="0">
+                android:stretchColumns="0"
+                android:visibility="visible">
 
                 <TableRow>
+
                     <TextView
                         android:id="@+id/tv_resume_title"
                         android:layout_width="wrap_content"
@@ -63,9 +61,8 @@
                 </TableRow>
 
                 <TextView
-                    android:textSize="10sp"
                     android:text="履歴書名をタッチして編集します"
-                    />
+                    android:textSize="10sp" />
 
             </TableLayout>
 
@@ -73,36 +70,37 @@
                 android:id="@+id/tl_rename_resume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:visibility="gone"
-                android:stretchColumns="2">
+                android:stretchColumns="2"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_resume_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_shape"
+                    android:paddingLeft="5dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:paddingLeft="5dp"
-                    android:textSize="15sp"
-                    android:background="@drawable/ic_shape"
-                    android:text=""
                     android:singleLine="true"
-                    android:layout_marginBottom="5dp"
-                    />
+                    android:text=""
+                    android:textSize="15sp" />
+
                 <TableRow>
+
                     <TextView
                         android:id="@+id/tv_Cancel"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/ic_shape_bule_all"
                         android:gravity="center"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
                         android:text="キャンセル"
                         android:textColor="@color/colorLight"
-                        android:background="@drawable/ic_shape_bule_all"
                         android:textSize="12dp"
                         android:textStyle="bold" />
 
@@ -111,12 +109,12 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_shape_bule_all"
                         android:gravity="center"
                         android:paddingTop="2dp"
                         android:paddingBottom="2dp"
                         android:text="確認"
                         android:textColor="@color/colorLight"
-                        android:background="@drawable/ic_shape_bule_all"
                         android:textSize="12dp"
                         android:textStyle="bold" />
 
@@ -144,10 +142,10 @@
                 android:id="@+id/tl_applicationinformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
                 android:stretchColumns="1,3"
                 android:visibility="gone">
@@ -171,23 +169,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="120dp"
                         android:checked="false"
+                        android:text="正社員"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="正社員" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <CheckBox
                         android:id="@+id/cb_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="320dp"
-                        android:textColor="@color/background_holo_dark"
                         android:checked="false"
-                        android:textStyle="bold"
-                        android:text="契約社員" />
+                        android:text="契約社員"
+                        android:textColor="@color/background_holo_dark"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -196,14 +194,15 @@
                         android:id="@+id/cb_three"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="false"
                         android:layout_marginRight="40dp"
+                        android:checked="false"
+                        android:text="アルバイト･パート"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="アルバイト･パート" />
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <CheckBox
                         android:id="@+id/cb_four"
@@ -211,23 +210,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="320dp"
                         android:checked="false"
-                        android:textStyle="bold"
-                        android:text="派遣社員" />
+                        android:text="派遣社員"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
+
                     <CheckBox
                         android:id="@+id/cb_five"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="105dp"
                         android:checked="false"
+                        android:text="業務委託"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="業務委託" />
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <CheckBox
                         android:id="@+id/cb_six"
@@ -235,9 +236,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="320dp"
                         android:checked="false"
+                        android:text="嘱託社員"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="嘱託社員" />
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -248,22 +249,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="75dp"
                         android:checked="false"
+                        android:text="ボランティア"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="ボランティア" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                     <CheckBox
                         android:id="@+id/cb_eight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="350dp"
                         android:checked="false"
+                        android:text="請負"
                         android:textColor="@color/background_holo_dark"
-                        android:textStyle="bold"
-                        android:text="請負" />
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -272,15 +274,15 @@
                         android:id="@+id/cb_nine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:textColor="@color/background_holo_dark"
                         android:layout_marginRight="90dp"
-                        android:textStyle="bold"
-                        android:text="インターン" />
+                        android:checked="false"
+                        android:text="インターン"
+                        android:textColor="@color/background_holo_dark"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </TableRow>
 
                 <TextView
@@ -299,10 +301,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/ic_shape"
-                    android:textColor="@color/background_holo_dark"
                     android:padding="5dp"
                     android:singleLine="true"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/background_holo_dark" />
 
                 <TextView
                     android:id="@+id/tv_neareststation"
@@ -320,10 +322,10 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/ic_shape"
-                    android:textColor="@color/background_holo_dark"
                     android:padding="5dp"
                     android:singleLine="true"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/background_holo_dark" />
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -337,9 +339,9 @@
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:checked="false"
-                            android:textStyle="bold"
+                            android:text="転居可能"
                             android:textColor="@color/background_holo_dark"
-                            android:text="転居可能" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -366,17 +368,16 @@
                 android:id="@+id/tl_basicinformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/ic_shape"
                 android:shrinkColumns="0"
                 android:stretchColumns="0"
                 android:visibility="gone">
 
-                <TableRow
-                    android:layout_marginTop="5dp">
+                <TableRow android:layout_marginTop="5dp">
 
                     <TextView
                         android:id="@+id/tl_tr_tv_name"
@@ -389,13 +390,13 @@
                         android:textStyle="bold" />
 
                     <!--<ImageButton-->
-                        <!--android:id="@+id/bu_info"-->
-                        <!--android:layout_width="20dp"-->
-                        <!--android:layout_height="20dp"-->
-                        <!--android:layout_marginRight="20dp"-->
-                        <!--android:onClick="Click_IntentBasic"-->
-                        <!--android:backgroundTint="@color/colorLight"-->
-                        <!--app:srcCompat="?android:attr/actionModePasteDrawable" />-->
+                    <!--android:id="@+id/bu_info"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_marginRight="20dp"-->
+                    <!--android:onClick="Click_IntentBasic"-->
+                    <!--android:backgroundTint="@color/colorLight"-->
+                    <!--app:srcCompat="?android:attr/actionModePasteDrawable" />-->
 
                 </TableRow>
 
@@ -460,6 +461,7 @@
                     android:textStyle="bold" />
 
             </TableLayout>
+
             <TableLayout
                 android:id="@+id/ll_tl_educational"
                 android:layout_width="match_parent"
@@ -492,6 +494,7 @@
                 </TableRow>
 
             </TableLayout>
+
             <TableLayout
                 android:id="@+id/tl_educational"
                 android:layout_width="match_parent"
@@ -619,8 +622,8 @@
                     android:id="@+id/tv_Aspiration_PR"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:text="志望動機・自己RP"
                     android:textColor="@color/colorPrimary"
@@ -632,16 +635,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="30dp"
                     android:background="@color/colorLight"
                     android:gravity="left|top"
-                    android:scrollbars="vertical"
-                    android:minLines="6"
                     android:maxLines="6"
-                    android:textSize="12sp"
+                    android:minLines="6"
                     android:padding="5dp"
-                    android:text="" />
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_hobby_Skill"
@@ -660,16 +663,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="30dp"
                     android:background="@color/colorLight"
-                    android:scrollbars="vertical"
                     android:gravity="left|top"
-                    android:minLines="6"
                     android:maxLines="6"
-                    android:textSize="12sp"
+                    android:minLines="6"
                     android:padding="5dp"
-                    android:text="" />
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textSize="12sp" />
 
             </TableLayout>
 
@@ -677,10 +680,10 @@
                 android:id="@+id/bu_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
                 android:layout_marginTop="60dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="100dp"
                 android:backgroundTint="@color/but_blue"
                 android:text="履歴書作成"
                 android:textColor="@color/colorLight" />
