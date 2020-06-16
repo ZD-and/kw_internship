@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ApplyActivity">
 
-    <include
-        layout="@layout/title_bule"/>
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

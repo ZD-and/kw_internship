@@ -55,8 +55,6 @@ public class ContactDialogActivity extends AppCompatActivity {
     final static String PARAM_sendMessage = "/MyMailMobile/pendingMyMail";
     final static String PARAM_Readed = "/MyMailMobile/setReaded";
 
-    private ImageView ivbcontact;
-    private TextView tvbcontact;
     private LinearLayout llmeg;
     private TableLayout tlmeg;
     private ScrollView slmeg;
@@ -197,10 +195,6 @@ public class ContactDialogActivity extends AppCompatActivity {
                 Click_setSendMeg();
             }
         });
-        ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
-        tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
-        ivbcontact.setImageResource(R.mipmap.blue_contact);
-        tvbcontact.setTextColor(Color.parseColor("#5EACE2"));
         list_tlnamedata = new LinkedList<TableLayout>();
         list_tlreply    = new LinkedList<TableLayout>();
         list_tvtitle    = new LinkedList<TextView>();
@@ -666,60 +660,5 @@ public class ContactDialogActivity extends AppCompatActivity {
         param.put(getString(R.string.name),getString(R.string.SendMeg));
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
-    }
-    //菜单栏界面移动
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ContactDialogActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(ContactDialogActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            case R.id.ll_b_contact:
-                intent.setClass(ContactDialogActivity.this, ContactDialogActivity.class);
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ContactDialogActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ContactDialogActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ContactDialogActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ContactDialogActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ContactDialogActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        mMyApplication.setContactDialog("0",0);
-        startActivity(intent);
     }
 }
