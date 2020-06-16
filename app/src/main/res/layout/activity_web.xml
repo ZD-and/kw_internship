@@ -7,18 +7,16 @@
     tools:context=".WebActivity">
 
     <include
-        layout="@layout/title"/>
-    <include
         layout="@layout/include_back"/>
 
     <!--显示网页区域-->
     <WebView
         android:id="@+id/webView1"
-        android:layout_below="@+id/tl_back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="50dp" />
+        android:layout_below="@+id/tl_back"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="0dp" />
 
 
 </RelativeLayout>

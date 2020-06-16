@@ -65,10 +65,6 @@ public class ApplyActivity extends AppCompatActivity {
     private Button bucreateBottom;
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
-    private ImageView Ivsearch;
-    private TextView tvsearch;
-    private ImageView ivmylist;
-    private TextView tvmylist;
 
     private String[] employmentstatus = new String[]{"正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
@@ -130,10 +126,6 @@ public class ApplyActivity extends AppCompatActivity {
         if(Act.equals(getString(R.string.Search))){
             tvback.setText(getString(R.string.SearchResults));
             tvbackdummy.setText(getString(R.string.SearchResults));
-            Ivsearch = (ImageView) findViewById(R.id.iv_b_search);
-            Ivsearch.setImageResource(R.mipmap.blue_search);
-            tvsearch = (TextView) findViewById(R.id.tv_b_search);
-            tvsearch.setTextColor(Color.parseColor("#5EACE2"));
             if(mMyApplication.getSApply(0).equals("1")){
                 JobInfo = mMyApplication.getSApply(1);
                 Act = mMyApplication.getSApply(2);
@@ -143,10 +135,6 @@ public class ApplyActivity extends AppCompatActivity {
         } else {
             tvback.setText(getString(R.string.mylist));
             tvbackdummy.setText(getString(R.string.mylist));
-            ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
-            tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
-            ivmylist.setImageResource(R.mipmap.blue_mylist);
-            tvmylist.setTextColor(Color.parseColor("#5EACE2"));
             if(mMyApplication.getMApply(0).equals("1")){
                 JobInfo = mMyApplication.getMApply(1);
                 Act = mMyApplication.getMApply(2);
@@ -278,103 +266,6 @@ public class ApplyActivity extends AppCompatActivity {
                 tlapplyemploymentstatus.addView(tvstatus);
             }
         }
-    }
-
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(! Act.equals(getString(R.string.Search))){
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                    if(mMyApplication.getSURL(0).equals("0")){
-                        if(mMyApplication.getSApply(0).equals("0")){
-                            if(mMyApplication.getSearchResults(0).equals("0")){
-                                intent.setClass(ApplyActivity.this, SearchActivity.class);
-                                intent.putExtra("act","");
-                            } else {
-                                intent.setClass(ApplyActivity.this, SearchResultsActivity.class);
-                            }
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ApplyActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                    if(mMyApplication.getMURL(0).equals("0")){
-                        if(mMyApplication.getMApply(0).equals("0")){
-                            intent.setClass(ApplyActivity.this, MylistActivity.class);
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ApplyActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ApplyActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ApplyActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        mMyApplication.setMURL("0",0);
-        mMyApplication.setMApply("0",0);
-        mMyApplication.setSearchResults("0",0);
-        startActivity(intent);
     }
 
 //    public void Click_setSendMeg(View View){
