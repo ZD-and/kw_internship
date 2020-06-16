@@ -857,7 +857,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                             PreferenceUtils.setsaveid(getString(R.string.SearchResults));
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            intent.setClass(SearchResultsActivity.this, MainKinWork.class);
+                            intent.setClass(SearchResultsActivity.this, LoginActivity.class);
                             intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                             startActivity(intent);
 
@@ -1220,7 +1220,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
-                intent.setClass(SearchResultsActivity.this, MainKinWork.class);
+                intent.setClass(SearchResultsActivity.this, LoginActivity.class);
                 intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                 break;
             //連絡画面に移動

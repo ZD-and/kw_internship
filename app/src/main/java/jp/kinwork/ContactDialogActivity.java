@@ -23,7 +23,6 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
@@ -52,30 +51,20 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class ContactDialogActivity extends AppCompatActivity {
 
-//    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
-//    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
-//    final static String PARAM_Readed = "/SessionMessageMobile/personalSetReaded";
-
     final static String PARAM_File = "/MyMailMobile/MyMailList";
     final static String PARAM_sendMessage = "/MyMailMobile/pendingMyMail";
     final static String PARAM_Readed = "/MyMailMobile/setReaded";
 
     private LinearLayout llmeg;
-    private TableLayout tlinformation;
     private TableLayout tlmeg;
-    private TableLayout tlnamedate;
     private ScrollView slmeg;
     private ImageView imvivread;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
     private TextView tltvcompany;
-    //    private TextView tltvmailaddress;
     private EditText ettitle;
     private EditText etmeg;
-    private TextView tvallEmail;
-    private TextView tvsendEmail;
-    private TextView tvReceptionEmail;
     private TextView tvToCompanyName;
 
     private Button bu_sendmeg;
@@ -86,17 +75,12 @@ public class ContactDialogActivity extends AppCompatActivity {
     private String token;
     private String employer_id;
     private String company_name;
-    //    private String mailaddress;
     private String Email;
-    //private String name = "";
     private String setTitle = "";
     private String setmeg = "";
     private String DisplayEmailFlg = "0";
-//    private String Act = "";
 
     private String sendflg = "0";
-
-    private int iIndex = -1;
 
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
@@ -111,29 +95,23 @@ public class ContactDialogActivity extends AppCompatActivity {
     private LinkedList<String> list_String;
     private LinkedList<JSONObject> list_obj;
 
-//    private ProgressDialog dialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
         Intent Intent = getIntent();
-//        Act = Intent.getStringExtra("Act");
         Initialization();
         if(mMyApplication.getContactDialog(0).equals("0")){
             employer_id = Intent.getStringExtra(getString(R.string.ID));
             company_name = Intent.getStringExtra(getString(R.string.company_name));
-//            mailaddress = Intent.getStringExtra("mailaddress");
             Log.d("company_name", company_name);
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-//            mMyApplication.setContactDialog(mailaddress,3);
             getSearchResults();
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
-//            mailaddress = mMyApplication.getContactDialog(3);
             try {
                 JSONArray obj = new JSONArray(mMyApplication.getContactDialog(3));
                 for(int x=0; x < obj.length(); x++){
@@ -142,7 +120,6 @@ public class ContactDialogActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            Collections.reverse(list_String);
             DisplayEmailFlg = mMyApplication.getContactDialog(4);
             if(DisplayEmailFlg.equals("")){
                 //flg为空的时候，显示全部的邮件
@@ -157,7 +134,6 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
         tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
-//        tltvmailaddress.setText(mailaddress);
         setViews();
     }
     private void setViews() {
@@ -210,13 +186,6 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//        return super.onTouchEvent(event);
-//    }
-
     //初期化
     private void Initialization(){
         bu_sendmeg=findViewById(R.id.bu_sendmeg);
@@ -236,7 +205,6 @@ public class ContactDialogActivity extends AppCompatActivity {
         list_String     = new LinkedList<String>();
         list_obj     = new LinkedList<JSONObject>();
         llmeg           = (LinearLayout) findViewById(R.id.ll_meg);
-        tlinformation   = (TableLayout) findViewById(R.id.tl_information);
         tlmeg           = (TableLayout) findViewById(R.id.tl_meg);
         slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
         tvback          = (TextView) findViewById(R.id.tv_back);
@@ -252,16 +220,8 @@ public class ContactDialogActivity extends AppCompatActivity {
         tvback.setText(getString(R.string.title_contact));
         tvbackdummy.setText(getString(R.string.title_contact));
         tltvcompany     = (TextView) findViewById(R.id.tl_tv_company);
-//        tltvmailaddress     = (TextView) findViewById(R.id.tl_tv_mailaddress);
         ettitle        = (EditText) findViewById(R.id.et_title);
         etmeg          = (EditText) findViewById(R.id.et_meg);
-
-//        tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
-//        tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
-//        tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
-//        tvallEmail.setOnClickListener(this);
-//        tvsendEmail.setOnClickListener(this);
-//        tvReceptionEmail.setOnClickListener(this);
 
         tvToCompanyName  = (TextView) findViewById(R.id.tv_ToCompanyName);
         mPreferenceUtils = new PreferenceUtils(ContactDialogActivity.this);
@@ -343,7 +303,6 @@ public class ContactDialogActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-//            dialog.dismiss();
         }
     }
     //解密，并且保存得到的数据
@@ -371,7 +330,6 @@ public class ContactDialogActivity extends AppCompatActivity {
                 }
                 mMyApplication.setContactDialog(decryptdata,3);
                 mMyApplication.setContactDialog(DisplayEmailFlg,4);
-//                Collections.reverse(list_String);
                 educationInfo("");
             }
         } catch (JSONException e) {
@@ -407,10 +365,6 @@ public class ContactDialogActivity extends AppCompatActivity {
                 TableLayout tlreply = (TableLayout) dialog.findViewById(R.id.tl_reply);
                 TableLayout tlnew = (TableLayout) dialog.findViewById(R.id.tl_new);
                 tvdata.setText(objMyMail.getString(getString(R.string.send_time)));
-//                String Title = obj.getString("mailTitle");
-//                String mailTitle = new String(android.util.Base64.decode(Title.getBytes(), android.util.Base64.DEFAULT));
-//                String Content = obj.getString("mailContent");
-//                String mailContent = new String(android.util.Base64.decode(Content.getBytes(), android.util.Base64.DEFAULT));
                 String mailContent = objMyMail.getString(getString(R.string.mail_content)).replace("<br />","");
                 tvtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
                 tvsubtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
@@ -427,9 +381,6 @@ public class ContactDialogActivity extends AppCompatActivity {
                 } else {
                     tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule_green);
                     tvcompany_name.setText(company_name + " へ");
-//                    tvcompany_name.setGravity(Gravity.RIGHT);
-//                    tvdata.setGravity(Gravity.RIGHT);
-//                    ivread.setVisibility(GONE);
                     tvisReaded.setVisibility(GONE);
                 }
 
@@ -487,66 +438,28 @@ public class ContactDialogActivity extends AppCompatActivity {
                 etmeg.setText("");
             }
         } else {
-//            switch (View.getId()){
-//                case R.id.tv_back:
                     mMyApplication.setContactDialog("0",0);
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ContactDialogActivity.this, ContactActivity.class);
                     startActivity(intent);
-//                    break;
-//            }
         }
     }
-    //显示邮件
-//    public void onClick(View View){
-//        String name = "";
-//        switch (View.getId()){
-//            case R.id.tv_allEmail:
-//                name = getString(R.string.tv_allEmail);
-//                break;
-//            case R.id.tv_sendEmail:
-//                name = getString(R.string.tv_sendEmail);
-//                break;
-//            case R.id.tv_ReceptionEmail:
-//                name = getString(R.string.tv_ReceptionEmail);
-//                break;
-//        }
-//        DisplayEmail(name);
-//    }
     //显示邮件的背景设定
     public void DisplayEmail(String name){
         switch (name){
             case "tv_allEmail":
                 //显示全部的邮件
-//                tvallEmail.setBackgroundResource(R.drawable.frame_left_bule);
-//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-//                tvallEmail.setTextColor(Color.parseColor("#ffffffff"));
-//                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-//                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "";
                 educationInfo("");
                 break;
             case "tv_sendEmail":
                 //显示收到的邮件
-//                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_bule);
-//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-//                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-//                tvsendEmail.setTextColor(Color.parseColor("#ffffffff"));
-//                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "1";
                 educationInfo("1");
                 break;
             case "tv_ReceptionEmail":
                 //显示发送的邮件
-//                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-//                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-//                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_bule);
-//                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-//                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-//                tvReceptionEmail.setTextColor(Color.parseColor("#ffffffff"));
                 DisplayEmailFlg = "0";
                 educationInfo("0");
                 break;
