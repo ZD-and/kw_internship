@@ -275,11 +275,22 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 param.put("file",PARAM_checkValidateCode);
                 break;
             case "setPassword":
-                Pdata.setEmail(Email);
-                Pdata.setToken(token);
-                Pdata.setPassword(inputA);
-                Pdata.setPasswordConform(inputB);
-                param.put("file",PARAM_setPassword);
+                if (inputA.equals(inputB)) {
+                    Pdata.setEmail(Email);
+                    Pdata.setToken(token);
+                    Pdata.setPassword(inputA);
+                    Pdata.setPasswordConform(inputB);
+                    param.put("file",PARAM_setPassword);
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(getString(R.string.teiji)).setMessage("パスワード一致しません").setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //确定按钮的点击事件
+                        }
+                    }).show();
+                }
                 break;
         }
         String data = JsonChnge(AesKey,Pdata);
