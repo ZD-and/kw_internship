@@ -47,6 +47,22 @@
 
             </TableRow>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="@android:color/holo_blue_bright"
+                app:tabTextColor="@color/colorPrimary"
+                app:tabIndicatorColor="@android:color/holo_blue_bright"
+                app:tabIndicatorHeight="4dp"
+
+                />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
             <!--<TextView-->
             <!--android:id="@+id/tl_tv_mailaddress"-->
             <!--android:layout_width="match_parent"-->
@@ -58,58 +74,58 @@
             <!--android:textColor="@color/background_holo_dark"-->
             <!--android:textSize="15sp" />-->
 
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:stretchColumns="*"
-                >
+<!--            <TableLayout-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginLeft="40dp"-->
+<!--                android:layout_marginRight="40dp"-->
+<!--                android:stretchColumns="*"-->
+<!--                >-->
 
-                <TableRow>
+<!--                <TableRow>-->
 
-                    <TextView
-                        android:id="@+id/tv_allEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/colorLight"
-                        android:textSize="10sp"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:background="@drawable/frame_left_bule"
-                        android:text="すべて"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_allEmail"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:textColor="@color/colorLight"-->
+<!--                        android:textSize="10sp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingTop="5dp"-->
+<!--                        android:paddingBottom="5dp"-->
+<!--                        android:background="@drawable/frame_left_bule"-->
+<!--                        android:text="すべて"/>-->
 
 
-                    <TextView
-                        android:id="@+id/tv_sendEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/but_blue"
-                        android:textSize="10sp"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:background="@drawable/frame_center_null"
-                        android:text="受信トレイ"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_sendEmail"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/but_blue"-->
+<!--                        android:textSize="10sp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingTop="5dp"-->
+<!--                        android:paddingBottom="5dp"-->
+<!--                        android:background="@drawable/frame_center_null"-->
+<!--                        android:text="受信トレイ"/>-->
 
-                    <TextView
-                        android:id="@+id/tv_ReceptionEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/but_blue"
-                        android:textSize="10sp"
-                        android:gravity="center"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:background="@drawable/frame_right_null"
-                        android:text="送信済み"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_ReceptionEmail"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/but_blue"-->
+<!--                        android:textSize="10sp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingTop="5dp"-->
+<!--                        android:paddingBottom="5dp"-->
+<!--                        android:background="@drawable/frame_right_null"-->
+<!--                        android:text="送信済み"/>-->
 
-                </TableRow>
+<!--                </TableRow>-->
 
-            </TableLayout>
+<!--            </TableLayout>-->
 
         </TableLayout>
 
