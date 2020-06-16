@@ -77,8 +77,12 @@ public class ApplyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Initialization();
     }
 
@@ -191,7 +195,7 @@ public class ApplyActivity extends AppCompatActivity {
                     mPreferenceUtils.setsaveid(getString(R.string.Apply));
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    intent.setClass(ApplyActivity.this, MainKinWork.class);
+                    intent.setClass(ApplyActivity.this, LoginActivity.class);
                     intent.putExtra(getString(R.string.Activity),getString(R.string.Apply));
                     startActivity(intent);
 
@@ -376,73 +380,4 @@ public class ApplyActivity extends AppCompatActivity {
         mMyApplication.setSearchResults("0",0);
         startActivity(intent);
     }
-
-//    public void Click_setSendMeg(View View){
-//        PostDate Pdata = new PostDate();
-//        Map<String,String> param = new HashMap<String, String>();
-//        Pdata.setUserId(userid);
-//        Pdata.setToken(token);
-//        Pdata.setemployerId(employerID);
-//        Pdata.setmailTitle(etAtitle.getText().toString());
-//        Pdata.setmailContent(etAmeg.getText().toString());
-//        String data = JsonChnge(AesKey,Pdata);
-//        param.put("file",PARAM_sendMessage);
-//        param.put("data",data);
-//        //数据通信处理（访问服务器，并取得访问结果）
-////        new GithubQueryTask().execute(param);
-//    }
-//
-//    //转换为Json格式并且AES加密
-//    public static String JsonChnge(String AesKey,PostDate Data) {
-//        Gson mGson = new Gson();
-//        String sdPdata = mGson.toJson(Data,PostDate.class);
-//        Log.d("sdPdata", sdPdata);
-//        AES mAes = new AES();
-//        byte[] mBytes = null;
-//        try {
-//            mBytes = sdPdata.getBytes("UTF8");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        String enString = mAes.encrypt(mBytes,AesKey);
-//        String encrypt = enString.replace("\n", "").replace("+","%2B");
-//        return encrypt;
-//
-//    }
-//
-//    //通信处理
-//    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
-//
-//        @Override
-//        protected String doInBackground(Map<String, String>... params) {
-//            Map<String, String> map = params[0];
-//            String file = map.get("file");
-//            String data = map.get("data");
-//            java.net.URL searchUrl = buildUrl(file);
-//            String githubSearchResults = null;
-//            try {
-//                githubSearchResults = getResponseFromHttpUrl(searchUrl,data,deviceId);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return githubSearchResults;
-//        }
-//        @Override
-//        protected void onPostExecute(String githubSearchResults) {
-//            if (githubSearchResults != null && !githubSearchResults.equals("")) {
-//                Log.d("***Results***", githubSearchResults);
-//                try {
-//                    JSONObject obj = new JSONObject(githubSearchResults);
-//                    boolean processResult = obj.getBoolean("processResult");
-//                    String meg = obj.getString("message");
-//                    if(processResult == true) {
-//                        Log.d("***returnData***", obj.getString("returnData"));
-//                    }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-////            dialog.dismiss();
-//        }
-//    }
 }

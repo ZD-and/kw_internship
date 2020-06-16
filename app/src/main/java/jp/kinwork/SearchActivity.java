@@ -18,7 +18,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,9 +44,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -286,7 +283,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
-                intent.setClass(SearchActivity.this, MainKinWork.class);
+                intent.setClass(SearchActivity.this, LoginActivity.class);
                 intent.putExtra(getString(R.string.Activity),"");
                 break;
             //連絡画面に移動
