@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bottom">
 
@@ -8,37 +10,40 @@
         android:id="@+id/tl_TableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom">
+        android:layout_marginBottom="572dp"
+        android:background="@drawable/bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
             android:id="@+id/tl_tl_TableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_shape_w_bule"
-            >
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_shape_w_bule">
 
             <TableLayout
                 android:id="@+id/tl_name_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="0"
                 android:shrinkColumns="0"
-                >
+                android:stretchColumns="0">
 
-                <TableRow
-                    android:gravity="center_vertical">
+                <TableRow android:gravity="center_vertical">
+
                     <TextView
                         android:id="@+id/tl_tv_company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="20dp"
+                        android:layout_marginBottom="5dp"
                         android:maxLines="1"
                         android:text="会社名会社名会社名"
                         android:textColor="@color/background_holo_dark"
@@ -48,23 +53,23 @@
                         android:id="@+id/tv_isReaded"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="New"
                         android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
                         android:textSize="12sp"
-                        android:text="New"/>
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/iv_read"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
-                        android:visibility="visible"
                         android:layout_marginRight="30dp"
-                        android:src="@mipmap/isreaded_f"/>
+                        android:layout_marginBottom="5dp"
+                        android:src="@mipmap/isreaded_f"
+                        android:visibility="visible" />
 
 
                 </TableRow>
@@ -74,9 +79,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
+                    android:gravity="left"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
-                    android:gravity="left"
                     android:text="時間"
                     android:textSize="15sp" />
 
@@ -84,9 +89,9 @@
                     android:id="@+id/tl_tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="5dp"
                     android:maxLines="1"
                     android:text="タイトル"
                     android:textColor="@color/background_holo_dark"
@@ -98,65 +103,66 @@
                 android:id="@+id/tl_tv_sub_title"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/ic_shape_bule"
                 android:gravity="left"
-                android:padding="5dp"
                 android:maxLines="1"
-                android:visibility="gone"
+                android:padding="5dp"
                 android:text="タイトル"
                 android:textColor="@color/background_holo_dark"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tl_tv_meg"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/ic_shape_bule"
                 android:gravity="left"
                 android:padding="5dp"
-                android:visibility="gone"
                 android:text="メッセージ \nメッセージ"
                 android:textColor="@color/background_holo_dark"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:stretchColumns="*"
-                >
+                android:stretchColumns="*">
+
                 <TableRow>
+
                     <TableLayout
                         android:id="@+id/tl_reply"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_shape_null"
-                        android:gravity="center_vertical"
                         android:layout_marginLeft="40dp"
                         android:layout_marginRight="10dp"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp">
+                        android:background="@drawable/ic_shape_null"
+                        android:gravity="center_vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
-                        <TableRow
-                            android:gravity="center">
+                        <TableRow android:gravity="center">
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@mipmap/mail_r"/>
+                                android:src="@mipmap/mail_r" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/background_holo_dark"
-                                android:textSize="15sp"
                                 android:paddingLeft="3dp"
-                                android:text="回復"/>
+                                android:text="回復"
+                                android:textColor="@color/background_holo_dark"
+                                android:textSize="15sp" />
                         </TableRow>
                     </TableLayout>
 
@@ -164,27 +170,27 @@
                         android:id="@+id/tl_new"
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="40dp"
                         android:background="@drawable/ic_shape_null"
                         android:gravity="center_vertical"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginLeft="10dp"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp">
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
-                        <TableRow
-                            android:gravity="center">
+                        <TableRow android:gravity="center">
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@mipmap/mail_c"/>
+                                android:src="@mipmap/mail_c" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/background_holo_dark"
-                                android:textSize="15sp"
                                 android:paddingLeft="3dp"
-                                android:text="新規"/>
+                                android:text="新規"
+                                android:textColor="@color/background_holo_dark"
+                                android:textSize="15sp" />
 
                         </TableRow>
                     </TableLayout>
@@ -194,4 +200,4 @@
         </TableLayout>
 
     </TableLayout>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
