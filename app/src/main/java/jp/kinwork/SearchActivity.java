@@ -69,8 +69,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView ivclearworklocation;
     private String UserLoginFlg;
     private ImageView Ivsearch;
-    private ImageView Ivclearkeyword;
-    private ImageView Ivclearworklocation;
     private TextView tvsearch;
     private TextView tvtitle;
     private TextView tvkeyword;
@@ -166,11 +164,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     //初期化
     public void Initialization(){
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
-        Ivclearkeyword=findViewById(R.id.iv_clear_keyword);
-        Ivclearworklocation=findViewById(R.id.iv_clear_worklocation);
-        Ivclearkeyword.setOnClickListener(this);
-        Ivclearworklocation.setOnClickListener(this);
-
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
@@ -219,6 +212,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         ivclearkeyword = (ImageView) findViewById(R.id.iv_clear_keyword);
         ivclearworklocation = (ImageView) findViewById(R.id.iv_clear_worklocation);
+
+        ivclearkeyword.setOnClickListener(this);
+        ivclearworklocation.setOnClickListener(this);
         Ivsearch = (ImageView) findViewById(R.id.iv_search);
         Ivsearch.setImageResource(R.mipmap.blue_search);
         tvsearch = (TextView) findViewById(R.id.tv_search);
@@ -229,6 +225,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceUtils = new PreferenceUtils(SearchActivity.this);
         UserLoginFlg = PreferenceUtils.getUserFlg();
         etkeyword.setText(myApplication.getkeyword());
+        Log.d(TAG, "Initialization myApplication.getaddress(): [" + myApplication.getaddress() + "]");
         etworklocation.setText(myApplication.getaddress());
 
         if(etkeyword.getText().length() > 0){
@@ -373,6 +370,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     break;
                 }
             }
+
             if(iIndex > -1){
                 add_1 = results.getJSONObject(iIndex - 1).getString(getString(R.string.long_name));
                 add_2 = results.getJSONObject(iIndex - 2).getString(getString(R.string.long_name));
@@ -380,7 +378,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 ivclearworklocation.setVisibility(View.GONE);
             }
-            etworklocation.setText(add_1 + " " + add_2 + " " + add_3);
+            Log.d(TAG, "SetAddress: [" + add_1 + "　" + add_2 + "　" + add_3 + "]");
+            String address ="";
+            if(add_1.length() > 0 ){
+                address = address + add_1 + " ";
+            }
+            if(add_2.length() > 0 ){
+                address = address + add_2 + " ";
+            }
+            if(add_3.length() > 0 ){
+                address = address + add_3 + " ";
+            }
+            etworklocation.setText(address);
             myApplication.setaddress(etworklocation.getText().toString());
             if(etworklocation.getText().length() > 0){
                 blworklocation = true;
@@ -674,26 +683,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Log.d(TAG, "Results:"+githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String meg = obj.getString(getString(R.string.message));
-                    if(processResult == true) {
-                        Log.d(TAG, "returnData:"+obj.getString("returnData"));
-                        JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
-                        ArrayList<String> stringArrayList = new ArrayList<String>();
-                        String[] Stringdata = {};
-                        int length = returnData.length();
-                        if(!obj.getString(getString(R.string.returnData)).equals("[]")){
-                            for (int i=0; i< length; i++) {
-                                if( i < 6){
-                                    stringArrayList.add(returnData.getString(i)); //add to arraylist
-                                } else {
-                                    break;
-                                }
-                            }
+                    JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
+                    ArrayList<String> stringArrayList = new ArrayList<String>();
+                    for (int i=0; i< returnData.length(); i++) {
+                        if( i < 6){
+                            stringArrayList.add(returnData.getString(i)); //add to arraylist
+                        } else {
+                            break;
                         }
-                        Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
-                        getItem(Stringdata,name);
                     }
+                    String[] Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
+                    getItem(Stringdata,name);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

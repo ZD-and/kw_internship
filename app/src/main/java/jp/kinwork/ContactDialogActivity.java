@@ -94,17 +94,26 @@ public class ContactDialogActivity extends AppCompatActivity {
     private LinkedList<ImageView> list_ivread;
     private LinkedList<String> list_String;
     private LinkedList<JSONObject> list_obj;
+    
+    String TAG = "ContactDialogActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
+        
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
         Intent Intent = getIntent();
         Initialization();
         if(mMyApplication.getContactDialog(0).equals("0")){
             employer_id = Intent.getStringExtra(getString(R.string.ID));
             company_name = Intent.getStringExtra(getString(R.string.company_name));
-            Log.d("company_name", company_name);
+            Log.d(TAG, "company_name:"+company_name);
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
@@ -136,6 +145,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         tltvcompany.setText(company_name);
         setViews();
     }
+
     private void setViews() {
         FragmentManager manager = getSupportFragmentManager();
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -241,6 +251,8 @@ public class ContactDialogActivity extends AppCompatActivity {
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
+        Pdata.setpage("1");
+        Pdata.setType("all");//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
@@ -250,10 +262,10 @@ public class ContactDialogActivity extends AppCompatActivity {
     }
 
     //转换为Json格式并且AES加密
-    public static String JsonChnge(String AesKey,PostDate Data) {
+    public String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
-        Log.d("sdPdata", sdPdata);
+        Log.d(TAG,"sdPdata:"+ sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -288,7 +300,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG,"Results:"+ githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
@@ -309,7 +321,7 @@ public class ContactDialogActivity extends AppCompatActivity {
     public void decryptchange(String data,String inputname){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***decryptdata***", decryptdata);
+        Log.d(TAG,"decryptdata:"+ decryptdata);
         try {
             if (inputname.equals(getString(R.string.SendMeg))) {
                 JSONObject obj = new JSONObject(decryptdata);
@@ -317,7 +329,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
-                Log.d("***strDate***", strDate);
+                Log.d(TAG,"strDate:"+ strDate);
                 Setsendmeg(objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
             }else {
                 JSONArray obj = new JSONArray(decryptdata);
@@ -351,7 +363,7 @@ public class ContactDialogActivity extends AppCompatActivity {
             try {
                 JSONObject obj = new JSONObject(list_String.get(i));
                 JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
-                Log.d("***obj***", objMyMail.toString());
+                Log.d(TAG,"obj:"+ objMyMail.toString());
                 View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
                 TableLayout tltlTableLayout = (TableLayout) dialog.findViewById(R.id.tl_tl_TableLayout);
                 TableLayout tlnamedata = (TableLayout) dialog.findViewById(R.id.tl_name_data);
@@ -410,7 +422,7 @@ public class ContactDialogActivity extends AppCompatActivity {
     }
     //返回联络画面
     public void Click_back(){
-        Log.d("sendflg", sendflg);
+        Log.d(TAG,"sendflg:"+ sendflg);
         if(sendflg.equals("1")){
             if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
