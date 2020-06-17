@@ -95,7 +95,15 @@ public class MainKinWork extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        //null reference 処理
+        if(im.isActive() && getCurrentFocus() != null)
+        {
+            if (getCurrentFocus().getApplicationWindowToken() != null)
+            {
+                im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
         return super.onTouchEvent(event);
     }
 
@@ -103,6 +111,8 @@ public class MainKinWork extends AppCompatActivity {
     private void Initialization(){
         edloginEmail = (EditText) findViewById(R.id.ed_login_email);
         edpassword = (EditText) findViewById(R.id.ed_password);
+        edloginEmail.setOnTouchListener(touchListener);
+        edpassword.setOnTouchListener(touchListener);
 
         LoginClick=findViewById(R.id.bu_MainLoginClick);
         LoginClick.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +150,23 @@ public class MainKinWork extends AppCompatActivity {
         dialog.setMessage(getString(R.string.login)) ;
     }
 
+    //点击输入框变蓝
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (view.getId()){
+                case R.id.ed_login_email:
+                    edloginEmail.setBackgroundResource(R.drawable.ic_shape_blue);
+                    edpassword.setBackgroundResource(R.drawable.ic_shape);
+                    break;
+                case R.id.ed_password:
+                    edloginEmail.setBackgroundResource(R.drawable.ic_shape);
+                    edpassword.setBackgroundResource(R.drawable.ic_shape_blue);
+                    break;
+            }
+            return false;
+        }
+    };
     //登录处理
     public void MainLoginClick(){
         flg = "0";

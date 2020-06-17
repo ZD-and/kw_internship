@@ -334,6 +334,7 @@
     <string name="numOfPage">numOfPage</string>
     <string name="currentPage">currentPage</string>
     <string name="jobList">jobList</string>
+    <string name="employmentStatus">employmentStatus</string>
     <string name="tsushinshierror">通信失敗</string>
     <string name="employmentStatus">employmentStatus</string>
     <string name="ken">件</string>
@@ -385,9 +386,9 @@
     <string name="errormeg">既にこの仕事を応募しました。</string>
     <string name="sakusei">作成する</string>
 
-
     <!-- Strings related to Web -->
     <string name="kensakuchu">検索中···</string>
+
 
     <string-array name="employmentstatus">
         <item>雇用形態を選択してください</item>

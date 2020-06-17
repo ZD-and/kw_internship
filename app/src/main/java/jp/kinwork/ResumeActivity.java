@@ -105,9 +105,6 @@ public class ResumeActivity extends AppCompatActivity {
     private ImageView bu_info_employment;
     private ImageView bu_info_qualification;
 
-    private ImageView ivpersonalsettings;
-    private TextView tvpersonalsettings;
-
     private TextView tvapplicationinformation;
     private TextView tvbasicinformation;
     private TextView tl_tr_tv_educational;
@@ -312,10 +309,6 @@ public class ResumeActivity extends AppCompatActivity {
                 Click_create();
             }
         });
-        ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
-        tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
-        ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
-        tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
         ethopeJobcategory = (EditText) findViewById(R.id.et_hopeJobcategory);
         etneareststation = (EditText) findViewById(R.id.et_neareststation);
         etAspirationPR = (EditText) findViewById(R.id.et_Aspiration_PR);
@@ -714,6 +707,22 @@ public class ResumeActivity extends AppCompatActivity {
                 educationInfo(JSONArray_education);
                 employmentInfo(JSONArray_employment);
                 qualificationInfo(JSONArray_qualification);
+                //「学歴」がない時、子科目が表示されない
+                if(JSONArray_education.length() == 0)
+                {
+                    tleducational.setVisibility(View.GONE);
+                }
+                //「職歴」がない時、子科目が表示されない
+                if(JSONArray_employment.length() == 0)
+                {
+                    tljob.setVisibility(View.GONE);
+                }
+                //「資格」がない時、子科目が表示されない
+                if(JSONArray_qualification.length() == 0)
+                {
+                    tlqualification.setVisibility(View.GONE);
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -991,7 +1000,7 @@ public class ResumeActivity extends AppCompatActivity {
                 //TextView companylocation = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_companylocation);
                 TextView employmentperiod = (TextView) add_employment.findViewById(R.id.I_tl_tr_tv_employmentperiod);
                 ImageView employmentCr = (ImageView) add_employment.findViewById(R.id.I_ibu_jobcreate);
-                employmentperiod.setOnClickListener(new View.OnClickListener() {
+                employmentCr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Updemployment(v);
@@ -1050,7 +1059,7 @@ public class ResumeActivity extends AppCompatActivity {
                 myApplication.setActCation(getString(R.string.emp));
                 JSONObject obj = JSONArray_employment.getJSONObject(iIndex);
                 Gson gson = new Gson();
-                professionalCareer = gson.fromJson(obj.getString(getString(R.string.professionalCareer)),ProfessionalCareer.class);
+                professionalCareer = gson.fromJson(obj.getString(getString(R.string.ProfessionalCareer)),ProfessionalCareer.class);
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(ResumeActivity.this, EmploymentActivity.class);
@@ -1554,79 +1563,4 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     };
-
-    //菜单栏按钮
-    public void ll_Click(View View){
-        status_sum = one_1      +
-                    two_2      +
-                    three_4    +
-                    four_8     +
-                    five_16    +
-                    six_32     +
-                    seven_64   +
-                    eight_128  +
-                    nine_256;
-        myApplication.setpersonalset("3",0);
-        myApplication.setpersonalset(tvresumetitle.getText().toString(),1);//履歴書名
-        myApplication.setpersonalset(String.valueOf(status_sum),2);//雇用形態
-        myApplication.setpersonalset(ethopeJobcategory.getText().toString(),3);//希望の職種
-        myApplication.setpersonalset(etneareststation.getText().toString(),4);//最寄駅
-        myApplication.setpersonalset(canmove,5);//転居可能フラグ
-        myApplication.setpersonalset(etAspirationPR.getText().toString(),6);//志望動機・自己RP
-        myApplication.setpersonalset(ethobbySkill.getText().toString(),7);//趣味・特技
-        myApplication.setpersonalset(resumeId,8);//履歴書ID
-        if(!resume_status.equals(getString(R.string.add))){
-            myApplication.setpersonalset(JSONObject_resume.toString(),9);//基本情報
-            myApplication.setpersonalset(JSONArray_education.toString(),10);//学歴
-            myApplication.setpersonalset(JSONArray_employment.toString(),11);//職歴
-            myApplication.setpersonalset(JSONArray_qualification.toString(),12);//資格
-        }
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()){
-            case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ResumeActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(ResumeActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ResumeActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ResumeActivity.this, WebActivity.class);
-                    Initialization();
-                }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ResumeActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ResumeActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
-                        intent.setClass(ResumeActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ResumeActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ResumeActivity.this, WebActivity.class);
-                }
-                break;
-            //跳转个人设定画面
-            case R.id.ll_b_personalsettings:
-                intent.setClass(ResumeActivity.this, ResumeActivity.class);
-                break;
-        }
-        startActivity(intent);
-    }
 }

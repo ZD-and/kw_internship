@@ -371,6 +371,9 @@ public class ApplyActivity extends AppCompatActivity {
                 }
                 break;
         }
+        mMyApplication.setMURL("0",0);
+        mMyApplication.setMApply("0",0);
+        mMyApplication.setSearchResults("0",0);
         startActivity(intent);
     }
 
