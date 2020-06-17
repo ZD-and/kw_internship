@@ -345,8 +345,8 @@
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
-    <string name="maehe">＜ 前へ</string>
-    <string name="tsugihe">次へ ＞</string>
+    <string name="maehe"> 前へ</string>
+    <string name="tsugihe">次へ </string>
     <string name="leftsearch">leftsearch</string>
     <string name="theleft">theleft</string>
     <string name="left">left</string>
