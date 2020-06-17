@@ -114,7 +114,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                         MyApplication.setinputB("");
                         Intent intentClose = new Intent();
                         intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intentClose.setClass(MakeUserActivity.this, MainKinWork.class);
+                        intentClose.setClass(MakeUserActivity.this, LoginActivity.class);
                         startActivity(intentClose);
                     }
                 }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {

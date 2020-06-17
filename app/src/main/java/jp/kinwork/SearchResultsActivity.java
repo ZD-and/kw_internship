@@ -140,8 +140,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
     private ScrollView svsearch;
     private LinearLayout llsearcgresults;
-    private ImageView Ivsearch;
-    private TextView tvsearch;
     private MyApplication myApplication;
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private LinkedList<JSONObject> listjobinfo;
@@ -251,10 +249,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public void Initialization(){
         llsearcgresults = (LinearLayout)findViewById(R.id.ll_searcg_results);
         lvgethintreset = (ListView)findViewById(R.id.lv_gethint_reset);
-        Ivsearch = (ImageView) findViewById(R.id.iv_b_search);
-        Ivsearch.setImageResource(R.mipmap.blue_search);
-        tvsearch = (TextView) findViewById(R.id.tv_b_search);
-        tvsearch.setTextColor(Color.parseColor("#5EACE2"));
         svsearch = (ScrollView) findViewById(R.id.sv_search);
         dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.kensakuchu));
@@ -863,7 +857,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                             PreferenceUtils.setsaveid(getString(R.string.SearchResults));
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            intent.setClass(SearchResultsActivity.this, MainKinWork.class);
+                            intent.setClass(SearchResultsActivity.this, LoginActivity.class);
                             intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                             startActivity(intent);
 
@@ -1226,7 +1220,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
-                intent.setClass(SearchResultsActivity.this, MainKinWork.class);
+                intent.setClass(SearchResultsActivity.this, LoginActivity.class);
                 intent.putExtra(getString(R.string.Activity),getString(R.string.SearchResults));
                 break;
             //連絡画面に移動

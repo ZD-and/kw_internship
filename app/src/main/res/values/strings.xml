@@ -173,7 +173,7 @@
     <string name="Companyname">Companyname</string>
     <string name="CheckBox">CheckBox</string>
 
-    <!-- Strings related to MainKinWork -->
+    <!-- Strings related to LoginActivity -->
     <string name="login">ログイン中…</string>
     <string name="error">エラー</string>
     <string name="mailinput">メールアドレスを入力してください。</string>
@@ -347,8 +347,8 @@
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
-    <string name="maehe">＜ 前へ</string>
-    <string name="tsugihe">次へ ＞</string>
+    <string name="maehe"> 前へ</string>
+    <string name="tsugihe">次へ </string>
     <string name="leftsearch">leftsearch</string>
     <string name="theleft">theleft</string>
     <string name="left">left</string>
