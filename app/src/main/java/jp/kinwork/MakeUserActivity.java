@@ -480,7 +480,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (screenflg) {
             case "setPassword":
-                builder.setTitle(getString(R.string.teiji)).setMessage("パスワード一致しません").setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.teiji)).setMessage(getString(R.string.passworderror)).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //确定按钮的点击事件

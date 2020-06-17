@@ -200,6 +200,7 @@
     <string name="emailConfirm">emailConfirm</string>
     <string name="teiji">提示</string>
     <string name="kakutei">确定</string>
+    <string name="passworderror">パスワード一致しません</string>
 
     <!-- Strings related to Mylist -->
     <string name="SelectResume">SelectResume</string>
