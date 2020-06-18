@@ -289,7 +289,9 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         // 设置hint属性
         edinputB.setHint(new SpannedString(eec));//转码
     }
-
+    public void Click_onemorevalidateCode(){
+       screenflg=getString(R.string.sendValidateEmail);
+    }
     //按钮触发事件
     public void bt_Click(){
         String inputA = edinputA.getText().toString();
@@ -330,28 +332,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             new GithubQueryTask().execute(param);
         }
     }
-    public void Click_onemorevalidateCode(){
-        String inputA = edinputA.getText().toString();
-        String inputB = edinputB.getText().toString();
-        PreferenceUtils.setdeviceId(deviceId);
-        PreferenceUtils.setAesKey(AesKey);
-        PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
-        Pdata.setEmail(inputA);
-        Pdata.setEmailConform(inputB);
-        param.put("file",PARAM_sendValidateEmail);
-        String data = JsonChnge(AesKey,Pdata);
-        param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),screenflg);
-        Log.d("***screenflg", screenflg);
-        Log.d("***Email", Email);
-        Log.d("***token", token);
-        if(screenflg.equals(getString(R.string.setPassword)) && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
-            alertdialog(getString(R.string.alertdialog10));
-        } else {
-            new GithubQueryTask().execute(param);
-        }
-    }
+
     //契约按钮触发事件
     public void onClick(View View){
         String Agreement = "";
