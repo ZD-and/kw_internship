@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+
+    <include
+        layout="@layout/include_back"
+        android:id="@+id/include_back"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="メールアドレス"
+            android:textColor="@color/but_blue" />
+
+        <EditText
+            android:id="@+id/ed_login_email"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_shape"
+            android:hint="メールアドレス"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="5dp"
+            android:selectAllOnFocus="false"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:text="パスワード"
+            android:textColor="@color/but_blue" />
+
+        <EditText
+            android:id="@+id/ed_password"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_shape"
+            android:hint="パスワード"
+            android:inputType="textPassword"
+            android:paddingLeft="5dp"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/bu_MainLoginClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/but_blue"
+            android:text="ログイン"
+            android:textColor="@color/colorLight" />
+
+        <TextView
+            android:id="@+id/Click_Forgetpw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:layout_marginTop="10dp"
+            android:text="パスワードがわからない"
+            android:textStyle="bold"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/MakeNewuser_Click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:layout_marginTop="10dp"
+            android:text="新規アカウント作成"
+            android:textStyle="bold"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -8,17 +8,13 @@
     tools:context=".SearchResultsActivity">
 
     <include
-        layout="@layout/title_bule" />
-
-    <include
         layout="@layout/include_back"/>
 
     <ScrollView
         android:id="@+id/sv_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginTop="50dp">
 
         <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -65,7 +61,7 @@
                             android:enabled="false"
                             android:hint="詳細設定"
                             android:textColor="@color/hint_foreground_holo_dark"
-                            android:background="@drawable/ic_shape"
+                            android:background="@null"
                             android:textSize="20sp" />
 
                     </TableRow>
@@ -112,7 +108,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:padding="5dp"
-                                    android:background="@drawable/ic_shape"
+                                    android:background="@null"
                                     android:text=""
                                     android:maxLines="1"
                                     android:lines="1"
@@ -164,7 +160,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:padding="5dp"
-                                    android:background="@drawable/ic_shape"
+                                    android:background="@null"
                                     android:text=""
                                     android:maxLines="1"
                                     android:lines="1"
@@ -224,87 +220,109 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:background="@color/backgroundblue"
                     android:backgroundTint="@color/backgroundblue"
                     android:gravity="center_horizontal"
-                    android:stretchColumns="1,9"
-                    android:shrinkColumns="2,3,4,5,6,7,8"
+                    android:stretchColumns="1,2,3,4,5,6,7"
                     >
 
                     <TableRow>
-                        <Button
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:id="@+id/tl_tr_bu_Before"
-                            android:text="＜ 前へ"
+                            android:text="前へ"
+                            android:textColor="@color/background_holo_dark"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"
                             />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
-
-                        <Button
                             android:id="@+id/tl_tr_bu_leftsearch"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             android:text="0"
+                            android:gravity="center"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             />
 
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_theleft"
                             android:text="0"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
-                            />
-                        <Button
-                            android:id="@+id/tl_tr_bu_left"
-                            android:text="0"
-                            android:background="@drawable/ic_shape_bule"
-                            android:textColor="@color/but_blue"
-                            android:layout_marginRight="5dp"
-                            />
-                        <Button
-                            android:id="@+id/tl_tr_bu_centre"
-                            android:text="0"
-                            android:background="@drawable/ic_shape_bule"
-                            android:textColor="@color/but_blue"
-                            android:layout_marginRight="5dp"
-
-                            />
-                        <Button
-                            android:id="@+id/tl_tr_bu_right"
-                            android:text="0"
-                            android:background="@drawable/ic_shape_bule"
-                            android:textColor="@color/but_blue"
-                            android:layout_marginRight="5dp"
-                            />
-                        <Button
-                            android:id="@+id/tl_tr_bu_theright"
-                            android:text="0"
-                            android:background="@drawable/ic_shape_bule"
-                            android:textColor="@color/but_blue"
-                            android:layout_marginRight="5dp"
-                            />
-                        <Button
-                            android:id="@+id/tl_tr_bu_rightsearch"
-                            android:text="0"
-                            android:background="@drawable/ic_shape_bule"
-                            android:textColor="@color/but_blue"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             />
                         <TextView
-                            android:layout_width="match_parent"
+                            android:id="@+id/tl_tr_bu_left"
+                            android:text="0"
+                            android:gravity="center"
+                            android:background="@drawable/ic_shape_bule"
+                            android:textColor="@color/but_blue"
+                            android:layout_marginRight="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/tl_tr_bu_centre"
+                            android:text="0"
+                            android:gravity="center"
+                            android:background="@drawable/ic_shape_bule"
+                            android:textColor="@color/but_blue"
+                            android:layout_marginRight="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/tl_tr_bu_right"
+                            android:text="0"
+                            android:gravity="center"
+                            android:background="@drawable/ic_shape_bule"
+                            android:textColor="@color/but_blue"
+                            android:layout_marginRight="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/tl_tr_bu_theright"
+                            android:text="0"
+                            android:gravity="center"
+                            android:background="@drawable/ic_shape_bule"
+                            android:textColor="@color/but_blue"
+                            android:layout_marginRight="5dp"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/tl_tr_bu_rightsearch"
+                            android:text="0"
+                            android:gravity="center"
+                            android:background="@drawable/ic_shape_bule"
+                            android:textColor="@color/but_blue"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/tl_tr_bu_Next"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:text="次へ"
+                            android:gravity="center"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/background_holo_dark"
                             android:background="@color/backgroundblue"/>
 
-                        <Button
-                            android:id="@+id/tl_tr_bu_Next"
-                            android:text="次へ ＞"
-                            />
                     </TableRow>
                 </TableLayout>
 
@@ -323,99 +341,109 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:layout_marginTop="5dp"
                     android:visibility="gone"
                     android:background="@color/backgroundblue"
                     android:backgroundTint="@color/backgroundblue"
                     android:gravity="center_horizontal"
-                    android:stretchColumns="1,9"
+                    android:stretchColumns="1,2,3,4,5,6,7"
                     >
 
                     <TableRow>
-                        <Button
-                            android:id="@+id/tl_tr_bu_Before_Bottom"
-                            android:text="＜ 前へ"
-                            />
-
                         <TextView
-                            android:layout_width="match_parent"
+                            android:id="@+id/tl_tr_bu_Before_Bottom"
+                            android:text="前へ"
+                            android:textColor="@color/background_holo_dark"
+                            android:gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             />
 
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_leftsearch_Bottom"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             android:text="0"
                             />
 
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_theleft_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             />
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_left_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             />
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_centre_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
 
                             />
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_right_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             />
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_theright_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             android:layout_marginRight="5dp"
                             />
-                        <Button
+                        <TextView
                             android:id="@+id/tl_tr_bu_rightsearch_Bottom"
                             android:text="0"
                             android:layout_width="20dp"
                             android:layout_height="30dp"
+                            android:gravity="center"
                             android:background="@drawable/ic_shape_bule"
                             android:textColor="@color/but_blue"
                             />
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/backgroundblue"/>
-
-                        <Button
                             android:id="@+id/tl_tr_bu_Next_Bottom"
-                            android:text="次へ ＞"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="次へ"
+                            android:gravity="center"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/background_holo_dark"
+                            android:background="@color/backgroundblue"
                             />
                     </TableRow>
                 </TableLayout>

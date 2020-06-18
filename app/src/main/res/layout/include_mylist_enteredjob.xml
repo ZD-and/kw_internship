@@ -12,7 +12,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/ic_shape_bule"
+        android:background="@drawable/ic_shape_shadow"
         android:shrinkColumns="0"
         android:stretchColumns="0"
         android:visibility="visible">

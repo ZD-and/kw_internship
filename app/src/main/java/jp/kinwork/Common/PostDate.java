@@ -56,6 +56,7 @@ public class PostDate {
     private String contentShortsHighlight;
     private String order;
     private String flag;
+    private String type;
 
     private LinkedList<String> details = new LinkedList<String>();
 
@@ -252,4 +253,8 @@ public class PostDate {
     public void setFlag(String flag) {
         this.flag = flag;
     }
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

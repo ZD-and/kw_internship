@@ -23,7 +23,7 @@
         <activity android:name=".QualificationActivity"/>
         <activity android:name=".MylistActivity"/>
         <activity android:name=".MakeUserActivity"/>
-        <activity android:name=".MainKinWork"/>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".EmploymentActivity"/>
         <activity android:name=".EducationActivity"/>
         <activity android:name=".ContactDialogActivity"/>
