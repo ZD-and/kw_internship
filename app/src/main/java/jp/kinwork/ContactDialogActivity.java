@@ -101,6 +101,7 @@ public class ContactDialogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
+
         
     }
 
@@ -149,55 +150,49 @@ public class ContactDialogActivity extends AppCompatActivity {
     private void setViews() {
         FragmentManager manager = getSupportFragmentManager();
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ExampleFragmentPagerAdapter adapter = new ExampleFragmentPagerAdapter(manager);
+        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(manager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public class ExampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        public ExampleFragmentPagerAdapter(FragmentManager fm) {
+    public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        private String[] mTitles = new String[]{"すべて", "受信トレイ", "送信済み"};
+
+        public MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    educationInfo("");
-                    return ExampleFragment.newInstance(position);
-                case 1:
-                    educationInfo("1");
-                    return ExampleFragment.newInstance(position);
-                case 2:
-                    educationInfo("0");
-                    return ExampleFragment.newInstance(position);
+            if (position == 1) {
+                educationInfo("1");
+                return new Fragment2();
+            } else if (position == 2) {
+                educationInfo("0");
+                return new Fragment3();
             }
-            return null;
+            educationInfo("");
+            return new Fragment1();
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return mTitles.length;
         }
 
+        //ViewPager与TabLayout绑定后，这里获取到PageTitle就是Tab的Text
         @Override
         public CharSequence getPageTitle(int position) {
-            String name = "";
-            switch (position) {
-                case 0:
-                    return "すべて";
-                case 1:
-                    return "受信トレイ";
-                case 2:
-                    return "送信済み";
-            }
-            return null;
+            return mTitles[position];
         }
     }
 
+
     //初期化
     private void Initialization(){
+
         bu_sendmeg=findViewById(R.id.bu_sendmeg);
         bu_sendmeg.setOnClickListener(new View.OnClickListener() {
             @Override
