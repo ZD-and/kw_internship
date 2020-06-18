@@ -375,8 +375,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 add_1 = results.getJSONObject(iIndex - 1).getString(getString(R.string.long_name));
                 add_2 = results.getJSONObject(iIndex - 2).getString(getString(R.string.long_name));
                 add_3 = results.getJSONObject(iIndex - 3).getString(getString(R.string.long_name));
-            } else {
-                ivclearworklocation.setVisibility(View.GONE);
             }
             Log.d(TAG, "SetAddress: [" + add_1 + "　" + add_2 + "　" + add_3 + "]");
             String address ="";
@@ -388,6 +386,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             if(add_3.length() > 0 ){
                 address = address + add_3 + " ";
+            }
+            if(address.length() > 0){
+                ivclearworklocation.setVisibility(View.GONE);
+            } else {
+                ivclearworklocation.setVisibility(View.VISIBLE);
             }
             etworklocation.setText(address);
             myApplication.setaddress(etworklocation.getText().toString());
