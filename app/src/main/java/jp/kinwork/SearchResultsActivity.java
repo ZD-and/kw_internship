@@ -1431,16 +1431,19 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
     private void getaddress_components(Location location){
         // 緯度の表示
-        String str1 = getString(R.string.Latitude)+location.getLatitude();
-        Log.d("str1", str1);
-        // 経度の表示
-        String str2 = getString(R.string.Longtude)+location.getLongitude();
-        Log.d("str2", str2);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
-        param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
-        param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
-        new GithubQueryTask2().execute(param);
+        if(location != null){
+            String str1 = getString(R.string.Latitude)+location.getLatitude();
+            Log.d(TAG,"str1:"+ str1);
+            // 経度の表示
+            String str2 = getString(R.string.Longtude)+location.getLongitude();
+            Log.d(TAG,"str2:"+str2);
+            Map<String,String> param = new HashMap<String, String>();
+            param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
+            param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
+            param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
+            new GithubQueryTask2().execute(param);
+        }
+
     }
 
     public class GithubQueryTask2 extends AsyncTask<Map<String, String>, Void, String> {
