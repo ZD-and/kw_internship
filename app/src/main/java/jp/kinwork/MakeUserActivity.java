@@ -62,6 +62,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     private TableLayout tlvalidateCode;
     private TableLayout tlmudummyview;
+    private TextView tlonemorevalidateCode;
 
     private ImageView ivprivacypolicy;
     private TextView tvprivacypolicy;
@@ -129,6 +130,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+
     public void Initialization(){
         tvinputA = (TextView) findViewById(R.id.tv_input_A);
         edinputA = (EditText) findViewById(R.id.ed_input_A);
@@ -138,10 +140,17 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setOnTouchListener(touchListener);
         tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
         tlmudummyview=findViewById(R.id.tl_mu_dummyview);
+        tlonemorevalidateCode=findViewById(R.id.tl_onemorevalidateCode);
         tlmudummyview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Click_cancel();
+            }
+        });
+        tlonemorevalidateCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_onemorevalidateCode();
             }
         });
         ivprivacypolicy = (ImageView) findViewById(R.id.iv_privacypolicy);
@@ -321,7 +330,28 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             new GithubQueryTask().execute(param);
         }
     }
-
+    public void Click_onemorevalidateCode(){
+        String inputA = edinputA.getText().toString();
+        String inputB = edinputB.getText().toString();
+        PreferenceUtils.setdeviceId(deviceId);
+        PreferenceUtils.setAesKey(AesKey);
+        PostDate Pdata = new PostDate();
+        Map<String,String> param = new HashMap<String, String>();
+        Pdata.setEmail(inputA);
+        Pdata.setEmailConform(inputB);
+        param.put("file",PARAM_sendValidateEmail);
+        String data = JsonChnge(AesKey,Pdata);
+        param.put(getString(R.string.data),data);
+        param.put(getString(R.string.name),screenflg);
+        Log.d("***screenflg", screenflg);
+        Log.d("***Email", Email);
+        Log.d("***token", token);
+        if(screenflg.equals(getString(R.string.setPassword)) && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
+            alertdialog(getString(R.string.alertdialog10));
+        } else {
+            new GithubQueryTask().execute(param);
+        }
+    }
     //契约按钮触发事件
     public void onClick(View View){
         String Agreement = "";
