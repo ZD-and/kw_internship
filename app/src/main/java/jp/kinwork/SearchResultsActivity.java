@@ -12,6 +12,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -44,6 +45,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -1377,43 +1382,22 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     ivclearworklocationreset.setImageResource(R.drawable.ic_location_on);
                 }else{
                     //当前图片不为清空的时候，重新获取当前所在地
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
-                                1000);
-                        return;
-                    } else {
-                        locationStart();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this,
+                                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                                PackageManager.PERMISSION_GRANTED) {
+                            getLastLocationNewMethod();
+                        } else {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
+                                    1000);
+                        }
+                    }else {
+                        getLastLocationNewMethod();
                     }
                 }
                 break;
         }
-    }
-
-    //当前位置经纬度取得
-    private void locationStart(){
-        Log.d("debug","locationStart()");
-        // LocationManager インスタンス生成
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            Log.d("debug", "checkSelfPermission false");
-            return;
-        }
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-        criteria.setAltitudeRequired(false);//不要求海拔信息
-        criteria.setBearingRequired(false);//不要求方位信息
-        criteria.setCostAllowed(false);//是否允许付费
-        criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
-        Location Location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
-        getaddress_components(Location);
     }
 
     @Override
@@ -1421,12 +1405,28 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d("onRequestrequestCode", requestCode+"");
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            locationStart();
-        }
+        checkaAcessPermission();
+    }
 
+    private void getLastLocationNewMethod(){
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // GPS location can be null if GPS is switched off
+                        if (location != null) {
+                            getaddress_components(location);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void getaddress_components(Location location){
@@ -1443,7 +1443,19 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
             new GithubQueryTask2().execute(param);
         }
+    }
 
+    //位置取得权限是否取得
+    private void checkaAcessPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                getLastLocationNewMethod();
+            }
+        }else {
+            getLastLocationNewMethod();
+        }
     }
 
     public class GithubQueryTask2 extends AsyncTask<Map<String, String>, Void, String> {
