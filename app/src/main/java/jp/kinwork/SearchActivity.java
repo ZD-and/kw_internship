@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +33,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -100,67 +102,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Log.d(TAG, "onCreate" );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart" );
         Intent  = getIntent();
         load();
         Initialization();
         initData();
     }
 
-    //点击输入框以外键盘隐藏-star
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public  boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = { 0, 0 };
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-
-                return true;
-            }
-        }
-        return false;
-    }
-    //点击输入框以外键盘隐藏-end
-
-    //位置取得权限是否取得的回调
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG, "onRequestrequestCode:" + requestCode+"");
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            locationStart();
-        }
-
-    }
     //初期化
     public void Initialization(){
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
@@ -235,7 +188,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             if(myApplication.getaddress_components().length() >0){
                 SetAddress(myApplication.getaddress_components());
             } else {
-                AccessPermission();
+                checkaAcessPermission();
             }
         }
         if(etworklocation.getText().length() > 0){
@@ -244,6 +197,149 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
+
+    //输入框监视，有数据的时候显示清空按钮
+    public void initData(){
+
+        etkeyword.setOnTouchListener(touchListener);
+        etworklocation.setOnTouchListener(touchListener);
+
+        tllayoutsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tlkeyword.setBackgroundResource(R.drawable.ic_shape);
+                tlworklocation.setBackgroundResource(R.drawable.ic_shape);
+                ivkinwork.setVisibility(View.VISIBLE);
+                etkeyword.setCursorVisible(false);
+                etworklocation.setCursorVisible(false);
+                lvgethint.setVisibility(View.GONE);
+            }
+        });
+
+        etkeyword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    ivclearkeyword.setVisibility(View.VISIBLE);
+                    String Text = etkeyword.getText().toString();
+                    if( !blkeyword){
+                        getSearchResults("0",Text);
+                    }
+                } else {
+                    lvgethint.setVisibility(View.GONE);
+                    ivclearkeyword.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                blkeyword = false;
+            }
+        });
+
+        etworklocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) {
+                    ivclearworklocation.setImageResource(R.drawable.ic_location_on);
+                    ivclearworklocation.setTag(getString(R.string.location));
+                    lvgethint.setVisibility(View.GONE);
+                } else {
+                    ivclearworklocation.setImageResource(R.drawable.ic_cancel);
+                    ivclearworklocation.setTag(getString(R.string.clear));
+                    String Text = etworklocation.getText().toString();
+                    if(blworklocation == false){
+                        getSearchResults("1",Text);
+                    }
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                blworklocation = false;
+            }
+        });
+
+        lvgethint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //获取当前选择的值
+                String data=(String) adapter.getItem(position);
+                Log.d(TAG+"etname", etname);
+                if(etname.equals("keyword")){
+                    blkeyword = true;
+                    etkeyword.setText(data);
+                    etkeyword.setSelection(etkeyword.getText().length());
+
+                } else {
+                    blworklocation = true;
+                    etworklocation.setText(data);
+                    etworklocation.setSelection(etworklocation.getText().length());
+                }
+                lvgethint.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
+    //点击输入框以外键盘隐藏-star
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+
+                return true;
+            }
+        }
+        return false;
+    }
+    //点击输入框以外键盘隐藏-end
+
+    //位置取得权限是否取得的回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "onRequestrequestCode:" + requestCode+"");
+        checkaAcessPermission();
+
+    }
+
     //菜单栏按钮触发事件
     public void ll_Click(View View){
         String ViewID = "";
@@ -388,110 +484,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 address = address + add_3 + " ";
             }
             if(address.length() > 0){
-                ivclearworklocation.setVisibility(View.GONE);
+                ivclearworklocation.setImageResource(R.drawable.ic_cancel);
+                blworklocation = true;
+                ivclearworklocation.setTag(getString(R.string.clear));
             } else {
-                ivclearworklocation.setVisibility(View.VISIBLE);
+                ivclearworklocation.setImageResource(R.drawable.ic_location_on);
             }
             etworklocation.setText(address);
             myApplication.setaddress(etworklocation.getText().toString());
-            if(etworklocation.getText().length() > 0){
-                blworklocation = true;
-                ivclearworklocation.setImageResource(R.drawable.ic_cancel);
-                ivclearworklocation.setTag(getString(R.string.clear));
-            }
             Log.d(TAG, "etworklocation:" +etworklocation.getText().toString());
             initData();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-    //输入框监视，有数据的时候显示清空按钮
-    public void initData(){
-
-        etkeyword.setOnTouchListener(touchListener);
-        etworklocation.setOnTouchListener(touchListener);
-
-        tllayoutsearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tlkeyword.setBackgroundResource(R.drawable.ic_shape);
-                tlworklocation.setBackgroundResource(R.drawable.ic_shape);
-                ivkinwork.setVisibility(View.VISIBLE);
-                etkeyword.setCursorVisible(false);
-                etworklocation.setCursorVisible(false);
-                lvgethint.setVisibility(View.GONE);
-            }
-        });
-
-        etkeyword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 0) {
-                    ivclearkeyword.setVisibility(View.VISIBLE);
-                    String Text = etkeyword.getText().toString();
-                    if( blkeyword == false){
-                        getSearchResults("0",Text);
-                    }
-                } else {
-                    lvgethint.setVisibility(View.GONE);
-                    ivclearkeyword.setVisibility(View.GONE);
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                blkeyword = false;
-            }
-        });
-
-        etworklocation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) {
-                    ivclearworklocation.setImageResource(R.drawable.ic_location_on);
-                    ivclearworklocation.setTag(getString(R.string.location));
-                    lvgethint.setVisibility(View.GONE);
-                } else {
-                    ivclearworklocation.setImageResource(R.drawable.ic_cancel);
-                    ivclearworklocation.setTag(getString(R.string.clear));
-                    String Text = etworklocation.getText().toString();
-                    if(blworklocation == false){
-                        getSearchResults("1",Text);
-                    }
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                blworklocation = false;
-            }
-        });
-
-        lvgethint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //获取当前选择的值
-                String data=(String) adapter.getItem(position);
-                Log.d(TAG+"etname", etname);
-                if(etname.equals("keyword")){
-                    blkeyword = true;
-                    etkeyword.setText(data);
-                    etkeyword.setSelection(etkeyword.getText().length());
-
-                } else {
-                    blworklocation = true;
-                    etworklocation.setText(data);
-                    etworklocation.setSelection(etworklocation.getText().length());
-                }
-                lvgethint.setVisibility(View.GONE);
-            }
-        });
     }
 
     View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -529,47 +534,27 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     ivclearworklocation.setImageResource(R.drawable.ic_location_on);
                 }else{
                     //当前图片不为清空的时候，重新获取当前所在地
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
-                                1000);
-                        return;
-                    } else {
-                        blworklocation = true;
-                        locationStart();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this,
+                                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                                PackageManager.PERMISSION_GRANTED) {
+                            getLastLocationNewMethod();
+                        } else {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
+                                    1000);
+                        }
+                    }else {
+                        getLastLocationNewMethod();
                     }
                 }
                 break;
 
         }
     }
-    //当前位置经纬度取得
-    private void locationStart(){
-        Log.d(TAG,"locationStart()");
-        // LocationManager インスタンス生成
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            Log.d(TAG, "checkSelfPermission false");
-            return;
-        }
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-        criteria.setAltitudeRequired(false);//不要求海拔信息
-        criteria.setBearingRequired(false);//不要求方位信息
-        criteria.setCostAllowed(false);//是否允许付费
-        criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
-        Location Location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
-        getaddress_components(Location);
-    }
     //当前地址通信取得
     private void getaddress_components(Location location){
+        Log.d(TAG, "getaddress_components location: " + location);
         if(location != null){
             // 緯度の表示
             String str1 = getString(R.string.Latitude)+location.getLatitude();
@@ -585,6 +570,28 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
+
+    private void getLastLocationNewMethod(){
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // GPS location can be null if GPS is switched off
+                        if (location != null) {
+                            getaddress_components(location);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     //地址通信
     public class GithubQueryTask2 extends AsyncTask<Map<String, String>, Void, String> {
 
@@ -720,15 +727,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint.setVisibility(View.VISIBLE);
     }
     //位置取得权限是否取得
-    private void AccessPermission() {
+    private void checkaAcessPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED) {
-                locationStart();
+                getLastLocationNewMethod();
             }
         }else {
-            locationStart();
+            getLastLocationNewMethod();
         }
     }
     //dp转换为px
