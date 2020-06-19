@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,9 +35,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import jp.kinwork.Common.AES;
@@ -97,12 +101,21 @@ public class ContactDialogActivity extends AppCompatActivity {
     
     String TAG = "ContactDialogActivity";
 
+    private List<View> pages;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
+        //初始化viewpager页面
+        initPages();
 
-        
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -144,52 +157,72 @@ public class ContactDialogActivity extends AppCompatActivity {
         }
         tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
-        setViews();
+
+    }
+    private void initPages() {
+        pages = new ArrayList<View>();
+        View page01 = View.inflate(ContactDialogActivity.this,R.layout.fragment_first,null);
+        View page02 = View.inflate(ContactDialogActivity.this,R.layout.fragment_second,null);
+        View page03 = View.inflate(ContactDialogActivity.this,R.layout.fragment_third,null);
+        pages.add(page01);
+        pages.add(page02);
+        pages.add(page03);
     }
 
-    private void setViews() {
-        FragmentManager manager = getSupportFragmentManager();
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(manager);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-    }
 
-    public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
+    public class customViewPagerAdapter extends PagerAdapter {
         private String[] mTitles = new String[]{"すべて", "受信トレイ", "送信済み"};
 
-        public MyFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 1) {
-                educationInfo("1");
-                return new Fragment2();
-            } else if (position == 2) {
-                educationInfo("0");
-                return new Fragment3();
-            }
-            educationInfo("");
-            return new Fragment1();
-        }
-
+        List<View> pages;
+        public customViewPagerAdapter(List<View> pages){
+            this.pages = pages;
+        };
+        /*
+         * 获取页面数量
+         * */
         @Override
         public int getCount() {
-            return mTitles.length;
+            return pages.size();
         }
 
-        //ViewPager与TabLayout绑定后，这里获取到PageTitle就是Tab的Text
+
+        /*
+         *判断类型是否匹配
+         * */
         @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return object==view;
+        }
+        /*
+         * 加载page
+         * */
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            switch (position){
+                case 0:
+                    educationInfo("");
+                case 1:
+                    educationInfo("1");
+                case 2:
+                    educationInfo("0");
+            }
+            View view = pages.get(position);
+            container.addView(view);
+            return view;
+        }
+        /*
+         * 移除page
+         * */
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(pages.get(position));
+        }
+
         public CharSequence getPageTitle(int position) {
             return mTitles[position];
         }
     }
-
-
     //初期化
     private void Initialization(){
 
