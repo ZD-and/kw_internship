@@ -177,6 +177,9 @@ public class ContactDialogActivity extends AppCompatActivity {
         pages.add(page01);
         pages.add(page02);
         pages.add(page03);
+
+
+
     }
 
     public class customViewPagerAdapter extends PagerAdapter {
@@ -211,9 +214,9 @@ public class ContactDialogActivity extends AppCompatActivity {
                 case 0:
                     educationInfo(slmeg,llmeg,"");
                 case 1:
-                    educationInfo(slmeg,llmeg,"1");
+                    educationInfo(slmeg_second,llmeg_second,"1");
                 case 2:
-                    educationInfo(slmeg,llmeg,"0");
+                    educationInfo(slmeg_third,llmeg_third,"0");
             }
             View view = pages.get(position);
             container.addView(view);
@@ -234,7 +237,8 @@ public class ContactDialogActivity extends AppCompatActivity {
     //初期化
     private void Initialization(){
 
-        bu_sendmeg=findViewById(R.id.bu_sendmeg_first);
+        //bu_sendmeg=findViewById(R.id.bu_sendmeg_first);
+        bu_sendmeg = pages.get(0).findViewById(R.id.bu_sendmeg_first);
         bu_sendmeg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,19 +255,19 @@ public class ContactDialogActivity extends AppCompatActivity {
         list_String     = new LinkedList<String>();
         list_obj     = new LinkedList<JSONObject>();
         llmeg          = (LinearLayout) findViewById(R.id.ll_meg);
-        llmeg_first          = (LinearLayout) findViewById(R.id.ll_meg_first);
-        llmeg_second           = (LinearLayout) findViewById(R.id.ll_meg_second);
-        llmeg_third          = (LinearLayout) findViewById(R.id.ll_meg_third);
+        llmeg_first          = (LinearLayout) pages.get(0).findViewById(R.id.ll_meg_first);
+        llmeg_second           = (LinearLayout) pages.get(1).findViewById(R.id.ll_meg_second);
+        llmeg_third          = (LinearLayout) pages.get(2).findViewById(R.id.ll_meg_third);
 
         tlmeg          = (TableLayout) findViewById(R.id.tl_meg);
-        tlmeg_first          = (TableLayout) findViewById(R.id.tl_meg_first);
-        tlmeg_second          = (TableLayout) findViewById(R.id.tl_meg_second);
-        tlmeg_third          = (TableLayout) findViewById(R.id.tl_meg_third);
+        tlmeg_first          = (TableLayout) pages.get(0).findViewById(R.id.tl_meg_first);
+        tlmeg_second          = (TableLayout) pages.get(1).findViewById(R.id.tl_meg_second);
+        tlmeg_third          = (TableLayout) pages.get(2).findViewById(R.id.tl_meg_third);
 
         slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
-        slmeg_first           =  (ScrollView) findViewById(R.id.sl_meg_first);
-        slmeg_second          =  (ScrollView) findViewById(R.id.sl_meg_second);
-        slmeg_third           =  (ScrollView) findViewById(R.id.sl_meg_third);
+        slmeg_first           =  (ScrollView) pages.get(0).findViewById(R.id.sl_meg_first);
+        slmeg_second          =  (ScrollView) pages.get(1).findViewById(R.id.sl_meg_second);
+        slmeg_third           =  (ScrollView) pages.get(2).findViewById(R.id.sl_meg_third);
         tvback          = (TextView) findViewById(R.id.tv_back);
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,7 +393,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                 }
                 mMyApplication.setContactDialog(decryptdata,3);
                 mMyApplication.setContactDialog(DisplayEmailFlg,4);
-                educationInfo(slmeg,llmeg,"");
+                educationInfo(slmeg_first,llmeg_first,"");
 
             }
         } catch (JSONException e) {
@@ -516,12 +520,12 @@ public class ContactDialogActivity extends AppCompatActivity {
             case "tv_sendEmail":
                 //显示收到的邮件
                 DisplayEmailFlg = "1";
-                educationInfo(slmeg,llmeg,"1");
+                educationInfo(slmeg_second,llmeg_second,"1");
                 break;
             case "tv_ReceptionEmail":
                 //显示发送的邮件
                 DisplayEmailFlg = "0";
-                educationInfo(slmeg,llmeg,"0");
+                educationInfo(slmeg_third,llmeg_third,"0");
                 break;
         }
         //flg保存到全局变量里
