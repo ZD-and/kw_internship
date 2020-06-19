@@ -62,6 +62,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     private TableLayout tlvalidateCode;
     private TableLayout tlmudummyview;
+    private TextView tlonemorevalidateCode;
 
     private ImageView ivprivacypolicy;
     private TextView tvprivacypolicy;
@@ -129,6 +130,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+
     public void Initialization(){
         tvinputA = (TextView) findViewById(R.id.tv_input_A);
         edinputA = (EditText) findViewById(R.id.ed_input_A);
@@ -138,10 +140,17 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setOnTouchListener(touchListener);
         tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
         tlmudummyview=findViewById(R.id.tl_mu_dummyview);
+        tlonemorevalidateCode=findViewById(R.id.tl_onemorevalidateCode);
         tlmudummyview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Click_cancel();
+            }
+        });
+        tlonemorevalidateCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_onemorevalidateCode();
             }
         });
         ivprivacypolicy = (ImageView) findViewById(R.id.iv_privacypolicy);
@@ -280,7 +289,9 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         // 设置hint属性
         edinputB.setHint(new SpannedString(eec));//转码
     }
-
+    public void Click_onemorevalidateCode(){
+        sendValidateEmail();
+    }
     //按钮触发事件
     public void bt_Click(){
         String inputA = edinputA.getText().toString();
@@ -302,11 +313,11 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 param.put("file",PARAM_checkValidateCode);
                 break;
             case "setPassword":
-                Pdata.setEmail(Email);
-                Pdata.setToken(token);
-                Pdata.setPassword(inputA);
-                Pdata.setPasswordConform(inputB);
-                param.put("file",PARAM_setPassword);
+                    Pdata.setEmail(Email);
+                    Pdata.setToken(token);
+                    Pdata.setPassword(inputA);
+                    Pdata.setPasswordConform(inputB);
+                    param.put("file",PARAM_setPassword);
                 break;
         }
         String data = JsonChnge(AesKey,Pdata);
@@ -476,14 +487,26 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
-            }
-        }).show();
+        switch (screenflg) {
+            case "setPassword":
+                builder.setTitle(getString(R.string.teiji)).setMessage(getString(R.string.passworderror)).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //确定按钮的点击事件
+                    }
+                }).show();
+                break;
+
+            case "sendValidateEmail":
+                builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //确定按钮的点击事件
+                    }
+                }).show();
+        }
     }
 
 }
