@@ -290,7 +290,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setHint(new SpannedString(eec));//转码
     }
     public void Click_onemorevalidateCode(){
-       screenflg=getString(R.string.sendValidateEmail);
+        sendValidateEmail();
     }
     //按钮触发事件
     public void bt_Click(){
