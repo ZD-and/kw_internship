@@ -603,10 +603,30 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                PreferenceUtils.clear();
+                Intent intentClose = new Intent();
+                Intent intent = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                myApplication.setAct(getString(R.string.Search));
+                if(myApplication.getSURL(0).equals("0")){
+                    if(myApplication.getSApply(0).equals("0")){
+                        if(myApplication.getSearchResults(0).equals("0")){
+                            intent.setClass(MylistActivity.this, SearchActivity.class);
+                            intent.putExtra(getString(R.string.act),"");
+                        } else {
+                            intent.setClass(MylistActivity.this, SearchResultsActivity.class);
+                        }
+                    } else {
+                        intent.setClass(MylistActivity.this, ApplyActivity.class);
+                    }
+                } else {
+                    intent.setClass(MylistActivity.this, WebActivity.class);
+                    Initialization();
+                }
             }
         }).show();
     }
