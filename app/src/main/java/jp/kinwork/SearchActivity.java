@@ -716,7 +716,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if(name.equals(getString(R.string.keyword))){
             top= keywordTop;
         } else {
-            top= worklocationTop;
+            top= worklocationTop+tlworklocation.getHeight();
         }
         int left_right= dp2px(SearchActivity.this, 30);
         FrameLayout.LayoutParams flparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
