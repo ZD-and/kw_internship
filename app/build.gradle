@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\zml98\\KeyStorePath\\upLoad-keystore.jks')
-            storePassword 'su37s92k1'
-            keyPassword 'su37s92k1'
-            keyAlias = 'keyUpload'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('C:\\Users\\zml98\\KeyStorePath\\upLoad-keystore.jks')
+//            storePassword 'su37s92k1'
+//            keyPassword 'su37s92k1'
+//            keyAlias = 'keyUpload'
+//        }
+//    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -18,7 +18,7 @@ android {
         versionCode 1001
         versionName "1.001"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
+//        signingConfig signingConfigs.release
     }
     buildTypes {
         release {

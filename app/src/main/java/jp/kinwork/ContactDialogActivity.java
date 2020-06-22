@@ -515,7 +515,7 @@ public class ContactDialogActivity extends AppCompatActivity {
             case "tv_allEmail":
                 //显示全部的邮件
                 DisplayEmailFlg = "";
-                educationInfo(slmeg,llmeg,"");
+                educationInfo(slmeg_first,llmeg_first,"");
                 break;
             case "tv_sendEmail":
                 //显示收到的邮件
