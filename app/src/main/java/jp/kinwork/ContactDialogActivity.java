@@ -212,7 +212,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             switch (position){
                 case 0:
-                    educationInfo(slmeg,llmeg,"");
+                    educationInfo(slmeg_first,llmeg_first,"");
                 case 1:
                     educationInfo(slmeg_second,llmeg_second,"1");
                 case 2:
@@ -254,17 +254,17 @@ public class ContactDialogActivity extends AppCompatActivity {
         list_ivread     = new LinkedList<ImageView>();
         list_String     = new LinkedList<String>();
         list_obj     = new LinkedList<JSONObject>();
-        llmeg          = (LinearLayout) findViewById(R.id.ll_meg);
+//        llmeg          = (LinearLayout) findViewById(R.id.ll_meg);
         llmeg_first          = (LinearLayout) pages.get(0).findViewById(R.id.ll_meg_first);
         llmeg_second           = (LinearLayout) pages.get(1).findViewById(R.id.ll_meg_second);
         llmeg_third          = (LinearLayout) pages.get(2).findViewById(R.id.ll_meg_third);
 
-        tlmeg          = (TableLayout) findViewById(R.id.tl_meg);
+//        tlmeg          = (TableLayout) pages.get(0).findViewById(R.id.tl_meg_first);
         tlmeg_first          = (TableLayout) pages.get(0).findViewById(R.id.tl_meg_first);
         tlmeg_second          = (TableLayout) pages.get(1).findViewById(R.id.tl_meg_second);
         tlmeg_third          = (TableLayout) pages.get(2).findViewById(R.id.tl_meg_third);
 
-        slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
+//        slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
         slmeg_first           =  (ScrollView) pages.get(0).findViewById(R.id.sl_meg_first);
         slmeg_second          =  (ScrollView) pages.get(1).findViewById(R.id.sl_meg_second);
         slmeg_third           =  (ScrollView) pages.get(2).findViewById(R.id.sl_meg_third);
