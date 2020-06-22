@@ -8,24 +8,18 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -44,7 +38,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class LoginActivity extends AppCompatActivity  implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static String PARAM_login = "/usersMobile/login";
     final static String PARAM_Forgetwe = "/usersMobile/sendPasswordRecoverMail";
@@ -74,8 +68,10 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     private TextView Forgetpw;
     private TextView MakeNewuser_Click;
-
+    private TextView NewuserSignIn_Click;
     private ProgressDialog dialog;
+
+    Class<?> mAct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +94,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         //null reference 処理
         if(im.isActive() && getCurrentFocus() != null)
         {
@@ -134,13 +131,22 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             }
         });
         MakeNewuser_Click=findViewById(R.id.MakeNewuser_Click);
+        NewuserSignIn_Click=findViewById(R.id.NewuserSignIn_Click);
         MakeNewuser_Click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MakeNewuser_Click();
+                mAct = MakeUserActivity.class;
+                MakeNewuser_Click(mAct);
             }
         });
 
+        NewuserSignIn_Click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAct = NewSignInActivity.class;
+                MakeNewuser_Click(mAct);
+            }
+        });
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(LoginActivity.this);
         keyword = mMyApplication.getkeyword();
@@ -199,10 +205,10 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     }
 
     //新账号作成画面移动
-    public void MakeNewuser_Click(){
+    public void MakeNewuser_Click(Class<?> act){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.setClass(LoginActivity.this, MakeUserActivity.class);
+        intent.setClass(LoginActivity.this, act);
         startActivity(intent);
     }
 
@@ -321,9 +327,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             JSONObject obj = new JSONObject(datas);
             User UserDate = mGson.fromJson(obj.getString(getString(R.string.User)),User.class);
             UserToken UTDate = mGson.fromJson(obj.getString(getString(R.string.UserToken)),UserToken.class);
-            String Userid = UTDate.getUser_id().toString();
-            String Token = UTDate.getToken().toString();
-            String email = UserDate.getEmail().toString();
+            String Userid = UTDate.getUser_id();
+            String Token = UTDate.getToken();
+            String email = UserDate.getEmail();
             if(UserDate.getUser_type().equals("1")){
                 alertdialog(getString(R.string.error),getString(R.string.alertdialog9));
             } else {

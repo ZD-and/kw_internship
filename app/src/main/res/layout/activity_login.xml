@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-
     <include
         layout="@layout/include_back"
         android:id="@+id/include_back"
@@ -101,8 +100,17 @@
             android:textColor="@color/but_blue"
             android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/NewuserSignIn_Click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:layout_marginTop="10dp"
+            android:text="アカウント連携"
+            android:textStyle="bold"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp" />
 
     </LinearLayout>
-
 
 </FrameLayout>

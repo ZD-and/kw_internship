@@ -60,8 +60,8 @@ public class NetworkUtils {
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
             urlConnection.setUseCaches(false);
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setReadTimeout(3000);
+            urlConnection.setConnectTimeout(30000);
+            urlConnection.setReadTimeout(30000);
 
             urlConnection.connect();
             //urlConnection.setRequestProperty("Content-Type","application/json; charset=UTF-8");

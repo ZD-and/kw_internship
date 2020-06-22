@@ -95,7 +95,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private String etname;
 
     public String TAG = "SearchActivity";
-    
+
 //    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -556,7 +556,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
             new GithubQueryTask2().execute(param);
         }
-
     }
 
     private void getLastLocationNewMethod(){

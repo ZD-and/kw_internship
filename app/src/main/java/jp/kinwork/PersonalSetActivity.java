@@ -44,9 +44,16 @@ public class PersonalSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalset);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
         load();
     }
+
     //初始化
     public void Initialization(){
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
@@ -208,8 +215,11 @@ public class PersonalSetActivity extends AppCompatActivity {
         int resumeNumber = PreferenceUtils.getresume_number();
         String Email = PreferenceUtils.getEmail();
 //        deviceId = PreferenceUtils.getdeviceId();
+
         if(myApplication.getlast_name().length() > 0){
-            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
+            String name = myApplication.getlast_name() + myApplication.getfirst_name() + " 様";
+            Log.d("PersonalSetActivity", "name:" + name);
+            tvname.setText(name);
         }
         tvemail.setText(Email);
         Log.d("***resumeNumber***", "" + resumeNumber);

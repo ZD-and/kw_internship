@@ -1,13 +1,19 @@
 package jp.kinwork.Common;
 
+import android.content.Context;
+import android.content.DialogInterface;
+
+import androidx.appcompat.app.AlertDialog;
+
+import jp.kinwork.R;
+
 /**
  * Created by zml98 on 2018/04/11.
  */
 
 public class AESprocess {
 
-    public String getencrypt(String endata, String Key){
-
+    public static String getencrypt(String endata, String Key){
         AES mAes = new AES();
         byte[] mBytes = null;
             try {
@@ -20,7 +26,7 @@ public class AESprocess {
         return encrypt;
     }
 
-    public String getdecrypt(String dedata, String Key){
+    public static String getdecrypt(String dedata, String Key){
 
         AES mAes = new AES();
         String decryp = mAes.decrypt(dedata,Key);

@@ -122,9 +122,10 @@
                         </TableRow>
 
                     </TableLayout>
+
                     <include
                         android:id="@+id/layout"
-                        layout="@layout/include_enterde"/>
+                        layout="@layout/include_enterde" />
 
                     <TableLayout
                         android:id="@+id/tl_Entered"
