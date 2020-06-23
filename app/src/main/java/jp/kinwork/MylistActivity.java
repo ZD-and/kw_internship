@@ -609,24 +609,11 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 //确定按钮的点击事件
                 PreferenceUtils.clear();
                 Intent intentClose = new Intent();
-                Intent intent = new Intent();
                 intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(MylistActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(MylistActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(MylistActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(MylistActivity.this, WebActivity.class);
-                    Initialization();
-                }
+                intentClose.setClass(MylistActivity.this, SearchActivity.class);
+                intentClose.putExtra("act", "");
+                startActivity(intentClose);
             }
         }).show();
     }
