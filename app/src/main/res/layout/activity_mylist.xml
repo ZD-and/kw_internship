@@ -131,25 +131,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:visibility="gone"
-                        android:stretchColumns="0,2">
+                        android:stretchColumns="0,2"
+                        android:visibility="gone">
 
                         <TableLayout
                             android:id="@+id/tl_tl_Entered"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:shrinkColumns="0"
-                            android:stretchColumns="0">
-                        </TableLayout>
+                            android:stretchColumns="0"></TableLayout>
 
                         <TableRow
                             android:id="@+id/tl_tr_Entered"
                             android:layout_marginBottom="10dp"
                             android:visibility="gone">
+
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                />
+                                android:layout_height="wrap_content" />
 
                             <TextView
                                 android:id="@+id/tl_tv_Entered"
@@ -158,14 +157,12 @@
                                 android:gravity="center"
                                 android:text="もっと見る..."
                                 android:textColor="@color/background_holo_dark"
-                                android:textStyle="bold"
                                 android:textSize="15sp"
-                                />
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                />
+                                android:layout_height="wrap_content" />
                         </TableRow>
                     </TableLayout>
                 </LinearLayout>
