@@ -52,7 +52,7 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class MylistActivity extends AppCompatActivity implements MyScrollView.OnScrollListener {
+public class MylistActivity extends AppCompatActivity  {
 
     final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
@@ -123,35 +123,37 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
 //    private LinearLayout mTopEnteredLayout;
 
     String TAG = "MylistActivity";
+
     private List<View> pages;
+
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylist);
         initPages();
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter adapter = new MylistActivity.customViewPagerAdapter(pages);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        MyScrollView myScrollView_like  = (MyScrollView) pages.get(0).findViewById(R.id.SV_ScrollView_like);
-        MyScrollView myScrollView_enter  = (MyScrollView) pages.get(1).findViewById(R.id.SV_ScrollView_enter);
+//        MyScrollView myScrollView_like  = (MyScrollView) pages.get(0).findViewById(R.id.SV_ScrollView_like);
+//        MyScrollView myScrollView_enter  = (MyScrollView) pages.get(1).findViewById(R.id.SV_ScrollView_enter);
 //        mEnteredLayout = (LinearLayout) findViewById(R.id.layout);
 //        mTopEnteredLayout = (LinearLayout) findViewById(R.id.top_layout);
 //        tvTopApplycont = (TextView) findViewById(R.id.tv_apply_cont_top);
-        myScrollView_like.setOnScrollListener(this);
-        myScrollView_enter.setOnScrollListener(this);
+//        myScrollView_like.setOnScrollListener(this);
+//        myScrollView_enter.setOnScrollListener(this);
         //当布局的状态或者控件的可见性发生改变回调的接口
-        findViewById(R.id.mylist_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //这一步很重要，使得上面的布局和下面的布局重合
-//                onScroll(myScrollView.getScrollY());
-            }
-        });
+//        findViewById(R.id.mylist_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                //这一步很重要，使得上面的布局和下面的布局重合
+////                onScroll(myScrollView.getScrollY());
+//            }
+//        });
         CreateNew();
         Initialization();
 //        Log.w("tvTopApplycont", tvTopApplycont.getText().toString());
@@ -161,11 +163,11 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
      * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框
      *
      */
-    @Override
-    public void onScroll(int scrollY) {
+//    @Override
+//    public void onScroll(int scrollY) {
 //        int mBuyLayout2ParentTop = Math.max(scrollY, mEnteredLayout.getTop());
 //        mTopEnteredLayout.layout(0, mBuyLayout2ParentTop, mTopEnteredLayout.getWidth(), mBuyLayout2ParentTop + mTopEnteredLayout.getHeight());
-    }
+//    }
 
     private void initPages() {
         pages = new ArrayList<View>();
@@ -173,50 +175,33 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         View page02 = View.inflate(MylistActivity.this,R.layout.fragment_mylist_enter,null);
         pages.add(page01);
         pages.add(page02);
-
-
-
     }
 
     public class customViewPagerAdapter extends PagerAdapter {
-        private String[] mTitles = new String[]{"気に入り", "応募済み"};
 
+        private String[] mTitles = new String[]{"気に入り", "応募済み"};
         List<View> pages;
         public customViewPagerAdapter(List<View> pages){
             this.pages = pages;
         };
-        /*
-         * 获取页面数量
-         * */
+
         @Override
         public int getCount() {
             return pages.size();
         }
 
-
-        /*
-         *判断类型是否匹配
-         * */
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return object==view;
         }
-        /*
-         * 加载page
-         * */
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            switch (position){
-                case 0:
-                case 1:
-                }
             View view = pages.get(position);
             container.addView(view);
             return view;
         }
-        /*
-         * 移除page
-         * */
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView(pages.get(position));
@@ -248,7 +233,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
         tltvlike.setOnClickListener(Click_getmore);
         tltvEntered.setOnClickListener(Click_getmore);
-
 //        tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title_Top);
 //        tlliketitle=findViewById(R.id.tl_like_title);
 //        tlEnteredtitle.setOnClickListener(Click_visibility);
@@ -280,8 +264,9 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         }
         tvemail.setText(PreferenceUtils.getEmail());
         if(Act.equals(getString(R.string.SelectResume))){
-            tllike.setVisibility(View.GONE);
-            tlEntered.setVisibility(View.VISIBLE);
+            viewPager.setCurrentItem(1);
+//            tllike.setVisibility(View.GONE);
+//            tlEntered.setVisibility(View.VISIBLE);
         }
         getSearchResults();
     }
