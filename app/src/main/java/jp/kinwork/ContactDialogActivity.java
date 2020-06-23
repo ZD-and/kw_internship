@@ -309,9 +309,9 @@ public class ContactDialogActivity extends AppCompatActivity {
         tvbackdummy.setText(getString(R.string.title_contact));
         tltvcompany     = (TextView) findViewById(R.id.tl_tv_company);
 
-        View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
+        View sendMessages = getLayoutInflater().inflate(R.layout.activity_select_resume, null);
 
-        ettitle        = (EditText) findViewById(R.id.et_title);
+        ettitle        = (EditText) sendMessages.findViewById(R.id.et_title);
         etmeg          = (EditText) pages.get(nPages).findViewById(R.id.et_meg_first);
 
         tvToCompanyName  = (TextView) pages.get(nPages).findViewById(R.id.tv_ToCompanyName_first);
@@ -510,8 +510,6 @@ public class ContactDialogActivity extends AppCompatActivity {
     }
     //返回联络画面
     public void Click_back(){
-
-
         Log.d(TAG,"sendflg:"+ sendflg);
         if(sendflg.equals("1")){
             if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
@@ -602,7 +600,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                         setTitle = "Re:" + ti;
                         setmeg = "\n\n\n\n\n\n>" + tm;
                         /*他のページに伝えるもの、findbyidもらえない、null値になる*/
-                        //ettitle.setText(setTitle);
+                        ettitle.setText(setTitle);
                         etmeg.setText(setmeg);
                         break;
                     }
