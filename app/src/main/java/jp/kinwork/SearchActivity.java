@@ -138,22 +138,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         worklocationTop= dp2px(SearchActivity.this, 50);
         worklocationTop = worklocationTop + keywordTop;
-        tvkeyword.post(new Runnable() {
-            @Override
-            public void run() {
-                keywordTop = keywordTop + tvkeyword.getMeasuredHeight();
-            }
-        });
         tlkeyword.post(new Runnable() {
             @Override
             public void run() {
                 keywordTop = keywordTop + tlkeyword.getMeasuredHeight();
-            }
-        });
-        tvworklocation.post(new Runnable() {
-            @Override
-            public void run() {
-                worklocationTop = worklocationTop + tvworklocation.getMeasuredHeight();
             }
         });
         tlworklocation.post(new Runnable() {
@@ -716,7 +704,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if(name.equals(getString(R.string.keyword))){
             top= keywordTop;
         } else {
-            top= worklocationTop;
+            top= worklocationTop+tlworklocation.getHeight();
         }
         int left_right= dp2px(SearchActivity.this, 30);
         FrameLayout.LayoutParams flparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
