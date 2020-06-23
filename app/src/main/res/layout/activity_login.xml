@@ -14,11 +14,11 @@
         />
 
     <LinearLayout
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center"
-        >
+        android:orientation="vertical">
 
 
         <TextView
@@ -35,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_shape"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/ic_shape_blue_select"
             android:hint="メールアドレス"
             android:inputType="textEmailAddress"
             android:paddingLeft="5dp"
@@ -49,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
             android:text="パスワード"
             android:textColor="@color/but_blue" />
 
@@ -59,9 +59,9 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_shape"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/ic_shape_blue_select"
             android:hint="パスワード"
             android:inputType="textPassword"
             android:paddingLeft="5dp"
@@ -72,8 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
             android:layout_marginTop="30dp"
+            android:layout_marginRight="45dp"
             android:backgroundTint="@color/but_blue"
             android:text="ログイン"
             android:textColor="@color/colorLight" />
@@ -82,24 +82,24 @@
             android:id="@+id/Click_Forgetpw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorLight"
             android:layout_marginTop="10dp"
+            android:background="@color/colorLight"
             android:text="パスワードがわからない"
-            android:textStyle="bold"
             android:textColor="@color/but_blue"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
         <TextView
             android:id="@+id/MakeNewuser_Click"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorLight"
             android:layout_marginTop="10dp"
+            android:background="@color/colorLight"
             android:text="新規アカウント作成"
-            android:textStyle="bold"
             android:textColor="@color/but_blue"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

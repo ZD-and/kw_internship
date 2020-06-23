@@ -37,6 +37,7 @@ import java.util.Map;
 import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.UserToken;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
@@ -61,6 +62,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     private EditText edinputB;
 
     private TableLayout tlvalidateCode;
+//    private TableLayout tlmuview;
     private TableLayout tlmudummyview;
 
     private ImageView ivprivacypolicy;
@@ -134,8 +136,14 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputA = (EditText) findViewById(R.id.ed_input_A);
         tvinputB = (TextView) findViewById(R.id.tv_input_B);
         edinputB = (EditText) findViewById(R.id.ed_input_B);
-        edinputA.setOnTouchListener(touchListener);
-        edinputB.setOnTouchListener(touchListener);
+
+        //        点击输入框变蓝
+        edinputA.addTextChangedListener(new JumpTextWatcher(edinputA,edinputB));
+        edinputB.addTextChangedListener(new JumpTextWatcher(edinputB,edinputA));
+//        edinputA.setOnTouchListener(touchListener);
+//        edinputB.setOnTouchListener(touchListener);
+//        tlmuview.setOnTouchListener(touchListener);
+//        tlmuview = (TableLayout) findViewById(R.id.tl_mu_view);
         tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
         tlmudummyview=findViewById(R.id.tl_mu_dummyview);
         tlmudummyview.setOnClickListener(new View.OnClickListener() {
@@ -188,22 +196,25 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         }
     }
     //点击输入框变蓝
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (view.getId()){
-                case R.id.ed_input_A:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape_blue);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape);
-                    break;
-                case R.id.ed_input_B:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape_blue);
-                    break;
-            }
-            return false;
-        }
-    };
+//    View.OnTouchListener touchListener = new View.OnTouchListener() {
+//        @Override
+//        public boolean onTouch(View view, MotionEvent motionEvent) {
+//            switch (view.getId()){
+//                case R.id.ed_input_A:
+//                    edinputA.setBackgroundResource(R.drawable.ic_shape_blue);
+//                    edinputB.setBackgroundResource(R.drawable.ic_shape);
+//                    break;
+//                case R.id.ed_input_B:
+//                    edinputA.setBackgroundResource(R.drawable.ic_shape);
+//                    edinputB.setBackgroundResource(R.drawable.ic_shape_blue);
+//                    break;
+////                case R.id.tl_mu_view:
+////                    edinputA.setBackgroundResource(R.drawable.ic_shape);
+////                    edinputB.setBackgroundResource(R.drawable.ic_shape);
+//            }
+//            return false;
+//        }
+//    };
     //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
