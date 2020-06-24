@@ -119,6 +119,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
+        tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
         tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
@@ -130,24 +131,24 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        keywordTop= dp2px(SearchActivity.this, 10);
+
 
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tlworklocation = (TableLayout) findViewById(R.id.tl_worklocation);
         etworklocation = (EditText)findViewById(R.id.et_worklocation);
-
+        keywordTop= dp2px(SearchActivity.this, 10);
         worklocationTop= dp2px(SearchActivity.this, 50);
         worklocationTop = worklocationTop + keywordTop;
         tlkeyword.post(new Runnable() {
             @Override
             public void run() {
-                keywordTop = keywordTop + tlkeyword.getMeasuredHeight();
+                keywordTop = keywordTop + tlkeyword.getMeasuredHeight() + tvkeyword.getMeasuredHeight();
             }
         });
         tlworklocation.post(new Runnable() {
             @Override
             public void run() {
-                worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight();
+                worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight() +  + tvworklocation.getMeasuredHeight();
             }
         });
 
@@ -621,6 +622,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
     //获取搜索结果
     public void getSearchResults(String flg,String hintdata){
+        Log.d(TAG, "getSearchResults flg: "  + flg);
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         if(flg.equals("0")){
@@ -712,7 +714,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint.setLayoutParams(flparams);
         adapter = new ArrayAdapter<>(this, R.layout.list_item, Stringdata);
         lvgethint.setAdapter(adapter);
-        lvgethint.setVisibility(View.VISIBLE);
+        if(ivkinwork.getVisibility() == View.GONE){
+            lvgethint.setVisibility(View.VISIBLE);
+        }
     }
     //位置取得权限是否取得
     private void checkaAcessPermission() {
