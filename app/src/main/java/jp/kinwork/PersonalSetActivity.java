@@ -5,13 +5,21 @@ import android.graphics.Color;
 import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
@@ -46,7 +54,74 @@ public class PersonalSetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_personalset);
         Initialization();
         load();
+        setViews();
     }
+
+    private void setViews() {
+        FragmentManager manager = getSupportFragmentManager();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ExampleFragmentPagerAdapter adapter = new ExampleFragmentPagerAdapter(manager);
+        viewPager.setAdapter(adapter);
+    }
+
+    public static class ExampleFragment extends Fragment {
+        private final static String BACKGROUND_COLOR = "background_color";
+
+        public static ExampleFragment newInstance(@ColorRes int IdRes) {
+            ExampleFragment frag = new ExampleFragment();
+            Bundle b = new Bundle();
+            b.putInt(BACKGROUND_COLOR, IdRes);
+            frag.setArguments(b);
+            return frag;
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_main, null);
+            LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragment_main_linearlayout);
+            linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
+
+            return view;
+        }
+    }
+
+    public class ExampleFragmentPagerAdapter extends FragmentPagerAdapter {
+        public ExampleFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return ExampleFragment.newInstance(android.R.color.holo_blue_bright);
+                case 1:
+                    return ExampleFragment.newInstance(android.R.color.holo_green_light);
+                case 2:
+                    return ExampleFragment.newInstance(android.R.color.holo_red_dark);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "ページ" + (position + 1);
+        }
+    }
+
+
+
     //初始化
     public void Initialization(){
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
@@ -130,6 +205,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
+
+
+
+
     //子功能画面按钮
     private View.OnClickListener Listener =new View.OnClickListener() {
         public void onClick(View View) {

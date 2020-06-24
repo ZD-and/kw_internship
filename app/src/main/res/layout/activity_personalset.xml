@@ -22,6 +22,13 @@ tools:context=".PersonalSetActivity">
             layout="@layout/include_userinfo"
             />
 
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:text="Hello World!" >
+        </androidx.viewpager.widget.ViewPager>
+
         <TableRow
             android:id="@+id/tr_basicinfoedit"
             android:background="@color/colorLight"
@@ -29,12 +36,6 @@ tools:context=".PersonalSetActivity">
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_basic_info_edi"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_setting" />
 
             <TextView
                 android:id="@+id/tv_basic_info_edi"
@@ -52,7 +53,7 @@ tools:context=".PersonalSetActivity">
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
+                android:gravity="right"
                 android:text=">"
                 android:textColor="@color/but_blue"
                 android:textSize="20sp"
@@ -68,11 +69,6 @@ tools:context=".PersonalSetActivity">
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="30dp">
-            <ImageView
-                android:id="@+id/iv_change_password"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_pwc" />
 
             <TextView
                 android:id="@+id/tv_change_password"
@@ -89,7 +85,104 @@ tools:context=".PersonalSetActivity">
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="60dp"
+                android:gravity="right"
+                android:text=">"
+                android:textColor="@color/but_blue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="40dp"
+
+            android:text="このアプリについて"
+            android:textColor="@color/but_blue"
+            android:gravity="center_vertical"
+            android:textSize="13sp" />
+
+
+        <TableRow
+            android:background="@color/colorLight"
+            android:layout_marginTop="3dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="利用規約"
+                android:textColor="@color/but_blue"
                 android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="60dp"
+                android:gravity="right"
+                android:text=">"
+                android:textColor="@color/but_blue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+        </TableRow>
+
+        <TableRow
+            android:background="@color/colorLight"
+            android:layout_marginTop="3dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="プライバシーポリシー"
+                android:textColor="@color/but_blue"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="60dp"
+                android:gravity="right"
+                android:text=">"
+                android:textColor="@color/but_blue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+        </TableRow>
+        <TableRow
+            android:background="@color/colorLight"
+            android:layout_marginTop="3dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="ライセンス情報"
+                android:textColor="@color/but_blue"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="60dp"
+                android:gravity="right"
                 android:text=">"
                 android:textColor="@color/but_blue"
                 android:textSize="20sp"
@@ -138,16 +231,10 @@ tools:context=".PersonalSetActivity">
         <TableRow
             android:id="@+id/tr_Resume"
             android:background="@color/colorLight"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_In_Resume_set"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_resume_add" />
 
             <TextView
                 android:id="@+id/tv_In_Resume_set"
@@ -164,7 +251,7 @@ tools:context=".PersonalSetActivity">
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
+                android:gravity="right"
                 android:text=">"
                 android:textColor="@color/but_blue"
                 android:textSize="20sp"
@@ -227,16 +314,10 @@ tools:context=".PersonalSetActivity">
         <TableRow
             android:id="@+id/tr_LoginOut"
             android:background="@color/colorLight"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_LoginOut"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_exit" />
 
             <TextView
                 android:id="@+id/tv_LoginOut"
@@ -248,6 +329,17 @@ tools:context=".PersonalSetActivity">
                 android:gravity="center_vertical"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="60dp"
+                android:gravity="right"
+                android:text=">"
+                android:textColor="@color/but_blue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
 
         </TableRow>
     </TableLayout>
