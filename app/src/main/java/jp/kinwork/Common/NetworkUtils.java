@@ -49,13 +49,11 @@ public class NetworkUtils {
         Log.d("NetworkUtils***data***", data);
         Log.d("NetworkUtils***url***", url.toString());
         //オレオレ証明書によるSSLサーバー接続でもエラーをスルーできるようにする
-        SSLContext sslcontext = closeSSL();
+//        SSLContext sslcontext = closeSSL();
         HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-
-
         try {
 
-            urlConnection.setSSLSocketFactory(sslcontext.getSocketFactory());
+//            urlConnection.setSSLSocketFactory(sslcontext.getSocketFactory());
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
