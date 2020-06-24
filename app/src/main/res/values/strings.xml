@@ -23,9 +23,17 @@
     <string name="title_mylist">マイリスト</string>
     <string name="title_personalsettings">個人設定</string>
     <string name="title_basic_info_edi">基本情報編集</string>
+    <string name="title_basic_info_edi_icon">個人情報</string>
     <string name="title_change_password">パスワード変更</string>
     <string name="title_In_mail_set">受信メール設定</string>
     <string name="title_edit_resume">履歴書編集</string>
+    <string name="title_resume">履歴書</string>
+    <string name="title_resume_default_1">履歴書①</string>
+    <string name="title_resume_default_2">履歴書②</string>
+    <string name="title_resume_default_3">履歴書③</string>
+    <string name="title_loginout_icon">ログアウト</string>
+    <string name="image_view_displayname">画像表示</string>
+    <string name="mark_into">></string>
 
     <!-- Strings related to AdvancSet -->
     <string name="Search">Search</string>
