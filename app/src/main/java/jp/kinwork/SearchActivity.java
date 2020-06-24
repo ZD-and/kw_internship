@@ -215,7 +215,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if (s.length() > 0) {
                     ivclearkeyword.setVisibility(View.VISIBLE);
                     String Text = etkeyword.getText().toString();
-                    if( !blkeyword){
+                    if(blkeyword){
                         getSearchResults("0",Text);
                     }
                 } else {
@@ -225,7 +225,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             @Override
             public void afterTextChanged(Editable s) {
-                blkeyword = false;
+                blkeyword = true;
             }
         });
 
@@ -236,6 +236,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d(TAG, "etworklocation onTextChanged: ");
                 if (s.length() == 0) {
                     ivclearworklocation.setImageResource(R.drawable.ic_location_on);
                     ivclearworklocation.setTag(getString(R.string.location));
@@ -244,14 +245,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     ivclearworklocation.setImageResource(R.drawable.ic_cancel);
                     ivclearworklocation.setTag(getString(R.string.clear));
                     String Text = etworklocation.getText().toString();
-                    if(blworklocation == false){
+                    if(blworklocation){
                         getSearchResults("1",Text);
                     }
                 }
             }
             @Override
             public void afterTextChanged(Editable s) {
-                blworklocation = false;
+                blworklocation = true;
             }
         });
 
@@ -262,12 +263,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String data=(String) adapter.getItem(position);
                 Log.d(TAG+"etname", etname);
                 if(etname.equals("keyword")){
-                    blkeyword = true;
+                    blkeyword = false;
                     etkeyword.setText(data);
                     etkeyword.setSelection(etkeyword.getText().length());
 
                 } else {
-                    blworklocation = true;
+                    blworklocation = false;
                     etworklocation.setText(data);
                     etworklocation.setSelection(etworklocation.getText().length());
                 }
@@ -491,6 +492,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            Log.d(TAG, "touchListener onTouch: ");
             ivkinwork.setVisibility(View.GONE);
             lvgethint.setVisibility(View.GONE);
             switch (view.getId()){
@@ -498,11 +500,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
                     tlworklocation.setBackgroundResource(R.drawable.ic_shape);
                     etkeyword.setCursorVisible(true);
+                    blkeyword = true;
                     break;
                 case R.id.et_worklocation:
                     tlkeyword.setBackgroundResource(R.drawable.ic_shape);
                     tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
                     etworklocation.setCursorVisible(true);
+                    Log.d(TAG, "onTouch etworklocation.getText().length(): " + etworklocation.getText().length());
+                    etworklocation.setSelection(etworklocation.getText().length());
+                    blworklocation = true;
                     break;
             }
             return false;
