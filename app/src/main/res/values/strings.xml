@@ -39,6 +39,12 @@
     <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
+    <string name="image_view_search_displayname">search画像表示</string>
+    <string name="title_Search_keyword">キーワード</string>
+    <string name="hint_Search_input">職種、業種、会社名など</string>
+    <string name="title_Search_position">勤務地</string>
+    <string name="hint_Search_position">都道府県、市区町村、駅名</string>
+    <string name="title_Search_buttun">検索</string>
 
     <!-- Strings related to Agreement -->
     <string name="termsofservice">利用規約</string>
@@ -61,6 +67,8 @@
     <string name="Apply">Apply</string>
     <string name="Activity">Activity</string>
     <string name="Cancel">キャンセル</string>
+    <string name="image_view_displayname_SearchResults">SearchResult画像表示</string>
+    <string name="hint_SearchResults_detailed_setting">詳細設定</string>
 
     <!-- Strings related to Basicinfoedit -->
     <string name="profilechange">個人情報編集</string>
