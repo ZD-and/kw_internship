@@ -61,20 +61,8 @@ public class ContactDialogActivity extends AppCompatActivity {
     final static String PARAM_Readed = "/MyMailMobile/setReaded";
 
     private LinkedList<LinearLayout> list_llmeg;
-//    private LinearLayout[] llmeg;
-//    private LinearLayout llmeg_first;
-//    private LinearLayout llmeg_second;
-//    private LinearLayout llmeg_third;
     private LinkedList<TableLayout> list_tlmeg;
-//    private TableLayout[] tlmeg;
-//    private TableLayout tlmeg_first;
-//    private TableLayout tlmeg_second;
-//    private TableLayout tlmeg_third;
     private LinkedList<ScrollView> list_slmeg;
-//    private ScrollView[] slmeg;
-//    private ScrollView slmeg_first;
-//    private ScrollView slmeg_second;
-//    private ScrollView slmeg_third;
 
     private Button bu_sendmeg_first;
     private Button bu_sendmeg_second;
@@ -114,15 +102,12 @@ public class ContactDialogActivity extends AppCompatActivity {
     private LinkedList<ImageView> list_ivread;
     private LinkedList<String> list_String;
     private LinkedList<JSONObject> list_obj;
-    
+
     String TAG = "ContactDialogActivity";
 
     private ViewPager viewPager;
     private List<View> pages;
 
-    private int currentIndex;
-
-    private int screenWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,20 +195,23 @@ public class ContactDialogActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            switch (position){
-                case 0:
-                    educationInfo(0,"");
-                    break;
-                    //Initialization(0);
-                case 1:
-                    educationInfo(1,"1");
-                    break;
-                    //Initialization(1);
-                case 2:
-                    educationInfo(2,"0");
-                    break;
-                    //Initialization(2);
-            }
+//            switch (position){
+//                case 0:
+//                    educationInfo(0,"");
+//                    break;
+//                    //Initialization(0);
+//                case 1:
+//                    educationInfo(1,"1");
+//                    break;
+//                    //Initialization(1);
+//                case 2:
+//                    educationInfo(2,"0");
+//                    break;
+//                    //Initialization(2);
+//            }
+            educationInfo(0,"");
+            educationInfo(1,"1");
+            educationInfo(2,"0");
             View view = pages.get(position);
             container.addView(view);
             return view;
@@ -241,8 +229,7 @@ public class ContactDialogActivity extends AppCompatActivity {
 
     //初期化
     private void Initialization(int nPages){
-        //bu_sendmeg=findViewById(R.id.bu_sendmeg_first);
-        bu_sendmeg_first = pages.get(nPages).findViewById(R.id.bu_sendmeg_first);
+        bu_sendmeg_first = pages.get(0).findViewById(R.id.bu_sendmeg_first);
         bu_sendmeg_second = pages.get(1).findViewById(R.id.bu_sendmeg_second);
         bu_sendmeg_third = pages.get(2).findViewById(R.id.bu_sendmeg_third);
         bu_sendmeg_first.setOnClickListener(Click_setSendMeg);
@@ -755,6 +742,7 @@ public class ContactDialogActivity extends AppCompatActivity {
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
             alertdialog();
+
         }
     };
 
@@ -764,10 +752,7 @@ public class ContactDialogActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                intent.setClass(ContactDialogActivity.this, ContactDialogActivity.class);
-                startActivity(intent);
+                finish();
             }
         }).show();
     }
