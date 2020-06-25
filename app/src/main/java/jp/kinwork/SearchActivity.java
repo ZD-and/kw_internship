@@ -119,6 +119,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         ivkinwork = (ImageView) findViewById(R.id.iv_kinwork);
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
+        tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
         tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
@@ -130,24 +131,24 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        keywordTop= dp2px(SearchActivity.this, 10);
+
 
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tlworklocation = (TableLayout) findViewById(R.id.tl_worklocation);
         etworklocation = (EditText)findViewById(R.id.et_worklocation);
-
+        keywordTop= dp2px(SearchActivity.this, 10);
         worklocationTop= dp2px(SearchActivity.this, 50);
         worklocationTop = worklocationTop + keywordTop;
         tlkeyword.post(new Runnable() {
             @Override
             public void run() {
-                keywordTop = keywordTop + tlkeyword.getMeasuredHeight();
+                keywordTop = keywordTop + tlkeyword.getMeasuredHeight() + tvkeyword.getMeasuredHeight();
             }
         });
         tlworklocation.post(new Runnable() {
             @Override
             public void run() {
-                worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight();
+                worklocationTop = worklocationTop + tlworklocation.getMeasuredHeight() +  + tvworklocation.getMeasuredHeight();
             }
         });
 
@@ -214,7 +215,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if (s.length() > 0) {
                     ivclearkeyword.setVisibility(View.VISIBLE);
                     String Text = etkeyword.getText().toString();
-                    if( !blkeyword){
+                    if(blkeyword){
                         getSearchResults("0",Text);
                     }
                 } else {
@@ -224,7 +225,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             @Override
             public void afterTextChanged(Editable s) {
-                blkeyword = false;
+                blkeyword = true;
             }
         });
 
@@ -235,6 +236,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d(TAG, "etworklocation onTextChanged: ");
                 if (s.length() == 0) {
                     ivclearworklocation.setImageResource(R.drawable.ic_location_on);
                     ivclearworklocation.setTag(getString(R.string.location));
@@ -243,14 +245,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     ivclearworklocation.setImageResource(R.drawable.ic_cancel);
                     ivclearworklocation.setTag(getString(R.string.clear));
                     String Text = etworklocation.getText().toString();
-                    if(blworklocation == false){
+                    if(blworklocation){
                         getSearchResults("1",Text);
                     }
                 }
             }
             @Override
             public void afterTextChanged(Editable s) {
-                blworklocation = false;
+                blworklocation = true;
             }
         });
 
@@ -261,12 +263,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String data=(String) adapter.getItem(position);
                 Log.d(TAG+"etname", etname);
                 if(etname.equals("keyword")){
-                    blkeyword = true;
+                    blkeyword = false;
                     etkeyword.setText(data);
                     etkeyword.setSelection(etkeyword.getText().length());
 
                 } else {
-                    blworklocation = true;
+                    blworklocation = false;
                     etworklocation.setText(data);
                     etworklocation.setSelection(etworklocation.getText().length());
                 }
@@ -490,6 +492,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            Log.d(TAG, "touchListener onTouch: ");
             ivkinwork.setVisibility(View.GONE);
             lvgethint.setVisibility(View.GONE);
             switch (view.getId()){
@@ -497,11 +500,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
                     tlworklocation.setBackgroundResource(R.drawable.ic_shape);
                     etkeyword.setCursorVisible(true);
+                    blkeyword = true;
                     break;
                 case R.id.et_worklocation:
                     tlkeyword.setBackgroundResource(R.drawable.ic_shape);
                     tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
                     etworklocation.setCursorVisible(true);
+                    Log.d(TAG, "onTouch etworklocation.getText().length(): " + etworklocation.getText().length());
+                    etworklocation.setSelection(etworklocation.getText().length());
+                    blworklocation = true;
                     break;
             }
             return false;
@@ -621,6 +628,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
     //获取搜索结果
     public void getSearchResults(String flg,String hintdata){
+        Log.d(TAG, "getSearchResults flg: "  + flg);
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         if(flg.equals("0")){
@@ -712,7 +720,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint.setLayoutParams(flparams);
         adapter = new ArrayAdapter<>(this, R.layout.list_item, Stringdata);
         lvgethint.setAdapter(adapter);
-        lvgethint.setVisibility(View.VISIBLE);
+        if(ivkinwork.getVisibility() == View.GONE){
+            lvgethint.setVisibility(View.VISIBLE);
+        }
     }
     //位置取得权限是否取得
     private void checkaAcessPermission() {
