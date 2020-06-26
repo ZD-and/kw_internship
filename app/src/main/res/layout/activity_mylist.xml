@@ -29,7 +29,9 @@
             app:tabSelectedTextColor="@android:color/holo_blue_bright"
             app:tabTextColor="@color/colorPrimary"
             app:tabIndicatorColor="@android:color/holo_blue_bright"
-            app:tabIndicatorHeight="4dp"/>
+            app:tabIndicatorHeight="4dp"
+            android:background="@drawable/frame_top_light"
+            />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
