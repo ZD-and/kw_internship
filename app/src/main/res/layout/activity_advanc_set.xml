@@ -1,146 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundblue"
-    android:orientation="vertical"
     tools:context=".AdvancSetActivity">
 
     <include
-        layout="@layout/include_back"/>
+        android:id="@+id/include2"
+        layout="@layout/include_back"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_show_searchcondition"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TableLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/tv_show_searchcondition"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/title_blue"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="検索条件"
+        android:textColor="@color/colorLight"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical"
+        android:text="職種、業種、会社名など"
+        android:textColor="@color/background_holo_dark"
+        app:layout_constraintBottom_toTopOf="@+id/et_Jobname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_show_searchcondition" />
+
+    <EditText
+        android:id="@+id/et_Jobname"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/ic_shape"
+        android:ems="10"
+        android:paddingLeft="10dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical"
+        android:text="勤務地"
+        android:textColor="@color/background_holo_dark"
+        app:layout_constraintBottom_toTopOf="@+id/et_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_Jobname" />
+
+    <EditText
+        android:id="@+id/et_address"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_shape"
+        android:ems="10"
+        android:paddingLeft="10dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tv_employmentstatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/tv_employmentstatus"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/title_blue"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="雇用形態"
+        android:textColor="@color/colorLight"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_show_employmentstatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_address" />
+
+    <Spinner
+        android:id="@+id/tv_show_employmentstatus"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_shape"
+        android:entries="@array/employmentstatus"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/tv_annualincome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_employmentstatus" />
+
+    <TextView
+        android:id="@+id/tv_annualincome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/title_blue"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="推定年収"
+        android:textColor="@color/colorLight"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_show_annualincome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_show_employmentstatus" />
+
+    <Spinner
+        android:id="@+id/tv_show_annualincome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/ic_shape"
+        android:entries="@array/annualincome"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_annualincome" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
+        android:layout_marginBottom="223dp"
+        android:backgroundTint="@color/but_blue"
+        android:text="検索"
+        android:textColor="@color/colorLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_show_annualincome" />
 
-
-        <TextView
-            android:id="@+id/tv_show_searchcondition"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="@color/title_blue"
-            android:ems="10"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:text="検索条件"
-            android:textColor="@color/colorLight"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:text="職種、業種、会社名など"
-            android:textColor="@color/background_holo_dark" />
-
-        <EditText
-            android:id="@+id/et_Jobname"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_shape"
-            android:ems="10"
-            android:paddingLeft="10dp"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:text="勤務地"
-            android:textColor="@color/background_holo_dark" />
-
-        <EditText
-            android:id="@+id/et_address"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_shape"
-            android:ems="10"
-            android:paddingLeft="10dp"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/tv_employmentstatus"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/title_blue"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:text="雇用形態"
-            android:textColor="@color/colorLight"
-            android:textSize="20sp" />
-
-        <Spinner
-            android:id="@+id/tv_show_employmentstatus"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:background="@drawable/ic_shape"
-            android:entries="@array/employmentstatus"/>
-
-        <TextView
-            android:id="@+id/tv_annualincome"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/title_blue"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:text="推定年収"
-            android:textColor="@color/colorLight"
-            android:textSize="20sp" />
-
-        <Spinner
-            android:id="@+id/tv_show_annualincome"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:background="@drawable/ic_shape"
-            android:entries="@array/annualincome"/>
-
-        <!--<TextView-->
-        <!--android:id="@+id/tv_show_annualincome"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:background="@drawable/ic_shape"-->
-        <!--android:gravity="center"-->
-        <!--android:hint="推定年収を選択してください" />-->
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/but_blue"
-            android:text="検索"
-            android:textColor="@color/colorLight" />
-    </TableLayout>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
