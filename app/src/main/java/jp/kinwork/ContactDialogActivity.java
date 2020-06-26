@@ -54,7 +54,7 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity {
+public class ContactDialogActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     final static String PARAM_File = "/MyMailMobile/MyMailList";
     final static String PARAM_sendMessage = "/MyMailMobile/pendingMyMail";
@@ -122,6 +122,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         int nPageNum = viewPager.getCurrentItem();
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override
@@ -175,6 +176,33 @@ public class ContactDialogActivity extends AppCompatActivity {
         pages.add(page03);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        switch (position){
+            case 0:
+                educationInfo(0,"");
+                break;
+            case 1:
+                educationInfo(1,"1");
+                break;
+            case 2:
+                educationInfo(2,"0");
+                break;
+            default:break;
+        }
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
     public class customViewPagerAdapter extends PagerAdapter {
         private String[] mTitles = new String[]{"すべて", "受信トレイ", "送信済み"};
 
@@ -195,23 +223,27 @@ public class ContactDialogActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-//            switch (position){
+
+//            int nPageNum = viewPager.getCurrentItem();
+//            switch (nPageNum){
 //                case 0:
+//                    educationInfo(1,"1");
 //                    educationInfo(0,"");
 //                    break;
-//                    //Initialization(0);
 //                case 1:
+//                    educationInfo(2,"0");
 //                    educationInfo(1,"1");
 //                    break;
-//                    //Initialization(1);
 //                case 2:
+//                    educationInfo(0,"");
 //                    educationInfo(2,"0");
 //                    break;
-//                    //Initialization(2);
+//                default:break;
 //            }
-            educationInfo(0,"");
-            educationInfo(1,"1");
-            educationInfo(2,"0");
+//            educationInfo(0,"");
+//            educationInfo(1,"1");
+//            educationInfo(2,"0");
+
             View view = pages.get(position);
             container.addView(view);
             return view;
@@ -387,6 +419,7 @@ public class ContactDialogActivity extends AppCompatActivity {
                 }
                 mMyApplication.setContactDialog(decryptdata,3);
                 mMyApplication.setContactDialog(DisplayEmailFlg,4);
+                educationInfo(1,"1");
                 educationInfo(0,"");
 
             }
@@ -657,6 +690,7 @@ public class ContactDialogActivity extends AppCompatActivity {
         if (View == null) {
             return;
         }
+        int nPageNum = viewPager.getCurrentItem();
         // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         TextView Click_tvtitle = new TextView(this);
