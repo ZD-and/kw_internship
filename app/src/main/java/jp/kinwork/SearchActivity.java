@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.kinwork.Common.AES;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -79,8 +80,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private Intent Intent;
     private TableLayout tllayoutsearch;
-    private TableLayout tlkeyword;
-    private TableLayout tlworklocation;
+    private FrameLayout tlkeyword;
+    private FrameLayout tlworklocation;
     private boolean blkeyword = false;
     private boolean blworklocation = false;
 
@@ -95,7 +96,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private String etname;
 
     public String TAG = "SearchActivity";
-    
+
 //    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint = (ListView)findViewById(R.id.lv_gethint);
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
-        tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
+        tlkeyword = (FrameLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
         bu_search=findViewById(R.id.bu_search);
         bu_search.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +188,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         keywordTop= dp2px(SearchActivity.this, 10);
 
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
-        tlworklocation = (TableLayout) findViewById(R.id.tl_worklocation);
+        tlworklocation = (FrameLayout) findViewById(R.id.tl_worklocation);
         etworklocation = (EditText)findViewById(R.id.et_worklocation);
 
         worklocationTop= dp2px(SearchActivity.this, 50);
@@ -231,6 +232,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         etkeyword.setText(myApplication.getkeyword());
         etworklocation.setText(myApplication.getaddress());
 
+        etkeyword.addTextChangedListener(new JumpTextWatcher(etkeyword,etworklocation));
+        etworklocation.addTextChangedListener(new JumpTextWatcher(etworklocation,etkeyword));
         if(etkeyword.getText().length() > 0){
             ivclearkeyword.setVisibility(View.VISIBLE);
         }
@@ -489,13 +492,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             lvgethint.setVisibility(View.GONE);
             switch (view.getId()){
                 case R.id.et_keyword:
-                    tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
-                    tlworklocation.setBackgroundResource(R.drawable.ic_shape);
+//                    tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
+//                    tlworklocation.setBackgroundResource(R.drawable.ic_shape);
                     etkeyword.setCursorVisible(true);
                     break;
                 case R.id.et_worklocation:
-                    tlkeyword.setBackgroundResource(R.drawable.ic_shape);
-                    tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
+//                    tlkeyword.setBackgroundResource(R.drawable.ic_shape);
+//                    tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
                     etworklocation.setCursorVisible(true);
                     break;
             }
