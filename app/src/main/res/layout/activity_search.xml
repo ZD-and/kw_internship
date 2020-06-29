@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
+
 
     <include
         android:id="@+id/search_title"
-        layout="@layout/title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"/>
+        layout="@layout/title"/>
 
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="50dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
 
         <TableLayout
             android:id="@+id/tllayout_search"
@@ -36,8 +31,7 @@
                 android:layout_height="200dp"
                 android:scaleType="fitCenter"
                 android:visibility="visible"
-                app:srcCompat="@mipmap/kinwork"
-                android:contentDescription="@string/image_view_search_displayname"/>
+                app:srcCompat="@mipmap/kinwork" />
 
             <TextView
                 android:id="@+id/tv_keyword"
@@ -46,17 +40,10 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center_vertical"
-                android:text="@string/title_Search_keyword"
+                android:text="キーワード"
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 
-            <!--填充用star-->
-            <!--            <EditText-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:visibility="gone"-->
-            <!--                android:background="@drawable/ic_shape" />-->
-            <!--填充用end-->
             <TableLayout
                 android:id="@+id/tl_keyword"
                 android:layout_width="match_parent"
@@ -68,8 +55,7 @@
                 android:background="@drawable/ic_shape"
                 android:stretchColumns="0">
 
-                <TableRow
-                    android:background="@null">
+                <TableRow>
                     <EditText
                         android:id="@+id/et_keyword"
                         android:layout_width="match_parent"
@@ -82,10 +68,8 @@
                         android:singleLine="true"
                         android:textSize="18sp"
                         android:cursorVisible="false"
-                        android:hint="@string/hint_Search_input"
-                        android:textColor="@color/background_holo_dark"
-                        android:inputType="text"
-                        android:autofillHints="" />
+                        android:hint="職種、業種、会社名など"
+                        android:textColor="@color/background_holo_dark" />
 
 
                     <ImageView
@@ -94,10 +78,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
                         android:visibility="gone"
-                        app:srcCompat="@drawable/ic_cancel"
-                        android:contentDescription="@string/image_view_search_displayname" />
+                        app:srcCompat="@drawable/ic_cancel" />
 
                 </TableRow>
 
@@ -112,7 +95,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:text="@string/title_Search_position"
+                android:text="勤務地"
                 android:textColor="@color/but_blue" />
 
             <TableLayout
@@ -127,8 +110,7 @@
                 android:gravity="center_vertical"
                 android:stretchColumns="0">
 
-                <TableRow
-                    android:background="@null">
+                <TableRow>
                     <EditText
                         android:id="@+id/et_worklocation"
                         android:layout_width="match_parent"
@@ -141,10 +123,8 @@
                         android:singleLine="true"
                         android:textSize="18sp"
                         android:cursorVisible="false"
-                        android:hint="@string/hint_Search_position"
-                        android:textColor="@color/background_holo_dark"
-                        android:autofillHints=""
-                        android:inputType="text" />
+                        android:hint="都道府県、市区町村、駅名"
+                        android:textColor="@color/background_holo_dark" />
 
 
                     <ImageView
@@ -152,12 +132,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"
                         android:tag="location"
                         android:visibility="visible"
-                        android:src="@drawable/ic_location_on"
-                        android:contentDescription="@string/image_view_search_displayname" />
+                        android:src="@drawable/ic_location_on" />
                 </TableRow>
             </TableLayout>
 
@@ -169,7 +148,7 @@
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="30dp"
                 app:backgroundTint="@color/but_blue"
-                android:text="@string/title_Search_buttun"
+                android:text="検索"
                 android:textColor="@color/colorLight"
                 android:textSize="15sp" />
         </TableLayout>
@@ -179,14 +158,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="450dp"
             android:layout_marginRight="30dp"
+            android:layout_marginTop="450dp"
             android:background="@drawable/ic_shape"
-            android:visibility="gone" />
+            android:visibility="gone"
+            />
 
     </FrameLayout>
 
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
