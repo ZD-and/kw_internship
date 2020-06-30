@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -103,7 +104,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
     private ViewPager viewPager;
     private List<View> pages;
-
+    private int index=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-            getSearchResults();
+            getSearchResults("1");
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
@@ -273,6 +274,34 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_slmeg.add((ScrollView) pages.get(0).findViewById(R.id.sl_meg_first));
         list_slmeg.add((ScrollView) pages.get(1).findViewById(R.id.sl_meg_second));
         list_slmeg.add((ScrollView) pages.get(2).findViewById(R.id.sl_meg_third));
+
+        list_slmeg.get(0).setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN :
+
+                        break;
+                    case MotionEvent.ACTION_MOVE :
+                        index++;
+                        break;
+                    default :
+                        break;
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP &&  index > 0) {
+                    index = 0;
+                    View view = ((ScrollView) v).getChildAt(0);
+                    if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
+                        //加载数据代码
+                        getSearchResults("2");
+
+                    }
+                }
+                return false;
+            }
+        });
+
+
         tvback          = (TextView) findViewById(R.id.tv_back);
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,13 +338,13 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     }
 
     //获取搜索结果
-    public void getSearchResults(){
+    public void getSearchResults(String number){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
-        Pdata.setpage("1");
+        Pdata.setpage(number);
         Pdata.setType("all");//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
