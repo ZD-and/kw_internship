@@ -102,6 +102,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        if(myApplication.getlast_name().length() > 0){
+            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
+        }
+        tvemail.setText(PreferenceUtils.getEmail());
     }
     //菜单栏按钮
     public void ll_Click(View View){
