@@ -46,6 +46,7 @@
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 
+            <TableLayout
             <!--填充用star-->
 <!--            <EditText-->
 <!--                android:layout_width="0dp"-->
