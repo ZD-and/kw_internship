@@ -2,6 +2,7 @@ package jp.kinwork.Common;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -14,6 +15,7 @@ import jp.kinwork.R;
 public class AESprocess {
 
     public static String getencrypt(String endata, String Key){
+        Log.d("AESprocess", "getencrypt endata: " + endata);
         AES mAes = new AES();
         byte[] mBytes = null;
             try {

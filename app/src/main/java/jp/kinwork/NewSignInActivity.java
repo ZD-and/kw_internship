@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -25,7 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -75,21 +73,19 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
 
     String TAG = "NewSignInActivity";
     final static String other_Login = "/usersMobile/otherLogin";
-    String mLoginFlg="";
+    String mLoginFlag ="";
     String mDeviceId;
     String mAesKey;
 
     private static final int RC_SIGN_IN = 9001;
-
+    private PreferenceUtils mPreferenceUtils;
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
     TwitterLoginButton mTwitterLoginButton;
-    com.linecorp.linesdk.widget.LoginButton mLineLoginButton;
-    com.facebook.login.widget.LoginButton mFacebookLoginButton;
-    SignInButton mGoogleLoginButton;
-    ImageView mYahooLoginButton;
+//    com.linecorp.linesdk.widget.LoginButton mLineLoginButton;
+//    com.facebook.login.widget.LoginButton mFacebookLoginButton;
     LineApiClient lineApiClient;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -102,36 +98,49 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuthGoogle.getCurrentUser();
-//        updateUI(currentUser);
         Log.d(TAG, "onStart: ");
-        PreferenceUtils preferenceUtils = new PreferenceUtils(NewSignInActivity.this);
-        mDeviceId = preferenceUtils.getdeviceId();
-        mAesKey = preferenceUtils.getAesKey();
-        Intent intent = getIntent();
-        findViewById(R.id.tv_back).setOnClickListener(this);
+        mPreferenceUtils = new PreferenceUtils(this);
+        mDeviceId = mPreferenceUtils.getdeviceId();
+        mAesKey = mPreferenceUtils.getAesKey();
+        Log.d(TAG, "onStart mDeviceId: " + mDeviceId);
+        Log.d(TAG, "onStart mAesKey: " + mAesKey);
+        Log.d(TAG, "onStart mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
+        TextView tbBack = findViewById(R.id.tv_back);
+        tbBack.setText("戻る");
+        tbBack.setOnClickListener(this);
         findViewById(R.id.button_logout).setOnClickListener(this);
-        mGoogleLoginButton = findViewById(R.id.google_login_button);
-        mYahooLoginButton = findViewById(R.id.yahoo_login_btn);
+        findViewById(R.id.google_login_button).setOnClickListener(this);
+        findViewById(R.id.btn_yahoo_login).setOnClickListener(this);
+        findViewById(R.id.btn_facebook_login).setOnClickListener(this);
+        findViewById(R.id.btn_line_login).setOnClickListener(this);
         mTwitterLoginButton = findViewById(R.id.twitter_login_button);
-        mLineLoginButton = findViewById(R.id.line_login_btn);
-        mFacebookLoginButton = findViewById(R.id.facebook_login_button);
+//        mLineLoginButton = findViewById(R.id.line_login_btn);
+
+//        mFacebookLoginButton = findViewById(R.id.facebook_login_button);
 //
         mTwitterLoginButton.setOnClickListener(this);
-        mLineLoginButton.setOnClickListener(this);
-        mFacebookLoginButton.setOnClickListener(this);
-        mGoogleLoginButton.setOnClickListener(this);
-        mYahooLoginButton.setOnClickListener(this);
+//        mLineLoginButton.setOnClickListener(this);
+//        mFacebookLoginButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-        loginLine();
+        initLine();
         getYahooUserInfo();
-        loginFaceBook();
-        loginTwitter();
-        loginGoogle();
+        initFaceBook();
+        initTwitter();
+        initGoogle();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onPause: ");
+    }
 
     @Override
     public void onClick(View view) {
@@ -144,27 +153,34 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.google_login_button:
                 Log.d(TAG, "onClick google signIn: ");
-                mLoginFlg = "google";
+                mLoginFlag = "1";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
                 googleSignIn();
                 break;
-            case R.id.yahoo_login_btn:
-//                loginYahoo();
-                mLoginFlg = "yahoo";
+            case R.id.btn_facebook_login:
+                mLoginFlag = "2";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
+                LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList( "email"));
+                break;
+            case R.id.btn_yahoo_login:
+                mLoginFlag = "3";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
                 intent.setClass(NewSignInActivity.this,
                         NewSignInActivity.class);
                 startActivity(intent);
-                loginYahooStart("0");
+                loginYahooStart();
                 break;
             case R.id.twitter_login_button:
-                mLoginFlg = "twitter";
-
+                mLoginFlag = "4";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
                 break;
-            case R.id.line_login_btn:
-                mLoginFlg = "line";
+            case R.id.btn_line_login:
+                mLoginFlag = "5";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
                 try{
                     intent = LineLoginApi.getLoginIntent(
                             view.getContext(),
-                            "1654297537",
+                            getString(R.string.line_client_id),
                             new LineAuthenticationParams.Builder()
                                     .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
                                     .build());
@@ -174,10 +190,8 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                     Log.e("ERROR", e.toString());
                 }
                 break;
-            case R.id.facebook_login_button:
-                mLoginFlg = "facebook";
-                break;
             case R.id.button_logout:
+                mPreferenceUtils.setLoginFlag("0");
                 LoginManager.getInstance().logOut();//facebookのログアウト
                 TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
                 mAuth.signOut();//googleのログアウト
@@ -188,86 +202,85 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
                 }).start();
-                loginYahooStart("1");
                 break;
         }
     }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "requestCode:" + requestCode);
-        Log.d(TAG, "resultCode:" + resultCode);
-        Log.d(TAG, "mLoginFlg:" + mLoginFlg);
+        Log.d(TAG, "onActivityResult requestCode:" + requestCode);
+        Log.d(TAG, "onActivityResult resultCode:" + resultCode);
+        Log.d(TAG, "onActivityResult mLoginFlg:" + mLoginFlag);
+        String falg =mPreferenceUtils.getLoginFlag();
+        Log.d(TAG, "onActivityResult mPreferenceUtils.getLoginFlag():" + mPreferenceUtils.getLoginFlag());
+        Log.d(TAG, "onActivityResult falg:" + falg);
         super.onActivityResult(requestCode, resultCode, data);
-        if(mLoginFlg.equals("google")){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle account.getId():" + account.getId());
-                Log.d(TAG, "firebaseAuthWithGoogle account.getEmail():" + account.getEmail());
-                //flag:1 googlle关联登录
-                SignInToKinWork(account.getEmail(),account.getId(),"1");
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.e(TAG, "Google sign in failed", e);
-                Log.e(TAG, "e："+ e.getMessage());
-            }
-        }
-        if(mLoginFlg.equals("twitter")){
-            twitterAuthClient.onActivityResult(requestCode, resultCode, data);
-        }
-        if(mLoginFlg.equals("line")){
-            LineLoginResult result = LineLoginApi.getLoginResultFromIntent(data);
-            Log.d(TAG, "result.getResponseCode():" + result.getResponseCode());
-            switch (result.getResponseCode()) {
-                case SUCCESS:
-                    // Login successful
-                    Log.d(TAG, "result:" + result.toString());
-                    Log.d(TAG, "result.getLineProfile().getUserId():" + result.getLineProfile().getUserId());
-                    Log.d(TAG, "result.getLineIdToken().getEmail():" + result.getLineIdToken().getEmail());
+        switch (mPreferenceUtils.getLoginFlag()){
+            case "1":
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    Log.d(TAG, "firebaseAuthWithGoogle account.getId():" + account.getId());
+                    Log.d(TAG, "firebaseAuthWithGoogle account.getEmail():" + account.getEmail());
+                    //flag:1 googlle关联登录
+                    SignInToKinWork(account.getEmail(),account.getId(),"1");
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.e(TAG, "Google sign in failed", e);
+                    Log.e(TAG, "e："+ e.getMessage());
+                }
+                break;
+            case "2":
+                faceBookCallbackManager.onActivityResult(requestCode, resultCode, data);
+                break;
+            case "4":
+                twitterAuthClient.onActivityResult(requestCode, resultCode, data);
+                break;
+            case "5":
+                LineLoginResult result = LineLoginApi.getLoginResultFromIntent(data);
+                Log.d(TAG, "result.getResponseCode():" + result.getResponseCode());
+                switch (result.getResponseCode()) {
+                    case SUCCESS:
+                        // Login successful
+                        Log.d(TAG, "result:" + result.toString());
+                        Log.d(TAG, "result.getLineProfile().getUserId():" + result.getLineProfile().getUserId());
+                        Log.d(TAG, "result.getLineIdToken().getEmail():" + result.getLineIdToken().getEmail());
 
-                    //flag:5 line关联登录
-                    SignInToKinWork(result.getLineIdToken().getEmail(),result.getLineProfile().getUserId(),"5");
-                    break;
-                case CANCEL:
-                    // Login canceled by user
-                    Log.e(TAG, "ERROR　　LINE Login Canceled by user.");
-                    break;
-                default:
-                    // Login canceled due to other error
-                    Log.e(TAG, "ERROR　Login FAILED!");
-                    Log.e(TAG, "ERROR:" + result.getErrorData().toString());
-                    LoginManager.getInstance().logOut();
-            }
+                        //flag:5 line关联登录
+                        SignInToKinWork(result.getLineIdToken().getEmail(),result.getLineProfile().getUserId(),"5");
+                        break;
+                    case CANCEL:
+                        // Login canceled by user
+                        Log.w(TAG, "Login canceled by user result.isSuccess():"+result.isSuccess());
+
+                        break;
+                    default:
+                        // Login canceled due to other error
+                        Log.e(TAG, "ERROR　Login FAILED!");
+                        Log.e(TAG, "ERROR:" + result.getErrorData().toString());
+                        Log.e(TAG, "ERROR lineApiClient:" + lineApiClient);
+                }
+                break;
         }
-        if(mLoginFlg.equals("facebook")){
-            faceBookCallbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-        mLoginFlg = "";
     }
 
 
     //lineログイン
-    private void loginLine(){
-        lineApiClient = new LineApiClientBuilder(getApplicationContext(), "1654297537").build();
-        LoginDelegate loginDelegate = LoginDelegate.Factory.create();
-        mLineLoginButton.setChannelId("1654297537");
-        mLineLoginButton.enableLineAppAuthentication(true);
-        mLineLoginButton.setAuthenticationParams(new LineAuthenticationParams.Builder()
-                .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
-                .build()
-        );
-
-        mLineLoginButton.setLoginDelegate(loginDelegate);
-        new Thread(new Runnable() {
-            public void run() {
-                Log.d(TAG, "onClick logout 前 lineApiClient.getProfile().isSuccess(): " + lineApiClient.getProfile().isSuccess());
-            }
-        }).start();
+    private void initLine(){
+        lineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
+//        LoginDelegate loginDelegate = LoginDelegate.Factory.create();
+//
+//        mLineLoginButton.setChannelId(getString(R.string.line_client_id));
+//        mLineLoginButton.enableLineAppAuthentication(true);
+//        mLineLoginButton.setAuthenticationParams(new LineAuthenticationParams.Builder()
+//                .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
+//                .build()
+//        );
+//        mLineLoginButton.setLoginDelegate(loginDelegate);
     }
 
-    private void loginGoogle(){
+    private void initGoogle(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestId()
                 .requestEmail()
@@ -283,14 +296,12 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
 
     // [START facebook]
     CallbackManager faceBookCallbackManager;
-    private void loginFaceBook(){
-        FacebookSdk.setApplicationId("448249382415623");
-//        FacebookSdk.sdkInitialize(getApplicationContext());
+    private void initFaceBook(){
+        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         faceBookCallbackManager = CallbackManager.Factory.create();
-//        loginButton.setReadPermissions("email");
-        // Callback registration
-        mFacebookLoginButton.setPermissions(Arrays.asList( "email"));
-        mFacebookLoginButton.registerCallback(faceBookCallbackManager, new FacebookCallback<LoginResult>() {
+//        mFacebookLoginButton.setPermissions(Arrays.asList( "email"));
+
+        LoginManager.getInstance().registerCallback(faceBookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "loginFaceBook onSuccess: ");
@@ -311,13 +322,12 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                 // App code
             }
         });
-
     }
     // [END facebook]
 
     // [START twitter]
     TwitterAuthClient twitterAuthClient;
-    private void loginTwitter(){
+    private void initTwitter(){
         twitterAuthClient = new TwitterAuthClient();
         mTwitterLoginButton.setCallback(twitterCallback);
         Log.d(TAG, "loginTwitter getActiveSession: " + TwitterCore.getInstance().getSessionManager().getActiveSession());
@@ -353,7 +363,7 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.d(TAG, "signInWithCredential:success");
-                            Log.d(TAG, "handleSession mLoginFlg:" + mLoginFlg);
+                            Log.d(TAG, "handleSession mLoginFlg:" + mLoginFlag);
                             Log.d(TAG, "handleSession userId:" + userId);
                             Log.d(TAG, "signInWithCredential:user.getEmail()" + user.getEmail());
                             SignInToKinWork(user.getEmail(),userId,flag);
@@ -378,7 +388,7 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
     public final static String YCONNECT_PREFERENCE_NAME = "yconnect";
     private String androidAppScheme = "";
     //yahooID連携処理
-    private void loginYahooStart(String flag){
+    private void loginYahooStart(){
         SharedPreferences sharedPreferences = getSharedPreferences(YCONNECT_PREFERENCE_NAME, Activity.MODE_PRIVATE);
         // YConnectインスタンス取得
         YConnectImplicit yconnect = YConnectImplicit.getInstance();
@@ -415,20 +425,20 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
         yconnect.init(clientId, androidAppScheme, state, display, prompt, scope, nonce, BAIL, MAX_AGE);
         // Authorizationエンドポイントにリクエスト
         // (CustomTabs、ブラウザーを起動して同意画面を表示)
-        if(flag.equals("0")){
-            yconnect.requestAuthorization(this);
-            finish();
-        }
+        yconnect.requestAuthorization(this);
+        finish();
 
     }
     private void getYahooUserInfo(){
         Log.d(TAG, "loginYahoo: ");
+        Log.d(TAG, "mLoginFlg: " + mLoginFlag);
         SharedPreferences sharedPreferences = getSharedPreferences(YCONNECT_PREFERENCE_NAME, Activity.MODE_PRIVATE);
         // YConnectインスタンス取得
         YConnectImplicit yconnect = YConnectImplicit.getInstance();
         Intent intent = getIntent();
         Log.d(TAG, "loginYahoo intent.getAction(): " + intent.getAction());
         Log.d(TAG, "loginYahoo Intent.ACTION_VIEW: " + Intent.ACTION_VIEW);
+        Log.d(TAG, "loginYahoo mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
         // Client ID
         String clientId = getString(R.string.yahoo_client_id);
         //スキーム
@@ -436,7 +446,7 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
         //ホスト
         String host = getString(R.string.yahoo_login_host);
 
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+        if (mPreferenceUtils.getLoginFlag().equals("3")) {
             /*************************************************
              Parse the Response Url and Save the Access Token.
              *************************************************/
@@ -447,11 +457,14 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                 String nonce = sharedPreferences.getString("nonce", null);
                 // response Url(Authorizationエンドポイントより受け取ったコールバックUrl)から各パラメータを抽出
                 Uri uri = intent.getData();
+                Log.d(TAG, "uri:" + uri);
                 String customUriScheme = scheme + "://" + host + "/";
                 yconnect.parseAuthorizationResponse(uri, customUriScheme, state);
                 // Access Token、ID Tokenを取得
                 String accessTokenString = yconnect.getAccessToken();
                 String idTokenString = yconnect.getIdToken();
+                Log.i(TAG, "accessTokenString:" + accessTokenString);
+                Log.i(TAG, "idTokenString:" + idTokenString);
                 // Access Tokenを保存
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("access_token", accessTokenString);

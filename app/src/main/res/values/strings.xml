@@ -23,14 +23,28 @@
     <string name="title_mylist">マイリスト</string>
     <string name="title_personalsettings">個人設定</string>
     <string name="title_basic_info_edi">基本情報編集</string>
+    <string name="title_basic_info_edi_icon">個人情報</string>
     <string name="title_change_password">パスワード変更</string>
     <string name="title_In_mail_set">受信メール設定</string>
     <string name="title_edit_resume">履歴書編集</string>
+    <string name="title_resume">履歴書</string>
+    <string name="title_resume_default_1">履歴書①</string>
+    <string name="title_resume_default_2">履歴書②</string>
+    <string name="title_resume_default_3">履歴書③</string>
+    <string name="title_loginout_icon">ログアウト</string>
+    <string name="image_view_displayname">画像表示</string>
+    <string name="mark_into">></string>
 
     <!-- Strings related to AdvancSet -->
     <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
+    <string name="image_view_search_displayname">search画像表示</string>
+    <string name="title_Search_keyword">キーワード</string>
+    <string name="hint_Search_input">職種、業種、会社名など</string>
+    <string name="title_Search_position">勤務地</string>
+    <string name="hint_Search_position">都道府県、市区町村、駅名</string>
+    <string name="title_Search_buttun">検索</string>
 
     <!-- Strings related to Agreement -->
     <string name="termsofservice">利用規約</string>
@@ -53,6 +67,8 @@
     <string name="Apply">Apply</string>
     <string name="Activity">Activity</string>
     <string name="Cancel">キャンセル</string>
+    <string name="image_view_displayname_SearchResults">SearchResult画像表示</string>
+    <string name="hint_SearchResults_detailed_setting">詳細設定</string>
 
     <!-- Strings related to Basicinfoedit -->
     <string name="profilechange">個人情報編集</string>
@@ -358,6 +374,8 @@
     <string name="ll_contact">ll_contact</string>
     <string name="ll_mylist">ll_mylist</string>
     <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="ll_searchresults">ll_searchresults</string>
+    <string name="ll_search">ll_search</string>
     <string name="results">results</string>
 
     <!-- Strings related to SelectResume -->
@@ -670,6 +688,8 @@
         <item>ワリス・フテュナ諸島</item>
     </string-array>
 
+<!--    line連携-->
+    <string name="line_client_id">1654297537</string>
 <!--    yahoo連携-->
     <string name="yahoo_client_id">dj00aiZpPURvZ3FRTTZLVFJpVCZzPWNvbnN1bWVyc2VjcmV0Jng9YTg-</string>
     <string name="yahoo_login_scheme">yj-534f6</string>
@@ -678,6 +698,6 @@
     <string name="facebook_app_id">448249382415623</string>
     <string name="fb_login_protocol_scheme">fb448249382415623</string>
 <!--    twitter連携-->
-    <string name="twitter_consumer_key">CpCu6ipe73Wb3bv3qIlFWcM22</string>
-    <string name="twitter_consumer_secret">GyEsZRnySMy05V2MdobkAqvOMfzzw11RB8JuLdlgwVZcuugCxa</string>
+    <string name="twitter_consumer_key">owR1cLY7OQqRnOZ8UFja8Czgp</string>
+    <string name="twitter_consumer_secret">1OyHyGs5WNt6dEq78s6uzEKQV4AwaJvv2ronUefdL5n11rQ7qB</string>
 </resources>

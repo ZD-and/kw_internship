@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.kinwork.Common.AES;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -79,8 +82,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private Intent Intent;
     private TableLayout tllayoutsearch;
-    private TableLayout tlkeyword;
-    private TableLayout tlworklocation;
+    private FrameLayout tlkeyword;
+    private FrameLayout tlworklocation;
     private boolean blkeyword = false;
     private boolean blworklocation = false;
 
@@ -121,7 +124,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tvkeyword = (TextView) findViewById(R.id.tv_keyword);
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
         tllayoutsearch = (TableLayout) findViewById(R.id.tllayout_search);
-        tlkeyword = (TableLayout) findViewById(R.id.tl_keyword);
+        tlkeyword = (FrameLayout) findViewById(R.id.tl_keyword);
         etkeyword = (EditText)findViewById(R.id.et_keyword);
         bu_search=findViewById(R.id.bu_search);
         bu_search.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +137,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
 
         tvworklocation = (TextView) findViewById(R.id.tv_worklocation);
-        tlworklocation = (TableLayout) findViewById(R.id.tl_worklocation);
+        tlworklocation = (FrameLayout) findViewById(R.id.tl_worklocation);
         etworklocation = (EditText)findViewById(R.id.et_worklocation);
         keywordTop= dp2px(SearchActivity.this, 10);
         worklocationTop= dp2px(SearchActivity.this, 50);
@@ -170,6 +173,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         Log.d(TAG, "Initialization myApplication.getaddress(): [" + myApplication.getaddress() + "]");
         etworklocation.setText(myApplication.getaddress());
 
+        etkeyword.addTextChangedListener(new JumpTextWatcher(etkeyword,etworklocation));
+        etworklocation.addTextChangedListener(new JumpTextWatcher(etworklocation,etkeyword));
         if(etkeyword.getText().length() > 0){
             ivclearkeyword.setVisibility(View.VISIBLE);
         }
@@ -338,15 +343,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (View.getId()){
             //連絡画面に移動
             case R.id.ll_contact:
-                ViewID = "ll_contact";
+                ViewID = getString(R.string.ll_contact);
                 break;
             //Myリスト画面に移動
             case R.id.ll_mylist:
-                ViewID = "ll_mylist";
+                ViewID = getString(R.string.ll_mylist);;
                 break;
             //個人設定画面に移動
             case R.id.ll_personalsettings:
-                ViewID = "ll_personalsettings";
+                ViewID = getString(R.string.ll_personalsettings);
                 break;
         }
         if(! ViewID.equals("")){
@@ -366,41 +371,20 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
+                PreferenceUtils.setsaveid(getString(R.string.ll_search));
                 intent.setClass(SearchActivity.this, LoginActivity.class);
-                intent.putExtra(getString(R.string.Activity),"");
                 break;
             //連絡画面に移動
             case "ll_contact":
-                if(myApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(SearchActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(SearchActivity.this, ContactDialogActivity.class);
-                }
+                intent.setClass(SearchActivity.this, ContactActivity.class);
                 break;
             //Myリスト画面に移動
             case "ll_mylist":
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
-                        intent.setClass(SearchActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(SearchActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(SearchActivity.this, WebActivity.class);
-                }
+                intent.setClass(SearchActivity.this, MylistActivity.class);
                 break;
             //個人設定画面に移動
             case "ll_personalsettings":
-                if(myApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(SearchActivity.this, PersonalSetActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(SearchActivity.this, BasicinfoeditActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(SearchActivity.this, ChangepwActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(SearchActivity.this, ResumeActivity.class);
-                }
+                intent.setClass(SearchActivity.this, PersonalSetActivity.class);
                 break;
         }
         startActivity(intent);
@@ -497,18 +481,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             lvgethint.setVisibility(View.GONE);
             switch (view.getId()){
                 case R.id.et_keyword:
-                    tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
-                    tlworklocation.setBackgroundResource(R.drawable.ic_shape);
+//                    tlkeyword.setBackgroundResource(R.drawable.ic_shape_touch);
+//                    tlworklocation.setBackgroundResource(R.drawable.ic_shape);
                     etkeyword.setCursorVisible(true);
-                    blkeyword = true;
                     break;
                 case R.id.et_worklocation:
-                    tlkeyword.setBackgroundResource(R.drawable.ic_shape);
-                    tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
+//                    tlkeyword.setBackgroundResource(R.drawable.ic_shape);
+//                    tlworklocation.setBackgroundResource(R.drawable.ic_shape_touch);
                     etworklocation.setCursorVisible(true);
-                    Log.d(TAG, "onTouch etworklocation.getText().length(): " + etworklocation.getText().length());
-                    etworklocation.setSelection(etworklocation.getText().length());
-                    blworklocation = true;
                     break;
             }
             return false;

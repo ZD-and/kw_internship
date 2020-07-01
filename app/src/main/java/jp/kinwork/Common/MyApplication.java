@@ -17,6 +17,8 @@ import com.twitter.sdk.android.core.TwitterConfig;
 
 import java.util.LinkedList;
 
+import jp.kinwork.R;
+
 /**
  * Created by zml98 on 2018/04/14.
  */
@@ -84,7 +86,7 @@ public class MyApplication extends Application {
 
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET))
+                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret)))
                 .debug(true)
                 .build();
         Twitter.initialize(config);

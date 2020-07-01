@@ -1,223 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ChangepwActivity">
 
 
     <include
-        layout="@layout/include_back"/>
+        android:id="@+id/include"
+        layout="@layout/include_back"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_cpw"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_cpw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/but_blue"
-            android:gravity="center_vertical"
-            android:layout_marginTop="50dp"
-            android:padding="20dp"
-            android:text="パスワード変更"
-            android:textColor="@color/colorLight"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_oldpw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:gravity="center_vertical"
-            android:text="パスワード"
-            android:textStyle="bold"
-            android:textColor="@color/background_holo_dark" />
+    <TextView
+        android:id="@+id/tv_cpw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@color/but_blue"
+        android:gravity="center_vertical"
+        android:padding="20dp"
+        android:text="パスワード変更"
+        android:textColor="@color/colorLight"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/et_oldpw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_shape"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            android:hint="現在のパスワード"
-            android:padding="5dp" />
+    <TextView
+        android:id="@+id/tv_oldpw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:text="パスワード"
+        android:textColor="@color/background_holo_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cpw" />
 
-        <TextView
-            android:id="@+id/tv_newpw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="新しいパスワード"
-            android:textStyle="bold"
-            android:textColor="@color/background_holo_dark" />
+    <EditText
+        android:id="@+id/et_oldpw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_shape"
+        android:ems="10"
+        android:hint="現在のパスワード"
+        android:inputType="textPassword"
+        android:padding="5dp"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_oldpw" />
 
-        <EditText
-            android:id="@+id/et_newpw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:background="@drawable/ic_shape"
-            android:textSize="15sp"
-            android:ems="10"
-            android:hint="新しいパスワード"
-            android:inputType="textPassword"
-            android:text="" />
+    <TextView
+        android:id="@+id/tv_newpw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:text="新しいパスワード"
+        android:textColor="@color/background_holo_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_oldpw" />
 
-        <TextView
-            android:id="@+id/tv_newpwConform"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="新しいパスワード"
-            android:textStyle="bold"
-            android:textColor="@color/background_holo_dark" />
+    <EditText
+        android:id="@+id/et_newpw"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_shape"
+        android:ems="10"
+        android:hint="新しいパスワード"
+        android:inputType="textPassword"
+        android:padding="5dp"
+        android:text=""
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_newpw" />
 
-        <EditText
-            android:id="@+id/et_newpwConform"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/ic_shape"
-            android:ems="10"
-            android:hint="確認のためもう一度、入力してください"
-            android:inputType="textPassword"
-            android:padding="5dp"
-            android:text=""
-            android:textSize="15sp" />
+    <TextView
+        android:id="@+id/tv_newpwConform"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:text="新しいパスワード"
+        android:textColor="@color/background_holo_dark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_newpw" />
 
-        <Button
-            android:id="@+id/bu_pwc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
-            android:backgroundTint="@color/but_blue"
-            android:text="パスワード変更"
-            android:textColor="@color/colorLight" />
+    <EditText
+        android:id="@+id/et_newpwConform"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_shape"
+        android:ems="10"
+        android:hint="確認のためもう一度、入力してください"
+        android:inputType="textPassword"
+        android:padding="5dp"
+        android:text=""
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_newpwConform" />
 
-    </LinearLayout>
-<!--    <TextView-->
-<!--        android:id="@+id/tv_cpw"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:background="@color/but_blue"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:paddingLeft="20dp"-->
-<!--        android:text="パスワード変更"-->
-<!--        android:textColor="@color/colorLight"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textStyle="bold" />-->
+    <Button
+        android:id="@+id/bu_pwc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:backgroundTint="@color/but_blue"
+        android:text="パスワード変更"
+        android:textColor="@color/colorLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_newpwConform" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_oldpw"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="20dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:text="パスワード"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@color/background_holo_dark" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/et_oldpw"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:background="@drawable/ic_shape"-->
-<!--        android:ems="10"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:textSize="15sp"-->
-<!--        android:text=""-->
-<!--        android:paddingLeft="5dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_newpw"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="20dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:text="新しいパスワード"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@color/background_holo_dark" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/et_newpw"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:paddingLeft="5dp"-->
-<!--        android:background="@drawable/ic_shape"-->
-<!--        android:textSize="15sp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="新しいパスワード"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:text="" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_newpwConform"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="20dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:text="新しいパスワード"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@color/background_holo_dark" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/et_newpwConform"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:background="@drawable/ic_shape"-->
-<!--        android:ems="10"-->
-<!--        android:hint="確認のためもう一度、入力してください"-->
-<!--        android:textSize="15sp"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:paddingLeft="5dp"-->
-<!--        android:text=""/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/bu_pwc"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="45dp"-->
-<!--        android:layout_marginEnd="60dp"-->
-<!--        android:layout_marginStart="60dp"-->
-<!--        android:layout_marginTop="60dp"-->
-<!--        android:text="パスワード変更"-->
-<!--        android:textColor="@color/colorLight"-->
-<!--        android:onClick="Click_changepw"-->
-<!--        android:backgroundTint="@color/but_blue" />-->
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
