@@ -170,13 +170,13 @@ public class PersonalSetActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String enString = mAes.encrypt(mBytes,AesKey);
-        String data = enString.replace("\n", "").replace("+","%2B");
+        //    String enString = mAes.encrypt(mBytes,AesKey);
+       //    String data = enString.replace("\n", "").replace("+","%2B");
 
         Map<String,String> param = new HashMap<String, String>();
-        param.put(getString(R.string.file),PARAM_File);
-        param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
+       // param.put(getString(R.string.file),PARAM_File);
+       // param.put(getString(R.string.data),data);
         new GithubQueryTask().execute(param);
     }
 
