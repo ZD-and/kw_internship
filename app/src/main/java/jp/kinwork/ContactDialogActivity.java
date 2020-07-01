@@ -105,6 +105,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private ViewPager viewPager;
     private List<View> pages;
     private int index=0;
+    private int nMaildisplaypage = 0;
+    private boolean ismailpageend = false;
+    private int currentpage=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,12 +296,18 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     View view = ((ScrollView) v).getChildAt(0);
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
                         //加载数据代码
-                        getSearchResults("2");
-
+                        if(getString(R.string.errorCode).equals("101")){
+                            ismailpageend=true;
+                        }else if(!ismailpageend){
+                            currentpage=currentpage+1;
+                            getSearchResults(Integer.toString(currentpage));
+                            list_slmeg.get(0).setBottom(nMaildisplaypage-1);
+                        }
                     }
                 }
                 return false;
             }
+
         });
 
 
@@ -309,7 +318,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 Click_back();
             }
         });
-
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.title_contact));
@@ -350,6 +358,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),"");
+        nMaildisplaypage=Integer.parseInt(number)-1;
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -426,9 +435,13 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 Setsendmeg(list_slmeg.get(0),list_llmeg.get(0),objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
             }else {
                 JSONArray obj = new JSONArray(decryptdata);
-                for(int x=0; x < obj.length(); x++){
+                for(int x=(nMaildisplaypage*10)+0; x < (nMaildisplaypage*10)+obj.length(); x++){
                     try {
-                        list_String.add(x,obj.getString(x));
+                        list_String.add(x,obj.getString(x-(nMaildisplaypage*10)));
+                        if(obj.getString(x-(nMaildisplaypage*10))==null){
+                            ismailpageend=true;
+                            break;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -778,7 +791,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
         }
     };
-
     private void alertdialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage("送信しました。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
