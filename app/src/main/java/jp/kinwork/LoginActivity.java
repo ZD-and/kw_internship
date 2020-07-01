@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -37,6 +40,7 @@ import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.Resume;
 import jp.kinwork.Common.ClassDdl.User;
 import jp.kinwork.Common.ClassDdl.UserToken;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -69,6 +73,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
     private Intent intent;
+    private LinearLayout linearlayout;
 
     private Button LoginClick;
 
@@ -114,10 +119,16 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         TextView tvBack = findViewById(R.id.tv_back);
         tvBack.setOnClickListener(this);
         tvBack.setText("戻る");
+        linearlayout = findViewById(R.id.linearlayout);
         edloginEmail = (EditText) findViewById(R.id.ed_login_email);
         edpassword = (EditText) findViewById(R.id.ed_password);
-        edloginEmail.setOnTouchListener(touchListener);
-        edpassword.setOnTouchListener(touchListener);
+//        linearlayout.setOnTouchListener(touchListener);
+//        edloginEmail.setOnTouchListener(touchListener);
+//        edpassword.setOnTouchListener(touchListener);
+
+//        点击输入框变蓝
+        edloginEmail.addTextChangedListener(new JumpTextWatcher(edloginEmail,edpassword));
+        edpassword.addTextChangedListener(new JumpTextWatcher(edpassword,edloginEmail));
 
         LoginClick=findViewById(R.id.bu_MainLoginClick);
         LoginClick.setOnClickListener(new View.OnClickListener() {
@@ -155,23 +166,27 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         dialog.setMessage(getString(R.string.login)) ;
     }
 
-    //点击输入框变蓝
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (view.getId()){
-                case R.id.ed_login_email:
-                    edloginEmail.setBackgroundResource(R.drawable.ic_shape_blue);
-                    edpassword.setBackgroundResource(R.drawable.ic_shape);
-                    break;
-                case R.id.ed_password:
-                    edloginEmail.setBackgroundResource(R.drawable.ic_shape);
-                    edpassword.setBackgroundResource(R.drawable.ic_shape_blue);
-                    break;
-            }
-            return false;
-        }
-    };
+//    //点击输入框变蓝
+//    View.OnTouchListener touchListener = new View.OnTouchListener() {
+//        @Override
+//        public boolean onTouch(View view, MotionEvent motionEvent) {
+//            switch (view.getId()){
+//                case R.id.ed_login_email:
+//                    edloginEmail.setBackgroundResource(R.drawable.ic_shape_blue);
+//                    edpassword.setBackgroundResource(R.drawable.ic_shape);
+//                    break;
+//                case R.id.ed_password:
+//                    edloginEmail.setBackgroundResource(R.drawable.ic_shape);
+//                    edpassword.setBackgroundResource(R.drawable.ic_shape_blue);
+//                    break;
+//                case R.id.linearlayout:
+//                    edloginEmail.setBackgroundResource(R.drawable.ic_shape);
+//                    edpassword.setBackgroundResource(R.drawable.ic_shape);
+//                    break;
+//            }
+//            return false;
+//        }
+//    };
     //登录处理
     public void MainLoginClick(){
         flg = "0";

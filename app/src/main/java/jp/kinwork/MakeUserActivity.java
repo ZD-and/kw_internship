@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -36,6 +37,7 @@ import java.util.Map;
 import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.UserToken;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
@@ -96,46 +98,41 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     //关闭，返回登录画面
     public void Click_cancel(){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
-                        PreferenceUtils.deluserinfo();
-                        MyApplication.setscreenflg("");
-                        MyApplication.settermsofserviceflg("");
-                        MyApplication.setprivacypolicyflg("");
-                        MyApplication.setinputA("");
-                        MyApplication.setinputB("");
-                        Intent intentClose = new Intent();
-                        intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intentClose.setClass(MakeUserActivity.this, LoginActivity.class);
-                        startActivity(intentClose);
-                    }
-                }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //取消按钮的点击事件
-                    }
-                }).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                PreferenceUtils.deluserinfo();
+                MyApplication.setscreenflg("");
+                MyApplication.settermsofserviceflg("");
+                MyApplication.setprivacypolicyflg("");
+                MyApplication.setinputA("");
+                MyApplication.setinputB("");
+                Intent intentClose = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intentClose.setClass(MakeUserActivity.this, LoginActivity.class);
+                startActivity(intentClose);
+            }
+        }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //取消按钮的点击事件
+            }
+        }).show();
     }
 
 
     public void Initialization(){
         TextView tvBack = findViewById(R.id.tv_back);
-        tvBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_cancel();
-            }
-        });
+        tvBack.setOnClickListener(this);
         tvBack.setText("戻る");
         tvinputA = (TextView) findViewById(R.id.tv_input_A);
         edinputA = (EditText) findViewById(R.id.ed_input_A);
         tvinputB = (TextView) findViewById(R.id.tv_input_B);
         edinputB = (EditText) findViewById(R.id.ed_input_B);
-        edinputA.setOnTouchListener(touchListener);
-        edinputB.setOnTouchListener(touchListener);
+        edinputA.addTextChangedListener(new JumpTextWatcher(edinputA,edinputB));
+        edinputB.addTextChangedListener(new JumpTextWatcher(edinputB,edinputA));
         tvDateCode = (TextView) findViewById(R.id.tv_Date_Code);
         tvDateCode.setOnClickListener(this);
         findViewById(R.id.ll_termsofservice).setOnClickListener(this);
@@ -171,23 +168,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             setPassword();
         }
     }
-    //点击输入框变蓝
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (view.getId()){
-                case R.id.ed_input_A:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape_blue);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape);
-                    break;
-                case R.id.ed_input_B:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape_blue);
-                    break;
-            }
-            return false;
-        }
-    };
+
     //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
@@ -296,11 +277,11 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 param.put("file",PARAM_checkValidateCode);
                 break;
             case "setPassword":
-                    Pdata.setEmail(Email);
-                    Pdata.setToken(token);
-                    Pdata.setPassword(inputA);
-                    Pdata.setPasswordConform(inputB);
-                    param.put("file",PARAM_setPassword);
+                Pdata.setEmail(Email);
+                Pdata.setToken(token);
+                Pdata.setPassword(inputA);
+                Pdata.setPasswordConform(inputB);
+                param.put("file",PARAM_setPassword);
                 break;
         }
         String data = JsonChnge(AesKey,Pdata);
@@ -320,6 +301,9 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View View){
         String Agreement = "";
         switch (View.getId()){
+            case R.id.tv_back:
+                Click_cancel();
+                break;
             case R.id.ll_privacypolicy:
                 if(privacypolicyflg.equals("1")){
                     ivprivacypolicy.setImageResource(R.drawable.ic_check_box_outline);
