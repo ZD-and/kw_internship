@@ -343,15 +343,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (View.getId()){
             //連絡画面に移動
             case R.id.ll_contact:
-                ViewID = "ll_contact";
+                ViewID = getString(R.string.ll_contact);
                 break;
             //Myリスト画面に移動
             case R.id.ll_mylist:
-                ViewID = "ll_mylist";
+                ViewID = getString(R.string.ll_mylist);;
                 break;
             //個人設定画面に移動
             case R.id.ll_personalsettings:
-                ViewID = "ll_personalsettings";
+                ViewID = getString(R.string.ll_personalsettings);
                 break;
         }
         if(! ViewID.equals("")){
@@ -371,41 +371,20 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
+                PreferenceUtils.setsaveid(getString(R.string.ll_search));
                 intent.setClass(SearchActivity.this, LoginActivity.class);
-                intent.putExtra(getString(R.string.Activity),"");
                 break;
             //連絡画面に移動
             case "ll_contact":
-                if(myApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(SearchActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(SearchActivity.this, ContactDialogActivity.class);
-                }
+                intent.setClass(SearchActivity.this, ContactActivity.class);
                 break;
             //Myリスト画面に移動
             case "ll_mylist":
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
-                        intent.setClass(SearchActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(SearchActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(SearchActivity.this, WebActivity.class);
-                }
+                intent.setClass(SearchActivity.this, MylistActivity.class);
                 break;
             //個人設定画面に移動
             case "ll_personalsettings":
-                if(myApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(SearchActivity.this, PersonalSetActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(SearchActivity.this, BasicinfoeditActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(SearchActivity.this, ChangepwActivity.class);
-                } else if(myApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(SearchActivity.this, ResumeActivity.class);
-                }
+                intent.setClass(SearchActivity.this, PersonalSetActivity.class);
                 break;
         }
         startActivity(intent);

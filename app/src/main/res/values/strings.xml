@@ -374,6 +374,8 @@
     <string name="ll_contact">ll_contact</string>
     <string name="ll_mylist">ll_mylist</string>
     <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="ll_searchresults">ll_searchresults</string>
+    <string name="ll_search">ll_search</string>
     <string name="results">results</string>
 
     <!-- Strings related to SelectResume -->

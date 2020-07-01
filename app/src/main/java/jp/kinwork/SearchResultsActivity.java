@@ -863,7 +863,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //确定按钮的点击事件
-                            PreferenceUtils.setsaveid(getString(R.string.SearchResults));
+                            PreferenceUtils.setsaveid(getString(R.string.ll_searchresults));
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(SearchResultsActivity.this, LoginActivity.class);
