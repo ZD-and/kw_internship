@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    android:orientation="vertical"
     android:gravity="center"
     tools:context=".EducationActivity">
 
@@ -13,24 +12,34 @@
         android:id="@+id/bu_cancel"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="89dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
         android:gravity="center"
-        android:layout_gravity="right"
         android:text="×"
-        android:textStyle="bold"
         android:textColor="@color/background_holo_dark"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="140dp"
         android:background="@drawable/ic_shape_bule"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bu_cancel">
 
         <TextView
             android:layout_width="match_parent"
@@ -39,8 +48,8 @@
             android:gravity="center"
             android:text="学歴編集"
             android:textColor="@color/but_blue"
-            android:textStyle="bold"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -64,9 +73,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:singleLine="true"
+                android:background="@drawable/ic_shape"
                 android:paddingLeft="5dp"
-                android:background="@drawable/ic_shape" />
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/tv_Degree"
@@ -83,9 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:singleLine="true"
+                android:background="@drawable/ic_shape"
                 android:paddingLeft="5dp"
-                android:background="@drawable/ic_shape" />
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/tv_Major_field"
@@ -102,26 +111,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
-                android:singleLine="true"
+                android:background="@drawable/ic_shape"
                 android:paddingLeft="5dp"
-                android:background="@drawable/ic_shape" />
+                android:singleLine="true" />
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:text="学校所在地"-->
-            <!--android:textColor="@color/background_holo_dark"-->
-            <!--android:textSize="15sp" />-->
-
-            <!--<EditText-->
-            <!--android:id="@+id/et_School_location"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:singleLine="true"-->
-            <!--android:background="@drawable/ic_shape" />-->
 
             <TextView
                 android:id="@+id/tv_date_education"
@@ -140,20 +133,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
             android:gravity="center_horizontal"
             android:stretchColumns="0,2">
 
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_education_start"
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
                     android:background="@drawable/ic_shape"
                     android:gravity="center"
-                    android:textColor="@color/background_holo_dark"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/background_holo_dark" />
 
                 <TextView
                     android:layout_width="30dp"
@@ -169,71 +163,25 @@
                     android:layout_height="30dp"
                     android:background="@drawable/ic_shape"
                     android:gravity="center"
-                    android:textColor="@color/background_holo_dark"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/background_holo_dark" />
 
             </TableRow>
 
         </TableLayout>
 
-        <!--<TableLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:stretchColumns="0,2"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent">-->
-
-        <!--<TableRow>-->
-        <!--<com.example.zml98.myappkinwork.MyView.EditTextClearView-->
-        <!--android:id="@+id/tv_education_start"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:background="@drawable/ic_shape"-->
-        <!--android:cursorVisible="false"-->
-        <!--android:drawableRight="@drawable/ic_clear_black_24dp"-->
-        <!--/>-->
-
-        <!--<TextView-->
-        <!--android:layout_width="30dp"-->
-        <!--android:layout_height="20dp"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:gravity="center"-->
-        <!--android:text="から"-->
-        <!--android:textColor="@color/background_holo_dark"-->
-        <!--android:textSize="12sp" />-->
-
-        <!--<com.example.zml98.myappkinwork.MyView.EditTextClearView-->
-        <!--android:id="@+id/tv_education_end"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:background="@drawable/ic_shape"-->
-        <!--android:cursorVisible="false"-->
-        <!--android:drawableRight="@drawable/ic_clear_black_24dp"-->
-        <!--/>-->
-
-        <!--</TableRow>-->
-
-        <!--</TableLayout>-->
-
         <Button
             android:id="@+id/bu_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp"
             android:backgroundTint="@color/but_blue"
             android:text="保存"
-            android:textColor="@color/colorLight"/>
+            android:textColor="@color/colorLight" />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

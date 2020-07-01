@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundblue">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/sl_meg_third"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/ll_meg_third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+
+        <TableLayout
+            android:id="@+id/tl_meg_third"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_shape_w_bule_green"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_ToCompanyName_third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/background_holo_dark"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:text="To: 会社名"
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/et_title_third"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:background="@drawable/ic_shape_bule"
+                android:hint="タイトル"
+                android:text=""
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/et_meg_third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape_bule"
+                android:padding="5dp"
+                android:gravity="left|top"
+                android:hint="メッセージ"
+                android:maxLines="20"
+                android:minLines="20"
+                android:scrollbars="vertical"
+                android:text=""
+                android:textSize="12dp" />
+
+            <Button
+                android:id="@+id/bu_sendmeg_third"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="送信"
+                android:textSize="15sp"
+                android:backgroundTint="@color/but_blue"
+                />
+        </TableLayout>
+
+    </TableLayout>
+
+
+
+</FrameLayout>

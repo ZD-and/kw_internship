@@ -12,6 +12,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -44,6 +45,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -101,25 +106,25 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     private int buPage = 0;
     private int statusIndex = 0;
 
-    private Button tltrbuBefore;
-    private Button tltrbuNext;
-    private Button tltrbuleftsearch;
-    private Button tltrburightsearch;
-    private Button tltrbutheleft;
-    private Button tltrbuleft;
-    private Button tltrbucentre;
-    private Button tltrburight;
-    private Button tltrbutheright;
+    private TextView tltrbuBefore;
+    private TextView tltrbuNext;
+    private TextView tltrbuleftsearch;
+    private TextView tltrburightsearch;
+    private TextView tltrbutheleft;
+    private TextView tltrbuleft;
+    private TextView tltrbucentre;
+    private TextView tltrburight;
+    private TextView tltrbutheright;
 
-    private Button tltrbuBeforeBottom;
-    private Button tltrbuNextBottom;
-    private Button tltrbuleftsearchBottom;
-    private Button tltrburightsearchBottom;
-    private Button tltrbutheleftBottom;
-    private Button tltrbuleftBottom;
-    private Button tltrbucentreBottom;
-    private Button tltrburightBottom;
-    private Button tltrbutherightBottom;
+    private TextView tltrbuBeforeBottom;
+    private TextView tltrbuNextBottom;
+    private TextView tltrbuleftsearchBottom;
+    private TextView tltrburightsearchBottom;
+    private TextView tltrbutheleftBottom;
+    private TextView tltrbuleftBottom;
+    private TextView tltrbucentreBottom;
+    private TextView tltrburightBottom;
+    private TextView tltrbutherightBottom;
 
     private TextView tltrtvtitle;
     private TextView tvback;
@@ -167,6 +172,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     private int Width = 0;
     private String etnamereset = "";;
 
+    String TAG = "SearchResultsActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,59 +258,59 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         svsearch = (ScrollView) findViewById(R.id.sv_search);
         dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.kensakuchu));
-        tvback          = (TextView) findViewById(R.id.tv_back);
+        tvback          = findViewById(R.id.tv_back);
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Click_back();
             }
         });
-        tvbacktitle     = (TextView) findViewById(R.id.tv_back_title);
-        tvbackdummy     = (TextView) findViewById(R.id.tv_back_dummy);
+        tvbacktitle     = findViewById(R.id.tv_back_title);
+        tvbackdummy     = findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.kensaku));
         tvbacktitle.setText(getString(R.string.kensakukekka));
         tvbackdummy.setText(getString(R.string.kensaku));
-        tltrtvtitle = (TextView) findViewById(R.id.tl_tr_tv_title);
-        tladvancset = (TableLayout) findViewById(R.id.tl_advancset);
+        tltrtvtitle = findViewById(R.id.tl_tr_tv_title);
+        tladvancset = findViewById(R.id.tl_advancset);
         tvsearchreset=findViewById(R.id.tv_search_reset);
         tladvancset.setOnClickListener(Listener);
         tvsearchreset.setOnClickListener(Listener);
 
-        trkeywordreset = (TableRow) findViewById(R.id.tr_keyword_reset);
-        trworklocationreset = (TableRow) findViewById(R.id.tr_worklocation_reset);
-        tvkeywordreset = (TextView) findViewById(R.id.tv_keyword_reset);
+        trkeywordreset = findViewById(R.id.tr_keyword_reset);
+        trworklocationreset = findViewById(R.id.tr_worklocation_reset);
+        tvkeywordreset = findViewById(R.id.tv_keyword_reset);
 
-        etkeywordreset = (EditText) findViewById(R.id.et_keyword_reset);
-        etworklocationreset = (EditText) findViewById(R.id.et_worklocation_reset);
-        ivclearkeywordreset = (ImageView) findViewById(R.id.iv_clear_keyword_reset);
-        ivclearworklocationreset = (ImageView) findViewById(R.id.iv_clear_worklocation_reset);
+        etkeywordreset = findViewById(R.id.et_keyword_reset);
+        etworklocationreset = findViewById(R.id.et_worklocation_reset);
+        ivclearkeywordreset = findViewById(R.id.iv_clear_keyword_reset);
+        ivclearworklocationreset = findViewById(R.id.iv_clear_worklocation_reset);
         ivclearkeywordreset.setOnClickListener(this);
         ivclearworklocationreset.setOnClickListener(this);
 
 
-        tlSearchcontents = (TableLayout) findViewById(R.id.tl_Search_contents);
-        tlSearchcontentsBottom = (TableLayout) findViewById(R.id.tl_Search_contents_Bottom);
-        tlresults = (TableLayout) findViewById(R.id.tl_results);
-        tlsearchreset = (TableLayout) findViewById(R.id.tl_search_reset);
+        tlSearchcontents = findViewById(R.id.tl_Search_contents);
+        tlSearchcontentsBottom = findViewById(R.id.tl_Search_contents_Bottom);
+        tlresults = findViewById(R.id.tl_results);
+        tlsearchreset = findViewById(R.id.tl_search_reset);
 
-        tltrbuBefore = (Button) findViewById(R.id.tl_tr_bu_Before);
-        tltrbuNext = (Button) findViewById(R.id.tl_tr_bu_Next);
-        tltrbuleftsearch = (Button) findViewById(R.id.tl_tr_bu_leftsearch);
-        tltrburightsearch = (Button) findViewById(R.id.tl_tr_bu_rightsearch);
-        tltrbutheleft = (Button) findViewById(R.id.tl_tr_bu_theleft);
-        tltrbuleft = (Button) findViewById(R.id.tl_tr_bu_left);
-        tltrbucentre = (Button) findViewById(R.id.tl_tr_bu_centre);
-        tltrburight = (Button) findViewById(R.id.tl_tr_bu_right);
-        tltrbutheright = (Button) findViewById(R.id.tl_tr_bu_theright);
-        tltrbuBeforeBottom = (Button) findViewById(R.id.tl_tr_bu_Before_Bottom);
-        tltrbuNextBottom = (Button) findViewById(R.id.tl_tr_bu_Next_Bottom);
-        tltrbuleftsearchBottom = (Button) findViewById(R.id.tl_tr_bu_leftsearch_Bottom);
-        tltrburightsearchBottom = (Button) findViewById(R.id.tl_tr_bu_rightsearch_Bottom);
-        tltrbutheleftBottom = (Button) findViewById(R.id.tl_tr_bu_theleft_Bottom);
-        tltrbuleftBottom = (Button) findViewById(R.id.tl_tr_bu_left_Bottom);
-        tltrbucentreBottom = (Button) findViewById(R.id.tl_tr_bu_centre_Bottom);
-        tltrburightBottom = (Button) findViewById(R.id.tl_tr_bu_right_Bottom);
-        tltrbutherightBottom = (Button) findViewById(R.id.tl_tr_bu_theright_Bottom);
+        tltrbuBefore = findViewById(R.id.tl_tr_bu_Before);
+        tltrbuNext = findViewById(R.id.tl_tr_bu_Next);
+        tltrbuleftsearch = findViewById(R.id.tl_tr_bu_leftsearch);
+        tltrburightsearch = findViewById(R.id.tl_tr_bu_rightsearch);
+        tltrbutheleft = findViewById(R.id.tl_tr_bu_theleft);
+        tltrbuleft = findViewById(R.id.tl_tr_bu_left);
+        tltrbucentre = findViewById(R.id.tl_tr_bu_centre);
+        tltrburight = findViewById(R.id.tl_tr_bu_right);
+        tltrbutheright = findViewById(R.id.tl_tr_bu_theright);
+        tltrbuBeforeBottom = findViewById(R.id.tl_tr_bu_Before_Bottom);
+        tltrbuNextBottom = findViewById(R.id.tl_tr_bu_Next_Bottom);
+        tltrbuleftsearchBottom = findViewById(R.id.tl_tr_bu_leftsearch_Bottom);
+        tltrburightsearchBottom = findViewById(R.id.tl_tr_bu_rightsearch_Bottom);
+        tltrbutheleftBottom = findViewById(R.id.tl_tr_bu_theleft_Bottom);
+        tltrbuleftBottom = findViewById(R.id.tl_tr_bu_left_Bottom);
+        tltrbucentreBottom = findViewById(R.id.tl_tr_bu_centre_Bottom);
+        tltrburightBottom = findViewById(R.id.tl_tr_bu_right_Bottom);
+        tltrbutherightBottom = findViewById(R.id.tl_tr_bu_theright_Bottom);
 
         tltrbuBefore.setOnClickListener(Click_buttom);
         tltrbuNext.setOnClickListener(Click_buttom);
@@ -334,8 +340,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         SharedPreferences object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
         deviceId = object.getString(getString(R.string.deviceid),"A");
         AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
-        Log.d("***deviceId***", deviceId);
-        Log.d("***AesKey***", AesKey);
+        Log.d(TAG,"deviceId:"+ deviceId);
+        Log.d(TAG,"AesKey:"+ AesKey);
         PreferenceUtils.setdeviceId(deviceId);
         PreferenceUtils.setAesKey(AesKey);
         myApplication = (MyApplication) getApplication();
@@ -404,7 +410,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             @Override
             public void run() {
                 Width = tvkeywordreset.getMeasuredWidth();
-                Log.w( "runWidth: ",Width+"" );
+                Log.w( TAG,"runWidth: "+Width);
             }
         });
     }
@@ -460,10 +466,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         new GithubQueryTask().execute(param);
     }
     //转换为Json格式并且AES加密
-    public static String JsonChnge(String AesKey,PostDate Data) {
+    public String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
-        Log.d("sdPdata", sdPdata);
+        Log.d(TAG,"sdPdata:"+sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -504,18 +510,20 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG,"Results:"+ githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
+                    Log.d(TAG,"returnData1:"+ obj.getString(getString(R.string.returnData)));
+                    Log.d(TAG,"urlFlg:"+urlFlg);
+                    Log.d(TAG,"url_name:"+ etnamereset);
+                    Log.d(TAG,"meg:"+ meg);
                     if(processResult == true) {
-                        Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
-                        Log.d("***urlFlg***", urlFlg);
-                        Log.d("***url_name***", etnamereset);
+                        String returnData = obj.getString(getString(R.string.returnData));
                         if(etnamereset.equals("")) {
                             if (urlFlg.equals(getString(R.string.job))) {
-                                decryptchange(obj.getString(getString(R.string.returnData)));
+                                decryptchange(returnData);
                             } else if (urlFlg.equals(getString(R.string.likejob))) {
                                 alertdialog(getString(R.string.alertdialog13), getString(R.string.alertdialog14));
                                 IBNlikejob.setImageResource(R.mipmap.app_like);
@@ -523,7 +531,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                 IBNlikejob.setImageResource(R.mipmap.app_no_like);
                                 alertdialog(getString(R.string.alertdialog13), getString(R.string.alertdialog15));
                             } else {
-                                JSONObject Data = new JSONObject(obj.getString(getString(R.string.returnData)));
+                                JSONObject Data = new JSONObject(returnData);
                                 String numFound = Data.getString(getString(R.string.numFound));
                                 JSONObject paging = Data.getJSONObject(getString(R.string.pagenation));
                                 String numOfPage = paging.getString(getString(R.string.numOfPage));
@@ -542,41 +550,42 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                 tlSearchcontentsBottom.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
-                            JSONArray returnData = obj.getJSONArray(getString(R.string.returnData));
+                            Log.d(TAG,"returnData2:"+ returnData);
                             ArrayList<String> stringArrayList = new ArrayList<String>();
-                            String[] Stringdata = {};
-                            int length = returnData.length();
-                            if(!obj.getString(getString(R.string.returnData)).equals("[]")){
-                                for (int i=0; i< length; i++) {
-                                    Log.d("***i***", i+"");
+                            if(returnData.length() > 0 && !returnData.equals("[]")){
+                                JSONArray jsonReturnData = obj.getJSONArray(getString(R.string.returnData));
+                                for (int i=0; i< returnData.length(); i++) {
+                                    Log.d("***i:", i+"");
                                     if( i < 6){
-                                        stringArrayList.add(returnData.getString(i)); //add to arraylist
+                                        stringArrayList.add(jsonReturnData.getString(i)); //add to arraylist
                                     } else {
                                         break;
                                     }
                                 }
                             }
-                            Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
-                            Log.d("***etnamereset***", etnamereset);
-
-                            Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
+                            String[] Stringdata = stringArrayList.toArray(new String[stringArrayList.size()]);
                             if(etnamereset.equals(getString(R.string.keyword))){
                                 getItem(Stringdata,etnamereset);
                             } else {
                                 getItem(Stringdata,etnamereset);
                             }
+
                         }
                     } else {
                         if(urlFlg.equals(getString(R.string.likejob))){
                             IBNlikejob.setImageResource(R.mipmap.app_like);
                             alertdialog(getString(R.string.error),meg);
+                        } else if(etnamereset.equals(getString(R.string.keyword)) || etnamereset.equals(getString(R.string.worklocation))){
+                            getItem(new String[0],etnamereset);
                         } else {
                             alertdialog(getString(R.string.error), getString(R.string.tsushinshierror));
                         }
                     }
                     dialog.dismiss();
                 }catch (Exception e){
+                    Log.d(TAG,"urlFlg:"+urlFlg);
+                    Log.d(TAG,"url_name:"+ etnamereset);
+                    Log.d(TAG,"e.getMessage():"+ e.getMessage());
                     if(etnamereset.equals("")){
                         alertdialog(getString(R.string.error),getString(R.string.tsushinshierror));
                         dialog.dismiss();
@@ -590,7 +599,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***decryptdata***", decryptdata);
+        Log.d("***decryptdata:", decryptdata);
         try {
             JSONObject obj = new JSONObject(decryptdata);
             myApplication.setMyjob(getString(R.string.likejob));
@@ -621,7 +630,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         for(int i=0; i < data.length(); i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
-                Log.d("***addresults***", data.getString(i));
+                Log.d("***addresults:", data.getString(i));
                 JSONArray jobName = obj.getJSONArray(getString(R.string.jobName));
                 View searchresults;
                 String likejobflg = "0";
@@ -631,20 +640,20 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     searchresults = getLayoutInflater().inflate(R.layout.include_searchresults_iskinwork, null);
                 }
 
-                TableLayout information = (TableLayout) searchresults.findViewById(R.id.tl_information);
+                TableLayout information = searchresults.findViewById(R.id.tl_information);
                 information.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Click_job(v);
                     }
                 });
-                TextView tvtitle = (TextView) searchresults.findViewById(R.id.tv_title);
-                TextView tvcompanyname = (TextView) searchresults.findViewById(R.id.tv_company_name);
-                TextView tvJobname = (TextView) searchresults.findViewById(R.id.tv_Jobname);
-                TextView tvdate = (TextView) searchresults.findViewById(R.id.tv_date);
-                TextView tvPublishedcompany = (TextView) searchresults.findViewById(R.id.tv_Published_company);
-                TextView tvRecruitmentsite = (TextView) searchresults.findViewById(R.id.tv_Recruitment_site);
-                ImageView ibucontact = (ImageView) searchresults.findViewById(R.id.ibu_contact);
+                TextView tvtitle = searchresults.findViewById(R.id.tv_title);
+                TextView tvcompanyname = searchresults.findViewById(R.id.tv_company_name);
+                TextView tvJobname = searchresults.findViewById(R.id.tv_Jobname);
+                TextView tvdate = searchresults.findViewById(R.id.tv_date);
+                TextView tvPublishedcompany = searchresults.findViewById(R.id.tv_Published_company);
+                TextView tvRecruitmentsite = searchresults.findViewById(R.id.tv_Recruitment_site);
+                ImageView ibucontact = searchresults.findViewById(R.id.ibu_contact);
                 ibucontact.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -652,7 +661,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     }
                 });
                 HorizontalScrollView hsvtag = (HorizontalScrollView) searchresults.findViewById(R.id.hsv_tag);
-                TableRow trtag = (TableRow) searchresults.findViewById(R.id.tr_tag);
+                TableRow trtag = searchresults.findViewById(R.id.tr_tag);
 
                 if(obj.getString(getString(R.string.isPaid)).equals("1")){
                     int w = dp2px(this, 100);
@@ -691,7 +700,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         tvtag.setBackgroundResource(R.drawable.ic_background_orange);
                         tvtag.setTextColor(Color.parseColor("#ffff8800"));
                         tvtag.setText(tag.getString(y));
-                        Log.d("***tvtag.setText***", tvtag.getText().toString());
+                        Log.d("***tvtag.setText:", tvtag.getText().toString());
                         trtag.addView(tvtag);
                     }
                 } else {
@@ -854,7 +863,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //确定按钮的点击事件
-                            PreferenceUtils.setsaveid(getString(R.string.SearchResults));
+                            PreferenceUtils.setsaveid(getString(R.string.ll_searchresults));
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(SearchResultsActivity.this, LoginActivity.class);
@@ -920,9 +929,11 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     break;
                 case R.id.tl_tr_bu_Next:
                 case R.id.tl_tr_bu_Next_Bottom:
+                    Log.d(TAG, "page: " + page);
+                    Log.d(TAG, "OfPage: " + OfPage);
                     PageNum = Integer.parseInt(page);
                     i = PageNum + 1;
-                    if (i < OfPage) {
+                    if (i <= OfPage) {
                         Textpage = String.valueOf(i);
                     }
                     break;
@@ -968,7 +979,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrbutherightBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrburightsearchBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
 
-        tltrbuBefore.setText("");
+        tltrbuBefore.setVisibility(View.INVISIBLE);
         tltrbuleftsearch.setText("");
         tltrbutheleft.setText("");
         tltrbuleft.setText("");
@@ -976,9 +987,9 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrburight.setText("");
         tltrbutheright.setText("");
         tltrburightsearch.setText("");
-        tltrbuNext.setText("");
+        tltrbuNext.setVisibility(View.INVISIBLE);
 
-        tltrbuBeforeBottom.setText("");
+        tltrbuBeforeBottom.setVisibility(View.INVISIBLE);
         tltrbuleftsearchBottom.setText("");
         tltrbutheleftBottom.setText("");
         tltrbuleftBottom.setText("");
@@ -986,15 +997,15 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrburightBottom.setText("");
         tltrbutherightBottom.setText("");
         tltrburightsearchBottom.setText("");
-        tltrbuNextBottom.setText("");
+        tltrbuNextBottom.setVisibility(View.INVISIBLE);
 
         if(PageNum > 1) {
-            tltrbuBefore.setText(getString(R.string.maehe));
-            tltrbuBeforeBottom.setText(getString(R.string.maehe));
+            tltrbuBefore.setVisibility(View.VISIBLE);
+            tltrbuBeforeBottom.setVisibility(View.VISIBLE);
         }
         if(PageNum < numOfPage) {
-            tltrbuNext.setText(getString(R.string.tsugihe));
-            tltrbuNextBottom.setText(getString(R.string.tsugihe));
+            tltrbuNext.setVisibility(View.VISIBLE);
+            tltrbuNextBottom.setVisibility(View.VISIBLE);
         }
 
         if(PageNum == 1) {
@@ -1279,7 +1290,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    ivclearkeywordreset.setImageResource(R.drawable.ic_cancel);
+                    ivclearkeywordreset.setVisibility(View.VISIBLE);
                     ivclearworklocationreset.setTag(getString(R.string.clear));
                     if( blkeywordreset == false){
                         etnamereset = getString(R.string.keyword);
@@ -1288,8 +1299,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     }
                 } else {
                     lvgethintreset.setVisibility(View.GONE);
-                    ivclearkeywordreset.setImageResource(R.drawable.ic_null);
                     ivclearkeywordreset.setTag(getString(R.string.keyword));
+                    ivclearkeywordreset.setVisibility(View.GONE);
                 }
             }
             @Override
@@ -1336,11 +1347,11 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 SimpleDateFormat formatter = new SimpleDateFormat(getString(R.string.yyyyMMddHHmmssSSS));
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
-                Log.w("***lvgethintDate1***", strDate);
+                Log.w("***lvgethintDate1:", strDate);
 
                 curDate =  new Date(System.currentTimeMillis());
                 strDate = formatter.format(curDate);
-                Log.w("***lvgethintDate2***", strDate);
+                Log.w("***lvgethintDate2:", strDate);
                 if(etnamereset.equals("keyword")){
                     blkeywordreset = true;
                     etkeywordreset.setText(data);
@@ -1361,11 +1372,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View View){
         switch (View.getId()){
             case R.id.iv_clear_keyword_reset:
-                if(ivclearkeywordreset.getTag().equals(getString(R.string.clear))){
-                    etkeywordreset.setText("");
-                    ivclearkeywordreset.setImageResource(R.drawable.ic_null);
-                    ivclearkeywordreset.setTag(getString(R.string.keyword));
-                }
+                etkeywordreset.setText("");
                 break;
             case R.id.iv_clear_worklocation_reset:
                 //当前图片为清空的时候，清空输入框
@@ -1375,43 +1382,22 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     ivclearworklocationreset.setImageResource(R.drawable.ic_location_on);
                 }else{
                     //当前图片不为清空的时候，重新获取当前所在地
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
-                                1000);
-                        return;
-                    } else {
-                        locationStart();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this,
+                                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                                PackageManager.PERMISSION_GRANTED) {
+                            getLastLocationNewMethod();
+                        } else {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,},
+                                    1000);
+                        }
+                    }else {
+                        getLastLocationNewMethod();
                     }
                 }
                 break;
         }
-    }
-
-    //当前位置经纬度取得
-    private void locationStart(){
-        Log.d("debug","locationStart()");
-        // LocationManager インスタンス生成
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            Log.d("debug", "checkSelfPermission false");
-            return;
-        }
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-        criteria.setAltitudeRequired(false);//不要求海拔信息
-        criteria.setBearingRequired(false);//不要求方位信息
-        criteria.setCostAllowed(false);//是否允许付费
-        criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
-        Location Location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
-        getaddress_components(Location);
     }
 
     @Override
@@ -1419,26 +1405,57 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d("onRequestrequestCode", requestCode+"");
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            locationStart();
-        }
+        checkaAcessPermission();
+    }
 
+    private void getLastLocationNewMethod(){
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // GPS location can be null if GPS is switched off
+                        if (location != null) {
+                            getaddress_components(location);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("MapDemoActivity", "Error trying to get last GPS location");
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void getaddress_components(Location location){
         // 緯度の表示
-        String str1 = getString(R.string.Latitude)+location.getLatitude();
-        Log.d("str1", str1);
-        // 経度の表示
-        String str2 = getString(R.string.Longtude)+location.getLongitude();
-        Log.d("str2", str2);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
-        param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
-        param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
-        new GithubQueryTask2().execute(param);
+        if(location != null){
+            String str1 = getString(R.string.Latitude)+location.getLatitude();
+            Log.d(TAG,"str1:"+ str1);
+            // 経度の表示
+            String str2 = getString(R.string.Longtude)+location.getLongitude();
+            Log.d(TAG,"str2:"+str2);
+            Map<String,String> param = new HashMap<String, String>();
+            param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
+            param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
+            param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
+            new GithubQueryTask2().execute(param);
+        }
+    }
+
+    //位置取得权限是否取得
+    private void checkaAcessPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                getLastLocationNewMethod();
+            }
+        }else {
+            getLastLocationNewMethod();
+        }
     }
 
     public class GithubQueryTask2 extends AsyncTask<Map<String, String>, Void, String> {
@@ -1449,7 +1466,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             String url = map.get(getString(R.string.url));
             String itude = map.get(getString(R.string.itude));
             String key = map.get(getString(R.string.key));
-            Log.d("***url***", url + itude + key);
+            Log.d("***url:", url + itude + key);
             URL searchUrl = null;
             try {
                 searchUrl = new URL(url + itude + key);
@@ -1467,12 +1484,12 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d("***Results:", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     JSONArray job = obj.getJSONArray(getString(R.string.results));
                     myApplication.setaddress_components(job.get(0).toString());
-                    Log.d("***job***", job.get(0).toString());
+                    Log.d("***job:", job.get(0).toString());
                     SetAddress(job.get(0).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1519,18 +1536,18 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public void getItem(String []Stringdata,String name){
 
         int top= 0;
-        Log.d("***name***", name);
-        Log.d("***Width***", Width+"");
+        Log.d("***name:", name);
+        Log.d("***Width:", Width+"");
         if(name.equals(getString(R.string.keyword))){
             top= keywordresetTop;
         } else {
             top= worklocationresetTop;
         }
-        Log.d("***top***", top+"");
+        Log.d("***top:", top+"");
         int left= dp2px(SearchResultsActivity.this, 10) + Width;
         int right= dp2px(SearchResultsActivity.this, 20);
-        Log.d("***left***", left+"");
-        Log.d("***right***", right+"");
+        Log.d("***left:", left+"");
+        Log.d("***right:", right+"");
         FrameLayout.LayoutParams flparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         flparams.setMargins(left,top,right,0);
         lvgethintreset.setLayoutParams(flparams);

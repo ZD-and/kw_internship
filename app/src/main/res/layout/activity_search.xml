@@ -23,6 +23,8 @@
             android:id="@+id/tllayout_search"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
 
             <ImageView
@@ -44,14 +46,7 @@
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 
-            <!--填充用star-->
-<!--            <EditText-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:visibility="gone"-->
-<!--                android:background="@drawable/ic_shape" />-->
-            <!--填充用end-->
-            <TableLayout
+            <FrameLayout
                 android:id="@+id/tl_keyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,13 +57,15 @@
                 android:background="@drawable/ic_shape"
                 android:stretchColumns="0">
 
-                <TableRow>
                     <EditText
                         android:id="@+id/et_keyword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:background="@null"
+                        android:paddingTop="5dp"
+                        android:paddingBottom= "5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="35dp"
+                        android:background="@drawable/ic_shape_blue_select"
                         android:text=""
                         android:maxLines="1"
                         android:lines="1"
@@ -86,12 +83,12 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_marginRight="5dp"
-                        android:visibility="gone"
+                        android:layout_gravity="right"
+                        android:visibility="visible"
                         app:srcCompat="@drawable/ic_cancel" />
 
-                </TableRow>
 
-            </TableLayout>
+            </FrameLayout>
 
 
             <TextView
@@ -105,7 +102,7 @@
                 android:text="勤務地"
                 android:textColor="@color/but_blue" />
 
-            <TableLayout
+            <FrameLayout
                 android:id="@+id/tl_worklocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,13 +114,16 @@
                 android:gravity="center_vertical"
                 android:stretchColumns="0">
 
-                <TableRow>
+
                     <EditText
                         android:id="@+id/et_worklocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:background="@null"
+                        android:paddingTop="5dp"
+                        android:paddingBottom= "5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="35dp"
+                        android:background="@drawable/ic_shape_blue_select"
                         android:text=""
                         android:maxLines="1"
                         android:lines="1"
@@ -139,13 +139,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
                         android:tag="location"
                         android:visibility="visible"
                         app:srcCompat="@drawable/ic_location_on" />
-                </TableRow>
-            </TableLayout>
+
+            </FrameLayout>
 
             <Button
                 android:id="@+id/bu_search"

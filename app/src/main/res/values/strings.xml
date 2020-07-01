@@ -23,14 +23,28 @@
     <string name="title_mylist">マイリスト</string>
     <string name="title_personalsettings">個人設定</string>
     <string name="title_basic_info_edi">基本情報編集</string>
+    <string name="title_basic_info_edi_icon">個人情報</string>
     <string name="title_change_password">パスワード変更</string>
     <string name="title_In_mail_set">受信メール設定</string>
     <string name="title_edit_resume">履歴書編集</string>
+    <string name="title_resume">履歴書</string>
+    <string name="title_resume_default_1">履歴書①</string>
+    <string name="title_resume_default_2">履歴書②</string>
+    <string name="title_resume_default_3">履歴書③</string>
+    <string name="title_loginout_icon">ログアウト</string>
+    <string name="image_view_displayname">画像表示</string>
+    <string name="mark_into">></string>
 
     <!-- Strings related to AdvancSet -->
     <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
+    <string name="image_view_search_displayname">search画像表示</string>
+    <string name="title_Search_keyword">キーワード</string>
+    <string name="hint_Search_input">職種、業種、会社名など</string>
+    <string name="title_Search_position">勤務地</string>
+    <string name="hint_Search_position">都道府県、市区町村、駅名</string>
+    <string name="title_Search_buttun">検索</string>
 
     <!-- Strings related to Agreement -->
     <string name="termsofservice">利用規約</string>
@@ -53,6 +67,8 @@
     <string name="Apply">Apply</string>
     <string name="Activity">Activity</string>
     <string name="Cancel">キャンセル</string>
+    <string name="image_view_displayname_SearchResults">SearchResult画像表示</string>
+    <string name="hint_SearchResults_detailed_setting">詳細設定</string>
 
     <!-- Strings related to Basicinfoedit -->
     <string name="profilechange">個人情報編集</string>
@@ -358,6 +374,8 @@
     <string name="ll_contact">ll_contact</string>
     <string name="ll_mylist">ll_mylist</string>
     <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="ll_searchresults">ll_searchresults</string>
+    <string name="ll_search">ll_search</string>
     <string name="results">results</string>
 
     <!-- Strings related to SelectResume -->

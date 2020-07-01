@@ -8,13 +8,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +35,7 @@ import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.Resume;
 import jp.kinwork.Common.ClassDdl.User;
 import jp.kinwork.Common.ClassDdl.UserToken;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -116,21 +115,23 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         tvBack.setText("戻る");
         edloginEmail = (EditText) findViewById(R.id.ed_login_email);
         edpassword = (EditText) findViewById(R.id.ed_password);
-        edloginEmail.setOnTouchListener(touchListener);
-        edpassword.setOnTouchListener(touchListener);
+
+//        点击输入框变蓝
+        edloginEmail.addTextChangedListener(new JumpTextWatcher(edloginEmail,edpassword));
+        edpassword.addTextChangedListener(new JumpTextWatcher(edpassword,edloginEmail));
 
         LoginClick=findViewById(R.id.bu_MainLoginClick);
         LoginClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainLoginClick();
+                login();
             }
         });
         Forgetpw=findViewById(R.id.Click_Forgetpw);
         Forgetpw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Click_Forgetpw();
+                getPassword();
             }
         });
         MakeNewuser_Click=findViewById(R.id.MakeNewuser_Click);
@@ -155,25 +156,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         dialog.setMessage(getString(R.string.login)) ;
     }
 
-    //点击输入框变蓝
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (view.getId()){
-                case R.id.ed_login_email:
-                    edloginEmail.setBackgroundResource(R.drawable.ic_shape_blue);
-                    edpassword.setBackgroundResource(R.drawable.ic_shape);
-                    break;
-                case R.id.ed_password:
-                    edloginEmail.setBackgroundResource(R.drawable.ic_shape);
-                    edpassword.setBackgroundResource(R.drawable.ic_shape_blue);
-                    break;
-            }
-            return false;
-        }
-    };
     //登录处理
-    public void MainLoginClick(){
+    public void login(){
         flg = "0";
         Email = edloginEmail.getText().toString();
         password = edpassword.getText().toString();
@@ -182,7 +166,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
 
     //密码忘记的时候，再取得
-    public void Click_Forgetpw(){
+    public void getPassword(){
         flg = "1";
         Email = edloginEmail.getText().toString();
         if(Email.equals("")){
@@ -446,10 +430,18 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     //返回检索結果画面
     public void onClick(View View){
+        String saveId = mPreferenceUtils.getsaveid();
         switch (View.getId()){
             case R.id.tv_back:
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                if(saveId.equals(getString(R.string.ll_search))){
+                    intent.setClass(LoginActivity.this, SearchActivity.class);
+                }
+                if(saveId.equals(getString(R.string.ll_searchresults))){
+                    intent.setClass(LoginActivity.this, SearchResultsActivity.class);
+                }
+
                 if(Activity == null || Activity.equals("")){
                     intent.setClass(LoginActivity.this, SearchActivity.class);
                     intent.putExtra(getString(R.string.act),"");
