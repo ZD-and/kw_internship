@@ -113,6 +113,7 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.btn_yahoo_login).setOnClickListener(this);
         findViewById(R.id.btn_facebook_login).setOnClickListener(this);
         findViewById(R.id.btn_line_login).setOnClickListener(this);
+        findViewById(R.id.btn_twitter_login).setOnClickListener(this);
         mTwitterLoginButton = findViewById(R.id.twitter_login_button);
 //        mLineLoginButton = findViewById(R.id.line_login_btn);
 
@@ -173,6 +174,11 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
             case R.id.twitter_login_button:
                 mLoginFlag = "4";
                 mPreferenceUtils.setLoginFlag(mLoginFlag);
+                break;
+            case R.id.btn_twitter_login:
+                mLoginFlag = "4";
+                mPreferenceUtils.setLoginFlag(mLoginFlag);
+                twitterAuthClient.authorize(this,twitterCallback);
                 break;
             case R.id.btn_line_login:
                 mLoginFlag = "5";
@@ -269,15 +275,6 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
     //lineログイン
     private void initLine(){
         lineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
-//        LoginDelegate loginDelegate = LoginDelegate.Factory.create();
-//
-//        mLineLoginButton.setChannelId(getString(R.string.line_client_id));
-//        mLineLoginButton.enableLineAppAuthentication(true);
-//        mLineLoginButton.setAuthenticationParams(new LineAuthenticationParams.Builder()
-//                .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
-//                .build()
-//        );
-//        mLineLoginButton.setLoginDelegate(loginDelegate);
     }
 
     private void initGoogle(){
@@ -331,6 +328,7 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
         twitterAuthClient = new TwitterAuthClient();
         mTwitterLoginButton.setCallback(twitterCallback);
         Log.d(TAG, "loginTwitter getActiveSession: " + TwitterCore.getInstance().getSessionManager().getActiveSession());
+
     }
 
     Callback<TwitterSession> twitterCallback = new Callback<TwitterSession>() {
