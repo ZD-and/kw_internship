@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
     private Intent intent;
-    private LinearLayout linearlayout;
 
     private Button LoginClick;
 
@@ -119,12 +118,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         TextView tvBack = findViewById(R.id.tv_back);
         tvBack.setOnClickListener(this);
         tvBack.setText("戻る");
-        linearlayout = findViewById(R.id.linearlayout);
         edloginEmail = (EditText) findViewById(R.id.ed_login_email);
         edpassword = (EditText) findViewById(R.id.ed_password);
-//        linearlayout.setOnTouchListener(touchListener);
-//        edloginEmail.setOnTouchListener(touchListener);
-//        edpassword.setOnTouchListener(touchListener);
 
 //        点击输入框变蓝
         edloginEmail.addTextChangedListener(new JumpTextWatcher(edloginEmail,edpassword));

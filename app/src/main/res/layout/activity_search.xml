@@ -46,14 +46,6 @@
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 
-            <TableLayout
-            <!--填充用star-->
-<!--            <EditText-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:visibility="gone"-->
-<!--                android:background="@drawable/ic_shape" />-->
-            <!--填充用end-->
             <FrameLayout
                 android:id="@+id/tl_keyword"
                 android:layout_width="match_parent"
