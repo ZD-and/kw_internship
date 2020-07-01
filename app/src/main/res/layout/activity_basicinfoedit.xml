@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".BasicinfoeditActivity">
 
+
+
     <include
         layout="@layout/include_back"/>
 
@@ -43,48 +45,61 @@
                 android:layout_marginTop="10dp"
                 android:stretchColumns="1,3">
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_lname"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center"
-                        android:text="姓"
-                        android:textColor="@color/background_holo_dark" />
+                <TextView
+                    android:id="@+id/tv_lname"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="姓"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
-                    <EditText
-                        android:id="@+id/et_lname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true"
-                        android:text="" />
+                <EditText
+                    android:id="@+id/et_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:hint="例：佐藤"
+                    android:singleLine="true"
+                    android:text="" />
 
-                    <TextView
-                        android:id="@+id/tv_fname"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="名"
-                        android:textColor="@color/background_holo_dark" />
+                <View  android:layout_height="1px"
+                    android:layout_width="match_parent"
+                    android:background="#323232"
+                    />
 
-                    <EditText
-                        android:id="@+id/et_fname"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true"
-                        android:text="" />
+                <TextView
+                    android:id="@+id/tv_fname"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:gravity="left"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="名"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
-                </TableRow>
+                <EditText
+                    android:id="@+id/et_fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:hint="例：太郎"
+                    android:singleLine="true"
+                    android:text="" />
+
+
+
 
             </TableLayout>
 
@@ -108,47 +123,59 @@
                 android:layout_marginTop="10dp"
                 android:stretchColumns="1,3">
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_lname_kana"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center"
-                        android:text="セイ"
-                        android:textColor="@color/background_holo_dark" />
 
-                    <EditText
-                        android:id="@+id/et_lname_kana"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true"
-                        android:text="" />
+                <TextView
+                    android:id="@+id/tv_lname_kana"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="セイ"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
-                    <TextView
-                        android:id="@+id/tv_fname_kana"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="メイ"
-                        android:textColor="@color/background_holo_dark" />
+                <EditText
+                    android:id="@+id/et_lname_kana"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:hint="例：サトウ"
+                    android:singleLine="true"
+                    android:text="" />
 
-                    <EditText
-                        android:id="@+id/et_fname_kana"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true"
-                        android:text="" />
-                </TableRow>
+                <View  android:layout_height="1px"
+                    android:layout_width="match_parent"
+                    android:background="#323232"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_fname_kana"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="メイ"
+                    android:textColor="@color/hint_foreground_holo_dark" />
+
+                <EditText
+                    android:id="@+id/et_fname_kana"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:hint="例：タロウ"
+                    android:singleLine="true"
+                    android:text="" />
 
             </TableLayout>
 
@@ -172,11 +199,13 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
-                android:gravity="center"
-                android:hint="性別を選択してください"
+                android:background="@null"
+                android:gravity="left"
+                android:hint=" 性別を選択してください"
                 android:textColor="@color/background_holo_dark"
                 android:textSize="15sp" />
+
+
 
             <TextView
                 android:id="@+id/tv_birthday"
@@ -198,9 +227,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
-                android:gravity="center"
-                android:hint="生年月日を選択してください"
+                android:background="@null"
+                android:gravity="left"
+                android:hint=" 生年月日を選択してください"
                 android:textColor="@color/background_holo_dark"
                 android:textSize="15sp" />
 
@@ -224,8 +253,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
-                android:gravity="center"
+                android:background="@null"
+                android:gravity="left"
                 android:hint="国籍を選択してください"
                 android:paddingLeft="10dp"
                 android:singleLine="true"
@@ -247,192 +276,218 @@
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
 
-                <TableRow>
+                <TextView
+                    android:id="@+id/tv_postalcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="left"
+                    android:text="郵便番号"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
-                    <TextView
-                        android:id="@+id/tv_postalcode"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:text="郵便番号"
-                        android:textColor="@color/background_holo_dark" />
+            </TableLayout>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="*">
 
+                <TableRow
+                    android:layout_marginBottom="10dp"
+                    >
                     <EditText
                         android:id="@+id/et_postalcode"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/ic_shape"
+                        android:layout_width="220dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
                         android:inputType="number"
+                        android:background="@null"
                         android:maxLength="7"
                         android:paddingLeft="5dp"
                         android:singleLine="true" />
 
                     <Button
                         android:id="@+id/bu_postalcode"
-                        android:layout_width="80dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@color/but_blue"
+                        android:gravity="center"
+                        android:background="@drawable/btn_bg_red"
                         android:backgroundTint="@color/but_blue"
                         android:text="住所検索"
                         android:textColor="@color/colorLight"
-                        android:textSize="10sp" />
+                        android:textSize="15sp" />
+
                 </TableRow>
+
+            </TableLayout>
+
+            <View  android:layout_height="1px"
+                android:layout_width="match_parent"
+                android:background="#323232"
+                />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:stretchColumns="1">
+
+
+
+                <TextView
+                    android:id="@+id/tv_prefectures"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:text="都道府県"
+                    android:textColor="@color/hint_foreground_holo_dark" />
+
+                <EditText
+                    android:id="@+id/et_prefectures"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true" />
+
+                <View  android:layout_height="1px"
+                    android:layout_width="match_parent"
+                    android:background="#323232"
+                    />
+
+
 
             </TableLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_prefectures"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:text="都道府県"
-                        android:textColor="@color/background_holo_dark" />
 
-                    <EditText
-                        android:id="@+id/et_prefectures"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true" />
+                <TextView
+                    android:id="@+id/tv_municipality"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:text="市区町村"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
+                <EditText
+                    android:id="@+id/et_municipality"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true" />
+
+                <View  android:layout_height="1px"
+                    android:layout_width="match_parent"
+                    android:background="#323232"
                     />
-                </TableRow>
 
             </TableLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_municipality"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:text="市区町村"
-                        android:textColor="@color/background_holo_dark" />
 
-                    <EditText
-                        android:id="@+id/et_municipality"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true" />
+                <TextView
+                    android:id="@+id/tv_town"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:text="町目番地"
+                    android:textColor="@color/hint_foreground_holo_dark" />
+
+                <EditText
+                    android:id="@+id/et_town"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true" />
+
+                <View  android:layout_height="1px"
+                    android:layout_width="match_parent"
+                    android:background="#323232"
                     />
-                </TableRow>
+
             </TableLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
                 android:stretchColumns="1">
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_town"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:text="町目番地"
-                        android:textColor="@color/background_holo_dark" />
 
-                    <EditText
-                        android:id="@+id/et_town"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true" />
-                    />
-                </TableRow>
-            </TableLayout>
+                <TextView
+                    android:id="@+id/tv_bu_mansion_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:text="ビル・マンション・号室"
+                    android:textColor="@color/hint_foreground_holo_dark" />
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_vertical"
-                android:stretchColumns="1">
+                <EditText
+                    android:id="@+id/et_bu_mansion_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true" />
 
-                <TableRow>
 
-                    <TextView
-                        android:id="@+id/tv_bu_mansion_room"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:text="ビル・マンション・号室"
-                        android:textColor="@color/background_holo_dark" />
-
-                    <EditText
-                        android:id="@+id/et_bu_mansion_room"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/ic_shape"
-                        android:paddingLeft="5dp"
-                        android:singleLine="true" />
-                    />
-                </TableRow>
             </TableLayout>
 
 
@@ -456,12 +511,17 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
+                android:layout_marginBottom="10dp"
+                android:background="@null"
                 android:inputType="phone"
                 android:maxLength="11"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
                 android:textSize="20sp" />
+            <View  android:layout_height="1px"
+                android:layout_width="match_parent"
+                android:background="#323232"
+                />
 
 
             <Button
