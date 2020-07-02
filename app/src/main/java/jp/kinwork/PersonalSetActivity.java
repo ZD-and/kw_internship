@@ -106,6 +106,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
         myApplication = (MyApplication) getApplication();
+        myApplication.setContactDialog("0",0);
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         if(myApplication.getlast_name().length() > 0){
             tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
@@ -179,14 +180,14 @@ public class PersonalSetActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //    String enString = mAes.encrypt(mBytes,AesKey);
-        //    String data = enString.replace("\n", "").replace("+","%2B");
+        String enString = mAes.encrypt(mBytes,AesKey);
+        String data = enString.replace("\n", "").replace("+","%2B");
 
         Map<String,String> param = new HashMap<String, String>();
         flg = "1";
         //数据通信处理（访问服务器，并取得访问结果）
-        // param.put(getString(R.string.file),PARAM_File);
-        // param.put(getString(R.string.data),data);
+         param.put(getString(R.string.file),PARAM_File);
+         param.put(getString(R.string.data),data);
         new GithubQueryTask().execute(param);
     }
 
