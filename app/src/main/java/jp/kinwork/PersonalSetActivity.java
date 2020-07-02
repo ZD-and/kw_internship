@@ -33,6 +33,8 @@ import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
+import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
+
 public class PersonalSetActivity extends AppCompatActivity {
     final static String PARAM_File = "/MyMailMobile/getDialogList";
 
@@ -40,6 +42,8 @@ public class PersonalSetActivity extends AppCompatActivity {
     private String AesKey;
     private String userId;
     private String token;
+
+    private String flg = "";
 
     private TextView tvtitle;
     private TextView tvResumeSet1;
@@ -68,6 +72,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalset);
         Initialization();
+        load();
         urllodad();
     }
     //初始化
@@ -175,12 +180,13 @@ public class PersonalSetActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         //    String enString = mAes.encrypt(mBytes,AesKey);
-       //    String data = enString.replace("\n", "").replace("+","%2B");
+        //    String data = enString.replace("\n", "").replace("+","%2B");
 
         Map<String,String> param = new HashMap<String, String>();
+        flg = "1";
         //数据通信处理（访问服务器，并取得访问结果）
-       // param.put(getString(R.string.file),PARAM_File);
-       // param.put(getString(R.string.data),data);
+        // param.put(getString(R.string.file),PARAM_File);
+        // param.put(getString(R.string.data),data);
         new GithubQueryTask().execute(param);
     }
 
@@ -195,8 +201,12 @@ public class PersonalSetActivity extends AppCompatActivity {
             URL searchUrl = NetworkUtils.buildUrl(file);
             String githubSearchResults = null;
             try {
-                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data,deviceId);
-            } catch (IOException e) {
+                if (flg.equals("1")) {
+                    githubSearchResults = getResponseFromHttpUrl(searchUrl, data, "");
+                } else {
+                    githubSearchResults = getResponseFromHttpUrl(searchUrl, data, deviceId);
+                }
+            }catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -211,7 +221,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                     Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
                     if(processResult == false) {
-                        alertDialog(message);
+                        alertdialog(message);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -221,8 +231,9 @@ public class PersonalSetActivity extends AppCompatActivity {
             }
         }
     }
+
     //通信结果提示
-    private void alertDialog(String meg){
+    private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
