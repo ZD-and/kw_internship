@@ -13,9 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_cpw"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/tv_cpw"
@@ -25,7 +34,7 @@
         android:background="@color/but_blue"
         android:gravity="center_vertical"
         android:padding="20dp"
-        android:text="パスワード変更"
+        android:text="パスワードを変更"
         android:textColor="@color/colorLight"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -33,18 +42,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:gravity="left"-->
+<!--            android:padding="10dp"-->
+<!--            android:textColor="@color/hint_foreground_holo_dark"-->
+<!--            android:textSize="13sp"-->
+<!--            android:text="パスワードを変更した後、新しく設定したパスワードで登録してください"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <View  android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="#323232"
+            />
+
+
+        <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_marginBottom="10dp">
+
     <TextView
         android:id="@+id/tv_oldpw"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
         android:text="パスワード"
-        android:textColor="@color/background_holo_dark"
+        android:textSize="13sp"
+        android:textColor="@color/hint_foreground_holo_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,70 +87,104 @@
 
     <EditText
         android:id="@+id/et_oldpw"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/ic_shape"
+        android:background="@null"
         android:ems="10"
-        android:hint="現在のパスワード"
+        android:hint="現在のパスワードを入力してください"
         android:inputType="textPassword"
         android:padding="5dp"
-        android:textSize="15sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_oldpw" />
 
-    <TextView
-        android:id="@+id/tv_newpw"
-        android:layout_width="0dp"
+        </TableRow>
+    </TableLayout>
+
+        <View  android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="#323232"
+            />
+
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:text="新しいパスワード"
-        android:textColor="@color/background_holo_dark"
-        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_marginBottom="10dp">
+
+        <TextView
+        android:id="@+id/tv_newpw"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="新しい
+            パスワード"
+            android:textSize="13sp"
+            android:textColor="@color/hint_foreground_holo_dark"
+            android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_oldpw" />
 
     <EditText
         android:id="@+id/et_newpw"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/ic_shape"
+        android:background="@null"
         android:ems="10"
-        android:hint="新しいパスワード"
+        android:hint="新しいパスワードを入力してください"
         android:inputType="textPassword"
         android:padding="5dp"
         android:text=""
-        android:textSize="15sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_newpw" />
 
+        </TableRow>
+    </TableLayout>
+
+        <View  android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="#323232"
+            />
+    <TableLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_marginBottom="10dp">
+
     <TextView
         android:id="@+id/tv_newpwConform"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:text="新しいパスワード"
-        android:textColor="@color/background_holo_dark"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
+        android:text="新しい
+        パスワード"
+        android:textSize="13sp"
+        android:textColor="@color/hint_foreground_holo_dark"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,24 +192,42 @@
 
     <EditText
         android:id="@+id/et_newpwConform"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/ic_shape"
+        android:background="@null"
         android:ems="10"
         android:hint="確認のためもう一度、入力してください"
         android:inputType="textPassword"
         android:padding="5dp"
         android:text=""
-        android:textSize="15sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_newpwConform" />
 
+        </TableRow>
+    </TableLayout>
+        <View  android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="#323232"
+            />
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:gravity="left"-->
+<!--            android:padding="10dp"-->
+<!--            android:textColor="@color/hint_foreground_holo_dark"-->
+<!--            android:textSize="12sp"-->
+<!--            android:text="「新しいパスワード」と「再入力」 に半角英数文字で 6 文字以上のパスワードを入力してください"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
     <Button
         android:id="@+id/bu_pwc"
         android:layout_width="0dp"
@@ -151,10 +238,13 @@
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:backgroundTint="@color/but_blue"
-        android:text="パスワード変更"
+        android:background="@drawable/btn_bg_red"
+        android:text="変更"
         android:textColor="@color/colorLight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_newpwConform" />
+
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

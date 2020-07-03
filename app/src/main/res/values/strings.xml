@@ -125,7 +125,7 @@
     <string name="key">key</string>
 
     <!-- Strings related to Changepw -->
-    <string name="password">パスワード</string>
+    <string name="password">新しいパスワードを入力してください</string>
     <string name="Spannable">確認のためもう一度、入力してください</string>
     <string name="userid">userid</string>
     <string name="token">token</string>
