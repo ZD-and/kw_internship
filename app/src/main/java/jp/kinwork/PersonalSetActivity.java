@@ -20,13 +20,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.MalformedURLException;
+
 
 import jp.kinwork.Common.AES;
+import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.CommonView.BadgeView;
 import jp.kinwork.Common.MyApplication;
 
 import jp.kinwork.Common.NetworkUtils;
@@ -34,6 +40,7 @@ import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
+import static jp.kinwork.Common.NetworkUtils.buildUrl;
 
 public class PersonalSetActivity extends AppCompatActivity {
     final static String PARAM_File = "/MyMailMobile/getDialogList";
@@ -60,7 +67,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
 
-//    private String deviceId;
+    // private String deviceId;
     private TextView tvname;
     private TextView tvemail;
 
@@ -101,6 +108,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvResumeSet3.setOnClickListener(resumeListener);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText(getString(R.string.personalsettings));
+        deviceId = PreferenceUtils.getdeviceId();
+        AesKey = PreferenceUtils.getAesKey();
+        userId = PreferenceUtils.getuserId();
+        token = PreferenceUtils.gettoken();
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -166,22 +177,13 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad() {
-        Map<String,String> param = new HashMap<String, String>();
-        flg = "1";
-        //数据通信处理（访问服务器，并取得访问结果）
-         param.put(getString(R.string.file),PARAM_File);
-         param.put(getString(R.string.data),"2");
-        new GithubQueryTask().execute(param);
-    }
-
-    //转换为Json格式并且AES加密
-    public static String JsonChnge(String AesKey,String Data_a,String Data_b) {
+        //Json格式转换并且加密
         PostDate Pdata = new PostDate();
-        Pdata.setUserId(Data_a);
-        Pdata.setToken(Data_b);
-        Gson mGson = new Gson();
-        String sdPdata = mGson.toJson(Pdata,PostDate.class);
-
+        Pdata.setUserId(userId);
+        Pdata.setToken(token);
+        Gson mGson1 = new Gson();
+        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
+        Log.d("***mailTitle***", sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -190,27 +192,32 @@ public class PersonalSetActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String enString = mAes.encrypt(mBytes,AesKey);
-        String encrypt = enString.replace("\n", "").replace("+","%2B");
-        return encrypt;
+        String data = enString.replace("\n", "").replace("+","%2B");
+
+        Map<String,String> param = new HashMap<String, String>();
+        param.put(getString(R.string.file),PARAM_File);
+        param.put(getString(R.string.data),data);
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
     }
 
+
     //访问服务器，并取得访问结果
-    private class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
+    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
-            URL searchUrl = NetworkUtils.buildUrl(file);
+            Log.d("****file****", file);
+            Log.d("****data****", data);
+            URL searchUrl = buildUrl(file);
+            Log.d("****URL****", searchUrl.toString());
             String githubSearchResults = null;
             try {
-                if (flg.equals("1")) {
-                    githubSearchResults = getResponseFromHttpUrl(searchUrl, data, "");
-                } else {
-                    githubSearchResults = getResponseFromHttpUrl(searchUrl, data, deviceId);
-                }
-            }catch (IOException e) {
+                githubSearchResults = getResponseFromHttpUrl(searchUrl,data,deviceId);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -222,9 +229,14 @@ public class PersonalSetActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
-                    if(processResult == false) {
+                    Log.d("***+++msg+++***", message);
+                    if(processResult == true) {
+                        Intent intent_personalsettings = new Intent();
+                        intent_personalsettings.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
+                        startActivity(intent_personalsettings);
+                    } else {
                         alertdialog(message);
                     }
                 }catch (Exception e){
@@ -234,7 +246,7 @@ public class PersonalSetActivity extends AppCompatActivity {
 
             }
         }
-    }
+}
 
     //通信结果提示
     private void alertdialog(String meg){
