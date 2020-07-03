@@ -166,13 +166,22 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad() {
-        //Json格式转换并且加密
+        Map<String,String> param = new HashMap<String, String>();
+        flg = "1";
+        //数据通信处理（访问服务器，并取得访问结果）
+         param.put(getString(R.string.file),PARAM_File);
+         param.put(getString(R.string.data),"2");
+        new GithubQueryTask().execute(param);
+    }
+
+    //转换为Json格式并且AES加密
+    public static String JsonChnge(String AesKey,String Data_a,String Data_b) {
         PostDate Pdata = new PostDate();
-        Pdata.setUserId(userId);
-        Pdata.setToken(token);
-        Gson mGson1 = new Gson();
-        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
-        Log.d("***mailTitle***", sdPdata);
+        Pdata.setUserId(Data_a);
+        Pdata.setToken(Data_b);
+        Gson mGson = new Gson();
+        String sdPdata = mGson.toJson(Pdata,PostDate.class);
+
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -181,14 +190,8 @@ public class PersonalSetActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String enString = mAes.encrypt(mBytes,AesKey);
-        String data = enString.replace("\n", "").replace("+","%2B");
-
-        Map<String,String> param = new HashMap<String, String>();
-        flg = "1";
-        //数据通信处理（访问服务器，并取得访问结果）
-         param.put(getString(R.string.file),PARAM_File);
-         param.put(getString(R.string.data),data);
-        new GithubQueryTask().execute(param);
+        String encrypt = enString.replace("\n", "").replace("+","%2B");
+        return encrypt;
     }
 
     //访问服务器，并取得访问结果
