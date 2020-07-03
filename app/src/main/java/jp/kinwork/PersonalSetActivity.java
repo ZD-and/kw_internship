@@ -1,8 +1,11 @@
 package jp.kinwork;
 
 import androidx.appcompat.app.AlertDialog;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.sip.SipSession;
 import android.os.AsyncTask;
@@ -43,11 +46,11 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 
 public class PersonalSetActivity extends AppCompatActivity {
-    final static String PARAM_File = "/MyMailMobile/getDialogList";
+    final static String PARAM_File = "/usersMobile/personalSet";
 
     private String deviceId;
     private String AesKey;
-    private String userId;
+    private String UserId;
     private String token;
 
     private String flg = "";
@@ -84,6 +87,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
     //初始化
     public void Initialization(){
+        loadd();
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
@@ -110,7 +114,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvtitle.setText(getString(R.string.personalsettings));
         deviceId = PreferenceUtils.getdeviceId();
         AesKey = PreferenceUtils.getAesKey();
-        userId = PreferenceUtils.getuserId();
+        UserId = PreferenceUtils.getuserId();
         token = PreferenceUtils.gettoken();
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
@@ -177,30 +181,26 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad() {
-        //Json格式转换并且加密
-        PostDate Pdata = new PostDate();
-        Pdata.setUserId(userId);
-        Pdata.setToken(token);
-        Gson mGson1 = new Gson();
-        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
-        Log.d("***mailTitle***", sdPdata);
-        AES mAes = new AES();
-        byte[] mBytes = null;
-        try {
-            mBytes = sdPdata.getBytes("UTF8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String enString = mAes.encrypt(mBytes,AesKey);
-        String data = enString.replace("\n", "").replace("+","%2B");
-
+        String data = JsonChnge(AesKey,UserId, token);
         Map<String,String> param = new HashMap<String, String>();
-        param.put(getString(R.string.file),PARAM_File);
-        param.put(getString(R.string.data),data);
+        param.put("file",PARAM_File);
+        param.put("data",data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
-
+    //转换为Json格式并且AES加密
+    public static String JsonChnge(String AesKey,String data_a,String data_b) {
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(data_a);
+        Pdata.setToken(data_b);
+        Gson mGson = new Gson();
+        String sdPdata = mGson.toJson(Pdata,PostDate.class);
+        Log.d("***+++sdPdata+++***", sdPdata);
+        AESprocess AESprocess = new AESprocess();
+        String encrypt = AESprocess.getencrypt(sdPdata,AesKey);
+        Log.d("***+++encrypt+++***", encrypt);
+        return encrypt;
+    }
 
     //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
@@ -264,6 +264,15 @@ public class PersonalSetActivity extends AppCompatActivity {
                 startActivity(intentClose);
             }
         }).show();
+    }
+
+    //本地情报取得
+    public void loadd(){
+        SharedPreferences object = getSharedPreferences("Information", Context.MODE_PRIVATE);
+        deviceId = object.getString(getString(R.string.Information_Name_deviceId),"A");
+        AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
+        UserId = object.getString(getString(R.string.userid),"A");
+        token = object.getString(getString(R.string.token),"A");
     }
 
     //子功能画面按钮
