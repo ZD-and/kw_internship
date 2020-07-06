@@ -283,7 +283,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             switch (View.getId()) {
                 //跳转基本情报设定画面
                 case R.id.tr_basicinfoedit:
-                    urllodad();
                     intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
                     intent.putExtra("Act", "person");
                     intent.putExtra("resume_status", "");
@@ -291,7 +290,6 @@ public class PersonalSetActivity extends AppCompatActivity {
                     break;
                 //跳转密码变更画面
                 case R.id.tr_changpw:
-                    urllodad();
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                     break;
                 //跳转
