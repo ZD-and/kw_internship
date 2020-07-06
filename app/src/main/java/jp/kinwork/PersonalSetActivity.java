@@ -87,6 +87,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
     //初始化
     public void Initialization(){
+        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         loadd();
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
@@ -122,7 +123,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
         myApplication = (MyApplication) getApplication();
         myApplication.setContactDialog("0",0);
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         if(myApplication.getlast_name().length() > 0){
             tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
         }
@@ -283,6 +283,7 @@ public class PersonalSetActivity extends AppCompatActivity {
             switch (View.getId()) {
                 //跳转基本情报设定画面
                 case R.id.tr_basicinfoedit:
+                    urllodad();
                     intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
                     intent.putExtra("Act", "person");
                     intent.putExtra("resume_status", "");
@@ -290,6 +291,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                     break;
                 //跳转密码变更画面
                 case R.id.tr_changpw:
+                    urllodad();
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                     break;
                 //跳转
