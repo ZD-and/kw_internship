@@ -1,8 +1,23 @@
 package jp.kinwork.Common;
 
 import android.app.Application;
+import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
 
 import java.util.LinkedList;
+
+import jp.kinwork.R;
 
 /**
  * Created by zml98 on 2018/04/14.
@@ -59,6 +74,37 @@ public class MyApplication extends Application {
     private String address_components = "";
     private String AccessFineFocation = "";
 
+    private final static String TAG = MyApplication.class.getSimpleName();
+
+    private static final String CONSUMER_KEY = "CpCu6ipe73Wb3bv3qIlFWcM22";
+    private static final String CONSUMER_SECRET = "GyEsZRnySMy05V2MdobkAqvOMfzzw11RB8JuLdlgwVZcuugCxa";
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        securityProviderUpdate(getApplicationContext());
+
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret)))
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
+
+    }
+
+    private void securityProviderUpdate(@NonNull Context context) {
+        try {
+            Log.d(TAG, "update security provider.");
+            ProviderInstaller.installIfNeeded(context);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            Log.d(TAG, "need to update Google Play services. " + e.getMessage());
+            GoogleApiAvailability.getInstance().showErrorNotification(context, e.getConnectionStatusCode());
+
+        } catch (GooglePlayServicesNotAvailableException ignore) {
+        }
+    }
 
     private int WindowWidth = 0;
     private int WindowWidthreset = 0;

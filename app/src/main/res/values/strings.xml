@@ -687,4 +687,17 @@
         <item>ロシア</item>
         <item>ワリス・フテュナ諸島</item>
     </string-array>
+
+<!--    line連携-->
+    <string name="line_client_id">1654297537</string>
+<!--    yahoo連携-->
+    <string name="yahoo_client_id">dj00aiZpPURvZ3FRTTZLVFJpVCZzPWNvbnN1bWVyc2VjcmV0Jng9YTg-</string>
+    <string name="yahoo_login_scheme">yj-534f6</string>
+    <string name="yahoo_login_host">callback</string>
+<!--    facebook連携-->
+    <string name="facebook_app_id">448249382415623</string>
+    <string name="fb_login_protocol_scheme">fb448249382415623</string>
+<!--    twitter連携-->
+    <string name="twitter_consumer_key">owR1cLY7OQqRnOZ8UFja8Czgp</string>
+    <string name="twitter_consumer_secret">1OyHyGs5WNt6dEq78s6uzEKQV4AwaJvv2ronUefdL5n11rQ7qB</string>
 </resources>
