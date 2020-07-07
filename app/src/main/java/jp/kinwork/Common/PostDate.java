@@ -57,6 +57,7 @@ public class PostDate {
     private String order;
     private String flag;
     private String type;
+    private String id;
 
     private LinkedList<String> details = new LinkedList<String>();
 
@@ -253,8 +254,11 @@ public class PostDate {
     public void setFlag(String flag) {
         this.flag = flag;
     }
+
     public void setType(String type) {
         this.type = type;
     }
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

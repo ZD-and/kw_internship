@@ -178,7 +178,7 @@ public class ResumeActivity extends AppCompatActivity {
     private JSONArray JSONArray_employment;
     private JSONArray JSONArray_education;
     private JSONArray JSONArray_qualification;
-
+    String TAG = "ResumeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -442,30 +442,39 @@ public class ResumeActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.tl_tr_tv_employmenthistory:
+                    Log.d(TAG, "onClick JSONArray_employment.length(): " +JSONArray_employment.length());
                     if (JSONArray_employment.length() > 0) {
                         if (tljob.getVisibility() == View.GONE) {
                             tljob.setVisibility(View.VISIBLE);
                         } else {
                             tljob.setVisibility(View.GONE);
                         }
+                    } else {
+                        tljob.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tl_tr_tv_educational:
+                    Log.d(TAG, "onClick JSONArray_education.length(): " +JSONArray_education.length());
                     if (JSONArray_education.length() > 0) {
                         if (tleducational.getVisibility() == View.GONE) {
                             tleducational.setVisibility(View.VISIBLE);
                         } else {
                             tleducational.setVisibility(View.GONE);
                         }
+                    } else {
+                        tleducational.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tl_tr_tv_qualification:
+                    Log.d(TAG, "onClick JSONArray_qualification.length(): " +JSONArray_qualification.length());
                     if (JSONArray_qualification.length() > 0) {
                         if (tlqualification.getVisibility() == View.GONE) {
                             tlqualification.setVisibility(View.VISIBLE);
                         } else {
                             tlqualification.setVisibility(View.GONE);
                         }
+                    } else {
+                        tlqualification.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tv_PrSkill:

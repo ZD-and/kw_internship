@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="jp.kinwork">
     <!-- 位置权限 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- GPS权限 -->
     <uses-permission android:name="android.permission.MOCK_ACCESS_LOCATION" /> <!-- インターネット接続許可権限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="Android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".Common.MyApplication"
@@ -15,32 +17,81 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".PersonalSetActivity"/>
-        <activity android:name=".WebActivity"/>
-        <activity android:name=".SelectResumeActivity"/>
-        <activity android:name=".SearchResultsActivity"/>
-        <activity android:name=".ResumeActivity"/>
-        <activity android:name=".QualificationActivity"/>
-        <activity android:name=".MylistActivity"/>
-        <activity android:name=".MakeUserActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".EmploymentActivity"/>
-        <activity android:name=".EducationActivity"/>
-        <activity android:name=".ContactDialogActivity"/>
-        <activity android:name=".ContactActivity"/>
-        <activity android:name=".ChangepwActivity"/>
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".BasicinfoeditActivity"/>
+        <activity android:name=".PersonalSetActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".WebActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".SelectResumeActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".SearchResultsActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ResumeActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".QualificationActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".MylistActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".MakeUserActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".LoginActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".EmploymentActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".EducationActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ContactDialogActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ContactActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ChangepwActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".SearchActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".BasicinfoeditActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".ApplyActivity" />
-        <activity android:name=".AgreementActivity"/>
-        <activity android:name=".AdvancSetActivity" />
+        <activity android:name=".AgreementActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".AdvancSetActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".BootanimationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NewSignInActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:permission="android.permission.INTERNET">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/yahoo_login_scheme" />
+                <data android:host="@string/yahoo_login_host" />
+            </intent-filter>
+        </activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value"/>
+        <activity android:name="com.facebook.FacebookActivity" android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name" />
+        <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
+            <intent-filter> <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity
+           android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+           android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+           />
+        <activity
+           android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+           android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+           />
     </application>
 
 </manifest>

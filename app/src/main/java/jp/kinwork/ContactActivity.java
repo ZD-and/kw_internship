@@ -279,6 +279,7 @@ public class ContactActivity extends AppCompatActivity {
 //                    mailContent = mailContent.replace("\n", "");
 //                    Log.d("***mailTitle***", Title);
 //                    Log.d("***mailContent***", Content);
+                information.setOnClickListener(Listener);
                 tvcompanyname.setText(objother.getString(getString(R.string.employer_user_name)));
                 tvmailtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
                 tvmailContent.setText(objMyMail.getString(getString(R.string.mail_content)));
