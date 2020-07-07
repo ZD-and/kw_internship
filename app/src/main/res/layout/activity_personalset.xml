@@ -270,10 +270,10 @@
     </TableLayout>
 
     <TableRow
-        android:id="@+id/tr_LoginOut"
+        android:id="@+id/tr_licenses"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorLight"
         android:paddingStart="30dp"
         android:paddingEnd="0dp"
@@ -283,6 +283,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tl_ResumeSet">
+
+        <TextView
+            android:id="@+id/tv_licenses"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="ライセンス情報"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/tr_LoginOut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorLight"
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tr_licenses">
 
         <ImageView
             android:id="@+id/iv_LoginOut"

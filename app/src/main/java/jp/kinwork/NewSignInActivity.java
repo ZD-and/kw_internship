@@ -110,10 +110,10 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
         tbBack.setOnClickListener(this);
         findViewById(R.id.button_logout).setOnClickListener(this);
         findViewById(R.id.google_login_button).setOnClickListener(this);
-        findViewById(R.id.btn_yahoo_login).setOnClickListener(this);
-        findViewById(R.id.btn_facebook_login).setOnClickListener(this);
-        findViewById(R.id.btn_line_login).setOnClickListener(this);
-        findViewById(R.id.btn_twitter_login).setOnClickListener(this);
+//        findViewById(R.id.btn_yahoo_login).setOnClickListener(this);
+//        findViewById(R.id.btn_facebook_login).setOnClickListener(this);
+//        findViewById(R.id.btn_line_login).setOnClickListener(this);
+//        findViewById(R.id.btn_twitter_login).setOnClickListener(this);
         mTwitterLoginButton = findViewById(R.id.twitter_login_button);
 //        mLineLoginButton = findViewById(R.id.line_login_btn);
 
@@ -152,50 +152,50 @@ public class NewSignInActivity extends AppCompatActivity implements View.OnClick
                 intent.setClass(NewSignInActivity.this, LoginActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.google_login_button:
-                Log.d(TAG, "onClick google signIn: ");
-                mLoginFlag = "1";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                googleSignIn();
-                break;
-            case R.id.btn_facebook_login:
-                mLoginFlag = "2";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList( "email"));
-                break;
-            case R.id.btn_yahoo_login:
-                mLoginFlag = "3";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                intent.setClass(NewSignInActivity.this,
-                        NewSignInActivity.class);
-                startActivity(intent);
-                loginYahooStart();
-                break;
-            case R.id.twitter_login_button:
-                mLoginFlag = "4";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                break;
-            case R.id.btn_twitter_login:
-                mLoginFlag = "4";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                twitterAuthClient.authorize(this,twitterCallback);
-                break;
-            case R.id.btn_line_login:
-                mLoginFlag = "5";
-                mPreferenceUtils.setLoginFlag(mLoginFlag);
-                try{
-                    intent = LineLoginApi.getLoginIntent(
-                            view.getContext(),
-                            getString(R.string.line_client_id),
-                            new LineAuthenticationParams.Builder()
-                                    .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
-                                    .build());
-                    startActivityForResult(intent, 1);
-                }
-                catch(Exception e) {
-                    Log.e("ERROR", e.toString());
-                }
-                break;
+//            case R.id.google_login_button:
+//                Log.d(TAG, "onClick google signIn: ");
+//                mLoginFlag = "1";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                googleSignIn();
+//                break;
+//            case R.id.btn_facebook_login:
+//                mLoginFlag = "2";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList( "email"));
+//                break;
+//            case R.id.btn_yahoo_login:
+//                mLoginFlag = "3";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                intent.setClass(NewSignInActivity.this,
+//                        NewSignInActivity.class);
+//                startActivity(intent);
+//                loginYahooStart();
+//                break;
+//            case R.id.twitter_login_button:
+//                mLoginFlag = "4";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                break;
+//            case R.id.btn_twitter_login:
+//                mLoginFlag = "4";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                twitterAuthClient.authorize(this,twitterCallback);
+//                break;
+//            case R.id.btn_line_login:
+//                mLoginFlag = "5";
+//                mPreferenceUtils.setLoginFlag(mLoginFlag);
+//                try{
+//                    intent = LineLoginApi.getLoginIntent(
+//                            view.getContext(),
+//                            getString(R.string.line_client_id),
+//                            new LineAuthenticationParams.Builder()
+//                                    .scopes(Arrays.asList(Scope.PROFILE,Scope.OPENID_CONNECT,Scope.OC_EMAIL))
+//                                    .build());
+//                    startActivityForResult(intent, 1);
+//                }
+//                catch(Exception e) {
+//                    Log.e("ERROR", e.toString());
+//                }
+//                break;
             case R.id.button_logout:
                 mPreferenceUtils.setLoginFlag("0");
                 LoginManager.getInstance().logOut();//facebookのログアウト

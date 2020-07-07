@@ -13,6 +13,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.linecorp.linesdk.api.LineApiClient;
+import com.linecorp.linesdk.api.LineApiClientBuilder;
+import com.twitter.sdk.android.core.TwitterCore;
+
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PreferenceUtils;
 
@@ -40,6 +47,8 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     private MyApplication myApplication;
     private PreferenceUtils PreferenceUtils;
+    private LineApiClient mLineApiClient;
+    private FirebaseAuth mAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +93,18 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
         tvpersonalsettings.setTextColor(Color.parseColor("#5EACE2"));
+        findViewById(R.id.tr_licenses).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(PersonalSetActivity.this, OssLicensesMenuActivity.class);
+                startActivity(intent);
+            }
+        });
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        mLineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
+        mAuth = FirebaseAuth.getInstance();
     }
     //菜单栏按钮
     public void ll_Click(View View){
@@ -154,12 +173,28 @@ public class PersonalSetActivity extends AppCompatActivity {
                 case R.id.tr_changpw:
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                     break;
-                //跳转
-//            case R.id.tr_mailSet:
-//                intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
-//                break;
                 //退出登录
                 case R.id.tr_LoginOut:
+                    switch (PreferenceUtils.getLoginFlag()){
+                        case "1":
+                            mAuth.signOut();//googleのログアウト
+                            break;
+                        case "2":
+                            LoginManager.getInstance().logOut();//facebookのログアウト
+                            break;
+                        case "4":
+                            TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
+                            break;
+                        case "5":
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    if(mLineApiClient.getProfile().isSuccess()){
+                                        mLineApiClient.logout();
+                                    }
+                                }
+                            }).start();
+                            break;
+                    }
                     PreferenceUtils.clear();
                     intent.setClass(PersonalSetActivity.this, SearchActivity.class);
                     intent.putExtra("act", "");
