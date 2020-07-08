@@ -94,8 +94,18 @@ public class PersonalSetActivity extends AppCompatActivity {
         tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
         tr_changpw=findViewById(R.id.tr_changpw);
         tr_LoginOut=findViewById(R.id.tr_LoginOut);
-        tr_basicinfoedit.setOnClickListener(Listener);
-        tr_changpw.setOnClickListener(Listener);
+        tr_basicinfoedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_basicinfoedit();
+            }
+        });
+        tr_changpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_changpw();
+            }
+        });
         tr_LoginOut.setOnClickListener(Listener);
         tr_Resume=findViewById(R.id.tr_Resume);
         tr_Resume.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +198,25 @@ public class PersonalSetActivity extends AppCompatActivity {
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
+    public void Click_basicinfoedit(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="1";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+    public void Click_changpw(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="2";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,String data_a,String data_b) {
         PostDate Pdata = new PostDate();
@@ -233,9 +262,20 @@ public class PersonalSetActivity extends AppCompatActivity {
                     String message = obj.getString(getString(R.string.message));
                     Log.d("***+++msg+++***", message);
                     if(processResult == true) {
-                        Intent intent_personalsettings = new Intent();
-                        intent_personalsettings.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
-                        startActivity(intent_personalsettings);
+                        if(flg.equals("1")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
+                            intent.putExtra("Act", "person");
+                            intent.putExtra("resume_status", "");
+                            intent.putExtra("resume_Num", "");
+                            startActivity(intent);
+                        }else if(flg.equals("2")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         alertdialog(message);
                     }
@@ -281,17 +321,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             switch (View.getId()) {
-                //跳转基本情报设定画面
-                case R.id.tr_basicinfoedit:
-                    intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
-                    intent.putExtra("Act", "person");
-                    intent.putExtra("resume_status", "");
-                    intent.putExtra("resume_Num", "");
-                    break;
-                //跳转密码变更画面
-                case R.id.tr_changpw:
-                    intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
-                    break;
                 //跳转
 //            case R.id.tr_mailSet:
 //                intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
@@ -306,7 +335,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
-
     //履歴書画面按钮
     private View.OnClickListener resumeListener =new View.OnClickListener() {
         public void onClick(View View) {
