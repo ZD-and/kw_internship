@@ -200,21 +200,23 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
     public void Click_basicinfoedit(){
         String data = JsonChnge(AesKey,UserId, token);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
+        Map<String,String> param1 = new HashMap<String, String>();
+        param1.put("file",PARAM_File);
+        param1.put("data",data);
+        param1.put("name",flg);
         flg ="1";
         //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
+        new GithubQueryTask().execute(param1);
     }
     public void Click_changpw(){
         String data = JsonChnge(AesKey,UserId, token);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
+        Map<String,String> param2 = new HashMap<String, String>();
+        param2.put("file",PARAM_File);
+        param2.put("data",data);
+        param2.put("name",flg);
         flg ="2";
         //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
+        new GithubQueryTask().execute(param2);
     }
 
     //转换为Json格式并且AES加密
@@ -275,6 +277,10 @@ public class PersonalSetActivity extends AppCompatActivity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                             startActivity(intent);
+                        }else {
+                            Intent intent_personalsettings = new Intent();
+                            intent_personalsettings.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
+                            startActivity(intent_personalsettings);
                         }
                     } else {
                         alertdialog(message);
