@@ -125,7 +125,6 @@ public class MylistActivity extends AppCompatActivity  {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         CreateNew();
-        Initialization();
     }
 
     private void initPages() {
@@ -184,6 +183,11 @@ public class MylistActivity extends AppCompatActivity  {
         listEnteredjobId = new LinkedList<String>();
         listDelEnteredID = new LinkedList<String>();
         objjobinfo = new JSONObject();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Initialization();
     }
     //初始化
     public void Initialization(){
