@@ -1,5 +1,9 @@
 package jp.kinwork;
 
+import androidx.appcompat.app.AlertDialog;
+
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -57,7 +61,12 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 
 public class PersonalSetActivity extends AppCompatActivity {
-    final static String PARAM_File = "/usersMobile/personalSet";
+    final static String PARAM_File = "/MypagesMobile/initMypageData";
+
+    private MyApplication myApplication;
+    private PreferenceUtils PreferenceUtils;
+
+    private String flg = "";
 
     final static String PARAM_logout = "/usersMobile/logoutMobile";
     private String deviceId;
@@ -65,7 +74,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private String UserId;
     private String token;
 
-    private String flg = "";
+
 
     private TextView tvtitle;
     private TextView tvResumeSet1;
@@ -82,7 +91,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
 
-//    private String deviceId;
+    // private String deviceId;
     private TextView tvname;
     private TextView tvemail;
 
@@ -113,8 +122,18 @@ public class PersonalSetActivity extends AppCompatActivity {
         tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
         tr_changpw=findViewById(R.id.tr_changpw);
         tr_LoginOut=findViewById(R.id.tr_LoginOut);
-        tr_basicinfoedit.setOnClickListener(Listener);
-        tr_changpw.setOnClickListener(Listener);
+        tr_basicinfoedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_basicinfoedit();
+            }
+        });
+        tr_changpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_changpw();
+            }
+        });
         tr_LoginOut.setOnClickListener(Listener);
         tr_Resume=findViewById(R.id.tr_Resume);
         tr_Resume.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +232,36 @@ public class PersonalSetActivity extends AppCompatActivity {
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
+    public void Click_basicinfoedit(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg= "1";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+
+    }
+    public void Click_changpw(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="2";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+
+    }
+    public void Click_Resume(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="3";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,String data_a,String data_b) {
         PostDate Pdata = new PostDate();
@@ -258,10 +307,34 @@ public class PersonalSetActivity extends AppCompatActivity {
                     String message = obj.getString(getString(R.string.message));
                     Log.d("***+++msg+++***", message);
                     if(processResult == true) {
-                        Intent intent_personalsettings = new Intent();
-                        intent_personalsettings.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
-                        startActivity(intent_personalsettings);
-                    } else {
+                        if(flg.equals("1")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
+                            intent.putExtra("Act", "person");
+                            intent.putExtra("resume_status", "");
+                            intent.putExtra("resume_Num", "");
+                            startActivity(intent);
+                        }
+                        else if(flg.equals("2")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
+                            startActivity(intent);
+                        }
+                        //履歴書隐藏/显示
+                        else if(flg.equals("3")){
+                            if(tlResumeSet.getVisibility() == View.VISIBLE){
+                                tlResumeSet.setVisibility(View.GONE);
+                            } else {
+                                tlResumeSet.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        else {
+
+                        }
+                }
+                    else {
                         alertdialog(message);
                     }
                 }catch (Exception e){
@@ -327,6 +400,7 @@ public class PersonalSetActivity extends AppCompatActivity {
 
         }
     };
+
     //履歴書画面按钮
     private View.OnClickListener resumeListener =new View.OnClickListener() {
         public void onClick(View View) {
