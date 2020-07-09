@@ -303,10 +303,17 @@ public class ContactActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                mPreferenceUtils.clear();
+                Intent intentClose = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                mMyApplication.setAct(getString(R.string.Search));
+                intentClose.setClass(ContactActivity.this, SearchActivity.class);
+                intentClose.putExtra("act", "");
+                startActivity(intentClose);
             }
         }).show();
     }
