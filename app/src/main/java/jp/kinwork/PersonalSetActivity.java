@@ -1,13 +1,10 @@
 package jp.kinwork;
 
-import androidx.appcompat.app.AlertDialog;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.sip.SipSession;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
@@ -35,27 +33,11 @@ import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
-import com.google.gson.Gson;
-
 import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.net.MalformedURLException;
-
-
-import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
-import jp.kinwork.Common.CommonView.BadgeView;
-import jp.kinwork.Common.MyApplication;
-
-import jp.kinwork.Common.NetworkUtils;
-import jp.kinwork.Common.PostDate;
-import jp.kinwork.Common.PreferenceUtils;
 
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
@@ -95,8 +77,8 @@ public class PersonalSetActivity extends AppCompatActivity {
     private TextView tvname;
     private TextView tvemail;
 
-    private MyApplication myApplication;
-    private PreferenceUtils PreferenceUtils;
+    private MyApplication mMyApplication;
+    private PreferenceUtils mPreferenceUtils;
     private LineApiClient mLineApiClient;
     private FirebaseAuth mAuth;
 
@@ -115,7 +97,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
     //初始化
     public void Initialization(){
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         loadd();
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
@@ -151,10 +133,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvResumeSet3.setOnClickListener(resumeListener);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText(getString(R.string.personalsettings));
-        deviceId = PreferenceUtils.getdeviceId();
-        AesKey = PreferenceUtils.getAesKey();
-        UserId = PreferenceUtils.getuserId();
-        token = PreferenceUtils.gettoken();
+        deviceId = mPreferenceUtils.getdeviceId();
+        AesKey = mPreferenceUtils.getAesKey();
+        UserId = mPreferenceUtils.getuserId();
+        token = mPreferenceUtils.gettoken();
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -167,8 +149,8 @@ public class PersonalSetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        myApplication = (MyApplication) getApplication();
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        mMyApplication = (MyApplication) getApplication();
+        mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         mLineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
         mAuth = FirebaseAuth.getInstance();
     }
@@ -178,10 +160,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Search));
+                if(mMyApplication.getSURL(0).equals("0")){
+                    if(mMyApplication.getSApply(0).equals("0")){
+                        if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(PersonalSetActivity.this, SearchActivity.class);
                             intent.putExtra(getString(R.string.act),"");
                         } else {
@@ -197,16 +179,16 @@ public class PersonalSetActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
+                if(mMyApplication.getContactDialog(0).equals("0")){
                     intent.setClass(PersonalSetActivity.this, ContactActivity.class);
                 } else {
                     intent.setClass(PersonalSetActivity.this, ContactDialogActivity.class);
                 }
                 break;
             case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Apply));
+                if(mMyApplication.getMURL(0).equals("0")){
+                    if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(PersonalSetActivity.this, MylistActivity.class);
                     } else {
                         intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
@@ -251,15 +233,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
 
-    }
-    public void Click_Resume(){
-        String data = JsonChnge(AesKey,UserId, token);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
-        flg ="3";
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
     }
 
     //转换为Json格式并且AES加密
@@ -353,10 +326,10 @@ public class PersonalSetActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                PreferenceUtils.clear();
+                mPreferenceUtils.clear();
                 Intent intentClose = new Intent();
                 intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                myApplication.setAct(getString(R.string.Search));
+                mMyApplication.setAct(getString(R.string.Search));
                 intentClose.setClass(PersonalSetActivity.this, SearchActivity.class);
                 intentClose.putExtra("act", "");
                 startActivity(intentClose);
@@ -406,7 +379,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         public void onClick(View View) {
             String ResumeIdNum = "";
             String ResumeStatus = "";
-            PreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
+            mPreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(PersonalSetActivity.this, ResumeActivity.class);
@@ -437,19 +410,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                     }
                     break;
             }
-            myApplication.setResumeId(ResumeIdNum);
-            myApplication.setresume_status(ResumeStatus);
+            mMyApplication.setResumeId(ResumeIdNum);
+            mMyApplication.setresume_status(ResumeStatus);
             startActivity(intent);
         }
     };
 
     //履歴書设定
     public void load(){
-        int resumeNumber = PreferenceUtils.getresume_number();
-        String Email = PreferenceUtils.getEmail();
+        int resumeNumber = mPreferenceUtils.getresume_number();
+        String Email = mPreferenceUtils.getEmail();
 //        deviceId = PreferenceUtils.getdeviceId();
-        if(myApplication.getlast_name().length() > 0){
-            String name = myApplication.getlast_name() + myApplication.getfirst_name() + " 様";
+        if(mMyApplication.getlast_name().length() > 0){
+            String name = mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様";
             Log.d("PersonalSetActivity", "name:" + name);
             tvname.setText(name);
         }
@@ -462,19 +435,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 1:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
                 tvResumeSet2.setText(getString(R.string.tvResumeSet));
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 2:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
                 tvResumeSet3.setText(getString(R.string.tvResumeSet));
                 break;
             case 3:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
-                tvResumeSet3.setText(myApplication.getresume_name("3"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
+                tvResumeSet3.setText(mMyApplication.getresume_name("3"));
                 break;
         }
     }
@@ -491,8 +464,8 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     private void logout(){
         PostDate Pdata = new PostDate();
-        Pdata.setUserId(PreferenceUtils.getuserId());
-        Pdata.setToken(PreferenceUtils.gettoken());
+        Pdata.setUserId(mPreferenceUtils.getuserId());
+        Pdata.setToken(mPreferenceUtils.gettoken());
         Gson mGson1 = new Gson();
         String sdPdata = mGson1.toJson(Pdata,PostDate.class);
         AES mAes = new AES();
@@ -502,19 +475,19 @@ public class PersonalSetActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String enString = mAes.encrypt(mBytes,PreferenceUtils.getAesKey());
+        String enString = mAes.encrypt(mBytes, mPreferenceUtils.getAesKey());
         String data = enString.replace("\n", "").replace("+","%2B");
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_logout);
         param.put(getString(R.string.data),data);
         //数据通信处理（访问服务器，并取得访问结果）
         CommonAsyncTask commonAsyncTask = new CommonAsyncTask();
-        commonAsyncTask.setParams(PreferenceUtils.getdeviceId());
+        commonAsyncTask.setParams(mPreferenceUtils.getdeviceId());
         commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
             @Override
             public void onSuccess(String results) {
                 Log.d("PersonalSetActivity", "onSuccess: " + results);
-                switch (PreferenceUtils.getLoginFlag()){
+                switch (mPreferenceUtils.getLoginFlag()){
                     case "1":
                         mAuth.signOut();//googleのログアウト
                         break;
@@ -534,7 +507,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                         }).start();
                         break;
                 }
-                PreferenceUtils.clear();
+                mPreferenceUtils.clear();
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(PersonalSetActivity.this, SearchActivity.class);
