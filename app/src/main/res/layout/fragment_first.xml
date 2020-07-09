@@ -12,8 +12,8 @@
 
         <ScrollView
             android:id="@+id/sl_meg_first"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="visible">
 
             <LinearLayout
@@ -26,6 +26,13 @@
 
             </LinearLayout>
         </ScrollView>
+        <Button
+            android:id="@+id/next_first"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="再読み込み" />
 
         <TableLayout
             android:id="@+id/tl_meg_first"
