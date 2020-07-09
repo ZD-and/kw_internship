@@ -71,21 +71,12 @@ public class MylistActivity extends AppCompatActivity  {
     private ImageView ivmylist;
     private TextView tvmylist;
     private TextView tvtitle;
-//    private TextView tvlikecont;
-//    private TextView tvTopApplycont;
-    private TextView tvname;
-    private TextView tvemail;
-//    private TextView tltvlike;
-//    private TextView tltvEntered;
     private MyApplication myApplication;
     private PreferenceUtils PreferenceUtils;
 
     private TableLayout tllike;
     private TableLayout tltllike;
-    private TableLayout tlEntered;
-//    private TableLayout tlEnteredtitle;
     private TableLayout tltlEntered;
-//    private TableLayout tlliketitle;
 
     private TableRow tltrlike;
     private TableRow tltrEntered;
@@ -102,7 +93,6 @@ public class MylistActivity extends AppCompatActivity  {
     private LinkedList<String> listEnteredjobId;
     private LinkedList<String> listDelEnteredID;
 
-    private JSONArray likejobList;
     private JSONObject objjobinfo;
 
     private int DeleteIndex = -1;
@@ -117,10 +107,6 @@ public class MylistActivity extends AppCompatActivity  {
     private int ApplyDeleteIndex = -1;
 
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
-
-    private MyScrollView myScrollView;
-//    private LinearLayout mEnteredLayout;
-//    private LinearLayout mTopEnteredLayout;
 
     String TAG = "MylistActivity";
 
@@ -138,36 +124,9 @@ public class MylistActivity extends AppCompatActivity  {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-
-//        MyScrollView myScrollView_like  = (MyScrollView) pages.get(0).findViewById(R.id.SV_ScrollView_like);
-//        MyScrollView myScrollView_enter  = (MyScrollView) pages.get(1).findViewById(R.id.SV_ScrollView_enter);
-//        mEnteredLayout = (LinearLayout) findViewById(R.id.layout);
-//        mTopEnteredLayout = (LinearLayout) findViewById(R.id.top_layout);
-//        tvTopApplycont = (TextView) findViewById(R.id.tv_apply_cont_top);
-//        myScrollView_like.setOnScrollListener(this);
-//        myScrollView_enter.setOnScrollListener(this);
-        //当布局的状态或者控件的可见性发生改变回调的接口
-//        findViewById(R.id.mylist_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                //这一步很重要，使得上面的布局和下面的布局重合
-////                onScroll(myScrollView.getScrollY());
-//            }
-//        });
         CreateNew();
         Initialization();
-//        Log.w("tvTopApplycont", tvTopApplycont.getText().toString());
     }
-    /**
-     * 滚动的回调方法，当滚动的Y距离大于或者等于 购买布局距离父类布局顶部的位置，就显示购买的悬浮框
-     * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框
-     *
-     */
-//    @Override
-//    public void onScroll(int scrollY) {
-//        int mBuyLayout2ParentTop = Math.max(scrollY, mEnteredLayout.getTop());
-//        mTopEnteredLayout.layout(0, mBuyLayout2ParentTop, mTopEnteredLayout.getWidth(), mBuyLayout2ParentTop + mTopEnteredLayout.getHeight());
-//    }
 
     private void initPages() {
         pages = new ArrayList<View>();
@@ -224,7 +183,6 @@ public class MylistActivity extends AppCompatActivity  {
         listIBTN_DelEnteredjob = new LinkedList<ImageView>();
         listEnteredjobId = new LinkedList<String>();
         listDelEnteredID = new LinkedList<String>();
-        likejobList = new JSONArray();
         objjobinfo = new JSONObject();
     }
     //初始化
@@ -243,15 +201,12 @@ public class MylistActivity extends AppCompatActivity  {
         tvmylist.setTextColor(Color.parseColor("#5EACE2"));
         tllike = (TableLayout)pages.get(0).findViewById(R.id.tl_like);
         tltllike = (TableLayout)pages.get(0).findViewById(R.id.tl_tl_like);
-        tlEntered = (TableLayout)pages.get(1). findViewById(R.id.tl_Entered);
         tltlEntered = (TableLayout) pages.get(1).findViewById(R.id.tl_tl_Entered);
         tltrlike = (TableRow) pages.get(0).findViewById(R.id.tl_tr_like);
         tltrEntered = (TableRow) pages.get(1).findViewById(R.id.tl_tr_Entered);
 //        tvlikecont = (TextView) findViewById(R.id.tv_like_cont);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText("マイリスト");
-        tvname = (TextView) findViewById(R.id.tv_userinfo_name);
-        tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(MylistActivity.this);
         Act = myApplication.getAct();
@@ -259,14 +214,8 @@ public class MylistActivity extends AppCompatActivity  {
         AesKey = PreferenceUtils.getAesKey();
         userId = PreferenceUtils.getuserId();
         token = PreferenceUtils.gettoken();
-        if(myApplication.getlast_name().length() > 0){
-            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
-        }
-        tvemail.setText(PreferenceUtils.getEmail());
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
-//            tllike.setVisibility(View.GONE);
-//            tlEntered.setVisibility(View.VISIBLE);
         }
         getSearchResults();
     }
@@ -456,8 +405,6 @@ public class MylistActivity extends AppCompatActivity  {
                     ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
                     Log.d(TAG+"**ApplyjobpageCount**", ApplyjobpageCount+"");
                     Log.d(TAG+"**ApplyjobCount**", ApplyjobCount+"");
-                    //tvApplycont.setText(ApplyjobCount + "件");
-//                    tvTopApplycont.setText(ApplyjobCount + "件");
                     if(Applyjobpage >= ApplyjobpageCount){
                         tltrEntered.setVisibility(View.GONE);
                     } else {
@@ -465,11 +412,9 @@ public class MylistActivity extends AppCompatActivity  {
                     }
                     addApplyjob(job);
                 }
-//                Log.w(TAG+"tvTopApplycont", tvTopApplycont.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            myScrollView.setVisibility(View.VISIBLE);
         }
     }
     //解密数据,移动到下一个画面

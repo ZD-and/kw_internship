@@ -47,8 +47,6 @@ public class ContactActivity extends AppCompatActivity {
     private ImageView ivbcontact;
     private TextView tvbcontact;
     private TextView tvtitle;
-    private TextView tvname;
-    private TextView tvemail;
     private TextView tvshow;
 
     private TableLayout tlcontact;
@@ -76,8 +74,6 @@ public class ContactActivity extends AppCompatActivity {
         list_employer_id = new LinkedList<String>();
         list_company_name = new LinkedList<String>();
         list_address = new LinkedList<String>();
-        tvname = (TextView) findViewById(R.id.tv_userinfo_name);
-        tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         tvshow = (TextView) findViewById(R.id.tv_show);
         ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
         tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
@@ -91,10 +87,8 @@ public class ContactActivity extends AppCompatActivity {
         AesKey = mPreferenceUtils.getAesKey();
         userId = mPreferenceUtils.getuserId();
         token = mPreferenceUtils.gettoken();
-        tvemail.setText(mPreferenceUtils.getEmail());
         mMyApplication.setContactDialog("0",0);
         if(mMyApplication.getlast_name().length() > 0){
-            tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
             urllodad();
         }
     }

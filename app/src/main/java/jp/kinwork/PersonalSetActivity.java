@@ -16,16 +16,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
 import com.twitter.sdk.android.core.TwitterCore;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import jp.kinwork.Common.AES;
+import jp.kinwork.Common.CommonAsyncTask;
 import jp.kinwork.Common.MyApplication;
+import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 public class PersonalSetActivity extends AppCompatActivity {
 
-
+    final static String PARAM_logout = "/usersMobile/logoutMobile";
     private TextView tvtitle;
     private TextView tvResumeSet1;
     private TextView tvResumeSet2;
@@ -168,39 +175,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                     intent.putExtra("Act", "person");
                     intent.putExtra("resume_status", "");
                     intent.putExtra("resume_Num", "");
+                    startActivity(intent);
                     break;
                 //跳转密码变更画面
                 case R.id.tr_changpw:
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
+                    startActivity(intent);
                     break;
                 //退出登录
                 case R.id.tr_LoginOut:
-                    switch (PreferenceUtils.getLoginFlag()){
-                        case "1":
-                            mAuth.signOut();//googleのログアウト
-                            break;
-                        case "2":
-                            LoginManager.getInstance().logOut();//facebookのログアウト
-                            break;
-                        case "4":
-                            TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
-                            break;
-                        case "5":
-                            new Thread(new Runnable() {
-                                public void run() {
-                                    if(mLineApiClient.getProfile().isSuccess()){
-                                        mLineApiClient.logout();
-                                    }
-                                }
-                            }).start();
-                            break;
-                    }
-                    PreferenceUtils.clear();
-                    intent.setClass(PersonalSetActivity.this, SearchActivity.class);
-                    intent.putExtra("act", "");
+                    logout();
                     break;
             }
-            startActivity(intent);
+
         }
     };
     //履歴書画面按钮
@@ -290,5 +277,61 @@ public class PersonalSetActivity extends AppCompatActivity {
             tlResumeSet.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void logout(){
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(PreferenceUtils.getuserId());
+        Pdata.setToken(PreferenceUtils.gettoken());
+        Gson mGson1 = new Gson();
+        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
+        AES mAes = new AES();
+        byte[] mBytes = null;
+        try {
+            mBytes = sdPdata.getBytes("UTF8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String enString = mAes.encrypt(mBytes,PreferenceUtils.getAesKey());
+        String data = enString.replace("\n", "").replace("+","%2B");
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_logout);
+        param.put(getString(R.string.data),data);
+        //数据通信处理（访问服务器，并取得访问结果）
+        CommonAsyncTask commonAsyncTask = new CommonAsyncTask();
+        commonAsyncTask.setParams(PreferenceUtils.getdeviceId());
+        commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
+            @Override
+            public void onSuccess(String results) {
+                Log.d("PersonalSetActivity", "onSuccess: " + results);
+                switch (PreferenceUtils.getLoginFlag()){
+                    case "1":
+                        mAuth.signOut();//googleのログアウト
+                        break;
+                    case "2":
+                        LoginManager.getInstance().logOut();//facebookのログアウト
+                        break;
+                    case "4":
+                        TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
+                        break;
+                    case "5":
+                        new Thread(new Runnable() {
+                            public void run() {
+                                if(mLineApiClient.getProfile().isSuccess()){
+                                    mLineApiClient.logout();
+                                }
+                            }
+                        }).start();
+                        break;
+                }
+                PreferenceUtils.clear();
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.setClass(PersonalSetActivity.this, SearchActivity.class);
+                intent.putExtra("act", "");
+                startActivity(intent);
+            }
+        });
+        commonAsyncTask.execute(param);
     }
 }

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,6 +38,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.linecorp.linesdk.Scope;
 import com.linecorp.linesdk.api.LineApiClient;
@@ -48,7 +49,6 @@ import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
@@ -88,7 +88,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     final static String PARAM_login = "/usersMobile/login";
     final static String PARAM_Forgetwe = "/usersMobile/sendPasswordRecoverMail";
     final static String PARAM_init = "/MypagesMobile/initMypageData";
-    final static String other_Login = "/usersMobile/otherLogin";
+    final static String PARAM_other_Login = "/usersMobile/otherLogin";
+    final static String PARAM_setAndroidToken = "/usersMobile/setAndroidToken";
 
     private String mDeviceId;
     private String mAesKey;
@@ -101,15 +102,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String mPage;
     private String mFlg;
     private String mActivity = "";
-    private String message = "";
     private String mJobInfo;
     private EditText mEdLoginEmail;
     private EditText mEdPassword;
-    private boolean mProcessResult;
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
-    private Intent mIntent;
 
+    private String mDeviceToken;
     private ProgressDialog mDialog;
     String TAG = "LoginActivity";
     String mLoginFlag ="";
@@ -170,6 +169,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.Click_Forgetpw).setOnClickListener(this);
         findViewById(R.id.MakeNewuser_Click).setOnClickListener(this);
 
+//        findViewById(R.id.login_btn_google).setOnClickListener(this);
+//        findViewById(R.id.login_btn_facebook).setOnClickListener(this);
+//        findViewById(R.id.login_btn_yahoo).setOnClickListener(this);
+//        findViewById(R.id.login_btn_twitter).setOnClickListener(this);
+//        findViewById(R.id.login_btn_line).setOnClickListener(this);
+
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(LoginActivity.this);
         mKeyword = mMyApplication.getkeyword();
@@ -178,16 +183,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mYearlyIncome = mMyApplication.getyearlyIncome();
         mPage = mMyApplication.getpage();
         mJobInfo = mMyApplication.getjobinfo();
-        mIntent = getIntent();
-        mActivity = mIntent.getStringExtra(getString(R.string.Activity));
+        mActivity = getIntent().getStringExtra(getString(R.string.Activity));
         mDialog = new ProgressDialog(this);
         mDialog.setMessage(getString(R.string.login)) ;
         mAuth = FirebaseAuth.getInstance();
+        getDeviceToken();
         initLine();
         getYahooUserInfo();
         initFaceBook();
         initTwitter();
         initGoogle();
+        Log.d(TAG, "saveid:" +mPreferenceUtils.getsaveid());
     }
 
     //登录处理
@@ -198,6 +204,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         urllodad(mEmail, mPassword);
     }
 
+    private void getDeviceToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        mDeviceToken = task.getResult().getToken();
+
+                        Log.d(TAG, "androidデバイストークン："+mDeviceToken);
+                    }
+                });
+    }
 
     //密码忘记的时候，再取得
     public void getPassword(){
@@ -216,12 +239,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         new GithubQueryTask().execute(param);
     }
 
-    //新账号作成画面移动
-    public void MakeNewuser_Click(Class<?> act){
-        Intent intent = new Intent();
-
-    }
-
     //设备IDと対象Key取得
     private void load_id_key(){
         SharedPreferences object = getSharedPreferences("Initial", Context.MODE_PRIVATE);
@@ -238,6 +255,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Map<String,String>param = new HashMap<String, String>();
         if (mFlg.equals("0")){
             param.put("file",PARAM_login);
+        } else if (mFlg.equals("3")){
+            param.put(getString(R.string.file), PARAM_setAndroidToken);
         } else {
             param.put(getString(R.string.file),PARAM_init);
         }
@@ -247,16 +266,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //转换为Json格式并且AES加密
-    private static String JsonChnge(String AesKey,String Data_a,String Data_b,String Flg) {
+    private String JsonChnge(String AesKey,String Data_a,String Data_b,String Flg) {
         PostDate Pdata = new PostDate();
-        if(! Flg.equals("2")){
+        if(Flg.equals("0")){
             Pdata.setEmail(Data_a);
-            if(! Flg.equals("1")){
-                Pdata.setPassword(Data_b);
-            }
-        } else {
+            Pdata.setPassword(Data_b);
+        }
+        if(Flg.equals("2") || Flg.equals("3")){
             Pdata.setUserId(Data_a);
             Pdata.setToken(Data_b);
+            if(Flg.equals("3")){
+                Pdata.setAndroidToken(mDeviceToken);
+            }
+        }
+        if(Flg.equals("1")){
+            Pdata.setEmail(Data_a);
         }
         Gson mGson1 = new Gson();
         String sdPdata = mGson1.toJson(Pdata,PostDate.class);
@@ -304,19 +328,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mDialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    mProcessResult = obj.getBoolean(getString(R.string.processResult));
-                    message = obj.getString(getString(R.string.message));
-                    if(mProcessResult == true) {
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
+                    if(processResult) {
                         String returnData = obj.getString(getString(R.string.returnData));
                         if(mFlg.equals("0")){
                             decryptchange(returnData);
                         } else if(mFlg.equals("2")){
-                            setmMyApplication(returnData);
+                            setMyApplication(returnData);
+                        } else if(mFlg.equals("3")){
+                            mPreferenceUtils.setSendAndroidTokenProcessResult(processResult);
+                            MoveScreen();
                         } else {
                             alertdialog("",getString(R.string.alertdialog8));
                         }
                     } else {
-                        alertdialog("エラー",message);
+                        if(mFlg.equals("3")){
+                            mPreferenceUtils.setSendAndroidTokenProcessResult(processResult);
+                            MoveScreen();
+                        } else {
+                            alertdialog("エラー",message);
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -376,8 +408,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         urllodad(userid,token);
     }
 
+    private void sendDeviceToken(){
+        mFlg = "3";
+        String userid = mMyApplication.getuser_id();
+        String token = mMyApplication.getToken();
+        urllodad(userid,token);
+    }
+
     //設定の基本情報をセット
-    private void setmMyApplication(String data){
+    private void setMyApplication(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data, mAesKey);
         Log.d("***+++datas+++***", datas);
@@ -424,13 +463,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }catch (Exception e){
             e.printStackTrace();
         }
-        MoveScreen();
+//        MoveScreen();
+        sendDeviceToken();
     }
 
     //画面移動
     private void MoveScreen(){
         String saveid = mPreferenceUtils.getsaveid();
-        Log.d("**saveid**", saveid);
+        Log.d(TAG, "saveid:" +saveid);
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (saveid){
@@ -821,7 +861,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         pd.setFlag(flag);
         String processData = new AESprocess().getencrypt(new Gson().toJson(pd,PostDate.class),mAesKey);
         Map<String,String> param = new HashMap<String, String>();
-        param.put(getString(R.string.file),other_Login);
+        param.put(getString(R.string.file), PARAM_other_Login);
         param.put(getString(R.string.data),processData);
         //数据通信处理（访问服务器，并取得访问结果）
         CommonAsyncTask commonAsyncTask = new CommonAsyncTask();

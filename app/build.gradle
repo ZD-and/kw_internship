@@ -76,4 +76,6 @@ dependencies {
 
     //ライセンス情報用ライブラリ
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
 }

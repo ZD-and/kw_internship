@@ -12,9 +12,9 @@
     <application
         android:name=".Common.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/phone_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/phone_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".PersonalSetActivity"
@@ -92,6 +92,15 @@
            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
            />
+        <service
+            android:name=".Common.KinworkMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/kinwork_notification_icon" />
     </application>
 
 </manifest>
