@@ -155,7 +155,6 @@ public class MylistActivity extends AppCompatActivity  {
 //            }
 //        });
         CreateNew();
-        Initialization();
 //        Log.w("tvTopApplycont", tvTopApplycont.getText().toString());
     }
     /**
@@ -226,6 +225,11 @@ public class MylistActivity extends AppCompatActivity  {
         listDelEnteredID = new LinkedList<String>();
         likejobList = new JSONArray();
         objjobinfo = new JSONObject();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Initialization();
     }
     //初始化
     public void Initialization(){

@@ -46,14 +46,19 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 
 public class PersonalSetActivity extends AppCompatActivity {
-    final static String PARAM_File = "/usersMobile/personalSet";
+    final static String PARAM_File = "/MypagesMobile/initMypageData";
+
+    private MyApplication myApplication;
+    private PreferenceUtils PreferenceUtils;
+
+    private String flg = "";
 
     private String deviceId;
     private String AesKey;
     private String UserId;
     private String token;
 
-    private String flg = "";
+
 
     private TextView tvtitle;
     private TextView tvResumeSet1;
@@ -75,16 +80,22 @@ public class PersonalSetActivity extends AppCompatActivity {
     private TextView tvemail;
 
 
-    private MyApplication myApplication;
-    private PreferenceUtils PreferenceUtils;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalset);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
         load();
         urllodad();
     }
+
     //初始化
     public void Initialization(){
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
@@ -200,23 +211,32 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
     public void Click_basicinfoedit(){
         String data = JsonChnge(AesKey,UserId, token);
-        Map<String,String> param1 = new HashMap<String, String>();
-        param1.put("file",PARAM_File);
-        param1.put("data",data);
-        param1.put("name",flg);
-        flg ="1";
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg= "1";
         //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param1);
+        new GithubQueryTask().execute(param);
+
     }
     public void Click_changpw(){
         String data = JsonChnge(AesKey,UserId, token);
-        Map<String,String> param2 = new HashMap<String, String>();
-        param2.put("file",PARAM_File);
-        param2.put("data",data);
-        param2.put("name",flg);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
         flg ="2";
         //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param2);
+        new GithubQueryTask().execute(param);
+
+    }
+    public void Click_Resume(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="3";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
     }
 
     //转换为Json格式并且AES加密
@@ -272,17 +292,26 @@ public class PersonalSetActivity extends AppCompatActivity {
                             intent.putExtra("resume_status", "");
                             intent.putExtra("resume_Num", "");
                             startActivity(intent);
-                        }else if(flg.equals("2")){
+                        }
+                        else if(flg.equals("2")){
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                             startActivity(intent);
-                        }else {
-                            Intent intent_personalsettings = new Intent();
-                            intent_personalsettings.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
-                            startActivity(intent_personalsettings);
                         }
-                    } else {
+                        //履歴書隐藏/显示
+                        else if(flg.equals("3")){
+                            if(tlResumeSet.getVisibility() == View.VISIBLE){
+                                tlResumeSet.setVisibility(View.GONE);
+                            } else {
+                                tlResumeSet.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        else {
+
+                        }
+                }
+                    else {
                         alertdialog(message);
                     }
                 }catch (Exception e){
@@ -415,15 +444,5 @@ public class PersonalSetActivity extends AppCompatActivity {
                 tvResumeSet3.setText(myApplication.getresume_name("3"));
                 break;
         }
-    }
-
-    //履歴書隐藏/显示
-    public void Click_Resume(){
-        if(tlResumeSet.getVisibility() == View.VISIBLE){
-            tlResumeSet.setVisibility(View.GONE);
-        } else {
-            tlResumeSet.setVisibility(View.VISIBLE);
-        }
-
     }
 }
