@@ -88,7 +88,6 @@ public class PersonalSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalset);
-
     }
 
     @Override
@@ -299,12 +298,14 @@ public class PersonalSetActivity extends AppCompatActivity {
                             intent.putExtra("resume_status", "");
                             intent.putExtra("resume_Num", "");
                             startActivity(intent);
+                            flg = "";
                         }
                         else if(flg.equals("2")){
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                             startActivity(intent);
+                            flg = "";
                         }
                         //履歴書隐藏/显示
                         else if(flg.equals("3")){
@@ -313,6 +314,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                             } else {
                                 tlResumeSet.setVisibility(View.VISIBLE);
                             }
+                            flg = "";
                         }
                         else {
 
