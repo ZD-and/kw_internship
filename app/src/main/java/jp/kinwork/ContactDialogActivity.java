@@ -336,6 +336,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                         currentpage=currentpage+1;
                         getSearchResults(Integer.toString(currentpage));
                         list_slmeg.get(0).setBottom(nMaildisplaypage-1);
+                        flg="";
                     }
 
                 }
@@ -363,6 +364,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                         currentpage=currentpage+1;
                         getSearchResults(Integer.toString(currentpage));
                         list_slmeg.get(1).setBottom(nMaildisplaypage-1);
+                        flg="0";
                     }
 
                 }
@@ -391,6 +393,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                         currentpage=currentpage+1;
                         getSearchResults(Integer.toString(currentpage));
                         list_slmeg.get(2).setBottom(nMaildisplaypage-1);
+                        flg="1";
                     }
 
                 }
@@ -520,6 +523,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
                 educationInfo(0,"");
+                educationInfo(1,"1");
+                educationInfo(2,"0");
+
             }
         }).show();
     }
