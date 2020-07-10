@@ -330,7 +330,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     View view = (list_slmeg.get(0)).getChildAt(0);
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
                         nextfirst.setVisibility(VISIBLE);
-
                     }
                 }
                 return false;
@@ -381,7 +380,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
                         nextthird.setVisibility(VISIBLE);
                     }
-
                 }
                 return false;
             }
@@ -526,6 +524,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 mMyApplication.setContactDialog(DisplayEmailFlg,4);
                 educationInfo(1,"1");
                 educationInfo(0,"");
+                educationInfo(2,"0");
+
 
             }
         } catch (JSONException e) {
