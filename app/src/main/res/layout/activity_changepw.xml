@@ -67,8 +67,7 @@
         android:layout_marginTop="10dp"
         android:stretchColumns="*">
 
-        <TableRow
-            android:layout_marginBottom="10dp">
+
 
     <TextView
         android:id="@+id/tv_oldpw"
@@ -87,10 +86,9 @@
 
     <EditText
         android:id="@+id/et_oldpw"
-        android:layout_width="230dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
@@ -104,7 +102,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_oldpw" />
 
-        </TableRow>
+
     </TableLayout>
 
         <View  android:layout_height="1px"
@@ -118,18 +116,15 @@
         android:layout_marginTop="10dp"
         android:stretchColumns="*">
 
-        <TableRow
-            android:layout_marginBottom="10dp">
 
         <TextView
         android:id="@+id/tv_newpw"
             android:layout_width="30dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:gravity="left"
-            android:text="新しい
-            パスワード"
+            android:text="新しいパスワード"
             android:textSize="13sp"
             android:textColor="@color/hint_foreground_holo_dark"
             android:textStyle="bold"
@@ -139,8 +134,8 @@
 
     <EditText
         android:id="@+id/et_newpw"
-        android:layout_width="230dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
@@ -157,7 +152,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_newpw" />
 
-        </TableRow>
     </TableLayout>
 
         <View  android:layout_height="1px"
@@ -171,18 +165,15 @@
         android:layout_marginTop="10dp"
         android:stretchColumns="*">
 
-        <TableRow
-            android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/tv_newpwConform"
         android:layout_width="30dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:gravity="left"
-        android:text="新しい
-        パスワード"
+        android:text="新しいパスワード"
         android:textSize="13sp"
         android:textColor="@color/hint_foreground_holo_dark"
         android:textStyle="bold"
@@ -192,8 +183,8 @@
 
     <EditText
         android:id="@+id/et_newpwConform"
-        android:layout_width="230dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
@@ -209,8 +200,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_newpwConform" />
-
-        </TableRow>
     </TableLayout>
         <View  android:layout_height="1px"
             android:layout_width="match_parent"
