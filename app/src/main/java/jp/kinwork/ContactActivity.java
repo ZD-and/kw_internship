@@ -64,13 +64,13 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-
     }
     @Override
     protected void onStart() {
         super.onStart();
         Initialization();
     }
+
     public void Initialization() {
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(ContactActivity.this);

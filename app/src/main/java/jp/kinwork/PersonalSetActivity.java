@@ -73,7 +73,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
 
-    // private String deviceId;
+//    private String deviceId;
     private TextView tvname;
     private TextView tvemail;
 
@@ -85,7 +85,6 @@ public class PersonalSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalset);
-
     }
 
     @Override
@@ -211,6 +210,16 @@ public class PersonalSetActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
+        flg = "0";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+    public void Click_Resume(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="3";
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -302,11 +311,12 @@ public class PersonalSetActivity extends AppCompatActivity {
                             } else {
                                 tlResumeSet.setVisibility(View.VISIBLE);
                             }
+
                         }
                         else {
 
                         }
-                }
+                    }
                     else {
                         alertdialog(message);
                     }
@@ -352,19 +362,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             switch (View.getId()) {
-                //跳转基本情报设定画面
-                case R.id.tr_basicinfoedit:
-                    intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
-                    intent.putExtra("Act", "person");
-                    intent.putExtra("resume_status", "");
-                    intent.putExtra("resume_Num", "");
-                    startActivity(intent);
-                    break;
-                //跳转密码变更画面
-                case R.id.tr_changpw:
-                    intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
-                    startActivity(intent);
-                    break;
                 //退出登录
                 case R.id.tr_LoginOut:
                     logout();
@@ -451,17 +448,6 @@ public class PersonalSetActivity extends AppCompatActivity {
                 break;
         }
     }
-
-    //履歴書隐藏/显示
-    public void Click_Resume(){
-        if(tlResumeSet.getVisibility() == View.VISIBLE){
-            tlResumeSet.setVisibility(View.GONE);
-        } else {
-            tlResumeSet.setVisibility(View.VISIBLE);
-        }
-
-    }
-
     private void logout(){
         PostDate Pdata = new PostDate();
         Pdata.setUserId(mPreferenceUtils.getuserId());

@@ -124,7 +124,8 @@ public class MylistActivity extends AppCompatActivity  {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-
+        CreateNew();
+        Initialization();
     }
 
     private void initPages() {
