@@ -97,6 +97,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private LinkedList<TextView> list_tvisReaded;
     private LinkedList<ImageView> list_ivread;
     private LinkedList<String> list_String;
+    private LinkedList<String> list_String2;
+
     private LinkedList<JSONObject> list_obj;
 
     private LinkedList<EditText>list_ettitle;
@@ -261,6 +263,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_tvisReaded = new LinkedList<TextView>();
         list_ivread     = new LinkedList<ImageView>();
         list_String     = new LinkedList<String>();
+        list_String2     = new LinkedList<String>();
+
         list_obj     = new LinkedList<JSONObject>();
 
         list_llmeg = new LinkedList<LinearLayout>();
@@ -520,9 +524,11 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 Setsendmeg(list_slmeg.get(0),list_llmeg.get(0),objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
             }else {
                 JSONArray obj = new JSONArray(decryptdata);
+                list_String2     = new LinkedList<String>();
                 for(int x=(nMaildisplaypage*10)+0; x < (nMaildisplaypage*10)+obj.length(); x++){
                     try {
                         list_String.add(x,obj.getString(x-(nMaildisplaypage*10)));
+                        list_String2.add(x,obj.getString(x-(nMaildisplaypage*10)));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -539,8 +545,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     }
     //通信信息取得
     public void educationInfo(int pages,String flg){
-        list_slmeg.get(pages).scrollTo(0,0);
-        list_llmeg.get(pages).removeAllViews();
+//        list_slmeg.get(pages).scrollTo(0,0);
+//        list_llmeg.get(pages).removeAllViews();
         list_tlnamedata.clear();
         list_tvtitle.clear();
         list_tvsubtitle.clear();
@@ -548,9 +554,11 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_tlreply.clear();
         list_ivread.clear();
         list_obj.clear();
-        for(int i=0; i < list_String.size(); i++){
+        Log.d(TAG,"list_String.size():"+ list_String.size());
+        Log.d(TAG,"list_String2.size():"+ list_String2.size());
+        for(int i=0; i < list_String2.size(); i++){
             try {
-                JSONObject obj = new JSONObject(list_String.get(i));
+                JSONObject obj = new JSONObject(list_String2.get(i));
                 JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
                 Log.d(TAG,"obj:"+ objMyMail.toString());
                 View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
