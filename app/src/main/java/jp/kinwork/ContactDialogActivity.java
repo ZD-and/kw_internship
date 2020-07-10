@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -282,43 +284,38 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_slmeg.add((ScrollView) pages.get(1).findViewById(R.id.sl_meg_second));
         list_slmeg.add((ScrollView) pages.get(2).findViewById(R.id.sl_meg_third));
 
-//        nextfirst=pages.get(0).findViewById(R.id.next_first);
-//        nextfirst.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                currentpage=currentpage+1;
-//                getSearchResults(Integer.toString(currentpage));
-//                list_slmeg.get(0).setBottom(nMaildisplaypage-1);
-//                nextfirst.setVisibility(View.GONE);
-//
-//            }
-//        });
-//        nextsecond=pages.get(1).findViewById(R.id.next_second);
-//        nextsecond.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                currentpage=currentpage+1;
-//                getSearchResults(Integer.toString(currentpage));
-//                list_slmeg.get(1).setBottom(nMaildisplaypage-1);
-//                nextsecond.setVisibility(View.GONE);
-//
-//            }
-//        });
-//        nextthird=pages.get(2).findViewById(R.id.next_third);
-//        nextthird.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                currentpage=currentpage+1;
-//                getSearchResults(Integer.toString(currentpage));
-//                list_slmeg.get(2).setBottom(nMaildisplaypage-1);
-//                nextthird.setVisibility(View.GONE);
-//
-//            }
-//        });
+        nextfirst=pages.get(0).findViewById(R.id.next_first);
+        nextfirst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentpage=currentpage+1;
+                getSearchResults(Integer.toString(currentpage));
+                nextfirst.setVisibility(View.GONE);
+            }
+        });
+        nextsecond=pages.get(1).findViewById(R.id.next_second);
+        nextsecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentpage=currentpage+1;
+                getSearchResults(Integer.toString(currentpage));
+                nextsecond.setVisibility(View.GONE);
+            }
+        });
+        nextthird=pages.get(2).findViewById(R.id.next_third);
+        nextthird.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentpage=currentpage+1;
+                getSearchResults(Integer.toString(currentpage));
+                nextthird.setVisibility(View.GONE);
+            }
+        });
 
         list_slmeg.get(0).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN :
                         break;
@@ -332,18 +329,15 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     index = 0;
                     View view = (list_slmeg.get(0)).getChildAt(0);
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
-//                        nextfirst.setVisibility(VISIBLE);
-                        currentpage=currentpage+1;
-                        getSearchResults(Integer.toString(currentpage));
-                        list_slmeg.get(0).setBottom(nMaildisplaypage-1);
-                        flg="";
-                    }
+                        nextfirst.setVisibility(VISIBLE);
 
+                    }
                 }
                 return false;
             }
 
         });
+
         list_slmeg.get(1).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -360,11 +354,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     index = 0;
                     View view = (list_slmeg.get(1)).getChildAt(0);
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
-//                        nextsecond.setVisibility(VISIBLE);
-                        currentpage=currentpage+1;
-                        getSearchResults(Integer.toString(currentpage));
-                        list_slmeg.get(1).setBottom(nMaildisplaypage-1);
-                        flg="0";
+                        nextsecond.setVisibility(VISIBLE);
                     }
 
                 }
@@ -389,11 +379,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     index = 0;
                     View view = (list_slmeg.get(2)).getChildAt(0);
                     if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
-//                        nextthird.setVisibility(VISIBLE);
-                        currentpage=currentpage+1;
-                        getSearchResults(Integer.toString(currentpage));
-                        list_slmeg.get(2).setBottom(nMaildisplaypage-1);
-                        flg="1";
+                        nextthird.setVisibility(VISIBLE);
                     }
 
                 }
@@ -507,27 +493,16 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                             decryptchange(obj.getString(getString(R.string.returnData)),name);
                         }
                     }else {
-                        alertdialogone(meg);
+                        Toast.makeText(getApplicationContext(),"メールはもうありません",Toast.LENGTH_LONG).show();
+                        educationInfo(0,"");
+                        educationInfo(1,"1");
+                        educationInfo(2,"0");
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }
-    }
-
-    private void alertdialogone(String meg){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("メールはもうありません。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
-                educationInfo(0,"");
-                educationInfo(1,"1");
-                educationInfo(2,"0");
-
-            }
-        }).show();
     }
     //解密，并且保存得到的数据
     public void decryptchange(String data,String inputname){
@@ -548,10 +523,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 for(int x=(nMaildisplaypage*10)+0; x < (nMaildisplaypage*10)+obj.length(); x++){
                     try {
                         list_String.add(x,obj.getString(x-(nMaildisplaypage*10)));
-//                        if(obj.getString(x-(nMaildisplaypage*10))==null){
-//                            ismailpageend=true;
-//                            break;
-//                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

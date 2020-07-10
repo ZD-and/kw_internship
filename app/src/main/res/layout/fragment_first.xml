@@ -9,7 +9,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <FrameLayout>
         <ScrollView
             android:id="@+id/sl_meg_first"
             android:layout_width="match_parent"
@@ -29,10 +29,11 @@
         <Button
             android:id="@+id/next_first"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:text="再読み込み" />
+        </FrameLayout>
 
         <TableLayout
             android:id="@+id/tl_meg_first"
