@@ -213,6 +213,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
+        flg = "0";
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -221,7 +222,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
-        flg= "1";
+        flg = "1";
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
 
@@ -298,14 +299,12 @@ public class PersonalSetActivity extends AppCompatActivity {
                             intent.putExtra("resume_status", "");
                             intent.putExtra("resume_Num", "");
                             startActivity(intent);
-                            flg = "";
                         }
                         else if(flg.equals("2")){
                             Intent intent = new Intent();
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                             startActivity(intent);
-                            flg = "";
                         }
                         //履歴書隐藏/显示
                         else if(flg.equals("3")){
@@ -314,7 +313,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                             } else {
                                 tlResumeSet.setVisibility(View.VISIBLE);
                             }
-                            flg = "";
+
                         }
                         else {
 
