@@ -47,8 +47,6 @@ public class ContactActivity extends AppCompatActivity {
     private ImageView ivbcontact;
     private TextView tvbcontact;
     private TextView tvtitle;
-    private TextView tvname;
-    private TextView tvemail;
     private TextView tvshow;
 
     private TableLayout tlcontact;
@@ -66,9 +64,13 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
     }
-
     public void Initialization() {
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(ContactActivity.this);
@@ -76,8 +78,6 @@ public class ContactActivity extends AppCompatActivity {
         list_employer_id = new LinkedList<String>();
         list_company_name = new LinkedList<String>();
         list_address = new LinkedList<String>();
-        tvname = (TextView) findViewById(R.id.tv_userinfo_name);
-        tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         tvshow = (TextView) findViewById(R.id.tv_show);
         ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
         tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
@@ -91,10 +91,8 @@ public class ContactActivity extends AppCompatActivity {
         AesKey = mPreferenceUtils.getAesKey();
         userId = mPreferenceUtils.getuserId();
         token = mPreferenceUtils.gettoken();
-        tvemail.setText(mPreferenceUtils.getEmail());
         mMyApplication.setContactDialog("0",0);
         if(mMyApplication.getlast_name().length() > 0){
-            tvname.setText(mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様");
             urllodad();
         }
     }
@@ -309,10 +307,17 @@ public class ContactActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                mPreferenceUtils.clear();
+                Intent intentClose = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                mMyApplication.setAct(getString(R.string.Search));
+                intentClose.setClass(ContactActivity.this, SearchActivity.class);
+                intentClose.putExtra("act", "");
+                startActivity(intentClose);
             }
         }).show();
     }

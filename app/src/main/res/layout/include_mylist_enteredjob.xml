@@ -7,8 +7,7 @@
     <TableLayout
         android:id="@+id/tl_TableLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom">
+        android:layout_height="wrap_content">
         <TableLayout
             android:id="@+id/tl_e_basicinformation"
             android:layout_width="match_parent"
@@ -33,7 +32,8 @@
                     android:paddingLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="bottom"
-                    android:maxLines = "1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:text="会社名:"
                     android:textColor="@color/background_holo_dark"
                     android:textSize="12sp" />

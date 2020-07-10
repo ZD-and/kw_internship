@@ -12,41 +12,30 @@
         android:id="@+id/mylist_title"
         layout="@layout/title_bule"/>
 
-    <include
-        android:id="@+id/mylist_username"
-        layout="@layout/include_userinfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/frame_top_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mylist_username"
         app:tabIndicatorColor="@android:color/holo_blue_bright"
         app:tabIndicatorHeight="4dp"
         app:tabSelectedTextColor="@android:color/holo_blue_bright"
-        app:tabTextColor="@color/colorPrimary" />
+        app:tabTextColor="#3F51B5" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout"/>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 
 

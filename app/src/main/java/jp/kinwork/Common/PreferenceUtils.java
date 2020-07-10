@@ -113,6 +113,16 @@ public class PreferenceUtils {
         return sp.getString("loginFlag", "0");
     }
 
+    public void setSendAndroidTokenProcessResult(boolean processResult) {
+        editor.putBoolean("processResult", processResult);
+        editor.commit();
+    }
+
+    public boolean getSendAndroidTokenProcessResult () {
+        return sp.getBoolean("processResult", false);
+    }
+
+
     public void delresumeid() {
         editor.remove("resumeid_1");
         editor.remove("resumeid_2");

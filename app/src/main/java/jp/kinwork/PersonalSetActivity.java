@@ -1,8 +1,11 @@
 package jp.kinwork;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.sip.SipSession;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,19 +14,48 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.facebook.login.LoginManager;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
 import com.twitter.sdk.android.core.TwitterCore;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import jp.kinwork.Common.AES;
+import jp.kinwork.Common.CommonAsyncTask;
 import jp.kinwork.Common.MyApplication;
+import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import jp.kinwork.Common.AESprocess;
+
+import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
+import static jp.kinwork.Common.NetworkUtils.buildUrl;
+
 public class PersonalSetActivity extends AppCompatActivity {
+    final static String PARAM_File = "/MypagesMobile/initMypageData";
+
+    private MyApplication myApplication;
+    private PreferenceUtils PreferenceUtils;
+
+    private String flg = "";
+
+    final static String PARAM_logout = "/usersMobile/logoutMobile";
+    private String deviceId;
+    private String AesKey;
+    private String UserId;
+    private String token;
+
 
 
     private TextView tvtitle;
@@ -41,12 +73,12 @@ public class PersonalSetActivity extends AppCompatActivity {
     private ImageView ivpersonalsettings;
     private TextView tvpersonalsettings;
 
-//    private String deviceId;
+    // private String deviceId;
     private TextView tvname;
     private TextView tvemail;
 
-    private MyApplication myApplication;
-    private PreferenceUtils PreferenceUtils;
+    private MyApplication mMyApplication;
+    private PreferenceUtils mPreferenceUtils;
     private LineApiClient mLineApiClient;
     private FirebaseAuth mAuth;
 
@@ -61,17 +93,29 @@ public class PersonalSetActivity extends AppCompatActivity {
         super.onStart();
         Initialization();
         load();
+        urllodad();
     }
-
     //初始化
     public void Initialization(){
+        mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        loadd();
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
         tr_changpw=findViewById(R.id.tr_changpw);
         tr_LoginOut=findViewById(R.id.tr_LoginOut);
-        tr_basicinfoedit.setOnClickListener(Listener);
-        tr_changpw.setOnClickListener(Listener);
+        tr_basicinfoedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_basicinfoedit();
+            }
+        });
+        tr_changpw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_changpw();
+            }
+        });
         tr_LoginOut.setOnClickListener(Listener);
         tr_Resume=findViewById(R.id.tr_Resume);
         tr_Resume.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +133,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         tvResumeSet3.setOnClickListener(resumeListener);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText(getString(R.string.personalsettings));
+        deviceId = mPreferenceUtils.getdeviceId();
+        AesKey = mPreferenceUtils.getAesKey();
+        UserId = mPreferenceUtils.getuserId();
+        token = mPreferenceUtils.gettoken();
         ivpersonalsettings = (ImageView) findViewById(R.id.iv_b_personalsettings);
         tvpersonalsettings = (TextView) findViewById(R.id.tv_b_personalsettings);
         ivpersonalsettings.setImageResource(R.mipmap.blue_personalsettings);
@@ -101,8 +149,8 @@ public class PersonalSetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        myApplication = (MyApplication) getApplication();
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        mMyApplication = (MyApplication) getApplication();
+        mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         mLineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
         mAuth = FirebaseAuth.getInstance();
     }
@@ -112,10 +160,10 @@ public class PersonalSetActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         switch (View.getId()){
             case R.id.ll_b_search:
-                myApplication.setAct(getString(R.string.Search));
-                if(myApplication.getSURL(0).equals("0")){
-                    if(myApplication.getSApply(0).equals("0")){
-                        if(myApplication.getSearchResults(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Search));
+                if(mMyApplication.getSURL(0).equals("0")){
+                    if(mMyApplication.getSApply(0).equals("0")){
+                        if(mMyApplication.getSearchResults(0).equals("0")){
                             intent.setClass(PersonalSetActivity.this, SearchActivity.class);
                             intent.putExtra(getString(R.string.act),"");
                         } else {
@@ -131,16 +179,16 @@ public class PersonalSetActivity extends AppCompatActivity {
                 break;
             //Myリスト画面に移動
             case R.id.ll_b_contact:
-                if(myApplication.getContactDialog(0).equals("0")){
+                if(mMyApplication.getContactDialog(0).equals("0")){
                     intent.setClass(PersonalSetActivity.this, ContactActivity.class);
                 } else {
                     intent.setClass(PersonalSetActivity.this, ContactDialogActivity.class);
                 }
                 break;
             case R.id.ll_b_mylist:
-                myApplication.setAct(getString(R.string.Apply));
-                if(myApplication.getMURL(0).equals("0")){
-                    if(myApplication.getMApply(0).equals("0")){
+                mMyApplication.setAct(getString(R.string.Apply));
+                if(mMyApplication.getMURL(0).equals("0")){
+                    if(mMyApplication.getMApply(0).equals("0")){
                         intent.setClass(PersonalSetActivity.this, MylistActivity.class);
                     } else {
                         intent.setClass(PersonalSetActivity.this, ApplyActivity.class);
@@ -156,6 +204,148 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
+
+    //内容取得、通信
+    private void urllodad() {
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+    }
+    public void Click_basicinfoedit(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg= "1";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+
+    }
+    public void Click_changpw(){
+        String data = JsonChnge(AesKey,UserId, token);
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_File);
+        param.put("data",data);
+        flg ="2";
+        //数据通信处理（访问服务器，并取得访问结果）
+        new GithubQueryTask().execute(param);
+
+    }
+
+    //转换为Json格式并且AES加密
+    public static String JsonChnge(String AesKey,String data_a,String data_b) {
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(data_a);
+        Pdata.setToken(data_b);
+        Gson mGson = new Gson();
+        String sdPdata = mGson.toJson(Pdata,PostDate.class);
+        Log.d("***+++sdPdata+++***", sdPdata);
+        AESprocess AESprocess = new AESprocess();
+        String encrypt = AESprocess.getencrypt(sdPdata,AesKey);
+        Log.d("***+++encrypt+++***", encrypt);
+        return encrypt;
+    }
+
+    //访问服务器，并取得访问结果
+    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            Map<String, String> map = params[0];
+            String file = map.get(getString(R.string.file));
+            String data = map.get(getString(R.string.data));
+            Log.d("****file****", file);
+            Log.d("****data****", data);
+            URL searchUrl = buildUrl(file);
+            Log.d("****URL****", searchUrl.toString());
+            String githubSearchResults = null;
+            try {
+                githubSearchResults = getResponseFromHttpUrl(searchUrl,data,deviceId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return githubSearchResults;
+        }
+        @Override
+        protected void onPostExecute(String githubSearchResults) {
+            if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                Log.d("***Results***", githubSearchResults);
+                try {
+                    JSONObject obj = new JSONObject(githubSearchResults);
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
+                    Log.d("***+++msg+++***", message);
+                    if(processResult == true) {
+                        if(flg.equals("1")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
+                            intent.putExtra("Act", "person");
+                            intent.putExtra("resume_status", "");
+                            intent.putExtra("resume_Num", "");
+                            startActivity(intent);
+                        }
+                        else if(flg.equals("2")){
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
+                            startActivity(intent);
+                        }
+                        //履歴書隐藏/显示
+                        else if(flg.equals("3")){
+                            if(tlResumeSet.getVisibility() == View.VISIBLE){
+                                tlResumeSet.setVisibility(View.GONE);
+                            } else {
+                                tlResumeSet.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        else {
+
+                        }
+                }
+                    else {
+                        alertdialog(message);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else {
+
+            }
+        }
+}
+
+    //通信结果提示
+    private void alertdialog(String meg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                mPreferenceUtils.clear();
+                Intent intentClose = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                mMyApplication.setAct(getString(R.string.Search));
+                intentClose.setClass(PersonalSetActivity.this, SearchActivity.class);
+                intentClose.putExtra("act", "");
+                startActivity(intentClose);
+            }
+        }).show();
+    }
+
+    //本地情报取得
+    public void loadd(){
+        SharedPreferences object = getSharedPreferences("Information", Context.MODE_PRIVATE);
+        deviceId = object.getString(getString(R.string.Information_Name_deviceId),"A");
+        AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
+        UserId = object.getString(getString(R.string.userid),"A");
+        token = object.getString(getString(R.string.token),"A");
+    }
+
     //子功能画面按钮
     private View.OnClickListener Listener =new View.OnClickListener() {
         public void onClick(View View) {
@@ -168,47 +358,28 @@ public class PersonalSetActivity extends AppCompatActivity {
                     intent.putExtra("Act", "person");
                     intent.putExtra("resume_status", "");
                     intent.putExtra("resume_Num", "");
+                    startActivity(intent);
                     break;
                 //跳转密码变更画面
                 case R.id.tr_changpw:
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
+                    startActivity(intent);
                     break;
                 //退出登录
                 case R.id.tr_LoginOut:
-                    switch (PreferenceUtils.getLoginFlag()){
-                        case "1":
-                            mAuth.signOut();//googleのログアウト
-                            break;
-                        case "2":
-                            LoginManager.getInstance().logOut();//facebookのログアウト
-                            break;
-                        case "4":
-                            TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
-                            break;
-                        case "5":
-                            new Thread(new Runnable() {
-                                public void run() {
-                                    if(mLineApiClient.getProfile().isSuccess()){
-                                        mLineApiClient.logout();
-                                    }
-                                }
-                            }).start();
-                            break;
-                    }
-                    PreferenceUtils.clear();
-                    intent.setClass(PersonalSetActivity.this, SearchActivity.class);
-                    intent.putExtra("act", "");
+                    logout();
                     break;
             }
-            startActivity(intent);
+
         }
     };
+
     //履歴書画面按钮
     private View.OnClickListener resumeListener =new View.OnClickListener() {
         public void onClick(View View) {
             String ResumeIdNum = "";
             String ResumeStatus = "";
-            PreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
+            mPreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(PersonalSetActivity.this, ResumeActivity.class);
@@ -239,20 +410,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                     }
                     break;
             }
-            myApplication.setResumeId(ResumeIdNum);
-            myApplication.setresume_status(ResumeStatus);
+            mMyApplication.setResumeId(ResumeIdNum);
+            mMyApplication.setresume_status(ResumeStatus);
             startActivity(intent);
         }
     };
 
     //履歴書设定
     public void load(){
-        int resumeNumber = PreferenceUtils.getresume_number();
-        String Email = PreferenceUtils.getEmail();
+        int resumeNumber = mPreferenceUtils.getresume_number();
+        String Email = mPreferenceUtils.getEmail();
 //        deviceId = PreferenceUtils.getdeviceId();
-
-        if(myApplication.getlast_name().length() > 0){
-            String name = myApplication.getlast_name() + myApplication.getfirst_name() + " 様";
+        if(mMyApplication.getlast_name().length() > 0){
+            String name = mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様";
             Log.d("PersonalSetActivity", "name:" + name);
             tvname.setText(name);
         }
@@ -265,19 +435,19 @@ public class PersonalSetActivity extends AppCompatActivity {
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 1:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
                 tvResumeSet2.setText(getString(R.string.tvResumeSet));
                 tvResumeSet3.setVisibility(View.GONE);
                 break;
             case 2:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
                 tvResumeSet3.setText(getString(R.string.tvResumeSet));
                 break;
             case 3:
-                tvResumeSet1.setText(myApplication.getresume_name("1"));
-                tvResumeSet2.setText(myApplication.getresume_name("2"));
-                tvResumeSet3.setText(myApplication.getresume_name("3"));
+                tvResumeSet1.setText(mMyApplication.getresume_name("1"));
+                tvResumeSet2.setText(mMyApplication.getresume_name("2"));
+                tvResumeSet3.setText(mMyApplication.getresume_name("3"));
                 break;
         }
     }
@@ -290,5 +460,61 @@ public class PersonalSetActivity extends AppCompatActivity {
             tlResumeSet.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void logout(){
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(mPreferenceUtils.getuserId());
+        Pdata.setToken(mPreferenceUtils.gettoken());
+        Gson mGson1 = new Gson();
+        String sdPdata = mGson1.toJson(Pdata,PostDate.class);
+        AES mAes = new AES();
+        byte[] mBytes = null;
+        try {
+            mBytes = sdPdata.getBytes("UTF8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String enString = mAes.encrypt(mBytes, mPreferenceUtils.getAesKey());
+        String data = enString.replace("\n", "").replace("+","%2B");
+        Map<String,String> param = new HashMap<String, String>();
+        param.put("file",PARAM_logout);
+        param.put(getString(R.string.data),data);
+        //数据通信处理（访问服务器，并取得访问结果）
+        CommonAsyncTask commonAsyncTask = new CommonAsyncTask();
+        commonAsyncTask.setParams(mPreferenceUtils.getdeviceId());
+        commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
+            @Override
+            public void onSuccess(String results) {
+                Log.d("PersonalSetActivity", "onSuccess: " + results);
+                switch (mPreferenceUtils.getLoginFlag()){
+                    case "1":
+                        mAuth.signOut();//googleのログアウト
+                        break;
+                    case "2":
+                        LoginManager.getInstance().logOut();//facebookのログアウト
+                        break;
+                    case "4":
+                        TwitterCore.getInstance().getSessionManager().clearActiveSession();//twitterのログアウト
+                        break;
+                    case "5":
+                        new Thread(new Runnable() {
+                            public void run() {
+                                if(mLineApiClient.getProfile().isSuccess()){
+                                    mLineApiClient.logout();
+                                }
+                            }
+                        }).start();
+                        break;
+                }
+                mPreferenceUtils.clear();
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.setClass(PersonalSetActivity.this, SearchActivity.class);
+                intent.putExtra("act", "");
+                startActivity(intent);
+            }
+        });
+        commonAsyncTask.execute(param);
     }
 }
