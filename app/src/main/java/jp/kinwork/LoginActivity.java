@@ -535,40 +535,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.setClass(LoginActivity.this, MakeUserActivity.class);
                 startActivity(intent);
                 break;
-//            case R.id.login_btn_google:
-//                Log.d(TAG, "onClick google signIn: ");
-//                mLoginFlag = "1";
-//                googleSignIn();
-//                break;
-//            case R.id.login_btn_facebook:
-//                mLoginFlag = "2";
-//                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"));
-//                break;
-//            case R.id.login_btn_yahoo:
-//                mLoginFlag = "3";
-//                intent.setClass(LoginActivity.this,
-//                        LoginActivity.class);
-//                startActivity(intent);
-//                loginYahooStart();
-//                break;
-//            case R.id.login_btn_twitter:
-//                mLoginFlag = "4";
-//                twitterAuthClient.authorize(this, twitterCallback);
-//                break;
-//            case R.id.login_btn_line:
-//                mLoginFlag = "5";
-//                try {
-//                    intent = LineLoginApi.getLoginIntent(
-//                            view.getContext(),
-//                            getString(R.string.line_client_id),
-//                            new LineAuthenticationParams.Builder()
-//                                    .scopes(Arrays.asList(Scope.PROFILE, Scope.OPENID_CONNECT, Scope.OC_EMAIL))
-//                                    .build());
-//                    startActivityForResult(intent, 1);
-//                } catch (Exception e) {
-//                    Log.e("ERROR", e.toString());
-//                }
-//                break;
+            case R.id.login_btn_google:
+                Log.d(TAG, "onClick google signIn: ");
+                mLoginFlag = "1";
+                googleSignIn();
+                break;
+            case R.id.login_btn_facebook:
+                mLoginFlag = "2";
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"));
+                break;
+            case R.id.login_btn_yahoo:
+                mLoginFlag = "3";
+                intent.setClass(LoginActivity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+                loginYahooStart();
+                break;
+            case R.id.login_btn_twitter:
+                mLoginFlag = "4";
+                twitterAuthClient.authorize(this, twitterCallback);
+                break;
+            case R.id.login_btn_line:
+                mLoginFlag = "5";
+                try {
+                    intent = LineLoginApi.getLoginIntent(
+                            view.getContext(),
+                            getString(R.string.line_client_id),
+                            new LineAuthenticationParams.Builder()
+                                    .scopes(Arrays.asList(Scope.PROFILE, Scope.OPENID_CONNECT, Scope.OC_EMAIL))
+                                    .build());
+                    startActivityForResult(intent, 1);
+                } catch (Exception e) {
+                    Log.e("ERROR", e.toString());
+                }
+                break;
         }
         mPreferenceUtils.setLoginFlag(mLoginFlag);
     }

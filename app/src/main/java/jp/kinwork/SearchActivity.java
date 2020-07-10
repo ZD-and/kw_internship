@@ -371,7 +371,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (name){
             //  ログイン画面に移動
             case "UserLogin":
-                PreferenceUtils.setsaveid(getString(R.string.ll_search));
+//                PreferenceUtils.setsaveid(getString(R.string.ll_search));
                 intent.setClass(SearchActivity.this, LoginActivity.class);
                 break;
             //連絡画面に移動
