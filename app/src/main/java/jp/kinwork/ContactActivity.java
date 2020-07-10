@@ -65,10 +65,10 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
+//    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
         Initialization();
     }
     public void Initialization() {
