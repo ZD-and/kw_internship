@@ -1,28 +1,25 @@
 package jp.kinwork;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.linecorp.linesdk.api.LineApiClient;
-import com.linecorp.linesdk.api.LineApiClientBuilder;
-import com.twitter.sdk.android.core.TwitterCore;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +89,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         super.onStart();
         Initialization();
         load();
-        urllodad();
+        setViews();
     }
     //初始化
     public void Initialization(){
@@ -103,18 +100,8 @@ public class PersonalSetActivity extends AppCompatActivity {
         tr_basicinfoedit=findViewById(R.id.tr_basicinfoedit);
         tr_changpw=findViewById(R.id.tr_changpw);
         tr_LoginOut=findViewById(R.id.tr_LoginOut);
-        tr_basicinfoedit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_basicinfoedit();
-            }
-        });
-        tr_changpw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_changpw();
-            }
-        });
+        tr_basicinfoedit.setOnClickListener(Listener);
+        tr_changpw.setOnClickListener(Listener);
         tr_LoginOut.setOnClickListener(Listener);
         tr_Resume=findViewById(R.id.tr_Resume);
         tr_Resume.setOnClickListener(new View.OnClickListener() {
@@ -370,7 +357,6 @@ public class PersonalSetActivity extends AppCompatActivity {
 
         }
     };
-
     //履歴書画面按钮
     private View.OnClickListener resumeListener =new View.OnClickListener() {
         public void onClick(View View) {
