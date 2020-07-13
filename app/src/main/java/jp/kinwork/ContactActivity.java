@@ -234,6 +234,7 @@ public class ContactActivity extends AppCompatActivity {
 
     //気に入り数据取得
     public void getMessageList(JSONArray data){
+        tlcontact.removeAllViews();
         int x= -1;
         for(int i =0; i < data.length(); i++){
             try {

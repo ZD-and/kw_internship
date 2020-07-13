@@ -75,6 +75,7 @@ public class MylistActivity extends AppCompatActivity  {
     private PreferenceUtils PreferenceUtils;
 
     private TableLayout tllike;
+    private TableLayout tlEntered;
     private TableLayout tltllike;
     private TableLayout tltlEntered;
 
@@ -125,7 +126,6 @@ public class MylistActivity extends AppCompatActivity  {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         CreateNew();
-        Initialization();
     }
 
     private void initPages() {
@@ -188,7 +188,6 @@ public class MylistActivity extends AppCompatActivity  {
     @Override
     protected void onStart() {
         super.onStart();
-        CreateNew();
         Initialization();
     }
     //初始化
@@ -206,6 +205,7 @@ public class MylistActivity extends AppCompatActivity  {
         ivmylist.setImageResource(R.mipmap.blue_mylist);
         tvmylist.setTextColor(Color.parseColor("#5EACE2"));
         tllike = (TableLayout)pages.get(0).findViewById(R.id.tl_like);
+        tlEntered=(TableLayout)pages.get(1).findViewById(R.id.tl_Entered);
         tltllike = (TableLayout)pages.get(0).findViewById(R.id.tl_tl_like);
         tltlEntered = (TableLayout) pages.get(1).findViewById(R.id.tl_tl_Entered);
         tltrlike = (TableRow) pages.get(0).findViewById(R.id.tl_tr_like);
@@ -442,6 +442,7 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //気に入り数据取得
     public void addlikejob(JSONArray data){
+        tltllike.removeAllViews();
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
         tlparams.setMargins(0,0,0,top);
@@ -550,6 +551,10 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //应聘一览数据取得
     public void addApplyjob(JSONArray data){
+        tltlEntered.removeAllViews();
+        int top= dp2px(this, 10);
+        TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
+        tlparams.setMargins(0,0,0,top);
         for(int i=0; i < data.length(); i++){
             try {
                 ApplyjobIndex = ApplyjobIndex + 1;
@@ -557,9 +562,6 @@ public class MylistActivity extends AppCompatActivity  {
                 JSONObject objSavedResume = data.getJSONObject(i).getJSONObject(getString(R.string.SavedResume));
                 Log.d(TAG+"***objJobInfo***", objJobInfo.toString());
                 Log.d(TAG+"***objSavedResume***", objSavedResume.toString());
-                int top= dp2px(this, 10);
-                TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
-                tlparams.setMargins(0,0,0,top);
                 View mylist = getLayoutInflater().inflate(R.layout.include_mylist_enteredjob, null);
                 TableLayout Enteredjobinfo = mylist.findViewById(R.id.tl_e_basicinformation);
                 Enteredjobinfo.setOnClickListener(new View.OnClickListener() {
@@ -603,7 +605,7 @@ public class MylistActivity extends AppCompatActivity  {
                 listEnteredjobId.add(ApplyjobIndex,objJobInfo.getString(getString(R.string.id)));
                 listDelEnteredID.add(ApplyjobIndex,objSavedResume.getString(getString(R.string.id)));
                 listEnteredjobinfo.add(ApplyjobIndex,objJobInfo);
-                tltlEntered.addView(mylist,ApplyjobIndex);
+                tltlEntered.addView(mylist);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
