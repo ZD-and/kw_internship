@@ -10,22 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:id="@+id/sl_meg_third"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:visibility="visible">
-
-            <LinearLayout
-                android:id="@+id/ll_meg_third"
+         <FrameLayout>
+            <ScrollView
+                android:id="@+id/sl_meg_third"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:visibility="visible">
 
-            </LinearLayout>
-        </ScrollView>
+                <LinearLayout
+                    android:id="@+id/ll_meg_third"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </ScrollView>
+            <Button
+                android:id="@+id/next_third"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="もっと見る" />
+         </FrameLayout>
 
         <TableLayout
             android:id="@+id/tl_meg_third"

@@ -65,6 +65,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -233,6 +234,7 @@ public class ContactActivity extends AppCompatActivity {
 
     //気に入り数据取得
     public void getMessageList(JSONArray data){
+        tlcontact.removeAllViews();
         int x= -1;
         for(int i =0; i < data.length(); i++){
             try {
