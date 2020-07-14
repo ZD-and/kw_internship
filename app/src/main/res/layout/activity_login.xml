@@ -25,6 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -51,7 +53,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/ic_shape"
+                android:background="@drawable/ic_shape_blue_select"
                 android:hint="メールアドレス"
                 android:inputType="textEmailAddress"
                 android:paddingLeft="5dp"
@@ -75,7 +77,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/ic_shape"
+                android:background="@drawable/ic_shape_blue_select"
                 android:hint="パスワード"
                 android:inputType="textPassword"
                 android:paddingLeft="5dp"
