@@ -29,8 +29,6 @@ public class MyApplication extends Application {
     private String email = "";
     private String token = "";
     private String id = "";
-//    private String Basicinfoid = "";
-//    private String basicinfo = "";
     private String user_id = "";
     private String first_name = "";
     private String last_name = "";
@@ -51,7 +49,6 @@ public class MyApplication extends Application {
     private String employmentStatus = "";
     private String yearlyIncome = "";
     private String page = "";
-//    private String returnData = "";
     private String jobinfo = "";
     private String URL = "";
     private String JobId = "";
@@ -73,6 +70,7 @@ public class MyApplication extends Application {
     private String employerID = "";
     private String address_components = "";
     private String AccessFineFocation = "";
+    private String Activity = "";
 
     private final static String TAG = MyApplication.class.getSimpleName();
 
@@ -420,5 +418,13 @@ public class MyApplication extends Application {
     public void setscreenflg(String screenflg) { this.screenflg = screenflg;}
     public void settermsofserviceflg(String termsofserviceflg) { this.termsofserviceflg = termsofserviceflg;}
     public void setprivacypolicyflg(String privacypolicyflg) { this.privacypolicyflg = privacypolicyflg;}
+
+    public void setActivity(String Activity) {
+        this.Activity = Activity;
+    }
+    public String getActivity() {
+        return Activity;
+    }
+
 
 }

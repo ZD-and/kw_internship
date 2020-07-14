@@ -531,6 +531,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 getPassword();
                 break;
             case R.id.MakeNewuser_Click:
+                mMyApplication.settermsofserviceflg("0");
+                mMyApplication.setprivacypolicyflg("0");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(LoginActivity.this, MakeUserActivity.class);
                 startActivity(intent);

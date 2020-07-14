@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -49,13 +48,13 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     final static String PARAM_sendValidateEmail = "/usersMobile/sendValidateEmail";
     final static String PARAM_checkValidateCode = "/usersMobile/checkValidateCode";
     final static String PARAM_setPassword = "/usersMobile/setPassword";
-    private String deviceId;
-    private String AesKey;
-    private String screenflg = "";
-    private String privacypolicyflg = "";
-    private String termsofserviceflg = "";
-    private String Email = "";
-    private String token = "";
+    private String mDeviceId;
+    private String mAesKey;
+    private String mScreenflg = "";
+    private String mPrivacypolicyflg = "";
+    private String mTermsofserviceflg = "";
+    private String mEmail = "";
+    private String mToken = "";
 
     private TextView tvinputA;
     private EditText edinputA;
@@ -66,8 +65,8 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     private ImageView ivtermsofservice,ivprivacypolicy;
     private Button mStartMakeUser;
 
-    private PreferenceUtils PreferenceUtils;
-    private MyApplication MyApplication;
+    private PreferenceUtils mPreferenceUtils;
+    private MyApplication mMyApplication;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,12 +102,12 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                PreferenceUtils.deluserinfo();
-                MyApplication.setscreenflg("");
-                MyApplication.settermsofserviceflg("");
-                MyApplication.setprivacypolicyflg("");
-                MyApplication.setinputA("");
-                MyApplication.setinputB("");
+                mPreferenceUtils.deluserinfo();
+                mMyApplication.setscreenflg("");
+                mMyApplication.settermsofserviceflg("");
+                mMyApplication.setprivacypolicyflg("");
+                mMyApplication.setinputA("");
+                mMyApplication.setinputB("");
                 Intent intentClose = new Intent();
                 intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intentClose.setClass(MakeUserActivity.this, LoginActivity.class);
@@ -141,28 +140,28 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         ivprivacypolicy = findViewById(R.id.iv_privacypolicy);
         mStartMakeUser = (Button) findViewById(R.id.bu_start_make_user);
         mStartMakeUser.setOnClickListener(this);
-        PreferenceUtils = new PreferenceUtils(MakeUserActivity.this);
-        Email = PreferenceUtils.getEmail();
-        token = PreferenceUtils.gettoken();
-        MyApplication = (MyApplication) getApplication();
-        screenflg = MyApplication.getscreenflg();
-        termsofserviceflg = MyApplication.gettermsofserviceflg();
-        privacypolicyflg = MyApplication.getprivacypolicyflg();
-        if(MyApplication.getinputA().length() > 0){
-            edinputA.setText(MyApplication.getinputA());
+        mPreferenceUtils = new PreferenceUtils(MakeUserActivity.this);
+        mEmail = mPreferenceUtils.getEmail();
+        mToken = mPreferenceUtils.gettoken();
+        mMyApplication = (MyApplication) getApplication();
+        mScreenflg = mMyApplication.getscreenflg();
+        mTermsofserviceflg = mMyApplication.gettermsofserviceflg();
+        mPrivacypolicyflg = mMyApplication.getprivacypolicyflg();
+        if(mMyApplication.getinputA().length() > 0){
+            edinputA.setText(mMyApplication.getinputA());
         }
-        if(MyApplication.getinputB().length() > 0){
-            edinputB.setText(MyApplication.getinputB());
+        if(mMyApplication.getinputB().length() > 0){
+            edinputB.setText(mMyApplication.getinputB());
         }
-        if(termsofserviceflg.equals("1")){
+        if(mTermsofserviceflg.equals("1")){
             ivtermsofservice.setImageResource(R.drawable.ic_check_box);
         }
-        if(privacypolicyflg.equals("1")) {
+        if(mPrivacypolicyflg.equals("1")) {
             ivprivacypolicy.setImageResource(R.drawable.ic_check_box);
         }
-        if(screenflg.equals("") || screenflg.equals(getString(R.string.sendValidateEmail))){
+        if(mScreenflg.equals("") || mScreenflg.equals(getString(R.string.sendValidateEmail))){
             sendValidateEmail();
-        } else if(screenflg.equals(getString(R.string.checkValidateCode))){
+        } else if(mScreenflg.equals(getString(R.string.checkValidateCode))){
             checkValidateCode();
         } else {
             setPassword();
@@ -172,8 +171,8 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
-        deviceId = Initial_object.getString(getString(R.string.deviceid),"A");
-        AesKey = Initial_object.getString(getString(R.string.Information_Name_aesKey),"A");
+        mDeviceId = Initial_object.getString(getString(R.string.deviceid),"A");
+        mAesKey = Initial_object.getString(getString(R.string.Information_Name_aesKey),"A");
 
     }
     //注册账号画面设定
@@ -182,7 +181,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         tvinputB.setText(getString(R.string.mailaddressnihongo));
         tvDateCode.setVisibility(View.GONE);
         mStartMakeUser.setText(getString(R.string.bubutton));
-        screenflg = getString(R.string.sendValidateEmail);
+        mScreenflg = getString(R.string.sendValidateEmail);
 //        // 新建一个可以添加文本的对象
 //        SpannableString ee = new SpannableString(getString(R.string.mailaddressnihongo));
 //        // 设置文本字体大小
@@ -210,7 +209,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setVisibility(View.GONE);
         tvDateCode.setVisibility(View.VISIBLE);
         mStartMakeUser.setText(getString(R.string.bubutton2));
-        screenflg = getString(R.string.checkValidateCode);
+        mScreenflg = getString(R.string.checkValidateCode);
 //        // 新建一个可以添加文本的对象
 //        SpannableString ee = new SpannableString(getString(R.string.Spannableee));
 //        // 设置文本字体大小
@@ -232,7 +231,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         tvDateCode.setVisibility(View.GONE);
         mStartMakeUser.setText(getString(R.string.kakunin));
-        screenflg = getString(R.string.setPassword);
+        mScreenflg = getString(R.string.setPassword);
 //        // 新建一个可以添加文本的对象
 //        SpannableString ee = new SpannableString(getString(R.string.password));
 //        // 设置文本字体大小
@@ -260,37 +259,37 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     public void bt_Click(){
         String inputA = edinputA.getText().toString();
         String inputB = edinputB.getText().toString();
-        PreferenceUtils.setdeviceId(deviceId);
-        PreferenceUtils.setAesKey(AesKey);
+        mPreferenceUtils.setdeviceId(mDeviceId);
+        mPreferenceUtils.setAesKey(mAesKey);
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         //Json格式转换并且加密
-        switch (screenflg){
+        switch (mScreenflg){
             case "sendValidateEmail":
                 Pdata.setEmail(inputA);
                 Pdata.setEmailConform(inputB);
                 param.put("file",PARAM_sendValidateEmail);
                 break;
             case "checkValidateCode":
-                Pdata.setEmail(Email);
+                Pdata.setEmail(mEmail);
                 Pdata.setValidateCode(inputA);
                 param.put("file",PARAM_checkValidateCode);
                 break;
             case "setPassword":
-                Pdata.setEmail(Email);
-                Pdata.setToken(token);
+                Pdata.setEmail(mEmail);
+                Pdata.setToken(mToken);
                 Pdata.setPassword(inputA);
                 Pdata.setPasswordConform(inputB);
                 param.put("file",PARAM_setPassword);
                 break;
         }
-        String data = JsonChnge(AesKey,Pdata);
+        String data = JsonChnge(mAesKey,Pdata);
         param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),screenflg);
-        Log.d("***screenflg", screenflg);
-        Log.d("***Email", Email);
-        Log.d("***token", token);
-        if(screenflg.equals(getString(R.string.setPassword)) && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
+        param.put(getString(R.string.name), mScreenflg);
+        Log.d("***screenflg", mScreenflg);
+        Log.d("***Email", mEmail);
+        Log.d("***token", mToken);
+        if(mScreenflg.equals(getString(R.string.setPassword)) && (! mTermsofserviceflg.equals("1") || ! mPrivacypolicyflg.equals("1"))){
             alertdialog(getString(R.string.alertdialog10));
         } else {
             new GithubQueryTask().execute(param);
@@ -305,19 +304,19 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 Click_cancel();
                 break;
             case R.id.ll_privacypolicy:
-                if(privacypolicyflg.equals("1")){
+                if(mPrivacypolicyflg.equals("1")){
                     ivprivacypolicy.setImageResource(R.drawable.ic_check_box_outline);
-                    privacypolicyflg = "0";
-                    MyApplication.setprivacypolicyflg("0");
+                    mPrivacypolicyflg = "0";
+                    mMyApplication.setprivacypolicyflg("0");
                 } else {
                     Agreement = getString(R.string.privacypolicy);
                 }
                 break;
             case R.id.ll_termsofservice:
-                if(termsofserviceflg.equals("1")){
+                if(mTermsofserviceflg.equals("1")){
                     ivtermsofservice.setImageResource(R.drawable.ic_check_box_outline);
-                    termsofserviceflg = "0";
-                    MyApplication.settermsofserviceflg("0");
+                    mTermsofserviceflg = "0";
+                    mMyApplication.settermsofserviceflg("0");
                 } else {
                     Agreement = getString(R.string.termsofservice);
                 }
@@ -332,13 +331,13 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         }
         Log.d("Agreement", Agreement);
         if(!Agreement.equals("")){
-            MyApplication.setAgreement(Agreement);
-            MyApplication.setscreenflg(screenflg);
+            mMyApplication.setAgreement(Agreement);
+            mMyApplication.setscreenflg(mScreenflg);
             if(edinputA.getText().length() > 0){
-                MyApplication.setinputA(edinputA.getText().toString());
+                mMyApplication.setinputA(edinputA.getText().toString());
             }
             if(edinputB.getText().length() > 0){
-                MyApplication.setinputB(edinputB.getText().toString());
+                mMyApplication.setinputB(edinputB.getText().toString());
             }
             MoveIntent(getString(R.string.Agreement));
         }
@@ -350,6 +349,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         if(Activity.equals(getString(R.string.setPassword))){
             intent.setClass(MakeUserActivity.this, PersonalSetActivity.class);
         } else {
+            mMyApplication.setActivity("MakeUserActivity");
             intent.setClass(MakeUserActivity.this, AgreementActivity.class);
         }
         startActivity(intent);
@@ -375,7 +375,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             URL searchUrl = NetworkUtils.buildUrl(file);
             String githubSearchResults = null;
             try {
-                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data,deviceId);
+                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data, mDeviceId);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -420,29 +420,29 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
-        String datas = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***+++screenflg+++***", screenflg);
+        String datas = AESprocess.getdecrypt(data, mAesKey);
+        Log.d("***+++screenflg+++***", mScreenflg);
         Log.d("***screenflg-datas***", datas);
         Gson mGson = new Gson();
         PostDate PDate = mGson.fromJson(datas, PostDate.class);
         edinputA.setText("");
         edinputB.setText("");
-        switch (screenflg){
+        switch (mScreenflg){
             case "sendValidateEmail":
-                Email = PDate.getEmail();
-                PreferenceUtils.setemail(Email);
+                mEmail = PDate.getEmail();
+                mPreferenceUtils.setemail(mEmail);
                 checkValidateCode();
                 break;
             case "checkValidateCode":
-                Email = PDate.getEmail();
-                token = PDate.getToken();
-                PreferenceUtils.settoken(token);
+                mEmail = PDate.getEmail();
+                mToken = PDate.getToken();
+                mPreferenceUtils.settoken(mToken);
                 setPassword();
                 break;
             case "setPassword":
                 UserToken UserToken = PDate.getUserToken();
                 String userID = UserToken.getUser_id();
-                PreferenceUtils.setuserId(userID);
+                mPreferenceUtils.setuserId(userID);
                 MoveIntent(getString(R.string.setPassword));
                 break;
         }
@@ -451,7 +451,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     //结果提示
     private void alertdialog(String meg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        switch (screenflg) {
+        switch (mScreenflg) {
             case "setPassword":
                 builder.setTitle(getString(R.string.teiji)).setMessage(getString(R.string.passworderror)).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
                     @Override

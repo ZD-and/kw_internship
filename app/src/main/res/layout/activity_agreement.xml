@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,40 +7,41 @@
     android:background="@color/backgroundblue"
     tools:context=".AgreementActivity">
 
+    <include
+        layout="@layout/include_back"
+        android:id="@+id/include_back"
+        />
 
-    <TextView
-        android:id="@+id/tv_agreement_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="21dp"
-        android:background="@color/but_blue"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text=""
-        android:textColor="@color/colorLight"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/sl_meg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_agreement_name"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="18dp"-->
+<!--        android:layout_marginBottom="21dp"-->
+<!--        android:background="@color/but_blue"-->
+<!--        android:paddingLeft="20dp"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:paddingBottom="10dp"-->
+<!--        android:text=""-->
+<!--        android:textColor="@color/colorLight"-->
+<!--        android:textSize="20dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/sl_meg"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 
     <ScrollView
         android:id="@+id/sl_meg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/ic_shape_null"
-        app:layout_constraintBottom_toTopOf="@+id/bu_ok"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_agreement_name">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/ll_meg"
@@ -63,32 +64,28 @@
     </ScrollView>
 
 
-    <Button
-        android:id="@+id/bu_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/but_blue"
-        android:text="戻る"
-        android:textColor="@color/colorLight"
-        app:layout_constraintBottom_toBottomOf="@+id/bu_ok"
-        app:layout_constraintEnd_toStartOf="@+id/bu_ok"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bu_ok" />
+<!--    <Button-->
+<!--        android:id="@+id/bu_back"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="46dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:backgroundTint="@color/but_blue"-->
+<!--        android:text="戻る"-->
+<!--        android:textColor="@color/colorLight"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/bu_ok"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/bu_ok"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/bu_ok" />-->
 
-    <Button
-        android:id="@+id/bu_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="9dp"
-        android:backgroundTint="@color/but_blue"
-        android:text="同意する"
-        android:textColor="@color/colorLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bu_back"
-        app:layout_constraintTop_toBottomOf="@+id/sl_meg" />
+<!--    <Button-->
+<!--        android:id="@+id/bu_ok"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:backgroundTint="@color/but_blue"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        -->
+<!--        android:text="同意する"-->
+<!--        android:textColor="@color/colorLight" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

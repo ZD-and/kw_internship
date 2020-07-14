@@ -192,6 +192,12 @@ public class ResumeActivity extends AppCompatActivity {
         IresumeIdflg = myApplication.getResumeId();
         resume_status = myApplication.getresume_status();
         ActCation = myApplication.getActCation();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
         load();
     }
@@ -303,6 +309,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         });
         bu_create=findViewById(R.id.bu_create);
+
         bu_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
