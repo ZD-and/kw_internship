@@ -331,19 +331,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrburightBottom.setOnClickListener(Click_buttom);
         tltrbutherightBottom.setOnClickListener(Click_buttom);
 
-        PreferenceUtils = new PreferenceUtils(SearchResultsActivity.this);
-        LoginFlg = PreferenceUtils.getUserFlg();
-        if(LoginFlg.equals("1")){
-            userid = PreferenceUtils.getuserId();
-            token = PreferenceUtils.gettoken();
-        }
         SharedPreferences object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
         deviceId = object.getString(getString(R.string.deviceid),"A");
         AesKey = object.getString(getString(R.string.Information_Name_aesKey),"A");
-        Log.d(TAG,"deviceId:"+ deviceId);
-        Log.d(TAG,"AesKey:"+ AesKey);
-        PreferenceUtils.setdeviceId(deviceId);
-        PreferenceUtils.setAesKey(AesKey);
+
         myApplication = (MyApplication) getApplication();
         keyword = myApplication.getkeyword();
         address = myApplication.getaddress();
@@ -380,6 +371,25 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initializationData();
+    }
+
+    //データ取得初期化
+    public void initializationData(){
+        PreferenceUtils = new PreferenceUtils(SearchResultsActivity.this);
+        LoginFlg = PreferenceUtils.getUserFlg();
+        if(LoginFlg.equals("1")){
+            userid = PreferenceUtils.getuserId();
+            token = PreferenceUtils.gettoken();
+        }
+        PreferenceUtils.setdeviceId(deviceId);
+        PreferenceUtils.setAesKey(AesKey);
+    }
+
 
     //获取距离边距
     private void getWH(){

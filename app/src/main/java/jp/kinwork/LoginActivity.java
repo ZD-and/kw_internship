@@ -484,7 +484,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case "ll_personalsettings":
                 intent.setClass(LoginActivity.this, PersonalSetActivity.class);
                 break;
-            case "SearchResults":
+            case "ll_searchresults":
                 mMyApplication.setkeyword(mKeyword);
                 mMyApplication.setaddress(mAddress);
                 mMyApplication.setemploymentStatus(mEmploymentStatus);
