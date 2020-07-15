@@ -101,7 +101,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String[] CountryData;
 
     private int mYear, mMonth, mDay;
-    final int DATE_DIALOG = 1;
     private int selectedFruitIndex = 3;
     private int CountryDataNum = 0;
 
@@ -124,31 +123,31 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         showSex();
         showCountry();
         setBasicinfo();
-        etlname.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = etlname.getMeasuredWidth();
-                String sfname = "";
-                String slname = "";
-                String sfname_kana = "";
-                String slname_kana = "";
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    sfname = mMyApplication.getfirst_name();//必須項目_名
-                    slname = mMyApplication.getlast_name();//必須項目_姓
-                    sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
-                    slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
-                } else {
-                    sfname = mMyApplication.getpersonalset(1);
-                    slname = mMyApplication.getpersonalset(2);
-                    sfname_kana = mMyApplication.getpersonalset(3);
-                    slname_kana = mMyApplication.getpersonalset(4);
-                }
-                setHW(etfname,width,sfname);
-                setHW(etlname,width,slname);
-                setHW(etfname_kana,width,sfname_kana);
-                setHW(etlname_kana,width,slname_kana);
-            }
-        });
+//        etlname.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int width = etlname.getMeasuredWidth();
+//                String sfname = "";
+//                String slname = "";
+//                String sfname_kana = "";
+//                String slname_kana = "";
+//                if(mMyApplication.getpersonalset(0).equals("0")){
+//                    sfname = mMyApplication.getfirst_name();//必須項目_名
+//                    slname = mMyApplication.getlast_name();//必須項目_姓
+//                    sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
+//                    slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
+//                } else {
+//                    sfname = mMyApplication.getpersonalset(1);
+//                    slname = mMyApplication.getpersonalset(2);
+//                    sfname_kana = mMyApplication.getpersonalset(3);
+//                    slname_kana = mMyApplication.getpersonalset(4);
+//                }
+//                setHW(etfname,width,sfname);
+//                setHW(etlname,width,slname);
+//                setHW(etfname_kana,width,sfname_kana);
+//                setHW(etlname_kana,width,slname_kana);
+//            }
+//        });
     }
 
     @Override
@@ -174,25 +173,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         tvbacktitle        = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy        = (TextView) findViewById(R.id.tv_back_dummy);
         tvbacktitle.setText(getString(R.string.profilechange));
-
-//        ViewGroup.LayoutParams params = slBasicinfo.getLayoutParams();
-//        ViewGroup.MarginLayoutParams marginParams = null;
-//        marginParams = (ViewGroup.MarginLayoutParams) params;
-//        View include_title = (View) findViewById(R.id.include_b_title);
-
-//        if(Act.equals("person")){
         tvback.setText(getString(R.string.personalsettings));
         tvbackdummy.setText(getString(R.string.personalsettings));
-//        }
-//        else {
-//            tvback.setText("履歴書");
-//            tvbackdummy.setText("履歴書");
-//            include_title.setVisibility(View.GONE);
-//            int dptopx= dp2px(this, 50);
-//            marginParams.setMargins(0, dptopx, 0, 0);
-//            slBasicinfo.setLayoutParams(marginParams);
-//        }
-
         tvname             = (TextView) findViewById(R.id.tv_name);
         tvphonetic         = (TextView) findViewById(R.id.tv_phonetic);
         tvsex              = (TextView) findViewById(R.id.tv_sex);
@@ -204,18 +186,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         tvmunicipality    = (TextView) findViewById(R.id.tv_municipality);
         tvtown            = (TextView) findViewById(R.id.tv_town);
         tvbumansionroom = (TextView) findViewById(R.id.tv_bu_mansion_room);
-        SetStyle(tvname,"（必須）","0");
-        SetStyle(tvphonetic,"（必須）","0");
-        SetStyle(tvsex,"（必須）","0");
-        SetStyle(tvbirthday,"（必須）","0");
-        SetStyle(tvcountry,"（必須）","0");
-        SetStyle(tvphone,"（必須）","0");
-        SetStyle(tvpostalcode,"（任意）","1");
-        SetStyle(tvprefectures,"（必須）","0");
-        SetStyle(tvmunicipality,"（必須）","0");
-        SetStyle(tvtown,"（任意）","1");
-        SetStyle(tvbumansionroom,"（任意）","1");
-
         etfname            = (EditText) findViewById(R.id.et_fname);//名
         etlname            = (EditText) findViewById(R.id.et_lname);//姓
         etfname_kana       = (EditText) findViewById(R.id.et_fname_kana);//メイ
@@ -261,14 +231,28 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                 Click_back(v);
             }
         });
+
+        String sfname = "";
+        String slname = "";
+        String sfname_kana = "";
+        String slname_kana = "";
+        if(mMyApplication.getpersonalset(0).equals("0")){
+            sfname = mMyApplication.getfirst_name();//必須項目_名
+            slname = mMyApplication.getlast_name();//必須項目_姓
+            sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
+            slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
+        } else {
+            sfname = mMyApplication.getpersonalset(1);
+            slname = mMyApplication.getpersonalset(2);
+            sfname_kana = mMyApplication.getpersonalset(3);
+            slname_kana = mMyApplication.getpersonalset(4);
+        }
+        etfname.setText(sfname);
+        etlname.setText(slname);
+        etfname_kana.setText(sfname_kana);
+        etlname_kana.setText(slname_kana);
     }
 
-    public void setHW(EditText name,int w,String data){
-        ViewGroup.LayoutParams lp = name.getLayoutParams();
-        lp.width = w;
-        name.setLayoutParams(lp);
-        name.setText(data);
-    }
     //基本情報を登録
     public void Click_Registration(){
         buttonflg = "1";
@@ -716,21 +700,5 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
-    }
-
-    //特定字体设置
-    private void SetStyle(TextView View,String A,String flg){
-        String String =  View.getText().toString() + A;
-        int length1 = String.indexOf(A);
-        int length2 = length1 + A.length();
-        int SizeSpan= dp2px(this, 10);
-        SpannableStringBuilder style_name=new SpannableStringBuilder(String);
-        if(flg.equals("0")){
-            style_name.setSpan(new ForegroundColorSpan(Color.RED),length1,length2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        }else {
-            style_name.setSpan(new ForegroundColorSpan(Color.BLACK),length1,length2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        }
-        style_name.setSpan(new AbsoluteSizeSpan(SizeSpan),length1,length2, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        View.setText(style_name);
     }
 }

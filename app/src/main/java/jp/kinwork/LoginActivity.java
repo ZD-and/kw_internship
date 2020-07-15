@@ -169,11 +169,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.Click_Forgetpw).setOnClickListener(this);
         findViewById(R.id.MakeNewuser_Click).setOnClickListener(this);
 
-//        findViewById(R.id.login_btn_google).setOnClickListener(this);
-//        findViewById(R.id.login_btn_facebook).setOnClickListener(this);
-//        findViewById(R.id.login_btn_yahoo).setOnClickListener(this);
-//        findViewById(R.id.login_btn_twitter).setOnClickListener(this);
-//        findViewById(R.id.login_btn_line).setOnClickListener(this);
+        findViewById(R.id.login_btn_google).setOnClickListener(this);
+        findViewById(R.id.login_btn_facebook).setOnClickListener(this);
+        findViewById(R.id.login_btn_yahoo).setOnClickListener(this);
+        findViewById(R.id.login_btn_twitter).setOnClickListener(this);
+        findViewById(R.id.login_btn_line).setOnClickListener(this);
 
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(LoginActivity.this);
@@ -324,7 +324,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG,"Results:"+ githubSearchResults);
                 mDialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
@@ -405,6 +405,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mFlg = "2";
         String userid = mMyApplication.getuser_id();
         String token = mMyApplication.getToken();
+        Log.d(TAG, "InitialData userid: "+userid+ " token:"+token);
         urllodad(userid,token);
     }
 
@@ -419,7 +420,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void setMyApplication(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data, mAesKey);
-        Log.d("***+++datas+++***", datas);
+        Log.d(TAG,"datas:"+ datas);
         try {
             JSONObject obj = new JSONObject(datas);
             if(obj.has(getString(R.string.id))){
@@ -878,7 +879,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                         String message = obj.getString(getString(R.string.message));
                         if(processResult == true) {
-                            String returnData = AESprocess.getdecrypt(obj.getString(getString(R.string.returnData)),mAesKey);
+                            String returnData = obj.getString(getString(R.string.returnData));
                             decryptchange(returnData);
                         } else {
                             alertdialog("エラー",message);
