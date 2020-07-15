@@ -14,10 +14,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,7 +42,6 @@ import java.util.Map;
 
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
-import jp.kinwork.Common.CommonView.MyScrollView;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -106,6 +103,8 @@ public class MylistActivity extends AppCompatActivity  {
     private int ApplyjobpageCount = 0;
     private int ApplyjobCount = 0;
     private int ApplyDeleteIndex = -1;
+    private int nlikejobpage=0;
+
 
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
 
@@ -196,10 +195,6 @@ public class MylistActivity extends AppCompatActivity  {
         TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
         tltvlike.setOnClickListener(Click_getmore);
         tltvEntered.setOnClickListener(Click_getmore);
-//        tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title_Top);
-//        tlliketitle=findViewById(R.id.tl_like_title);
-//        tlEnteredtitle.setOnClickListener(Click_visibility);
-//        tlliketitle.setOnClickListener(Click_visibility);
         ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
         tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
         ivmylist.setImageResource(R.mipmap.blue_mylist);
@@ -210,7 +205,6 @@ public class MylistActivity extends AppCompatActivity  {
         tltlEntered = (TableLayout) pages.get(1).findViewById(R.id.tl_tl_Entered);
         tltrlike = (TableRow) pages.get(0).findViewById(R.id.tl_tr_like);
         tltrEntered = (TableRow) pages.get(1).findViewById(R.id.tl_tr_Entered);
-//        tvlikecont = (TextView) findViewById(R.id.tv_like_cont);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText("マイリスト");
         myApplication = (MyApplication) getApplication();
@@ -223,7 +217,13 @@ public class MylistActivity extends AppCompatActivity  {
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
         }
-        getSearchResults();
+        if(nlikejobpage==0){
+            getSearchResults1("1");
+            getSearchResults2("1");
+        }else{
+            urlload();
+        }
+        nlikejobpage=nlikejobpage+1;
     }
     //获取搜索结果菜单栏按钮
     public void ll_Click(View View){
@@ -271,32 +271,63 @@ public class MylistActivity extends AppCompatActivity  {
         startActivity(intent);
 
     }
-    //获取搜索结果
-    public void getSearchResults(){
+
+    //获取気に入り搜索结果
+    public void getSearchResults1(String number1){
         PostDate Pdata1 = new PostDate();
         Map<String,String> param1 = new HashMap<String, String>();
         Pdata1.setUserId(userId);
         Pdata1.setToken(token);
-        Pdata1.setpage(String.valueOf(1));
+        Pdata1.setpage(number1);
         Pdata1.setOrder("");
         Pdata1.setFlag("");
         param1.put(getString(R.string.file),PARAM_likelist);
         String data1 = JsonChnge(AesKey,Pdata1);
         param1.put(getString(R.string.data),data1);
         param1.put(getString(R.string.name),"");
+        //数据通信处理（気に入り取得）
+        new GithubQueryTask().execute(param1);
+    }
+    //获取応募済み搜索结果
+    public void getSearchResults2(String number2){
         PostDate Pdata2 = new PostDate();
         Map<String,String> param2 = new HashMap<String, String>();
         Pdata2.setUserId(userId);
         Pdata2.setToken(token);
-        Pdata2.setcurrentPage("1");
+        Pdata2.setcurrentPage(number2);
         param2.put(getString(R.string.file),PARAM_personalApplyJobList);
         String data2 = JsonChnge(AesKey,Pdata2);
         param2.put(getString(R.string.data),data2);
         param2.put(getString(R.string.name),"");
+        //数据通信处理（応募状況取得）
+        new GithubQueryTask().execute(param2);
+    }
+    //token判定是否过期
+    public void urlload(){
+        PostDate Pdata1 = new PostDate();
+        Map<String,String> param1 = new HashMap<String, String>();
+        Pdata1.setUserId(userId);
+        Pdata1.setToken(token);
+        Pdata1.setpage("");
+        Pdata1.setOrder("");
+        Pdata1.setFlag("");
+        param1.put(getString(R.string.file),PARAM_likelist);
+        String data1 = JsonChnge(AesKey,Pdata1);
+        param1.put(getString(R.string.data),data1);
+        param1.put(getString(R.string.name),"");
+//        PostDate Pdata2 = new PostDate();
+//        Map<String,String> param2 = new HashMap<String, String>();
+//        Pdata2.setUserId(userId);
+//        Pdata2.setToken(token);
+//        Pdata2.setcurrentPage("");
+//        param2.put(getString(R.string.file),PARAM_personalApplyJobList);
+//        String data2 = JsonChnge(AesKey,Pdata2);
+//        param2.put(getString(R.string.data),data2);
+//        param2.put(getString(R.string.name),"");
         //数据通信处理（気に入り取得）
         new GithubQueryTask().execute(param1);
         //数据通信处理（応募状況取得）
-        new GithubQueryTask().execute(param2);
+//        new GithubQueryTask().execute(param2);
     }
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
@@ -443,7 +474,6 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //気に入り数据取得
     public void addlikejob(JSONArray data){
-        tltllike.removeAllViews();
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
         tlparams.setMargins(0,0,0,top);
@@ -552,7 +582,6 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //应聘一览数据取得
     public void addApplyjob(JSONArray data){
-        tltlEntered.removeAllViews();
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
         tlparams.setMargins(0,0,0,top);
@@ -634,31 +663,7 @@ public class MylistActivity extends AppCompatActivity  {
             }
         }).show();
     }
-    //項目の表示
-//    public View.OnClickListener Click_visibility =new View.OnClickListener() {
-//        public void onClick(View ClikcView) {
-//            switch (ClikcView.getId()) {
-//                case R.id.tl_like_title:
-//                    if (likejobCount == 0) {
-//                        tllike.setVisibility(View.GONE);
-//                    } else {
-//                        if (tllike.getVisibility() == View.GONE) {
-//                            tllike.setVisibility(View.VISIBLE);
-//                        } else {
-//                            tllike.setVisibility(View.GONE);
-//                        }
-//                    }
-//                    break;
-//                case R.id.tl_Entered_title_Top:
-//                    if (tlEntered.getVisibility() == View.GONE) {
-//                        tlEntered.setVisibility(View.VISIBLE);
-//                    } else {
-//                        tlEntered.setVisibility(View.GONE);
-//                    }
-//                    break;
-//            }
-//        }
-//    };
+
     //気に入り職歴信息取得
     public void Click_likejob(View View){
         if (View == null) {
@@ -781,7 +786,6 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //显示更多内容按钮
     private View.OnClickListener Click_getmore =new View.OnClickListener() {
-
         public void onClick(View View) {
             PostDate Pdata = new PostDate();
             Map<String, String> param = new HashMap<String, String>();
@@ -790,20 +794,13 @@ public class MylistActivity extends AppCompatActivity  {
             switch (View.getId()) {
                 case R.id.tl_tv_like:
                     likejobpage = likejobpage + 1;
-                    param.put(getString(R.string.file), PARAM_likelist);
-                    Pdata.setpage(String.valueOf(likejobpage));
+                    getSearchResults1(Integer.toString(likejobpage));
                     break;
                 case R.id.tl_tv_Entered:
                     Applyjobpage = Applyjobpage + 1;
-                    param.put(getString(R.string.file), PARAM_personalApplyJobList);
-                    Pdata.setcurrentPage(String.valueOf(Applyjobpage));
+                    getSearchResults2(Integer.toString(Applyjobpage));
                     break;
             }
-            String data = JsonChnge(AesKey, Pdata);
-            param.put(getString(R.string.data),data);
-            param.put(getString(R.string.name),"");
-            //数据通信处理（気に入り取得）
-            new GithubQueryTask().execute(param);
         }
     };
     //応募済み削除

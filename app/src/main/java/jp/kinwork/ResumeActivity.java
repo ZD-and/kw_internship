@@ -950,6 +950,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录履历信息取得
     private void resumeinfo(JSONArray data){
+        tljob.removeAllViews();
         for(int i=0; i < data.length(); i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
@@ -1124,6 +1125,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录学歴信息取得
     public void educationInfo(JSONArray data){
+        tleducational.removeAllViews();
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
             try {
@@ -1265,6 +1267,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录資格信息取得
     public void qualificationInfo(JSONArray data){
+        tlqualification.removeAllViews();
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
             try {
