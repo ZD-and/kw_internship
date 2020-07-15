@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -37,6 +38,7 @@ import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.UserToken;
 import jp.kinwork.Common.CommonView.JumpTextWatcher;
+import jp.kinwork.Common.CountDown;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
@@ -62,6 +64,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     private EditText edinputB;
 
     private TextView tvDateCode;
+    private TextView tvCountdown;
     private ImageView ivtermsofservice,ivprivacypolicy;
     private Button mStartMakeUser;
 
@@ -134,6 +137,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.addTextChangedListener(new JumpTextWatcher(edinputB,edinputA));
         tvDateCode = (TextView) findViewById(R.id.tv_Date_Code);
         tvDateCode.setOnClickListener(this);
+        tvCountdown = (TextView) findViewById(R.id.tv_countdown);
         findViewById(R.id.ll_termsofservice).setOnClickListener(this);
         findViewById(R.id.ll_privacypolicy).setOnClickListener(this);
         ivtermsofservice = findViewById(R.id.iv_termsofservice);
@@ -261,6 +265,14 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         String inputB = edinputB.getText().toString();
         mPreferenceUtils.setdeviceId(mDeviceId);
         mPreferenceUtils.setAesKey(mAesKey);
+        if(mScreenflg.equals(getString(R.string.setPassword)) && (! mTermsofserviceflg.equals("1") || ! mPrivacypolicyflg.equals("1"))){
+            alertdialog(getString(R.string.alertdialog10));
+        } else {
+            sendToServer(inputA,inputB);
+        }
+    }
+
+    private void sendToServer(String inputA,String inputB){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         //Json格式转换并且加密
@@ -289,11 +301,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         Log.d("***screenflg", mScreenflg);
         Log.d("***Email", mEmail);
         Log.d("***token", mToken);
-        if(mScreenflg.equals(getString(R.string.setPassword)) && (! mTermsofserviceflg.equals("1") || ! mPrivacypolicyflg.equals("1"))){
-            alertdialog(getString(R.string.alertdialog10));
-        } else {
-            new GithubQueryTask().execute(param);
-        }
+        new GithubQueryTask().execute(param);
     }
 
     //契约按钮触发事件
@@ -322,7 +330,30 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.tv_Date_Code:
-                sendValidateEmail();
+                Log.d(TAG, "onClick: tv_Date_Code" );
+                tvDateCode.setTextColor(Color.parseColor("#80323232"));
+                tvDateCode.setEnabled(false);
+                tvCountdown.setVisibility(android.view.View.VISIBLE);
+                mScreenflg = getString(R.string.sendValidateEmail);
+                sendToServer(mEmail,mEmail);
+                CountDown countDown = new CountDown(60000,1000);
+                countDown.setOnFinishListener(new CountDown.OnFinishListener() {
+                    @Override
+                    public void onFinish() {
+                        tvDateCode.setEnabled(true);
+                        tvDateCode.setTextColor(Color.parseColor("#0196FF"));
+                        tvCountdown.setVisibility(android.view.View.INVISIBLE);
+                    }
+                });
+                countDown.setOnTickListener(new CountDown.OnTickListener() {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        Log.d(TAG, "onTick: " + millisUntilFinished);
+                        int millisUntilFinished2 = (int) millisUntilFinished/1000;
+                        tvCountdown.setText("("+ millisUntilFinished2 + "s)");
+                    }
+                });
+                countDown.start();
                 break;
             case R.id.bu_start_make_user:
                 bt_Click();
@@ -385,27 +416,32 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG, "Results:" + githubSearchResults);
+                Log.d(TAG, "mScreenflg:" + mScreenflg);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String message = "";
+                    String message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
                         String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
-                        String fieldErrors = obj.getString(getString(R.string.fieldErrors));
-                        JSONObject fieldError = new JSONObject(fieldErrors);
-                        if(fieldError.has(getString(R.string.email))){
-                            Log.d("***+++email+++***", fieldError.getString("email"));
-                            JSONArray ja = fieldError.getJSONArray(getString(R.string.email));
-                            Log.d("***email(index)***", ja.getString(0));
-                            message = ja.getString(0);
-                        }
-                        if(fieldError.has(getString(R.string.emailConfirm))){
-                            JSONArray ja = fieldError.getJSONArray(getString(R.string.emailConfirm));
-                            Log.d("***emailConfirm***", ja.getString(0));
-                            message = ja.getString(0);
+                        if(mScreenflg.equals(getString(R.string.checkValidateCode))){
+                            message = obj.getString(getString(R.string.message));
+                        } else {
+                            String fieldErrors = obj.getString(getString(R.string.fieldErrors));
+                            JSONObject fieldError = new JSONObject(fieldErrors);
+                            if(fieldError.has(getString(R.string.email))){
+                                Log.d("***+++email+++***", fieldError.getString("email"));
+                                JSONArray ja = fieldError.getJSONArray(getString(R.string.email));
+                                Log.d("***email(index)***", ja.getString(0));
+                                message = ja.getString(0);
+                            }
+                            if(fieldError.has(getString(R.string.emailConfirm))){
+                                JSONArray ja = fieldError.getJSONArray(getString(R.string.emailConfirm));
+                                Log.d("***emailConfirm***", ja.getString(0));
+                                message = ja.getString(0);
+                            }
                         }
                         alertdialog(message);
                     }
@@ -449,26 +485,18 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //结果提示
-    private void alertdialog(String meg) {
+    private void alertdialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        switch (mScreenflg) {
-            case "setPassword":
-                builder.setTitle(getString(R.string.teiji)).setMessage(getString(R.string.passworderror)).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
-                    }
-                }).show();
-                break;
-
-            case "sendValidateEmail":
-                builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
-                    }
-                }).show();
+        String msg = message;
+        if(mScreenflg.equals("setPassword")){
+            msg = getString(R.string.passworderror);
         }
+        builder.setTitle(getString(R.string.error)).setMessage(msg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+            }
+        }).show();
     }
 
 }

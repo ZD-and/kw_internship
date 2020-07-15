@@ -338,8 +338,9 @@ public class MylistActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d(TAG+"***Results***", githubSearchResults);
-                Log.d(TAG+"***name***", name);
+                Log.d(TAG,"Results:"+ githubSearchResults);
+                Log.d(TAG,"name:"+ name);
+                Log.d(TAG,"DeleteIndex:"+ DeleteIndex);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
