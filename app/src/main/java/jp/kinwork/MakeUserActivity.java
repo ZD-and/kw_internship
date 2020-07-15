@@ -234,6 +234,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputA.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edinputB.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         tvDateCode.setVisibility(View.GONE);
+        tvCountdown.setVisibility(View.GONE);
         mStartMakeUser.setText(getString(R.string.kakunin));
         mScreenflg = getString(R.string.setPassword);
 //        // 新建一个可以添加文本的对象
