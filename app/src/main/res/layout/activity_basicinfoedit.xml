@@ -311,13 +311,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_country"
+                    android:id="@+id/tv_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:background="@color/but_blue"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="国籍"
+                    android:text="電話番号＜半角数字＞"
                     android:textColor="@color/colorLight"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -333,20 +333,20 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tt_country"
+            <EditText
+                android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="国籍を選択してください"
-                android:paddingLeft="10dp"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:paddingLeft="5dp"
                 android:singleLine="true"
-                android:textColor="@color/background_holo_dark"
-                android:textSize="15sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_address"
@@ -614,6 +614,7 @@
 
             </TableLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -622,13 +623,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_phone"
+                    android:id="@+id/tv_country"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:background="@color/but_blue"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:text="電話番号＜半角数字＞"
+                    android:text="業種を指定する(最高3個まで)"
                     android:textColor="@color/colorLight"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -647,27 +648,108 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bottom_light">
+                android:background="@drawable/bottom_light"
+                android:padding="20dp"
+                >
+                <TableRow
+                    android:id="@+id/tr_categorymap_1"
+                    android:visibility="visible"
+                    >
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:text="選択業種1:"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20dp"
+                    <TextView
+                        android:id="@+id/tt_categorymap_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:hint="業種を選択してください"
+                        android:text=""
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_categorymap_2"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@null"
-                    android:inputType="phone"
-                    android:maxLength="11"
-                    android:paddingLeft="5dp"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="選択業種2:"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tt_categorymap_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="業種を選択してください"
+                        android:text=""
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_categorymap_3"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="選択業種3:"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tt_categorymap_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:hint="業種を選択してください"
+                        android:text=""
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/background_holo_dark"
+                        android:textSize="15sp" />
+                </TableRow>
 
             </TableLayout>
+
+
 
             <Button
                 android:id="@+id/bu_Registration"

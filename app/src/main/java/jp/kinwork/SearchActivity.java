@@ -178,12 +178,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if(etkeyword.getText().length() > 0){
             ivclearkeyword.setVisibility(View.VISIBLE);
         }
-        if(Intent.getStringExtra(getString(R.string.act)).equals(getString(R.string.Boot))){
-            if(myApplication.getaddress_components().length() >0){
-                SetAddress(myApplication.getaddress_components());
-            } else {
-                checkaAcessPermission();
-            }
+        if(myApplication.getaddress_components().length() >0){
+            SetAddress(myApplication.getaddress_components());
+        } else {
+            checkaAcessPermission();
         }
         if(etworklocation.getText().length() > 0){
             ivclearworklocation.setImageResource(R.drawable.ic_cancel);

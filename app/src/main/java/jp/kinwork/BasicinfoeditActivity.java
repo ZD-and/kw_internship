@@ -7,24 +7,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -57,23 +50,13 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     final static String PARAM_personaInfo = "/MypagesMobile/personalInfo";
     final static String PARAM_personaInfoUpdate = "/MypagesMobile/personalInfoUpdate";
     final static String PARAM_Address = "/CommonMobile/getAddressByPostcode";
-    private TextView tvname;
-    private TextView tvphonetic;
-    private TextView tvsex;
-    private TextView tvbirthday;
-    private TextView tvcountry;
-    private TextView tvphone;
-    private TextView tvpostalcode;
-    private TextView tvprefectures;
-    private TextView tvmunicipality;
-    private TextView tvtown;
-    private TextView tvbumansionroom;
     private TextView ttsex;
     private TextView ttbirthday;
-    private TextView ttcountry;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
+    private TextView ttCategorymap1,ttCategorymap2,ttCategorymap3;
+    private TableRow trCategorymap1,trCategorymap2,trCategorymap3;
 
     private EditText etfname;
     private EditText etlname;
@@ -98,11 +81,14 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private String BasicinfoData;
 
     private String[] sexArry = new String[]{"未選択", "男", "女"};// 性别选择
-    private String[] CountryData;
+    private String[] mCategoryMap;
+
 
     private int mYear, mMonth, mDay;
     private int selectedFruitIndex = 3;
-    private int CountryDataNum = 0;
+    private int mCategoryMapNum1 = 0;
+    private int mCategoryMapNum2 = 0;
+    private int mCategoryMapNum3 = 0;
 
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
@@ -121,33 +107,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         Initialization();
         showBirthday();
         showSex();
-        showCountry();
+        showCategoryMap();
         setBasicinfo();
-//        etlname.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                int width = etlname.getMeasuredWidth();
-//                String sfname = "";
-//                String slname = "";
-//                String sfname_kana = "";
-//                String slname_kana = "";
-//                if(mMyApplication.getpersonalset(0).equals("0")){
-//                    sfname = mMyApplication.getfirst_name();//必須項目_名
-//                    slname = mMyApplication.getlast_name();//必須項目_姓
-//                    sfname_kana = mMyApplication.getfirst_name_kana();//必須項目_名（カタカナ）
-//                    slname_kana = mMyApplication.getlast_name_kana();//必須項目_姓（カタカナ）
-//                } else {
-//                    sfname = mMyApplication.getpersonalset(1);
-//                    slname = mMyApplication.getpersonalset(2);
-//                    sfname_kana = mMyApplication.getpersonalset(3);
-//                    slname_kana = mMyApplication.getpersonalset(4);
-//                }
-//                setHW(etfname,width,sfname);
-//                setHW(etlname,width,slname);
-//                setHW(etfname_kana,width,sfname_kana);
-//                setHW(etlname_kana,width,slname_kana);
-//            }
-//        });
     }
 
     @Override
@@ -175,30 +136,27 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         tvbacktitle.setText(getString(R.string.profilechange));
         tvback.setText(getString(R.string.personalsettings));
         tvbackdummy.setText(getString(R.string.personalsettings));
-        tvname             = (TextView) findViewById(R.id.tv_name);
-        tvphonetic         = (TextView) findViewById(R.id.tv_phonetic);
-        tvsex              = (TextView) findViewById(R.id.tv_sex);
-        tvbirthday         = (TextView) findViewById(R.id.tv_birthday);
-        tvcountry          = (TextView) findViewById(R.id.tv_country);
-        tvphone            = (TextView) findViewById(R.id.tv_phone);
-        tvpostalcode      = (TextView) findViewById(R.id.tv_postalcode);
-        tvprefectures     = (TextView) findViewById(R.id.tv_prefectures);
-        tvmunicipality    = (TextView) findViewById(R.id.tv_municipality);
-        tvtown            = (TextView) findViewById(R.id.tv_town);
-        tvbumansionroom = (TextView) findViewById(R.id.tv_bu_mansion_room);
-        etfname            = (EditText) findViewById(R.id.et_fname);//名
-        etlname            = (EditText) findViewById(R.id.et_lname);//姓
-        etfname_kana       = (EditText) findViewById(R.id.et_fname_kana);//メイ
-        etlname_kana       = (EditText) findViewById(R.id.et_lname_kana);//セイ
-        ttsex              = (TextView) findViewById(R.id.tt_sex);
-        ttbirthday         = (TextView) findViewById(R.id.tt_birthday);
-        ttcountry          = (TextView) findViewById(R.id.tt_country);//国籍
-        etpostalcode       = (EditText) findViewById(R.id.et_postalcode);//郵便番号
-        etprefectures      = (EditText) findViewById(R.id.et_prefectures);//都道府県
-        etmunicipality     = (EditText) findViewById(R.id.et_municipality);//市区町村
-        ettown             = (EditText) findViewById(R.id.et_town);//町目番地
-        etbu_mansion_room  = (EditText) findViewById(R.id.et_bu_mansion_room);//ビル・マンション・号室
-        etphone            = (EditText) findViewById(R.id.et_phone);//電話番号
+        etfname            = findViewById(R.id.et_fname);//名
+        etlname            = findViewById(R.id.et_lname);//姓
+        etfname_kana       = findViewById(R.id.et_fname_kana);//メイ
+        etlname_kana       = findViewById(R.id.et_lname_kana);//セイ
+        ttsex              = findViewById(R.id.tt_sex);
+        ttbirthday         = findViewById(R.id.tt_birthday);
+        etpostalcode       = findViewById(R.id.et_postalcode);//郵便番号
+        etprefectures      = findViewById(R.id.et_prefectures);//都道府県
+        etmunicipality     = findViewById(R.id.et_municipality);//市区町村
+        ettown             = findViewById(R.id.et_town);//町目番地
+        etbu_mansion_room  = findViewById(R.id.et_bu_mansion_room);//ビル・マンション・号室
+        etphone            = findViewById(R.id.et_phone);//電話番号
+        trCategorymap1     = findViewById(R.id.tr_categorymap_1);//業種１
+        trCategorymap2     = findViewById(R.id.tr_categorymap_2);//業種１
+        trCategorymap3     = findViewById(R.id.tr_categorymap_3);//業種１
+
+        ttCategorymap1     = findViewById(R.id.tt_categorymap_1);//業種１
+        ttCategorymap2     = findViewById(R.id.tt_categorymap_2);//業種１
+        ttCategorymap3     = findViewById(R.id.tt_categorymap_3);//業種１
+
+
         //住所検索
         bupostalcode       = (Button) findViewById(R.id.bu_postalcode);
         bupostalcode.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +181,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         token = mPreferenceUtils.gettoken();
         basicInfo = mPreferenceUtils.getbasicInfoID();
         Resources res = getResources();
-        CountryData= res.getStringArray(R.array.CountryData);
+        mCategoryMap= res.getStringArray(R.array.categorymap);
         //backボタン
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +219,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         String sfname_kana       = etfname_kana.getText().toString();//必須項目
         String slname_kana       = etlname_kana.getText().toString();//必須項目
         String birthday          = ttbirthday.getText().toString();//必須項目
-        String scountry          = ttcountry.getText().toString();//必須項目
         String spostalcode       = etpostalcode.getText().toString();
         String sprefectures      = etprefectures.getText().toString();
         String smunicipality     = etmunicipality.getText().toString();
@@ -294,8 +251,8 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         else if(birthday.equals("") ){
             alertdialog(getString(R.string.birthdayselect));
         }
-        else if(scountry.length() ==0 ){
-            alertdialog(getString(R.string.scountry));
+        else if(sphone.length() ==0 ){
+            alertdialog(getString(R.string.sphone));
         }
         else if(spostalcode.length() ==0 ){
             alertdialog(getString(R.string.spostalcode));
@@ -308,9 +265,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         else if(stown.length() ==0 ){
             alertdialog(getString(R.string.stown));
-        }
-        else if(sphone.length() ==0 ){
-            alertdialog(getString(R.string.sphone));
         }else {
             PdataUserBasic.setFirst_name(sfname);
             PdataUserBasic.setLast_name(slname);
@@ -318,7 +272,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             PdataUserBasic.setLast_name_kana(slname_kana);
             PdataUserBasic.setSex_div(String.valueOf(selectedFruitIndex));
             PdataUserBasic.setBirthday(birthday);
-            PdataUserBasic.setCountry(scountry);
             PdataUserBasic.setPost_code(spostalcode);
             PdataUserBasic.setAdd_1(sprefectures);
             PdataUserBasic.setAdd_2(smunicipality);
@@ -332,7 +285,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             mMyApplication.setlast_name_kana(slname_kana);
             mMyApplication.setsex_div(String.valueOf(selectedFruitIndex));
             mMyApplication.setbirthday(birthday);
-            mMyApplication.setcountry(scountry);
             mMyApplication.setpost_code(spostalcode);
             mMyApplication.setadd_1(sprefectures);
             mMyApplication.setadd_2(smunicipality);
@@ -437,52 +389,135 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         builder3.show();// 让弹出框显示
     }
     //性別選択 end
-    //国籍選択 start
-    private void showCountry() {
-        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);// 自定义对话框
+
+    //業種選択 start
+    int onClickNum= 0;
+    private void showCategoryMap() {
         //监听事件
-        ttcountry.setOnClickListener(new View.OnClickListener() {
+        ttCategorymap1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCountryChooseDialog();
+                onClickNum = 1;
+                showCategoryMapChooseDialog(mCategoryMapNum1);
             }
-        })
-        ;
+        });
+        ttCategorymap2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickNum = 2;
+                showCategoryMapChooseDialog(mCategoryMapNum2);
+            }
+        });
+        ttCategorymap3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickNum = 3;
+                showCategoryMapChooseDialog(mCategoryMapNum3);
+            }
+        });
 
     }
-    private void showCountryChooseDialog() {
+    private void showCategoryMapChooseDialog(int categoryMapNum ) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);// 自定义对话框
-        builder.setSingleChoiceItems(CountryData, CountryDataNum, new DialogInterface.OnClickListener() {// 2默认的选中
-
+        builder.setSingleChoiceItems(mCategoryMap, categoryMapNum, new DialogInterface.OnClickListener() {// 2默认的选中
             @Override
             public void onClick(DialogInterface dialog, int which) {// which是被选中的位置
                 // showToast(which+"");
-                CountryDataNum = which;
                 Log.d("CountryData", ": " +which);
-                ttcountry.setText(CountryData[which]);
-                mMyApplication.setcountry(String.valueOf(which));
+                String textCategory = mCategoryMap[which];
+                if(which == 0){
+                    textCategory = "";
+                }
+                if(onClickNum ==1){
+                    mCategoryMapNum1 = which;
+                    ttCategorymap1.setText(textCategory);
+                }
+                if(onClickNum ==2){
+                    mCategoryMapNum2 = which;
+                    ttCategorymap2.setText(textCategory);
+                }
+                if(onClickNum ==3){
+                    mCategoryMapNum3 = which;
+                    ttCategorymap3.setText(textCategory);
+                }
+                changShowCategoryMap();
+                checkCategoryMap();
                 dialog.dismiss();// 随便点击一个item消失对话框，不用点击确认取消
             }
         });
         builder.show();// 让弹出框显示
     }
-    //国籍選択 end
+
+    private void changShowCategoryMap(){
+        if(mCategoryMapNum1 == 0 && mCategoryMapNum2 == 0 && mCategoryMapNum3 == 0){
+            trCategorymap2.setVisibility(View.GONE);
+            trCategorymap3.setVisibility(View.GONE);
+        }
+        else if(mCategoryMapNum1 > 0 && mCategoryMapNum2 == 0  && mCategoryMapNum3 == 0){
+            trCategorymap2.setVisibility(View.VISIBLE);
+        }
+        else if(mCategoryMapNum1 > 0 && mCategoryMapNum2 > 0  && mCategoryMapNum3 == 0){
+            trCategorymap3.setVisibility(View.VISIBLE);
+        }
+        else if(mCategoryMapNum1 > 0 && mCategoryMapNum2 == 0 && mCategoryMapNum3 > 0){
+            ttCategorymap2.setText(ttCategorymap3.getText());
+            ttCategorymap3.setText("");
+            mCategoryMapNum2 = mCategoryMapNum3;
+            mCategoryMapNum3 = 0;
+            trCategorymap2.setVisibility(View.VISIBLE);
+            trCategorymap3.setVisibility(View.VISIBLE);
+        }
+        else if(mCategoryMapNum1 == 0 && mCategoryMapNum2 > 0  && mCategoryMapNum3 > 0){
+            ttCategorymap1.setText(ttCategorymap2.getText());
+            ttCategorymap2.setText(ttCategorymap3.getText());
+            ttCategorymap3.setText("");
+            mCategoryMapNum1 = mCategoryMapNum2;
+            mCategoryMapNum2 = mCategoryMapNum3;
+            mCategoryMapNum3 = 0;
+            trCategorymap2.setVisibility(View.VISIBLE);
+            trCategorymap3.setVisibility(View.VISIBLE);
+        }
+        else if(mCategoryMapNum1 == 0 && mCategoryMapNum2 > 0  && mCategoryMapNum3 == 0){
+            ttCategorymap1.setText(ttCategorymap2.getText());
+            ttCategorymap2.setText(ttCategorymap3.getText());
+            mCategoryMapNum1 = mCategoryMapNum2;
+            mCategoryMapNum2 = mCategoryMapNum3;
+            trCategorymap2.setVisibility(View.VISIBLE);
+            trCategorymap3.setVisibility(View.GONE);
+        }
+        if(mCategoryMapNum1 == 0 && mCategoryMapNum2 == 0 && mCategoryMapNum3 > 0){
+            ttCategorymap1.setText(ttCategorymap3.getText());
+            ttCategorymap2.setText("");
+            ttCategorymap3.setText("");
+            mCategoryMapNum1 = mCategoryMapNum3;
+            mCategoryMapNum3 = 0;
+            trCategorymap2.setVisibility(View.VISIBLE);
+            trCategorymap3.setVisibility(View.GONE);
+        }
+    }
+
+    private void checkCategoryMap(){
+        if((mCategoryMapNum1 >0 && mCategoryMapNum1 == mCategoryMapNum2) || (mCategoryMapNum1 >0 && mCategoryMapNum1 == mCategoryMapNum3) || (mCategoryMapNum2 >0 && mCategoryMapNum2 == mCategoryMapNum3)){
+            alertdialog("すてに選択されたの業種です、\n他の業種を選択してください。");
+        }
+    }
+
+    //業種選択 end
 
     //既に存在しますの情報をセット
     private void setBasicinfo(){
         String ssex              = "";
         String sbirthday         = "";
-        String scountry          = "";
         String spostalcode       = "";
         String sprefectures      = "";
         String smunicipality     = "";
         String stown             = "";
         String sbu_mansion_room  = "";
         String sphone            = "";
+        String sCategoryMap      = "000000000000000000000";
 
         if(!mMyApplication.getpersonalset(0).equals("0")){
             sbirthday         = mMyApplication.getpersonalset(5);//必須項目_生年月日
-            scountry          = mMyApplication.getpersonalset(6);//必須項目_国籍
             ssex              = mMyApplication.getpersonalset(7);//必須項目_性別
             spostalcode       = mMyApplication.getpersonalset(8);//郵便番号
             sprefectures      = mMyApplication.getpersonalset(9);//都道府県
@@ -494,7 +529,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         } else {
             ssex              = mMyApplication.getsex_div();//必須項目_性別
             sbirthday         = mMyApplication.getbirthday();//必須項目_生年月日
-            scountry          = mMyApplication.getcountry();//必須項目_国籍
             spostalcode       = mMyApplication.getpost_code();//郵便番号
             sprefectures      = mMyApplication.getadd_1();//都道府県
             smunicipality     = mMyApplication.getadd_2();//市区町村
@@ -513,15 +547,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             mMonth = Integer.parseInt(sbirthday.substring(5,7));
             mDay = Integer.parseInt(sbirthday.substring(8,10));
         }
-        if(scountry.length() > 0 && !scountry.equals("null")){
-            ttcountry.setText(scountry);
-            for(int i= 0;i < CountryData.length; i ++){
-                if(scountry.equals(CountryData[i])){
-                    CountryDataNum = i;
-                    break;
-                }
-            }
-        }
+
         if(spostalcode.length() > 0){
             etpostalcode.setText(spostalcode);
         }
@@ -539,6 +565,15 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         if(sphone.length() > 0){
             etphone.setText(sphone);
+        }
+        for(int i= sCategoryMap.length();i > 0 ; i --){
+            if(sCategoryMap.charAt(i) == 1 )
+            if(mCategoryMapNum1 == 0){
+                mCategoryMapNum1 = i;
+            }
+            mCategoryMapNum1 = 0;
+            mCategoryMapNum2 = 0;
+            mCategoryMapNum3 = 0;
         }
     }
 
@@ -692,6 +727,22 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                if(onClickNum != 0){
+                    switch (onClickNum){
+                        case 1:
+                            ttCategorymap1.setText("");
+                            showCategoryMapChooseDialog(mCategoryMapNum1);
+                            break;
+                        case 2:
+                            ttCategorymap2.setText("");
+                            showCategoryMapChooseDialog(mCategoryMapNum2);
+                            break;
+                        case 3:
+                            ttCategorymap3.setText("");
+                            showCategoryMapChooseDialog(mCategoryMapNum3);
+                            break;
+                    }
+                }
             }
         }).show();
     }
@@ -701,4 +752,5 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
+
 }

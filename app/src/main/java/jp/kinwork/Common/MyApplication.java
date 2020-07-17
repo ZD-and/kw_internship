@@ -74,9 +74,6 @@ public class MyApplication extends Application {
 
     private final static String TAG = MyApplication.class.getSimpleName();
 
-    private static final String CONSUMER_KEY = "CpCu6ipe73Wb3bv3qIlFWcM22";
-    private static final String CONSUMER_SECRET = "GyEsZRnySMy05V2MdobkAqvOMfzzw11RB8JuLdlgwVZcuugCxa";
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -106,29 +103,24 @@ public class MyApplication extends Application {
 
     private int WindowWidth = 0;
     private int WindowWidthreset = 0;
-//    private int num = 0;
-//    private int myIndex = -1;
-//    private LinkedList<String> enteredID = new LinkedList<String>();
-    private LinkedList<String> list_SearchResults = new LinkedList<String>();
-    private LinkedList<String> list_ContactDialog = new LinkedList<String>();
-    private LinkedList<String> list_S_Apply = new LinkedList<String>();
-    private LinkedList<String> list_M_Apply = new LinkedList<String>();
-    private LinkedList<String> list_S_URL = new LinkedList<String>();
-    private LinkedList<String> list_M_URL = new LinkedList<String>();
-    private LinkedList<String> list_P_personalset = new LinkedList<String>();
+    private LinkedList<String> list_SearchResults = new LinkedList<>();
+    private LinkedList<String> list_ContactDialog = new LinkedList<>();
+    private LinkedList<String> list_S_Apply = new LinkedList<>();
+    private LinkedList<String> list_M_Apply = new LinkedList<>();
+    private LinkedList<String> list_S_URL = new LinkedList<>();
+    private LinkedList<String> list_M_URL = new LinkedList<>();
+    private LinkedList<String> list_P_personalset = new LinkedList<>();
 
 
     public String getpersonalset(int Num) {
-        String data = list_P_personalset.get(Num);
-        return data;
+        return list_P_personalset.get(Num);
     }
     public void setpersonalset(String data,int i) {
         this.list_P_personalset.add(i,data);
     }
 
     public String getSURL(int Num) {
-        String data = list_S_URL.get(Num);
-        return data;
+        return list_S_URL.get(Num);
     }
     public void setSURL(String data,int i) {
         this.list_S_URL.add(i,data);
@@ -136,8 +128,7 @@ public class MyApplication extends Application {
 
 
     public String getMURL(int Num) {
-        String data = list_M_URL.get(Num);
-        return data;
+        return list_M_URL.get(Num);
     }
     public void setMURL(String data,int i) {
         this.list_M_URL.add(i,data);
@@ -172,32 +163,28 @@ public class MyApplication extends Application {
     }
 
     public String getSearchResults(int Num) {
-        String data = list_SearchResults.get(Num);
-        return data;
+        return list_SearchResults.get(Num);
     }
     public void setSearchResults(String data,int i) {
         this.list_SearchResults.add(i,data);
     }
 
     public String getContactDialog(int Num) {
-        String data = list_ContactDialog.get(Num);
-        return data;
+        return list_ContactDialog.get(Num);
     }
     public void setContactDialog(String data,int i) {
         this.list_ContactDialog.add(i,data);
     }
 
     public String getSApply(int Num) {
-        String data = list_S_Apply.get(Num);
-        return data;
+        return list_S_Apply.get(Num);
     }
     public void setSApply(String data,int i) {
         this.list_S_Apply.add(i,data);
     }
 
     public String getMApply(int Num) {
-        String data = list_M_Apply.get(Num);
-        return data;
+        return list_M_Apply.get(Num);
     }
     public void setMApply(String data,int i) {
         this.list_M_Apply.add(i,data);
@@ -209,26 +196,7 @@ public class MyApplication extends Application {
     public void setemployerID(String employerID) {
         this.employerID = employerID;
     }
-//    public int getnum() {
-//        return num;
-//    }
-//    public void setnum(int num) {
-//        this.num = num;
-//    }
-//    public int getmyIndex() {
-//        return myIndex;
-//    }
-//    public void setmyIndex(int myIndex) {
-//        this.myIndex = myIndex;
-//    }
-//    public boolean getenteredID(String data) {
-//        for(int i = 0; i < enteredID.size(); i++){
-//            if(data.equals(enteredID.get(i))){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+
     public String getresume_name(String Num) {
         if(Num.equals("1")){
             return resume_name_1;
@@ -313,7 +281,6 @@ public class MyApplication extends Application {
     public String getemploymentStatus() { return employmentStatus;}
     public String getyearlyIncome() { return yearlyIncome;}
     public String getpage() { return page;}
-//    public String getreturnData() { return returnData;}
     public String getjobinfo() { return jobinfo;}
     public String getURL() {
         return URL;
@@ -322,9 +289,6 @@ public class MyApplication extends Application {
         return JobId;
     }
 
-//    public void setenteredID(String data,int i) {
-//        enteredID.add(i,data);
-//    }
     public void setresume_name(String resume_name,String Num) {
         if(Num.equals("1")){
             this.resume_name_1 = resume_name;
@@ -348,12 +312,7 @@ public class MyApplication extends Application {
     public void setresume_status(String resume_status) {
         this.resume_status = resume_status;
     }
-//    public void setBasicinfoid(String Basicinfoid) {
-//        this.Basicinfoid = Basicinfoid;
-//    }
-//    public void setbasicinfo(String basicinfo) {
-//        this.basicinfo = basicinfo;
-//    }
+
     public void setMyjob(String Myjob) {
         this.Myjob = Myjob;
     }
@@ -426,5 +385,53 @@ public class MyApplication extends Application {
         return Activity;
     }
 
+    public void clear(){
+        myapplicationFlg = "";
+        email = "";
+        token = "";
+        id = "";
+        user_id = "";
+        first_name = "";
+        last_name = "";
+        first_name_kana = "";
+        last_name_kana = "";
+        birthday = "";
+        sex_div = "";
+        country = "";
+        post_code = "";
+        add_1 = "";
+        add_2 = "";
+        add_3 = "";
+        add_4 = "";
+        phone_number = "";
+        ResumeId = "";
+        keyword = "";
+        address = "";
+        employmentStatus = "";
+        yearlyIncome = "";
+        page = "";
+        jobinfo = "";
+        URL = "";
+        JobId = "";
+        Act = "";
+        Myjob = "";
+        Agreement = "";
+        inputA = "";
+        inputB = "";
+        screenflg = "";
+        termsofserviceflg = "";
+        privacypolicyflg = "";
+        resume_name_1 = "";
+        resume_name_2 = "";
+        resume_name_3 = "";
+        resume_status = "";
+        company_name = "";
+        Jobname = "";
+        ActCation = "";
+        employerID = "";
+        address_components = "";
+        AccessFineFocation = "";
+        Activity = "";
+    }
 
 }

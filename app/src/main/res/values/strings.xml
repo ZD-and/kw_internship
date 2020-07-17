@@ -688,6 +688,32 @@
         <item>ワリス・フテュナ諸島</item>
     </string-array>
 
+    <string-array name="categorymap">
+        <item>未選択</item>
+        <item>ITエンジニア</item>
+        <item>WEB・インターネット・ゲーム</item>
+        <item>クリエイティブ</item>
+        <item>食品</item>
+        <item>ホテル・交通</item>
+        <item>事務・管理</item>
+        <item>企画・経営</item>
+        <item>保育・教育</item>
+        <item>公共サービス</item>
+        <item>化学・素材</item>
+        <item>医療・福祉</item>
+        <item>医薬</item>
+        <item>営業</item>
+        <item>建築・土木・設備</item>
+        <item>技能工</item>
+        <item>美容・ブライダル</item>
+        <item>販売・フード・サービス</item>
+        <item>貿易・配送・倉庫</item>
+        <item>農林水産</item>
+        <item>金融・コンサルタント・不動産</item>
+        <item>電気・電子・機械・半導体</item>
+    </string-array>
+
+
 <!--    line連携-->
     <string name="line_client_id">1654297537</string>
 <!--    yahoo連携-->

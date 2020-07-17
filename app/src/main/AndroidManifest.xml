@@ -33,8 +33,6 @@
             android:launchMode="singleTask"/>
         <activity android:name=".MakeUserActivity"
             android:launchMode="singleTask"/>
-        <activity android:name=".LoginActivity"
-            android:launchMode="singleTask"/>
         <activity android:name=".EmploymentActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".EducationActivity"
@@ -60,7 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewSignInActivity"
+        <activity android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"

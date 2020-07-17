@@ -187,7 +187,6 @@ public class ResumeActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this) ;
         //dialog.setTitle("提示") ;
         dialog.setMessage(getString(R.string.Loading)) ;
-        Intent intent = getIntent();
         myApplication = (MyApplication) getApplication();
         IresumeIdflg = myApplication.getResumeId();
         resume_status = myApplication.getresume_status();
@@ -387,7 +386,9 @@ public class ResumeActivity extends AppCompatActivity {
             tvresumetitle.setText(myApplication.getpersonalset(1));
             myApplication.setresume_name(myApplication.getpersonalset(1),IresumeIdflg);
             employmentstatus = Integer.parseInt(myApplication.getpersonalset(2),10);
+            Log.d(TAG, "load employmentstatus: " + employmentstatus);
             String status = Integer.toBinaryString(employmentstatus);
+            Log.d(TAG, "load status: " + status);
             getstatus(status);
             Jobtypeexpectations = myApplication.getpersonalset(3);
             ethopeJobcategory.setText(Jobtypeexpectations);
@@ -763,10 +764,11 @@ public class ResumeActivity extends AppCompatActivity {
     //雇佣形态設定
     public void getstatus(String data){
         int number = 0;
+        Log.i(TAG,"转换内容的data:" + data);
         for(int i = data.length(); i > 0; i--){
-            Log.i("转换内容的", "第" + i + "位:" + data.charAt(i-1));
+            Log.i(TAG,"转换内容的第" + i + "位:" + data.charAt(i-1));
             String num= String.valueOf(data.charAt(i-1));
-            Log.i("转换内容的", "num:" + num);
+            Log.i(TAG,"转换内容的num:" + num);
             number = number + 1;
             if(number == 1 && num.equals("1")){
                 cbone.setChecked(true);
@@ -966,7 +968,9 @@ public class ResumeActivity extends AppCompatActivity {
                     Log.d("***ResumegetString***", "["+JSONObject_resume.getString(getString(R.string.employment_status)) + "]");
                     if(! JSONObject_resume.getString(getString(R.string.employment_status)).equals("") && ! JSONObject_resume.getString(getString(R.string.employment_status)).equals("null")){
                         employmentstatus = Integer.parseInt(JSONObject_resume.getString(getString(R.string.employment_status)),10);
+                        Log.d(TAG, "resumeinfo employmentstatus: " +employmentstatus);
                         String status = Integer.toBinaryString(employmentstatus);
+                        Log.d(TAG, "resumeinfo status: " +status);
                         getstatus(status);
                     }
                     if(! JSONObject_resume.getString(getString(R.string.job_type_expectations)).equals("") && ! JSONObject_resume.getString(getString(R.string.job_type_expectations)).equals("null")){

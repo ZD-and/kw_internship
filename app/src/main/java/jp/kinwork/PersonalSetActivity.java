@@ -352,6 +352,7 @@ public class PersonalSetActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
                 mPreferenceUtils.clear();
+                mMyApplication.clear();
                 Intent intentClose = new Intent();
                 intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 mMyApplication.setAct(getString(R.string.Search));
@@ -438,6 +439,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         PostDate Pdata = new PostDate();
         Pdata.setUserId(mPreferenceUtils.getuserId());
         Pdata.setToken(mPreferenceUtils.gettoken());
+        Pdata.setDeviceType("2");
         Gson mGson1 = new Gson();
         String sdPdata = mGson1.toJson(Pdata,PostDate.class);
         AES mAes = new AES();
