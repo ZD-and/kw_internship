@@ -75,6 +75,7 @@ import jp.kinwork.Common.ClassDdl.User;
 import jp.kinwork.Common.ClassDdl.UserToken;
 import jp.kinwork.Common.CommonAsyncTask;
 import jp.kinwork.Common.CommonView.JumpTextWatcher;
+import jp.kinwork.Common.KinworkDialgo;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -109,12 +110,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private PreferenceUtils mPreferenceUtils;
 
     private String mDeviceToken;
-    private ProgressDialog mDialog;
+    private KinworkDialgo mDialog;
     String TAG = "LoginActivity";
     String mLoginFlag ="";
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     // [END declare_auth]
+
+    private KinworkDialgo dialog;
 
     LineApiClient lineApiClient;
     private GoogleSignInClient mGoogleSignInClient;
@@ -155,6 +158,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //初期化
     private void Initialization(){
+        dialog = new KinworkDialgo(this) ;
+        dialog.setMessage("ログイン中");
+        dialog.setCanceledOnTouchOutside(false);
         TextView tvBack = findViewById(R.id.tv_back);
         tvBack.setOnClickListener(this);
         tvBack.setText("戻る");
@@ -168,7 +174,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.bu_MainLoginClick).setOnClickListener(this);
         findViewById(R.id.Click_Forgetpw).setOnClickListener(this);
         findViewById(R.id.MakeNewuser_Click).setOnClickListener(this);
-
         findViewById(R.id.login_btn_google).setOnClickListener(this);
         findViewById(R.id.login_btn_facebook).setOnClickListener(this);
         findViewById(R.id.login_btn_yahoo).setOnClickListener(this);
@@ -184,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPage = mMyApplication.getpage();
         mJobInfo = mMyApplication.getjobinfo();
         mActivity = getIntent().getStringExtra(getString(R.string.Activity));
-        mDialog = new ProgressDialog(this);
+        mDialog = new KinworkDialgo(this);
         mDialog.setMessage(getString(R.string.login)) ;
         mAuth = FirebaseAuth.getInstance();
         getDeviceToken();
@@ -198,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //登录处理
     public void login(){
+        dialog.show();
         mFlg = "0";
         mEmail = mEdLoginEmail.getText().toString();
         mPassword = mEdPassword.getText().toString();
@@ -470,6 +476,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //画面移動
     private void MoveScreen(){
+        dialog.dismiss();
         String saveid = mPreferenceUtils.getsaveid();
         Log.d(TAG, "saveid:" +saveid);
         Intent intent = new Intent();
@@ -853,11 +860,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        dialog = new ProgressDialog(this) ;
         //dialog.setTitle("提示") ;
 //        dialog.setMessage(getString(R.string.kensakuchu)) ;
-//        dialog.show();
-        Log.d(TAG, "SignInToKinWork: ");
-        Log.d(TAG, "SignInToKinWork email: "+email);
-        Log.d(TAG, "SignInToKinWork loginId: " + loginId);
-        Log.d(TAG, "SignInToKinWork flag: " +flag);
+        dialog.show();
         PostDate pd = new PostDate();
         pd.setEmail(email);
         pd.setId(loginId);

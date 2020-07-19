@@ -12,31 +12,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:gravity="center">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="visible"
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/resume_name"
+            android:id="@+id/include_resume_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5sp"
-            android:text="レジュメ番号"
-            android:textColor="@color/but_blue"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="完成度"
+            android:text="履歴書名："
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/but_blue"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/include_resume_hopeJobcategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="80％"
+            android:text="希望職種："
+            android:textColor="@color/but_blue"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/include_resume_neareststation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最寄駅："
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/include_resume_aspiration_pr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="志望動機・自己RP："
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/include_resume_hobby_skill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="趣味・特技："
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/but_blue"
             android:textSize="15sp"
             android:textStyle="bold" />

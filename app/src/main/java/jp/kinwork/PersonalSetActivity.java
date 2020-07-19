@@ -1,5 +1,6 @@
 package jp.kinwork;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,6 +67,9 @@ public class PersonalSetActivity extends AppCompatActivity {
     private PreferenceUtils mPreferenceUtils;
     private LineApiClient mLineApiClient;
     private FirebaseAuth mAuth;
+
+    private ProgressDialog dialog;
+
     private String TAG = "PersonalSetActivity";
 
     private ArrayList<Resume> resumeList = new ArrayList<>();
@@ -168,6 +172,9 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad() {
+        dialog = new ProgressDialog(this) ;
+        dialog.setMessage("通信中");
+        dialog.show();
         String data = JsonChnge(mAesKey, mUserId, mToken);
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
@@ -197,7 +204,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         new GithubQueryTask().execute(param);
     }
 
-    public void Click_Resume(){
+    public void goToResume(){
         String data = JsonChnge(mAesKey, mUserId, mToken);
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
@@ -244,6 +251,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            dialog.dismiss();
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 Log.d("***Results***", githubSearchResults);
                 try {
@@ -281,7 +289,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        alertdialog(message);
+                        alertdialog();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -315,8 +323,14 @@ public class PersonalSetActivity extends AppCompatActivity {
                 mMyApplication.setadd_3(obj.getString(getString(R.string.add_3)));
                 mMyApplication.setadd_4(obj.getString(getString(R.string.add_4)));
                 mMyApplication.setphone_number(obj.getString(getString(R.string.phone_number)));
+                mMyApplication.setCategoryMap(obj.getString(getString(R.string.category_map)));
+                if(mMyApplication.getlast_name().length() > 0){
+                    String name = mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様";
+                    Log.d("PersonalSetActivity", "name:" + name);
+                    tvname.setText(name);
+                }
                 JSONArray Resumes = obj.getJSONArray(getString(R.string.Resumes));
-                Log.d(TAG,"datas:"+ Resumes);
+                Log.d(TAG,"datas Resumes:"+ Resumes);
                 int ResumeNum = 0;
                 for(int i = 0; i < Resumes.length(); i++){
                     Gson mGson = new Gson();
@@ -345,7 +359,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
@@ -400,9 +414,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             String ResumeIdNum = "1";
             String ResumeStatus = View.getTag().toString();
             mPreferenceUtils.setsaveid(getString(R.string.PreferenceUtils));
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.setClass(PersonalSetActivity.this, ResumeActivity.class);
             switch (View.getId()) {
                 //検索画面に
                 case 0:
@@ -417,7 +428,7 @@ public class PersonalSetActivity extends AppCompatActivity {
             }
             mMyApplication.setResumeId(ResumeIdNum);
             mMyApplication.setresume_status(ResumeStatus);
-            startActivity(intent);
+            goToResume();
         }
     };
 
@@ -426,11 +437,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         int resumeNumber = mPreferenceUtils.getresume_number();
         String Email = mPreferenceUtils.getEmail();
 //        deviceId = PreferenceUtils.getdeviceId();
-        if(mMyApplication.getlast_name().length() > 0){
-            String name = mMyApplication.getlast_name() + mMyApplication.getfirst_name() + " 様";
-            Log.d("PersonalSetActivity", "name:" + name);
-            tvname.setText(name);
-        }
         tvemail.setText(Email);
         Log.d("***resumeNumber***", "" + resumeNumber);
 
@@ -482,6 +488,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                         break;
                 }
                 mPreferenceUtils.clear();
+                mMyApplication.clear();
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(PersonalSetActivity.this, SearchActivity.class);
@@ -529,7 +536,11 @@ public class PersonalSetActivity extends AppCompatActivity {
             LinearLayout includeResumesetLinearlayout = (LinearLayout) view.findViewById(R.id.include_resumeset_linearlayout);
             LinearLayout linearLayoutResume = (LinearLayout) view.findViewById(R.id.linearLayout_resume);
             ImageView addImageView = (ImageView) view.findViewById(R.id.imageview_add);
-            TextView resumeName = (TextView) view.findViewById(R.id.resume_name);
+            TextView includeResumeName = (TextView) view.findViewById(R.id.include_resume_name);
+            TextView includeResumeHopeJobcategory = (TextView) view.findViewById(R.id.include_resume_hopeJobcategory);
+            TextView includeResumeNeareststation = (TextView) view.findViewById(R.id.include_resume_neareststation);
+            TextView includeResumeAspirationPR = (TextView) view.findViewById(R.id.include_resume_aspiration_pr);
+            TextView includeResumeHobbySkill = (TextView) view.findViewById(R.id.include_resume_hobby_skill);
             includeResumesetLinearlayout.setId(position);
             includeResumesetLinearlayout.setOnClickListener(resumeListener);
             if(mList.size() ==0 || mList.size() == position){
@@ -539,8 +550,12 @@ public class PersonalSetActivity extends AppCompatActivity {
             } else {
                 addImageView.setVisibility(View.GONE);
                 linearLayoutResume.setVisibility(View.VISIBLE);
-//                Resume item = mList.get(position);
-//                resumeName.setText(item.getresume_name());
+                Resume item = mList.get(position);
+                includeResumeName.setText("履歴書名：" + item.getresume_name());
+                includeResumeHopeJobcategory.setText("希望職種："+ item.getJob_type_expectations());
+                includeResumeNeareststation.setText("最寄駅："+ item.getNearest_station());
+                includeResumeAspirationPR.setText("志望動機・自己RP："+ item.getindividual_pr());
+                includeResumeHobbySkill.setText("趣味・特技："+ item.gethoby());
                 includeResumesetLinearlayout.setTag("upd");
             }
             // コンテナに追加

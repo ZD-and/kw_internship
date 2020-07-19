@@ -85,6 +85,7 @@
     <string name="smunicipality">市区町村を入力してください。</string>
     <string name="stown">町目番地を入力してください。</string>
     <string name="sphone">電話番号を入力してください。</string>
+    <string name="sCategoryMap">最低限一つの業種を選択してください。</string>
     <string name="alertdialog">未来の年月を選択できません。</string>
     <string name="formatter">yyyy-MM-dd</string>
     <string name="file">file</string>
@@ -103,6 +104,7 @@
     <string name="last_name_kana">last_name_kana</string>
     <string name="post_code">post_code</string>
     <string name="phone_number">phone_number</string>
+    <string name="category_map">category_map</string>
     <string name="act">act</string>
 
     <!-- Strings related to Bootanimation -->

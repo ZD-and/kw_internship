@@ -22,6 +22,7 @@ public class UserBasic {
      * add_3 : それ以降の住所
      * add_4 : アパート、マンション名
      * phone_number : 電話番号
+     * category_map : 業種
      * is_deleted : 删除标志
      * created_program : 作成者
      * created_date : 作成時間
@@ -44,6 +45,7 @@ public class UserBasic {
     private String add_3;
     private String add_4;
     private String phone_number;
+    private String category_map;
     private String is_deleted;
     private String created_program;
     private String created_date;
@@ -168,6 +170,14 @@ public class UserBasic {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public String getCategory_Map() {
+        return category_map;
+    }
+
+    public void setCategory_Map(String category_map) {
+        this.category_map = category_map;
     }
 
     public String getIs_deleted() {

@@ -71,6 +71,7 @@ public class MyApplication extends Application {
     private String address_components = "";
     private String AccessFineFocation = "";
     private String Activity = "";
+    private String CategoryMap = "";
 
     private final static String TAG = MyApplication.class.getSimpleName();
 
@@ -385,6 +386,14 @@ public class MyApplication extends Application {
         return Activity;
     }
 
+    public void setCategoryMap(String CategoryMap) {
+        this.CategoryMap = CategoryMap;
+    }
+    public String getCategoryMap() {
+        return CategoryMap;
+    }
+
+
     public void clear(){
         myapplicationFlg = "";
         email = "";
@@ -432,6 +441,7 @@ public class MyApplication extends Application {
         address_components = "";
         AccessFineFocation = "";
         Activity = "";
+        CategoryMap = "";
     }
 
 }

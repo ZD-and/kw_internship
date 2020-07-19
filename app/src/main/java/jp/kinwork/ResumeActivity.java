@@ -279,7 +279,6 @@ public class ResumeActivity extends AppCompatActivity {
         tl_tr_tv_qualification.setOnClickListener(onListener);
         tv_PrSkill.setOnClickListener(onListener);
 
-
         etresumename    = (EditText) findViewById(R.id.et_resume_name);
         tltrtvname      = (TextView) findViewById(R.id.tl_tr_tv_name);
         tltrtvkananame  = (TextView) findViewById(R.id.tl_tr_tv_kananame);
@@ -308,7 +307,9 @@ public class ResumeActivity extends AppCompatActivity {
             }
         });
         bu_create=findViewById(R.id.bu_create);
-
+        if(resume_status.equals("upd")){
+            bu_create.setText("履歴書変更");
+        }
         bu_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -3,6 +3,7 @@ package jp.kinwork;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -90,6 +91,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     private int mCategoryMapNum2 = 0;
     private int mCategoryMapNum3 = 0;
 
+    private ProgressDialog dialog;
     private MyApplication mMyApplication;
     private PreferenceUtils mPreferenceUtils;
 
@@ -211,6 +213,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         etlname_kana.setText(slname_kana);
     }
 
+
     //基本情報を登録
     public void Click_Registration(){
         buttonflg = "1";
@@ -225,6 +228,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         String stown             = ettown.getText().toString();
         String sbu_mansion_room  = etbu_mansion_room.getText().toString();
         String sphone            = etphone.getText().toString();//必須項目
+        String sCategory_Map     = "";//必須項目
 
         PostDate Pdata = new PostDate();
         UserBasic PdataUserBasic = new UserBasic();
@@ -265,7 +269,12 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         else if(stown.length() ==0 ){
             alertdialog(getString(R.string.stown));
+        }else if(mCategoryMapNum1 == 0 && mCategoryMapNum2 == 0 && mCategoryMapNum3 == 0 ){
+            alertdialog(getString(R.string.sCategoryMap));
         }else {
+            dialog = new ProgressDialog(this) ;
+            dialog.setMessage("通信中");
+            dialog.show();
             PdataUserBasic.setFirst_name(sfname);
             PdataUserBasic.setLast_name(slname);
             PdataUserBasic.setFirst_name_kana(sfname_kana);
@@ -278,19 +287,26 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             PdataUserBasic.setAdd_3(stown);
             PdataUserBasic.setAdd_4(sbu_mansion_room);
             PdataUserBasic.setPhone_number(sphone);
-
-            mMyApplication.setfirst_name(sfname);
-            mMyApplication.setlast_name(slname);
-            mMyApplication.setfirst_name_kana(sfname_kana);
-            mMyApplication.setlast_name_kana(slname_kana);
-            mMyApplication.setsex_div(String.valueOf(selectedFruitIndex));
-            mMyApplication.setbirthday(birthday);
-            mMyApplication.setpost_code(spostalcode);
-            mMyApplication.setadd_1(sprefectures);
-            mMyApplication.setadd_2(smunicipality);
-            mMyApplication.setadd_3(stown);
-            mMyApplication.setadd_4(sbu_mansion_room);
-            mMyApplication.setphone_number(sphone);
+            for(int i = 1;i<22;i++){
+               String Category_Map="0";
+               if(i == mCategoryMapNum1 || i == mCategoryMapNum2 || i == mCategoryMapNum3){
+                   Category_Map="1";
+               }
+               sCategory_Map = Category_Map + sCategory_Map;
+            }
+            PdataUserBasic.setCategory_Map(sCategory_Map);
+//            mMyApplication.setfirst_name(sfname);
+//            mMyApplication.setlast_name(slname);
+//            mMyApplication.setfirst_name_kana(sfname_kana);
+//            mMyApplication.setlast_name_kana(slname_kana);
+//            mMyApplication.setsex_div(String.valueOf(selectedFruitIndex));
+//            mMyApplication.setbirthday(birthday);
+//            mMyApplication.setpost_code(spostalcode);
+//            mMyApplication.setadd_1(sprefectures);
+//            mMyApplication.setadd_2(smunicipality);
+//            mMyApplication.setadd_3(stown);
+//            mMyApplication.setadd_4(sbu_mansion_room);
+//            mMyApplication.setphone_number(sphone);
 
             Pdata.setUserId(userId);
             Pdata.setToken(token);
@@ -506,36 +522,15 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     //既に存在しますの情報をセット
     private void setBasicinfo(){
-        String ssex              = "";
-        String sbirthday         = "";
-        String spostalcode       = "";
-        String sprefectures      = "";
-        String smunicipality     = "";
-        String stown             = "";
-        String sbu_mansion_room  = "";
-        String sphone            = "";
-        String sCategoryMap      = "000000000000000000000";
-
-        if(!mMyApplication.getpersonalset(0).equals("0")){
-            sbirthday         = mMyApplication.getpersonalset(5);//必須項目_生年月日
-            ssex              = mMyApplication.getpersonalset(7);//必須項目_性別
-            spostalcode       = mMyApplication.getpersonalset(8);//郵便番号
-            sprefectures      = mMyApplication.getpersonalset(9);//都道府県
-            smunicipality     = mMyApplication.getpersonalset(10);//市区町村
-            stown             = mMyApplication.getpersonalset(11);//町目番地
-            sbu_mansion_room  = mMyApplication.getpersonalset(12);
-            sphone            = mMyApplication.getpersonalset(13);//必須項目_電話番号
-
-        } else {
-            ssex              = mMyApplication.getsex_div();//必須項目_性別
-            sbirthday         = mMyApplication.getbirthday();//必須項目_生年月日
-            spostalcode       = mMyApplication.getpost_code();//郵便番号
-            sprefectures      = mMyApplication.getadd_1();//都道府県
-            smunicipality     = mMyApplication.getadd_2();//市区町村
-            stown             = mMyApplication.getadd_3();//町目番地
-            sbu_mansion_room  = mMyApplication.getadd_4();
-            sphone            = mMyApplication.getphone_number();//必須項目_電話番号
-        }
+        String ssex              = mMyApplication.getsex_div();//必須項目_性別
+        String sbirthday         = mMyApplication.getbirthday();//必須項目_生年月日
+        String spostalcode       = mMyApplication.getpost_code();//郵便番号
+        String sprefectures      = mMyApplication.getadd_1();//都道府県
+        String smunicipality     = mMyApplication.getadd_2();//市区町村
+        String stown             = mMyApplication.getadd_3();//町目番地
+        String sbu_mansion_room  = mMyApplication.getadd_4();
+        String sphone            = mMyApplication.getphone_number();//必須項目_電話番号
+        String sCategoryMap      = mMyApplication.getCategoryMap();//必須項目_電話番号
 
         if(ssex.length() > 0){
             selectedFruitIndex = Integer.parseInt(ssex);
@@ -566,14 +561,34 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         if(sphone.length() > 0){
             etphone.setText(sphone);
         }
+        int num = 0;
+        Log.d(TAG, "setBasicinfo sCategoryMap: " + sCategoryMap);
         for(int i= sCategoryMap.length();i > 0 ; i --){
-            if(sCategoryMap.charAt(i) == 1 )
-            if(mCategoryMapNum1 == 0){
-                mCategoryMapNum1 = i;
+            num ++;
+            String strCategoryMapNum = String.valueOf(sCategoryMap.charAt(i-1));
+            Log.d(TAG, "setBasicinfo sCategoryMap strCategoryMapNum: " + strCategoryMapNum);
+            Log.d(TAG, "setBasicinfo sCategoryMap num: " + num);
+            Log.d(TAG, "setBasicinfo sCategoryMap mCategoryMap[num]: " + mCategoryMap[num]);
+            Log.d(TAG, "setBasicinfo sCategoryMap mCategoryMapNum1: " + mCategoryMapNum1);
+            Log.d(TAG, "setBasicinfo sCategoryMap mCategoryMapNum2: " + mCategoryMapNum2);
+            Log.d(TAG, "setBasicinfo sCategoryMap mCategoryMapNum3: " + mCategoryMapNum3);
+            if(strCategoryMapNum.equals("1")){
+                if(mCategoryMapNum1 == 0){
+                    mCategoryMapNum1 = num;
+                    ttCategorymap1.setText(mCategoryMap[num]);
+                    trCategorymap2.setVisibility(View.VISIBLE);
+                }
+                else if(mCategoryMapNum2 == 0){
+                    mCategoryMapNum2 = num;
+                    ttCategorymap2.setText(mCategoryMap[num]);
+                    trCategorymap3.setVisibility(View.VISIBLE);
+                }
+                else if(mCategoryMapNum3 == 0){
+                    mCategoryMapNum3 = num;
+                    ttCategorymap3.setText(mCategoryMap[num]);
+                }
             }
-            mCategoryMapNum1 = 0;
-            mCategoryMapNum2 = 0;
-            mCategoryMapNum3 = 0;
+
         }
     }
 
@@ -629,6 +644,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            dialog.dismiss();
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 Log.d("***Results***", githubSearchResults);
                 try {
