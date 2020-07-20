@@ -83,7 +83,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private String DisplayEmailFlg = "0";
     private String sendflg = "0";
     private String flg="";
-    private String mailflg="";
 
 
     private PreferenceUtils mPreferenceUtils;
@@ -147,9 +146,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-            getSearchResults("1","all","all");
-            getSearchResults("1","receive","receive");
-            getSearchResults("1","send","send");
+            getSearchResults("1","all");
+            getSearchResults("1","receive");
+            getSearchResults("1","send");
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
@@ -278,7 +277,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageAll=currentpageAll+1;
-                getSearchResults(Integer.toString(currentpageAll),"all","all");
+                getSearchResults(Integer.toString(currentpageAll),"all");
                 nextfirst.setVisibility(View.GONE);
             }
         });
@@ -287,7 +286,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageReceive=currentpageReceive+1;
-                getSearchResults(Integer.toString(currentpageReceive),"receive","receive");
+                getSearchResults(Integer.toString(currentpageReceive),"receive");
                 nextsecond.setVisibility(View.GONE);
             }
         });
@@ -296,7 +295,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageSend=currentpageSend+1;
-                getSearchResults(Integer.toString(currentpageSend),"send","send");
+                getSearchResults(Integer.toString(currentpageSend),"send");
                 nextthird.setVisibility(View.GONE);
             }
         });
@@ -407,19 +406,19 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
 
     //获取搜索结果
-    public void getSearchResults(String number,String mail,String Type){
+    public void getSearchResults(String number,String Type){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
         Pdata.setpage(number);
-        Pdata.setType(mail);//all:全部　receive:受信 send:送信
+        Pdata.setType(Type);//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),"");
-        param.put(flg,Type);
+        param.put("Type",Type);
         nMaildisplaypage=Integer.parseInt(number)-1;
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
@@ -452,7 +451,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
-            type=map.get(flg);
+            type=map.get("Type");
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
