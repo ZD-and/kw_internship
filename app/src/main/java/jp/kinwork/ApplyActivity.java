@@ -16,15 +16,22 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.CommonAsyncTask;
 import jp.kinwork.Common.MyApplication;
+import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 public class ApplyActivity extends AppCompatActivity {
-    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
-
+    final static String PARAM_File = "/MypagesMobile/initMypageData";
     private TableLayout tlapplyemploymentstatus;
     private TableLayout tlapplySalary;
     private TextView tvapplyJobcategory;
@@ -75,6 +82,11 @@ public class ApplyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
     }
 
@@ -160,11 +172,7 @@ public class ApplyActivity extends AppCompatActivity {
         mMyApplication.setJobname(tvapplyJobcategory.getText().toString());
         mMyApplication.setemployerID(employerID);
         if(UserFlg.equals("1")){
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.setClass(ApplyActivity.this, SelectResumeActivity.class);
-            startActivity(intent);
-
+            SignInToKinWork();
         } else {
             TextView msg = new TextView(this);
             msg.setText(getString(R.string.checkloginstatus));
@@ -191,6 +199,49 @@ public class ApplyActivity extends AppCompatActivity {
                 }
             }).show();
         }
+    }
+
+    private void SignInToKinWork(){
+        PostDate pd = new PostDate();
+        pd.setUserId(mPreferenceUtils.getuserId());
+        pd.setToken(mPreferenceUtils.gettoken());
+        String processData = new AESprocess().getencrypt(new Gson().toJson(pd,PostDate.class),mPreferenceUtils.getAesKey());
+        Map<String,String> param = new HashMap<String, String>();
+        param.put(getString(R.string.file), PARAM_File);
+        param.put(getString(R.string.data),processData);
+        //数据通信处理（访问服务器，并取得访问结果）
+        CommonAsyncTask commonAsyncTask = new CommonAsyncTask();
+        commonAsyncTask.setParams(mPreferenceUtils.getdeviceId());
+        commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
+            @Override
+            public void onSuccess(String results) {
+                if(results != null && !results.equals("")){
+                    Log.d("ApplyActivity", "onSuccess results: " + results);
+                    try {
+                        JSONObject obj = new JSONObject(results);
+                        Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                        String message = obj.getString(getString(R.string.message));
+                        String errorCode = obj.getString(getString(R.string.errorCode));
+                        if(processResult == true) {
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(ApplyActivity.this, SelectResumeActivity.class);
+                            startActivity(intent);
+                        } else {
+                            if(errorCode.equals("100")){
+                                message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            }
+                            alertdialog(message,errorCode);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+        commonAsyncTask.execute(param);
+
     }
 
     //返回检索画面
@@ -267,4 +318,25 @@ public class ApplyActivity extends AppCompatActivity {
             }
         }
     }
+
+    //通信结果提示
+    private void alertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ApplyActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
+            }
+        }).show();
+    }
+
 }

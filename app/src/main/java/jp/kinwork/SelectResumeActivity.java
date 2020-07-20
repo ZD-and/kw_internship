@@ -295,7 +295,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     //应聘按钮
     public void Click_Application(){
         if(cbresumeId.equals("")){
-            alertdialog(getString(R.string.alertdialog16));
+            alertdialog(getString(R.string.alertdialog16),"");
         } else {
             setApplication();
         }
@@ -305,9 +305,9 @@ public class SelectResumeActivity extends AppCompatActivity {
     //执行应聘
     public void setApplication(){
         if(ettitle.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog17));
+            alertdialog(getString(R.string.alertdialog17),"");
         } else if(etmessage.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog18));
+            alertdialog(getString(R.string.alertdialog18),"");
         } else {
             PostDate Pdata = new PostDate();
             Map<String,String> param = new HashMap<String, String>();
@@ -370,16 +370,15 @@ public class SelectResumeActivity extends AppCompatActivity {
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    errormeg = obj.getString(getString(R.string.message));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
-//                        if(Act.equals("Search")){
-//                            MoveIntent(Act);
-//                        } else {
-//                            MoveIntent("Application");
-//                        }
                         MoveIntent(getString(R.string.Application));
                     } else {
-                        alertdialog(errormeg);
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -389,7 +388,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
@@ -397,8 +396,18 @@ public class SelectResumeActivity extends AppCompatActivity {
                 //确定按钮的点击事件
                 Log.d("**errormeg**", errormeg);
                 Log.d("**JobId**", JobId);
-                if(errormeg.equals(getString(R.string.errormeg))){
+                if(meg.equals(getString(R.string.errormeg))){
                     MoveIntent(getString(R.string.Application));
+                }
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(SelectResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
                 }
             }
         }).show();

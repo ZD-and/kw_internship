@@ -583,7 +583,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 try {
                     JSONObject obj = new JSONObject(githubSearchResultsSend);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String meg = obj.getString(getString(R.string.message));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
                         if(!name.equals(getString(R.string.isReaded))){
@@ -591,7 +592,12 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                             decryptchange(obj.getString(getString(R.string.returnData)),name);
                         }
                     }else {
-                        Toast.makeText(getApplicationContext(),"メールはもうありません",Toast.LENGTH_LONG).show();
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog(message,errorCode);
+                        } else {
+                            Toast.makeText(getApplicationContext(),"メールはもうありません",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -977,16 +983,27 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             param.put(getString(R.string.name), getString(R.string.SendMeg));
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTaskAll().execute(param);
-            alertdialog();
+            alertdialog("送信しました。","");
         }
     };
-    private void alertdialog(){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("送信しました。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                finish();
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ContactDialogActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                } else {
+                    finish();
+                }
             }
         }).show();
     }

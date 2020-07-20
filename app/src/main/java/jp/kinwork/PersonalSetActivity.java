@@ -52,7 +52,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     final static String PARAM_File = "/MypagesMobile/initMypageData";
     final static String PARAM_logout = "/usersMobile/logoutMobile";
 
-    private String flg = "";
+    private String flg = "0";
 
     private String mDeviceId;
     private String mAesKey;
@@ -179,37 +179,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
-        flg = "0";
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
-    }
-
-    public void goToBasicinfoedit(){
-        String data = JsonChnge(mAesKey, mUserId, mToken);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
-        flg= "1";
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
-
-    }
-    public void goToChangPW(){
-        String data = JsonChnge(mAesKey, mUserId, mToken);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
-        flg ="2";
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
-    }
-
-    public void goToResume(){
-        String data = JsonChnge(mAesKey, mUserId, mToken);
-        Map<String,String> param = new HashMap<String, String>();
-        param.put("file",PARAM_File);
-        param.put("data",data);
-        flg ="3";
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
@@ -258,6 +227,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     Log.d("***+++msg+++***", message);
                     if(processResult) {
                         String returnData = obj.getString(getString(R.string.returnData));
@@ -289,7 +259,10 @@ public class PersonalSetActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        alertdialog();
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -359,20 +332,22 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                mPreferenceUtils.clear();
-                mMyApplication.clear();
-                Intent intentClose = new Intent();
-                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                mMyApplication.setAct(getString(R.string.Search));
-                intentClose.setClass(PersonalSetActivity.this, SearchActivity.class);
-                intentClose.putExtra("act", "");
-                startActivity(intentClose);
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(PersonalSetActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
@@ -387,10 +362,12 @@ public class PersonalSetActivity extends AppCompatActivity {
                     logout();
                     break;
                 case R.id.tr_basicinfoedit:
-                    goToBasicinfoedit();
+                    flg= "1";
+                    urllodad();
                     break;
                 case R.id.tr_changpw:
-                    goToChangPW();
+                    flg= "2";
+                    urllodad();
                     break;
                 case R.id.tr_licenses:
                     Intent intent = new Intent();
@@ -428,7 +405,8 @@ public class PersonalSetActivity extends AppCompatActivity {
             }
             mMyApplication.setResumeId(ResumeIdNum);
             mMyApplication.setresume_status(ResumeStatus);
-            goToResume();
+            flg ="3";
+            urllodad();
         }
     };
 

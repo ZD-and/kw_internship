@@ -238,39 +238,39 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
         PdataUserBasic.setUser_id(userId);
         if(slname.length() ==0 ){
-            alertdialog(getString(R.string.slname));
+            alertdialog(getString(R.string.slname),"");
         }
         else if(sfname.length() ==0 ){
-            alertdialog(getString(R.string.sfname));
+            alertdialog(getString(R.string.sfname),"");
         }
         else if(slname_kana.length() ==0 ){
-            alertdialog(getString(R.string.slname_kana));
+            alertdialog(getString(R.string.slname_kana),"");
         }
         else if(sfname_kana.length() ==0 ){
-            alertdialog(getString(R.string.sfname_kana));
+            alertdialog(getString(R.string.sfname_kana),"");
         }
         else if(selectedFruitIndex == 0 || selectedFruitIndex == 3) {
-            alertdialog(getString(R.string.selectedFruitIndex));
+            alertdialog(getString(R.string.selectedFruitIndex),"");
         }
         else if(birthday.equals("") ){
-            alertdialog(getString(R.string.birthdayselect));
+            alertdialog(getString(R.string.birthdayselect),"");
         }
         else if(sphone.length() ==0 ){
-            alertdialog(getString(R.string.sphone));
+            alertdialog(getString(R.string.sphone),"");
         }
         else if(spostalcode.length() ==0 ){
-            alertdialog(getString(R.string.spostalcode));
+            alertdialog(getString(R.string.spostalcode),"");
         }
         else if(sprefectures.length() ==0 ){
-            alertdialog(getString(R.string.sprefectures));
+            alertdialog(getString(R.string.sprefectures),"");
         }
         else if(smunicipality.length() ==0 ){
-            alertdialog(getString(R.string.smunicipality));
+            alertdialog(getString(R.string.smunicipality),"");
         }
         else if(stown.length() ==0 ){
-            alertdialog(getString(R.string.stown));
+            alertdialog(getString(R.string.stown),"");
         }else if(mCategoryMapNum1 == 0 && mCategoryMapNum2 == 0 && mCategoryMapNum3 == 0 ){
-            alertdialog(getString(R.string.sCategoryMap));
+            alertdialog(getString(R.string.sCategoryMap),"");
         }else {
             dialog = new ProgressDialog(this) ;
             dialog.setMessage("通信中");
@@ -358,7 +358,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                                 (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
                         ) {
                             ttbirthday.setText("");
-                            alertdialog(getString(R.string.alertdialog));
+                            alertdialog(getString(R.string.alertdialog),"");
                         } else {
                             mYear = startYear;
                             mMonth = startMonthOfYear + 1;
@@ -514,7 +514,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     private void checkCategoryMap(){
         if((mCategoryMapNum1 >0 && mCategoryMapNum1 == mCategoryMapNum2) || (mCategoryMapNum1 >0 && mCategoryMapNum1 == mCategoryMapNum3) || (mCategoryMapNum2 >0 && mCategoryMapNum2 == mCategoryMapNum3)){
-            alertdialog("すてに選択されたの業種です、\n他の業種を選択してください。");
+            alertdialog("すてに選択されたの業種です、\n他の業種を選択してください。","");
         }
     }
 
@@ -651,6 +651,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         if(buttonflg.equals("0")){
                             String returnData = obj.getString(getString(R.string.returnData));
@@ -660,9 +661,15 @@ public class BasicinfoeditActivity extends AppCompatActivity {
                             intent.setClass(BasicinfoeditActivity.this, PersonalSetActivity.class);
                             startActivity(intent);
                         }
-
                     } else {
-                        showErrors(obj.getString(getString(R.string.showErrors)));
+                        if(errorCode.equals("100")){
+                            titlt = "";
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog(message,errorCode);
+                        } else {
+                            showErrors(obj.getString(getString(R.string.showErrors)));
+                        }
+
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -692,43 +699,43 @@ public class BasicinfoeditActivity extends AppCompatActivity {
             JSONObject obj = new JSONObject(error);
             if(obj.has(getString(R.string.first_name))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.first_name));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.last_name))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.last_name));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.first_name_kana))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.first_name_kana));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.last_name_kana))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.last_name_kana));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.post_code))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.post_code));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.add_1))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.add_1));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.add_2))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.add_2));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.add_3))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.add_3));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.add_4))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.add_4));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
             else if(obj.has(getString(R.string.phone_number))){
                 JSONArray ja = obj.getJSONArray(getString(R.string.phone_number));
-                alertdialog(ja.getString(0));
+                alertdialog(ja.getString(0),"");
             }
 
         } catch (JSONException e) {
@@ -736,14 +743,25 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
     }
 
+    private String titlt = "エラー";
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle(titlt).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(BasicinfoeditActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
                 //确定按钮的点击事件
-                if(onClickNum != 0){
+                else if(onClickNum != 0){
                     switch (onClickNum){
                         case 1:
                             ttCategorymap1.setText("");

@@ -688,13 +688,11 @@ public class ResumeActivity extends AppCompatActivity {
                             tlqualification.removeViewAt(iIndex);
                         }
                     } else {
-                        if(createFlg.equals("1")){
-                            if(!obj.getString(getString(R.string.fieldErrors)).equals("null")){
-                                showError(obj.getString(getString(R.string.fieldErrors)));
-                            }else {
-                                alertdialog(getString(R.string.error),meg,errCode);
-                            }
-
+                        if(errCode.equals("100")){
+                            alertdialog("",meg,errCode);
+                        }
+                        else if(createFlg.equals("1") && !obj.getString(getString(R.string.fieldErrors)).equals("null")){
+                            showError(obj.getString(getString(R.string.fieldErrors)));
                         } else {
                             alertdialog(getString(R.string.error),meg,errCode);
                         }
@@ -758,6 +756,16 @@ public class ResumeActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ResumeActivity.this, BasicinfoeditActivity.class);
                     startActivity(intent);
+                }
+                if(code.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
                 }
             }
         }).show();

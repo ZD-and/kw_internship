@@ -875,6 +875,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
             @Override
             public void onSuccess(String results) {
+                dialog.dismiss();
                 if(results != null && !results.equals("")){
                     Log.d(TAG, "onSuccess results: " + results);
                     try {

@@ -204,11 +204,15 @@ public class ContactActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
-                        alertdialog(message);
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -307,19 +311,22 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                mPreferenceUtils.clear();
-                Intent intentClose = new Intent();
-                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                mMyApplication.setAct(getString(R.string.Search));
-                intentClose.setClass(ContactActivity.this, SearchActivity.class);
-                intentClose.putExtra("act", "");
-                startActivity(intentClose);
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ContactActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
