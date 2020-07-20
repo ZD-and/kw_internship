@@ -329,15 +329,19 @@ public class EducationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d("EducationActivity", "githubSearchResults:" + githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         NewIntent();
                     } else {
-                        Log.d("githubSearchResults:", githubSearchResults);
-
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -346,6 +350,26 @@ public class EducationActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    //通信结果提示
+    private void alertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(EducationActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
+            }
+        }).show();
     }
 
     //创建、更新判定

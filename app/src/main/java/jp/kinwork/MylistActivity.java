@@ -27,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +52,8 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class MylistActivity extends AppCompatActivity  {
 
-    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
+//    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
+    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfoList";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
     final static String PARAM_deletelikeJob = "/MypagesMobile/deleteLikeJobByUrl";
@@ -217,12 +219,8 @@ public class MylistActivity extends AppCompatActivity  {
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
         }
-        if(nlikejobpage==0){
-            getSearchResults1("1");
-            getSearchResults2("1");
-        }else{
-            urlload();
-        }
+        getSavedJobInfo("1");
+        getApplyJobList("1");
         nlikejobpage=nlikejobpage+1;
     }
     //获取搜索结果菜单栏按钮
@@ -272,13 +270,14 @@ public class MylistActivity extends AppCompatActivity  {
 
     }
 
+    private boolean isSavedJobInfo = false;
     //获取気に入り搜索结果
-    public void getSearchResults1(String number1){
+    public void getSavedJobInfo(String number){
         PostDate Pdata1 = new PostDate();
         Map<String,String> param1 = new HashMap<String, String>();
         Pdata1.setUserId(userId);
         Pdata1.setToken(token);
-        Pdata1.setpage(number1);
+        Pdata1.setpage(number);
         Pdata1.setOrder("");
         Pdata1.setFlag("");
         param1.put(getString(R.string.file),PARAM_likelist);
@@ -289,12 +288,12 @@ public class MylistActivity extends AppCompatActivity  {
         new GithubQueryTask().execute(param1);
     }
     //获取応募済み搜索结果
-    public void getSearchResults2(String number2){
+    public void getApplyJobList(String number){
         PostDate Pdata2 = new PostDate();
         Map<String,String> param2 = new HashMap<String, String>();
         Pdata2.setUserId(userId);
         Pdata2.setToken(token);
-        Pdata2.setcurrentPage(number2);
+        Pdata2.setcurrentPage(number);
         param2.put(getString(R.string.file),PARAM_personalApplyJobList);
         String data2 = JsonChnge(AesKey,Pdata2);
         param2.put(getString(R.string.data),data2);
@@ -315,19 +314,8 @@ public class MylistActivity extends AppCompatActivity  {
         String data1 = JsonChnge(AesKey,Pdata1);
         param1.put(getString(R.string.data),data1);
         param1.put(getString(R.string.name),"");
-//        PostDate Pdata2 = new PostDate();
-//        Map<String,String> param2 = new HashMap<String, String>();
-//        Pdata2.setUserId(userId);
-//        Pdata2.setToken(token);
-//        Pdata2.setcurrentPage("");
-//        param2.put(getString(R.string.file),PARAM_personalApplyJobList);
-//        String data2 = JsonChnge(AesKey,Pdata2);
-//        param2.put(getString(R.string.data),data2);
-//        param2.put(getString(R.string.name),"");
         //数据通信处理（気に入り取得）
         new GithubQueryTask().execute(param1);
-        //数据通信处理（応募状況取得）
-//        new GithubQueryTask().execute(param2);
     }
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
@@ -376,9 +364,10 @@ public class MylistActivity extends AppCompatActivity  {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         if(obj.getString(getString(R.string.returnData)).equals("[]")){
-                            alertdialog(getString(R.string.alertdialog11));
+                            alertdialog(getString(R.string.alertdialog11),"");
                         } else {
                             if(name.equals("")){
                                 decryptchange(obj.getString(getString(R.string.returnData)));
@@ -407,7 +396,10 @@ public class MylistActivity extends AppCompatActivity  {
                             }
                         }
                     } else {
-                        alertdialog(meg);
+                        if(errorCode.equals("100")){
+                            meg = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(meg,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -423,8 +415,10 @@ public class MylistActivity extends AppCompatActivity  {
             Log.d(TAG+"**datas**", datas);
             try {
                 JSONObject obj = new JSONObject(datas);
+                JSONArray saveJob = new JSONArray(datas);
                 JSONArray job = obj.getJSONArray(getString(R.string.dataList));
-                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
+//                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
+                if(saveJob.getJSONObject(0).has(getString(R.string.SavedLikedJob))){
                     Log.d(TAG+"**likejob**", job.toString());
                     Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
                     Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
@@ -647,19 +641,23 @@ public class MylistActivity extends AppCompatActivity  {
         return (int)(dpValue*scale+0.5f);
     }
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("他の端末から既にログインしています。もう一度ログインしてください。").setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-                PreferenceUtils.clear();
-                Intent intentClose = new Intent();
-                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                myApplication.setAct(getString(R.string.Search));
-                intentClose.setClass(MylistActivity.this, SearchActivity.class);
-                intentClose.putExtra("act", "");
-                startActivity(intentClose);
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(MylistActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
+
             }
         }).show();
     }
@@ -794,11 +792,11 @@ public class MylistActivity extends AppCompatActivity  {
             switch (View.getId()) {
                 case R.id.tl_tv_like:
                     likejobpage = likejobpage + 1;
-                    getSearchResults1(Integer.toString(likejobpage));
+                    getSavedJobInfo(Integer.toString(likejobpage));
                     break;
                 case R.id.tl_tv_Entered:
                     Applyjobpage = Applyjobpage + 1;
-                    getSearchResults2(Integer.toString(Applyjobpage));
+                    getApplyJobList(Integer.toString(Applyjobpage));
                     break;
             }
         }

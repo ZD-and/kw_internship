@@ -35,6 +35,7 @@ import java.util.Map;
 import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
+import jp.kinwork.Common.PreferenceUtils;
 
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
@@ -170,12 +171,22 @@ public class ChangepwActivity extends AppCompatActivity {
     }
 
     //结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("エラー").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
+        builder.setTitle("").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    new PreferenceUtils(ChangepwActivity.this).clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ChangepwActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
@@ -238,12 +249,17 @@ public class ChangepwActivity extends AppCompatActivity {
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
                     Log.d("***+++msg+++***", message);
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         Intent intent_personalsettings = new Intent();
                         intent_personalsettings.setClass(ChangepwActivity.this, PersonalSetActivity.class);
                         startActivity(intent_personalsettings);
                     } else {
-                        alertdialog(message);
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
