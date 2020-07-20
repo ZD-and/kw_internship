@@ -83,6 +83,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private String DisplayEmailFlg = "0";
     private String sendflg = "0";
     private String flg="";
+    private String mailflg="";
+
 
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
@@ -145,9 +147,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-            getSearchResultsAll("1");
-            getSearchResultsReceive("1");
-            getSearchResultsSend("1");
+            getSearchResults("1","all","all");
+            getSearchResults("1","receive","receive");
+            getSearchResults("1","send","send");
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
@@ -276,7 +278,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageAll=currentpageAll+1;
-                getSearchResultsAll(Integer.toString(currentpageAll));
+                getSearchResults(Integer.toString(currentpageAll),"all","all");
                 nextfirst.setVisibility(View.GONE);
             }
         });
@@ -285,7 +287,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageReceive=currentpageReceive+1;
-                getSearchResultsReceive(Integer.toString(currentpageReceive));
+                getSearchResults(Integer.toString(currentpageReceive),"receive","receive");
                 nextsecond.setVisibility(View.GONE);
             }
         });
@@ -294,7 +296,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             @Override
             public void onClick(View v) {
                 currentpageSend=currentpageSend+1;
-                getSearchResultsSend(Integer.toString(currentpageSend));
+                getSearchResults(Integer.toString(currentpageSend),"send","send");
                 nextthird.setVisibility(View.GONE);
             }
         });
@@ -404,56 +406,23 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     }
 
 
-    //获取搜索结果-All
-    public void getSearchResultsAll(String number){
+    //获取搜索结果
+    public void getSearchResults(String number,String mail,String Type){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
         Pdata.setpage(number);
-        Pdata.setType("all");//all:全部　receive:受信 send:送信
+        Pdata.setType(mail);//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),"");
+        param.put(flg,Type);
         nMaildisplaypage=Integer.parseInt(number)-1;
         //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTaskAll().execute(param);
-    }
-    //获取搜索结果-Receive
-    public void getSearchResultsReceive(String number){
-        PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
-        Pdata.setUserId(userid);
-        Pdata.setToken(token);
-        Pdata.setemployerUserId(employer_id);
-        Pdata.setpage(number);
-        Pdata.setType("receive");//all:全部　receive:受信 send:送信
-        String data = JsonChnge(AesKey,Pdata);
-        param.put(getString(R.string.file),PARAM_File);
-        param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),"");
-        nMaildisplaypage=Integer.parseInt(number)-1;
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTaskReceive().execute(param);
-    }
-    //获取搜索结果-Send
-    public void getSearchResultsSend(String number){
-        PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
-        Pdata.setUserId(userid);
-        Pdata.setToken(token);
-        Pdata.setemployerUserId(employer_id);
-        Pdata.setpage(number);
-        Pdata.setType("send");//all:全部　receive:受信 send:送信
-        String data = JsonChnge(AesKey,Pdata);
-        param.put(getString(R.string.file),PARAM_File);
-        param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),"");
-        nMaildisplaypage=Integer.parseInt(number)-1;
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTaskSend().execute(param);
+        new GithubQueryTask().execute(param);
     }
 
     //转换为Json格式并且AES加密
@@ -473,123 +442,40 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         return encrypt;
 
     }
-    //访问服务器，并取得访问结果-All
-    public class GithubQueryTaskAll extends AsyncTask<Map<String, String>, Void, String> {
+    //访问服务器，并取得访问结果
+    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
         String name = "";
+        String type="";
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            type=map.get(flg);
             URL searchUrl = buildUrl(file);
-            String githubSearchResultsAll = null;
+            String githubSearchResults = null;
             try {
-                githubSearchResultsAll = getResponseFromHttpUrl(searchUrl,data,deviceId);
+                githubSearchResults = getResponseFromHttpUrl(searchUrl,data,deviceId);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return githubSearchResultsAll;
+            return githubSearchResults;
 
         }
         @Override
-        protected void onPostExecute(String githubSearchResultsAll) {
-            if (githubSearchResultsAll != null && !githubSearchResultsAll.equals("")) {
-                Log.d(TAG,"Results:"+ githubSearchResultsAll);
+        protected void onPostExecute(String githubSearchResults) {
+            if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                Log.d(TAG,"Results:"+ githubSearchResults);
                 try {
-                    JSONObject obj = new JSONObject(githubSearchResultsAll);
-                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String meg = obj.getString(getString(R.string.message));
-                    if(processResult == true) {
-                        Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
-                        if(!name.equals(getString(R.string.isReaded))){
-                            flg="all";
-                            decryptchange(obj.getString(getString(R.string.returnData)),name);
-                        }
-                    }else {
-                        Toast.makeText(getApplicationContext(),"メールはもうありません",Toast.LENGTH_LONG).show();
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    //访问服务器，并取得访问结果-Receive
-    public class GithubQueryTaskReceive extends AsyncTask<Map<String, String>, Void, String> {
-        String name = "";
-        @Override
-        protected String doInBackground(Map<String, String>... params) {
-            Map<String, String> map = params[0];
-            String file = map.get(getString(R.string.file));
-            String data = map.get(getString(R.string.data));
-            name = map.get(getString(R.string.name));
-            URL searchUrl = buildUrl(file);
-            String githubSearchResultsReceive = null;
-            try {
-                githubSearchResultsReceive = getResponseFromHttpUrl(searchUrl,data,deviceId);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return githubSearchResultsReceive;
-
-        }
-        @Override
-        protected void onPostExecute(String githubSearchResultsReceive) {
-            if (githubSearchResultsReceive != null && !githubSearchResultsReceive.equals("")) {
-                Log.d(TAG,"Results:"+ githubSearchResultsReceive);
-                try {
-                    JSONObject obj = new JSONObject(githubSearchResultsReceive);
-                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String meg = obj.getString(getString(R.string.message));
-                    if(processResult == true) {
-                        Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
-                        if(!name.equals(getString(R.string.isReaded))){
-                            flg="receive";
-                            decryptchange(obj.getString(getString(R.string.returnData)),name);
-                        }
-                    }else {
-                        Toast.makeText(getApplicationContext(),"メールはもうありません",Toast.LENGTH_LONG).show();
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    //访问服务器，并取得访问结果-Send
-    public class GithubQueryTaskSend extends AsyncTask<Map<String, String>, Void, String> {
-        String name = "";
-        @Override
-        protected String doInBackground(Map<String, String>... params) {
-            Map<String, String> map = params[0];
-            String file = map.get(getString(R.string.file));
-            String data = map.get(getString(R.string.data));
-            name = map.get(getString(R.string.name));
-            URL searchUrl = buildUrl(file);
-            String githubSearchResultsSend = null;
-            try {
-                githubSearchResultsSend = getResponseFromHttpUrl(searchUrl,data,deviceId);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return githubSearchResultsSend;
-
-        }
-        @Override
-        protected void onPostExecute(String githubSearchResultsSend) {
-            if (githubSearchResultsSend != null && !githubSearchResultsSend.equals("")) {
-                Log.d(TAG,"Results:"+ githubSearchResultsSend);
-                try {
-                    JSONObject obj = new JSONObject(githubSearchResultsSend);
+                    JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
                     String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
                         if(!name.equals(getString(R.string.isReaded))){
-                            flg="send";
-                            decryptchange(obj.getString(getString(R.string.returnData)),name);
+                            decryptchange(obj.getString(getString(R.string.returnData)),name,type);
                         }
                     }else {
                         if(errorCode.equals("100")){
@@ -606,7 +492,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data,String inputname){
+    public void decryptchange(String data,String inputname,String type){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
         Log.d(TAG,"decryptdata:"+ decryptdata);
@@ -620,7 +506,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 Log.d(TAG,"strDate:"+ strDate);
                 Setsendmeg(list_slmeg.get(0),list_llmeg.get(0),objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
             }else{
-                if(flg.equals("all")) {
+                if(type.equals("all")) {
                     JSONArray obj = new JSONArray(decryptdata);
                     for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
                         try {
@@ -633,7 +519,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     mMyApplication.setContactDialog(decryptdata, 3);
                     mMyApplication.setContactDialog(DisplayEmailFlg, 4);
                     educationInfo(0);
-                }else if(flg.equals("receive")){
+                }else if(type.equals("receive")){
                     JSONArray obj = new JSONArray(decryptdata);
                     for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
                         try {
@@ -945,9 +831,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     param.put(getString(R.string.data),data);
                     param.put(getString(R.string.name),getString(R.string.isReaded));
                     //数据通信处理（访问服务器，并取得访问结果）
-                    new GithubQueryTaskAll().execute(param);
-                    new GithubQueryTaskReceive().execute(param);
-                    new GithubQueryTaskSend().execute(param);
+                    new GithubQueryTask().execute(param);
 
                 }
             } catch (JSONException e) {
@@ -982,7 +866,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             param.put(getString(R.string.data), data);
             param.put(getString(R.string.name), getString(R.string.SendMeg));
             //数据通信处理（访问服务器，并取得访问结果）
-            new GithubQueryTaskAll().execute(param);
+            new GithubQueryTask().execute(param);
             alertdialog("送信しました。","");
         }
     };
