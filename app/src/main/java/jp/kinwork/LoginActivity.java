@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private PreferenceUtils mPreferenceUtils;
 
     private String mDeviceToken;
-    private KinworkDialgo mDialog;
     String TAG = "LoginActivity";
     String mLoginFlag ="";
     private static final int RC_SIGN_IN = 9001;
@@ -189,8 +188,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPage = mMyApplication.getpage();
         mJobInfo = mMyApplication.getjobinfo();
         mActivity = getIntent().getStringExtra(getString(R.string.Activity));
-        mDialog = new KinworkDialgo(this);
-        mDialog.setMessage(getString(R.string.login)) ;
         mAuth = FirebaseAuth.getInstance();
         getDeviceToken();
         initLine();
@@ -307,12 +304,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
-        //在界面上显示进度条
-        protected void onPreExecute() {
-            mDialog.show();
-        };
-
-        @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
@@ -329,9 +320,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            dialog.dismiss();
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
                 Log.d(TAG,"Results:"+ githubSearchResults);
-                mDialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
