@@ -3,6 +3,7 @@ package jp.kinwork;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,9 +47,9 @@ public class SelectResumeActivity extends AppCompatActivity {
     private EditText etmessage;
     private TextView tvback;
     private TextView tvbackdummy;
+    private TextView tvToCompanyName;
 
     private LinearLayout ll_sendresume;
-    private TableLayout tl_sendmeg;
 
     private TableRow trresume1;
     private TableRow trresume2;
@@ -80,6 +81,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String errormeg = "";
     private int resume_number;
 
+    private String SetCompanyName="";
     private String SetTitle = "";
     private String SetMeg = "";
 
@@ -162,8 +164,16 @@ public class SelectResumeActivity extends AppCompatActivity {
         });
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.detailedinformation));
-        tvbackdummy.setText(getString(R.string.detailedinformation));
+        tvbackdummy.setText("応募");
+        tvbackdummy.setTextColor(Color.parseColor("#0196FF"));
+        tvbackdummy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Application();
+            }
+        });
         ll_sendresume = (LinearLayout) findViewById(R.id.tl_sendresume);
+        tvToCompanyName=(TextView)findViewById(R.id.tv_ToCompanyName);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
         trresume1 = (TableRow) findViewById(R.id.tr_resume1);
@@ -183,13 +193,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         tvresume2.setOnClickListener(Click_TextView);
         tvresume3.setOnClickListener(Click_TextView);
 
-        application=findViewById(R.id.bu_Application);
-        application.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_Application();
-            }
-        });
         myApplication = (MyApplication) getApplication();
         String flg = myApplication.getMyjob();
         companyname = myApplication.getcompany_name();
@@ -220,6 +223,8 @@ public class SelectResumeActivity extends AppCompatActivity {
         if(resume_number == 0){
             Erroralertdialog(getString(R.string.Erroralertdialog));
         }
+        //会社名
+        SetCompanyName="To:"+companyname;
         //件名设定
         SetTitle = Jobname + getString(R.string.SetTitle) + myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）";
         //送信内容设定
@@ -234,6 +239,7 @@ public class SelectResumeActivity extends AppCompatActivity {
                 getString(R.string.SetMeg7) +
                 "\n" +
                 getString(R.string.SetMeg8);
+        tvToCompanyName.setText(SetCompanyName);
         ettitle.setText(SetTitle);
         etmessage.setText(SetMeg);
     }
