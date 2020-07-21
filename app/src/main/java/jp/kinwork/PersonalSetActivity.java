@@ -118,6 +118,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         mLineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
         mAuth = FirebaseAuth.getInstance();
+        flg = "0";
     }
     //菜单栏按钮
     public void ll_Click(View View){

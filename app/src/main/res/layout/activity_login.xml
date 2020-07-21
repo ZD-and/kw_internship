@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/frame_top_light"
     tools:context=".LoginActivity">
 
 
@@ -17,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:background="@drawable/frame_top_light"
         >
 
 
@@ -90,7 +90,7 @@
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/but_blue"
+                android:background="@drawable/ic_shape_bule_all"
                 android:text="ログイン"
                 android:textColor="@color/colorLight" />
 
@@ -98,7 +98,6 @@
                 android:id="@+id/Click_Forgetpw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorLight"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:text="パスワードがわからない"
@@ -111,7 +110,6 @@
                 android:id="@+id/MakeNewuser_Click"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorLight"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center"
                 android:text="新規アカウント作成"
@@ -123,7 +121,6 @@
                 android:id="@+id/NewuserSignIn_Click"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorLight"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center"
                 android:text="アカウント連携"
@@ -131,123 +128,9 @@
                 android:textColor="@color/but_blue"
                 android:textSize="15sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                >
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/login_btn_google"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/login_btn_google_round"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12sp"
-                        android:text="Google"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/login_btn_facebook"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/login_btn_facebook_round"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12sp"
-                        android:text="Facebook"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/login_btn_yahoo"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/login_btn_yahoo_round"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12sp"
-                        android:text="Yahoo"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/login_btn_twitter"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/login_btn_twitter_round"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12sp"
-                        android:text="Twitter"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/login_btn_line"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/login_btn_line_round"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="12sp"
-                        android:text="Line"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
+            <include
+                layout="@layout/include_login_in_thirdparty"
+                />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

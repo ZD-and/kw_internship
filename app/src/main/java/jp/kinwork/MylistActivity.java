@@ -219,8 +219,8 @@ public class MylistActivity extends AppCompatActivity  {
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
         }
-        getSavedJobInfo("1");
-        getApplyJobList("1");
+        getJobList("1","SavedJob");
+        getJobList("1","ApplyJob");
         nlikejobpage=nlikejobpage+1;
     }
     //获取搜索结果菜单栏按钮
@@ -272,51 +272,25 @@ public class MylistActivity extends AppCompatActivity  {
 
     private boolean isSavedJobInfo = false;
     //获取気に入り搜索结果
-    public void getSavedJobInfo(String number){
-        PostDate Pdata1 = new PostDate();
-        Map<String,String> param1 = new HashMap<String, String>();
-        Pdata1.setUserId(userId);
-        Pdata1.setToken(token);
-        Pdata1.setpage(number);
-        Pdata1.setOrder("");
-        Pdata1.setFlag("");
-        param1.put(getString(R.string.file),PARAM_likelist);
-        String data1 = JsonChnge(AesKey,Pdata1);
-        param1.put(getString(R.string.data),data1);
-        param1.put(getString(R.string.name),"");
-        //数据通信处理（気に入り取得）
-        new GithubQueryTask().execute(param1);
-    }
     //获取応募済み搜索结果
-    public void getApplyJobList(String number){
-        PostDate Pdata2 = new PostDate();
-        Map<String,String> param2 = new HashMap<String, String>();
-        Pdata2.setUserId(userId);
-        Pdata2.setToken(token);
-        Pdata2.setcurrentPage(number);
-        param2.put(getString(R.string.file),PARAM_personalApplyJobList);
-        String data2 = JsonChnge(AesKey,Pdata2);
-        param2.put(getString(R.string.data),data2);
-        param2.put(getString(R.string.name),"");
+    public void getJobList(String number,String jobInfo){
+        PostDate Pdata = new PostDate();
+        Map<String,String> param = new HashMap<String, String>();
+        Pdata.setUserId(userId);
+        Pdata.setToken(token);
+        Pdata.setcurrentPage(number);
+        String data = JsonChnge(AesKey,Pdata);
+        if(jobInfo.equals("SavedJob")){
+            param.put(getString(R.string.file),PARAM_likelist);
+        } else {
+            param.put(getString(R.string.file),PARAM_personalApplyJobList);
+        }
+        param.put(getString(R.string.name),jobInfo);
+        param.put(getString(R.string.data),data);
         //数据通信处理（応募状況取得）
-        new GithubQueryTask().execute(param2);
+        new GithubQueryTask().execute(param);
     }
-    //token判定是否过期
-    public void urlload(){
-        PostDate Pdata1 = new PostDate();
-        Map<String,String> param1 = new HashMap<String, String>();
-        Pdata1.setUserId(userId);
-        Pdata1.setToken(token);
-        Pdata1.setpage("");
-        Pdata1.setOrder("");
-        Pdata1.setFlag("");
-        param1.put(getString(R.string.file),PARAM_likelist);
-        String data1 = JsonChnge(AesKey,Pdata1);
-        param1.put(getString(R.string.data),data1);
-        param1.put(getString(R.string.name),"");
-        //数据通信处理（気に入り取得）
-        new GithubQueryTask().execute(param1);
-    }
+
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
@@ -369,8 +343,8 @@ public class MylistActivity extends AppCompatActivity  {
                         if(obj.getString(getString(R.string.returnData)).equals("[]")){
                             alertdialog(getString(R.string.alertdialog11),"");
                         } else {
-                            if(name.equals("")){
-                                decryptchange(obj.getString(getString(R.string.returnData)));
+                            if(name.equals("SavedJob") || name.equals("ApplyJob")){
+                                decryptchange(obj.getString(getString(R.string.returnData)),name);
                             } else if(name.equals(getString(R.string.likejob)) || name.equals(getString(R.string.Enteredjob))){
                                 MoveApply(obj.getString(getString(R.string.returnData)));
                             } else if(name.equals(getString(R.string.deletelikejob))){
@@ -408,30 +382,19 @@ public class MylistActivity extends AppCompatActivity  {
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data){
+    public void decryptchange(String data,String jobInfo){
         if(! data.equals("null")){
             AESprocess AESprocess = new AESprocess();
             String datas = AESprocess.getdecrypt(data,AesKey);
             Log.d(TAG+"**datas**", datas);
             try {
-                JSONObject obj = new JSONObject(datas);
-                JSONArray saveJob = new JSONArray(datas);
-                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
-//                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
-                if(saveJob.getJSONObject(0).has(getString(R.string.SavedLikedJob))){
-                    Log.d(TAG+"**likejob**", job.toString());
-                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
-                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
-                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
-                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
-//                    tvlikecont.setText(likejobCount + "件");
-                    if(likejobpage >= likejobpageCount){
-                        tltrlike.setVisibility(View.GONE);
-                    } else {
-                        tltrlike.setVisibility(View.VISIBLE);
-                    }
-                    addlikejob(job);
+                if(jobInfo.equals("SavedJob")){
+                    JSONArray saveJob = new JSONArray(datas);
+                    Log.d(TAG+"**likejob**", saveJob.toString());
+                    addlikejob(saveJob);
                 } else {
+                    JSONObject obj = new JSONObject(datas);
+                    JSONArray job = obj.getJSONArray(getString(R.string.dataList));
                     Log.d(TAG+"**Applyjob**", job.toString());
                     ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
                     ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
@@ -444,6 +407,36 @@ public class MylistActivity extends AppCompatActivity  {
                     }
                     addApplyjob(job);
                 }
+//                JSONObject obj = new JSONObject(datas);
+//                JSONArray saveJob = new JSONArray(datas);
+//                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
+//                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
+//
+//                    Log.d(TAG+"**likejob**", job.toString());
+//                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
+//                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
+//                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
+//                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
+////                    tvlikecont.setText(likejobCount + "件");
+//                    if(likejobpage >= likejobpageCount){
+//                        tltrlike.setVisibility(View.GONE);
+//                    } else {
+//                        tltrlike.setVisibility(View.VISIBLE);
+//                    }
+//                    addlikejob(job);
+//                } else {
+//                    Log.d(TAG+"**Applyjob**", job.toString());
+//                    ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
+//                    ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
+//                    Log.d(TAG+"**ApplyjobpageCount**", ApplyjobpageCount+"");
+//                    Log.d(TAG+"**ApplyjobCount**", ApplyjobCount+"");
+//                    if(Applyjobpage >= ApplyjobpageCount){
+//                        tltrEntered.setVisibility(View.GONE);
+//                    } else {
+//                        tltrEntered.setVisibility(View.VISIBLE);
+//                    }
+//                    addApplyjob(job);
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -792,11 +785,11 @@ public class MylistActivity extends AppCompatActivity  {
             switch (View.getId()) {
                 case R.id.tl_tv_like:
                     likejobpage = likejobpage + 1;
-                    getSavedJobInfo(Integer.toString(likejobpage));
+                    getJobList(Integer.toString(likejobpage),"SavedJob");
                     break;
                 case R.id.tl_tv_Entered:
                     Applyjobpage = Applyjobpage + 1;
-                    getApplyJobList(Integer.toString(Applyjobpage));
+                    getJobList(Integer.toString(Applyjobpage),"ApplyJob");
                     break;
             }
         }

@@ -11,25 +11,16 @@
         android:id="@+id/include4"
         layout="@layout/include_back"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content" />
 
 
-    <TableLayout
+    <LinearLayout
         android:id="@+id/tl_sendresume"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/ic_shape_w_bule"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/include4">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -84,14 +75,13 @@
             <EditText
                 android:id="@+id/et_message"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/ic_shape"
                 android:gravity="left|top"
-                android:maxLines="8"
-                android:minLines="8"
+                android:minLines="20"
                 android:padding="5dp"
                 android:scrollbars="vertical"
                 android:text=""
@@ -120,7 +110,7 @@
             <TableRow
                 android:id="@+id/tr_resume1"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <CheckBox
                     android:id="@+id/cb_resume1"
@@ -144,7 +134,7 @@
             <TableRow
                 android:id="@+id/tr_resume2"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <CheckBox
                     android:id="@+id/cb_resume2"
@@ -168,7 +158,7 @@
             <TableRow
                 android:id="@+id/tr_resume3"
                 android:layout_marginTop="5dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <CheckBox
                     android:id="@+id/cb_resume3"
@@ -202,7 +192,7 @@
                 android:textColor="@color/colorLight" />
         </TableLayout>
 
-    </TableLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
