@@ -1,5 +1,6 @@
 package jp.kinwork;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -120,14 +121,9 @@ public class MylistActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylist);
-        initPages();
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        PagerAdapter adapter = new MylistActivity.customViewPagerAdapter(pages);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-        CreateNew();
+
     }
+
 
     private void initPages() {
         pages = new ArrayList<View>();
@@ -189,10 +185,20 @@ public class MylistActivity extends AppCompatActivity  {
     @Override
     protected void onStart() {
         super.onStart();
+        initPages();
         Initialization();
+        CreateNew();
     }
     //初始化
     public void Initialization(){
+        DeleteIndex = -1;
+        likejobIndex = -1;
+        ApplyjobIndex = -1;
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new MylistActivity.customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
         TextView tltvlike=pages.get(0).findViewById(R.id.tl_tv_like);
         TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
         tltvlike.setOnClickListener(Click_getmore);
@@ -219,6 +225,7 @@ public class MylistActivity extends AppCompatActivity  {
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
         }
+        dialog = new ProgressDialog(this);
         getJobList("1","SavedJob");
         getJobList("1","ApplyJob");
         nlikejobpage=nlikejobpage+1;
@@ -271,9 +278,15 @@ public class MylistActivity extends AppCompatActivity  {
     }
 
     private boolean isSavedJobInfo = false;
+    private ProgressDialog dialog;
     //获取気に入り搜索结果
     //获取応募済み搜索结果
     public void getJobList(String number,String jobInfo){
+        dialog.setMessage("通信中");
+        Log.d(TAG, "getJobList: ");
+        if(!dialog.isShowing()){
+            dialog.show();
+        }
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userId);
@@ -379,6 +392,7 @@ public class MylistActivity extends AppCompatActivity  {
                     e.printStackTrace();
                 }
             }
+            dialog.dismiss();
         }
     }
     //解密，并且保存得到的数据
@@ -464,7 +478,8 @@ public class MylistActivity extends AppCompatActivity  {
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
         tlparams.setMargins(0,0,0,top);
-        for(int i=0; i < data.length(); i++){
+//        for(int i=0; i < data.length(); i++){
+        for(int i=data.length() - 1; i >= 0 ; i--){
             try {
                 likejobIndex = likejobIndex + 1;
                 JSONObject obj = data.getJSONObject(i);
@@ -669,7 +684,7 @@ public class MylistActivity extends AppCompatActivity  {
             }
         }
         try {
-            Log.w(TAG+"Click_likejob_info", listlikejobinfo.get(iIndex).toString());
+            Log.w(TAG, "Click_likejob_info:"+ listlikejobinfo.get(iIndex).toString());
             objjobinfo = listlikejobinfo.get(iIndex).getJSONObject(getString(R.string.SavedLikedJob));
             JSONObject JobInfo = new JSONObject();
             if(listlikejobinfo.get(iIndex).has(getString(R.string.JobInfo))){
@@ -678,7 +693,7 @@ public class MylistActivity extends AppCompatActivity  {
             if (iIndex >= 0) {
                 myApplication.setMyjob(getString(R.string.likejob));
                 if(objjobinfo.getString(getString(R.string.isFromKinwork)).equals("1")){
-                    if( JobInfo == null || ! JobInfo.getString(getString(R.string.status)).equals("1")) {
+                    if( JobInfo.length() == 0 || ! JobInfo.getString(getString(R.string.status)).equals("1")) {
                         PostDate Pdata = new PostDate();
                         Map<String,String> param = new HashMap<String, String>();
                         Pdata.setUserId(userId);
