@@ -20,76 +20,70 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:background="@color/backgroundblue">
 
-        <TableLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1">
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:text="履歴書を選択して応募"
+            android:textColor="@color/but_blue"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:text="履歴書を選択して応募"
-                android:textColor="@color/but_blue"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="件名"
+            android:textColor="@color/background_holo_dark"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:text="件名"
-                android:textColor="@color/background_holo_dark"
-                android:textStyle="bold" />
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_shape"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:text=""
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/et_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
-                android:inputType="text"
-                android:maxLines="1"
-                android:padding="5dp"
-                android:text=""
-                android:textColor="@color/background_holo_dark"
-                android:textSize="12sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="本文"
+            android:textColor="@color/background_holo_dark"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:text="本文"
-                android:textColor="@color/background_holo_dark"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/et_message"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/ic_shape"
-                android:gravity="left|top"
-                android:minLines="20"
-                android:padding="5dp"
-                android:scrollbars="vertical"
-                android:text=""
-                android:textColor="@color/background_holo_dark"
-                android:textSize="12sp" />
-
-
-        </TableLayout>
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_shape"
+            android:gravity="left|top"
+            android:minLines="10"
+            android:maxLines="10"
+            android:padding="5dp"
+            android:scrollbars="vertical"
+            android:text=""
+            android:textColor="@color/background_holo_dark"
+            android:textSize="12sp" />
 
         <TableLayout
 

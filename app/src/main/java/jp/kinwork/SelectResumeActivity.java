@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private TextView tvback;
     private TextView tvbackdummy;
 
-    private TableLayout tl_sendresume;
+    private LinearLayout ll_sendresume;
     private TableLayout tl_sendmeg;
 
     private TableRow trresume1;
@@ -162,7 +163,7 @@ public class SelectResumeActivity extends AppCompatActivity {
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.detailedinformation));
         tvbackdummy.setText(getString(R.string.detailedinformation));
-        tl_sendresume = (TableLayout) findViewById(R.id.tl_sendresume);
+        ll_sendresume = (LinearLayout) findViewById(R.id.tl_sendresume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
         trresume1 = (TableRow) findViewById(R.id.tr_resume1);
