@@ -427,23 +427,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                         String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
-                        if(mScreenflg.equals(getString(R.string.checkValidateCode))){
-                            message = obj.getString(getString(R.string.message));
-                        } else {
-                            String fieldErrors = obj.getString(getString(R.string.fieldErrors));
-                            JSONObject fieldError = new JSONObject(fieldErrors);
-                            if(fieldError.has(getString(R.string.email))){
-                                Log.d("***+++email+++***", fieldError.getString("email"));
-                                JSONArray ja = fieldError.getJSONArray(getString(R.string.email));
-                                Log.d("***email(index)***", ja.getString(0));
-                                message = ja.getString(0);
-                            }
-                            if(fieldError.has(getString(R.string.emailConfirm))){
-                                JSONArray ja = fieldError.getJSONArray(getString(R.string.emailConfirm));
-                                Log.d("***emailConfirm***", ja.getString(0));
-                                message = ja.getString(0);
-                            }
-                        }
                         alertdialog(message);
                     }
                 }catch (Exception e){
@@ -488,11 +471,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     //结果提示
     private void alertdialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String msg = message;
-        if(mScreenflg.equals("setPassword")){
-            msg = getString(R.string.passworderror);
-        }
-        builder.setTitle(getString(R.string.error)).setMessage(msg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.error)).setMessage(message).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
