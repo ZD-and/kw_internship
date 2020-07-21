@@ -14,7 +14,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,9 +81,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private String setTitle = "";
     private String setmeg = "";
     private String DisplayEmailFlg = "0";
-
     private String sendflg = "0";
     private String flg="";
+
 
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
@@ -97,8 +96,10 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private LinkedList<TextView> list_tvisReaded;
     private LinkedList<ImageView> list_ivread;
     private LinkedList<String> list_String;
+    private LinkedList<String> list_StringAll;
+    private LinkedList<String> list_StringReceive;
+    private LinkedList<String> list_StringSend;
     private LinkedList<JSONObject> list_obj;
-
     private LinkedList<EditText>list_ettitle;
     private LinkedList<EditText>list_etmeg;
     private LinkedList<TextView>list_tvToCompanyName;
@@ -113,8 +114,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private List<View> pages;
     private int index=0;
     private int nMaildisplaypage = 0;
-    private boolean ismailpageend = false;
-    private int currentpage=1;
+    private int currentpageAll=1;
+    private int currentpageReceive=1;
+    private int currentpageSend=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-            getSearchResults("1");
+            getSearchResults("1","all");
+            getSearchResults("1","receive");
+            getSearchResults("1","send");
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
@@ -184,34 +188,18 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        switch (position){
-            case 0:
-                educationInfo(0,"");
-                break;
-            case 1:
-                educationInfo(1,"1");
-                break;
-            case 2:
-                educationInfo(2,"0");
-                break;
-            default:break;
-        }
-
     }
 
     @Override
     public void onPageSelected(int position) {
-
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     public class customViewPagerAdapter extends PagerAdapter {
         private String[] mTitles = new String[]{"すべて", "受信トレイ", "送信済み"};
-
         List<View> pages;
         public customViewPagerAdapter(List<View> pages){
             this.pages = pages;
@@ -252,7 +240,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         bu_sendmeg_first.setOnClickListener(Click_setSendMeg);
         bu_sendmeg_second.setOnClickListener(Click_setSendMeg);
         bu_sendmeg_third.setOnClickListener(Click_setSendMeg);
-
         list_tlnamedata = new LinkedList<TableLayout>();
         list_tlreply    = new LinkedList<TableLayout>();
         list_tvtitle    = new LinkedList<TextView>();
@@ -261,12 +248,13 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_tvisReaded = new LinkedList<TextView>();
         list_ivread     = new LinkedList<ImageView>();
         list_String     = new LinkedList<String>();
+        list_StringAll     = new LinkedList<String>();
+        list_StringReceive     = new LinkedList<String>();
+        list_StringSend     = new LinkedList<String>();
         list_obj     = new LinkedList<JSONObject>();
-
         list_llmeg = new LinkedList<LinearLayout>();
         list_tlmeg = new LinkedList<TableLayout>();
         list_slmeg = new LinkedList<ScrollView>();
-
         list_ettitle=new LinkedList<EditText>();
         list_etmeg=new LinkedList<EditText>();
         list_tvToCompanyName=new LinkedList<TextView>();
@@ -288,8 +276,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         nextfirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentpage=currentpage+1;
-                getSearchResults(Integer.toString(currentpage));
+                currentpageAll=currentpageAll+1;
+                getSearchResults(Integer.toString(currentpageAll),"all");
                 nextfirst.setVisibility(View.GONE);
             }
         });
@@ -297,8 +285,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         nextsecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentpage=currentpage+1;
-                getSearchResults(Integer.toString(currentpage));
+                currentpageReceive=currentpageReceive+1;
+                getSearchResults(Integer.toString(currentpageReceive),"receive");
                 nextsecond.setVisibility(View.GONE);
             }
         });
@@ -306,8 +294,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         nextthird.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentpage=currentpage+1;
-                getSearchResults(Integer.toString(currentpage));
+                currentpageSend=currentpageSend+1;
+                getSearchResults(Integer.toString(currentpageSend),"send");
                 nextthird.setVisibility(View.GONE);
             }
         });
@@ -336,7 +324,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             }
 
         });
-
         list_slmeg.get(1).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -361,7 +348,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             }
 
         });
-
         list_slmeg.get(2).setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -402,11 +388,9 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         list_ettitle.add((EditText) pages.get(0).findViewById(R.id.et_title_first));
         list_ettitle.add((EditText) pages.get(1).findViewById(R.id.et_title_second));
         list_ettitle.add((EditText) pages.get(2).findViewById(R.id.et_title_third));
-
         list_etmeg.add((EditText) pages.get(0).findViewById(R.id.et_meg_first));
         list_etmeg.add((EditText) pages.get(1).findViewById(R.id.et_meg_second));
         list_etmeg.add((EditText) pages.get(2).findViewById(R.id.et_meg_third));
-
         list_tvToCompanyName.add((TextView) pages.get(0).findViewById(R.id.tv_ToCompanyName_first));
         list_tvToCompanyName.add((TextView) pages.get(1).findViewById(R.id.tv_ToCompanyName_second));
         list_tvToCompanyName.add((TextView) pages.get(2).findViewById(R.id.tv_ToCompanyName_third));
@@ -422,18 +406,19 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
 
     //获取搜索结果
-    public void getSearchResults(String number){
+    public void getSearchResults(String number,String Type){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
         Pdata.setpage(number);
-        Pdata.setType("all");//all:全部　receive:受信 send:送信
+        Pdata.setType(Type);//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),"");
+        param.put("Type",Type);
         nMaildisplaypage=Integer.parseInt(number)-1;
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
@@ -459,12 +444,14 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
         String name = "";
+        String type="";
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            type=map.get("Type");
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -487,7 +474,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     if(processResult == true) {
                         Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
                         if(!name.equals(getString(R.string.isReaded))){
-                            decryptchange(obj.getString(getString(R.string.returnData)),name);
+                            decryptchange(obj.getString(getString(R.string.returnData)),name,type);
                         }
                     }else {
                         if(errorCode.equals("100")){
@@ -504,7 +491,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data,String inputname){
+    public void decryptchange(String data,String inputname,String type){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
         Log.d(TAG,"decryptdata:"+ decryptdata);
@@ -517,21 +504,47 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 String strDate = formatter.format(curDate);
                 Log.d(TAG,"strDate:"+ strDate);
                 Setsendmeg(list_slmeg.get(0),list_llmeg.get(0),objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
-            }else {
-                JSONArray obj = new JSONArray(decryptdata);
-                for(int x=(nMaildisplaypage*10)+0; x < (nMaildisplaypage*10)+obj.length(); x++){
-                    try {
-                        list_String.add(x,obj.getString(x-(nMaildisplaypage*10)));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            }else{
+                if(type.equals("all")) {
+                    JSONArray obj = new JSONArray(decryptdata);
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringAll.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringAll;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(0);
+                }else if(type.equals("receive")){
+                    JSONArray obj = new JSONArray(decryptdata);
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringReceive.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringReceive;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(1);
+                }else{
+                    JSONArray obj = new JSONArray(decryptdata);
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringSend.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringSend;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(2);
                 }
-                mMyApplication.setContactDialog(decryptdata,3);
-                mMyApplication.setContactDialog(DisplayEmailFlg,4);
-                educationInfo(1,"1");
-                educationInfo(0,"");
-                educationInfo(2,"0");
-
 
             }
         } catch (JSONException e) {
@@ -539,16 +552,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         }
     }
     //通信信息取得
-    public void educationInfo(int pages,String flg){
-//        list_slmeg.get(pages).scrollTo(0,0);
+    public void educationInfo(int pages){
         list_llmeg.get(pages).removeAllViews();
-        list_tlnamedata.clear();
-        list_tvtitle.clear();
-        list_tvsubtitle.clear();
-        list_tvmeg.clear();
-        list_tlreply.clear();
-        list_ivread.clear();
-        list_obj.clear();
         Log.d(TAG,"list_String.size():"+ list_String.size());
         for(int i=0; i < list_String.size(); i++){
             try {
@@ -603,16 +608,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule_green);
                     tvcompany_name.setText(company_name + " へ");
                     tvisReaded.setVisibility(GONE);
-                }
-
-                //收信的场合不显示送信邮件
-                if(flg.equals("1") && objMyMail.getString(getString(R.string.direction)).equals("0")){
-                    dialog.setVisibility(GONE);
-
-                }
-                //送信的场合不显示收信邮件
-                else if(flg.equals("0") && objMyMail.getString(getString(R.string.direction)).equals("1")){
-                    dialog.setVisibility(GONE);
                 }
                 list_llmeg.get(pages).addView(dialog,i);
                 list_tlnamedata.add(i,tlnamedata);
@@ -674,17 +669,17 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             case "tv_allEmail":
                 //显示全部的邮件
                 DisplayEmailFlg = "";
-                educationInfo(0,"");
+                educationInfo(0);
                 break;
             case "tv_sendEmail":
                 //显示收到的邮件
                 DisplayEmailFlg = "1";
-                educationInfo(1,"1");
+                educationInfo(1);
                 break;
             case "tv_ReceptionEmail":
                 //显示发送的邮件
                 DisplayEmailFlg = "0";
-                educationInfo(2,"0");
+                educationInfo(2);
                 break;
         }
         //flg保存到全局变量里
@@ -836,6 +831,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                     param.put(getString(R.string.name),getString(R.string.isReaded));
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -871,7 +867,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
             alertdialog("送信しました。","");
-
         }
     };
     private void alertdialog(String meg,String errorCode){
@@ -895,5 +890,4 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             }
         }).show();
     }
-
 }
