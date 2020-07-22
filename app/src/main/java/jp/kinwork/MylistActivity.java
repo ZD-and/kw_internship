@@ -869,9 +869,11 @@ public class MylistActivity extends AppCompatActivity  {
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(MylistActivity.this, ContactDialogActivity.class);
-                intent.putExtra(getString(R.string.company_name),obj.getString(getString(R.string.company_name)));
-                intent.putExtra(getString(R.string.address),obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
-                intent.putExtra(getString(R.string.ID),obj.getString(getString(R.string.employer_id)));
+                myApplication.setemployerID(obj.getString(getString(R.string.employer_id)));
+                myApplication.setcompany_name(obj.getString(getString(R.string.employer_id)));
+//                intent.putExtra(getString(R.string.company_name),obj.getString(getString(R.string.company_name)));
+//                intent.putExtra(getString(R.string.address),obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
+//                intent.putExtra(getString(R.string.ID),obj.getString(getString(R.string.employer_id)));
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();

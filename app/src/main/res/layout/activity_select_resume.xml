@@ -104,7 +104,7 @@
             <TableRow
                 android:id="@+id/tr_resume1"
                 android:layout_marginTop="5dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/cb_resume1"
@@ -128,7 +128,7 @@
             <TableRow
                 android:id="@+id/tr_resume2"
                 android:layout_marginTop="5dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/cb_resume2"
@@ -152,7 +152,7 @@
             <TableRow
                 android:id="@+id/tr_resume3"
                 android:layout_marginTop="5dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/cb_resume3"

@@ -9,7 +9,6 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout>
         <ScrollView
             android:id="@+id/sl_meg_first"
             android:layout_width="match_parent"
@@ -26,21 +25,7 @@
 
             </LinearLayout>
         </ScrollView>
-        <Button
-            android:id="@+id/next_first"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="@drawable/btn_bg_red"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/colorLight"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="もっと見る" />
-        </FrameLayout>
+
 
         <TableLayout
             android:id="@+id/tl_meg_first"

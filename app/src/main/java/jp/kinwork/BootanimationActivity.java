@@ -462,7 +462,7 @@ public class BootanimationActivity extends AppCompatActivity {
         param.put(getString(R.string.url),"https://maps.google.com/maps/api/geocode/json?latlng=");
         param.put(getString(R.string.itude),location.getLatitude() + ","+location.getLongitude());
         param.put(getString(R.string.key),"&sensor=false&language=ja&key=AIzaSyBzSkvprYMmBmLWaon_uBWJEiJ9DH21B6g");
-        new GithubQueryTask2().execute(param);
-//        Check();
+//        new GithubQueryTask2().execute(param);
+        Check();
     }
 }
