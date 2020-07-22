@@ -1202,6 +1202,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     myApplication.setkeyword(keyword);
                     myApplication.setaddress(address);
                     page = "1";
+                    urlFlg="";
                     getSearchResults();
                     break;
             }

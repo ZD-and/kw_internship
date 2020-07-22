@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import jp.kinwork.Common.KinworkDialgo;
 import jp.kinwork.Common.MyApplication;
 
 public class WebActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class WebActivity extends AppCompatActivity {
     private TextView tvbacktitle;
     private TextView tvbackdummy;
     private Intent Intent;
-    private ProgressDialog dialog ;
+    private KinworkDialgo dialog;
     private String Act;
 
     @Override
@@ -40,7 +41,8 @@ public class WebActivity extends AppCompatActivity {
         Intent = getIntent();
         //Act = Intent.getStringExtra("Act");
         Initialization();
-        dialog = new ProgressDialog(this) ;
+        dialog = new KinworkDialgo(this) ;
+        dialog.setCanceledOnTouchOutside(false);
         //dialog.setTitle("提示") ;
         dialog.setMessage(getString(R.string.kensakuchu)) ;
 //        dialog.show();
@@ -59,8 +61,6 @@ public class WebActivity extends AppCompatActivity {
         mWebSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
         mWebSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
 
-        mWebview.loadUrl(url);
-
         //设置不用系统浏览器打开,直接显示在当前Webview
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
@@ -76,10 +76,13 @@ public class WebActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                dialog.dismiss();
                 view.loadUrl(url);
                 return true;
             }
         });
+        mWebview.loadUrl(url);
+
 //        dialog.dismiss();
     }
 
