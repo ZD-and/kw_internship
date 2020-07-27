@@ -3,6 +3,7 @@ package jp.kinwork;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,7 +51,6 @@ public class ContactActivity extends AppCompatActivity {
     private TextView tvshow;
 
     private TableLayout tlcontact;
-    private TableLayout tlcontact_son;
 
 
     private MyApplication mMyApplication;
@@ -60,6 +60,9 @@ public class ContactActivity extends AppCompatActivity {
     private LinkedList<String> list_employer_id;
     private LinkedList<String> list_company_name;
     private LinkedList<String> list_address;
+
+    private String TAG = "ContactActivity";
+    private ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,8 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void Initialization() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("通信中");
         mMyApplication = (MyApplication) getApplication();
         mPreferenceUtils = new PreferenceUtils(ContactActivity.this);
         listTL_info = new LinkedList<TableLayout>();
@@ -154,13 +159,14 @@ public class ContactActivity extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad() {
+        dialog.show();
         //Json格式转换并且加密
         PostDate Pdata = new PostDate();
         Pdata.setUserId(userId);
         Pdata.setToken(token);
         Gson mGson1 = new Gson();
         String sdPdata = mGson1.toJson(Pdata,PostDate.class);
-        Log.d("***mailTitle***", sdPdata);
+        Log.d(TAG,"mailTitle:"+ sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -198,8 +204,9 @@ public class ContactActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            dialog.dismiss();
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG,"Results:"+ githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     Boolean processResult = obj.getBoolean(getString(R.string.processResult));
@@ -227,7 +234,7 @@ public class ContactActivity extends AppCompatActivity {
     private void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***+++datas+++***", datas);
+        Log.d(TAG,"datas:"+ datas);
         try {
             JSONArray obj = new JSONArray(datas);
             getMessageList(obj);
@@ -240,13 +247,13 @@ public class ContactActivity extends AppCompatActivity {
     public void getMessageList(JSONArray data){
         tlcontact.removeAllViews();
         int x= -1;
-        for(int i =0; i < data.length(); i++){
+        for(int i =data.length()-1; i > -1 ; i--){
             try {
                 JSONObject obj = data.getJSONObject(i);
-                Log.d("***obj***", obj.toString());
-                Log.d("***Dialog***", obj.getString(getString(R.string.Dialog)));
-                Log.d("***other***", obj.getString(getString(R.string.other)));
-                Log.d("***MyMail***", obj.getString(getString(R.string.MyMail)));
+                Log.d(TAG,"obj:"+ obj.toString());
+                Log.d(TAG,"Dialog:"+ obj.getString(getString(R.string.Dialog)));
+                Log.d(TAG,"other:"+ obj.getString(getString(R.string.other)));
+                Log.d(TAG,"MyMail:"+ obj.getString(getString(R.string.MyMail)));
                 JSONObject objDialog = obj.getJSONObject(getString(R.string.Dialog));
                 JSONObject objother = obj.getJSONObject(getString(R.string.other));
                 JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
@@ -262,7 +269,6 @@ public class ContactActivity extends AppCompatActivity {
                 tlparams.setMargins(0,0,0,top);
                 View contact = getLayoutInflater().inflate(R.layout.include_contact, null);
                 TableLayout information = (TableLayout) contact.findViewById(R.id.tl_contact_son);
-                information.setOnClickListener(Listener);
                 TextView tvcompanyname = (TextView) contact.findViewById(R.id.tv_companyname);
                 TextView tvlatesttime = (TextView) contact.findViewById(R.id.tv_latesttime);
                 TextView tvmailtitle = (TextView) contact.findViewById(R.id.tv_mailtitle);
@@ -289,12 +295,15 @@ public class ContactActivity extends AppCompatActivity {
                 tvmailContent.setText(objMyMail.getString(getString(R.string.mail_content)));
                 tvlatesttime.setText(objMyMail.getString(getString(R.string.send_time)));
                 contact.setLayoutParams(tlparams);
-                tlcontact.addView(contact,i);
-                listTL_info.add(i,information);
-                list_employer_id.add(i,objDialog.getString(getString(R.string.employer_user_id)));
-                list_company_name.add(i,objother.getString(getString(R.string.employer_user_name)));
-                list_address.add(i,objDialog.getString(getString(R.string.employer_email)));
-                x += 1;
+                x = x + 1;
+                Log.d(TAG, "getMessageList x: " + x);
+                Log.d(TAG, "getMessageList employer_user_name: " + objother.getString(getString(R.string.employer_user_name)));
+                tlcontact.addView(contact,x);
+                listTL_info.add(x,information);
+                list_employer_id.add(x,objDialog.getString(getString(R.string.employer_user_id)));
+                list_company_name.add(x,objother.getString(getString(R.string.employer_user_name)));
+                list_address.add(x,objDialog.getString(getString(R.string.employer_email)));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -343,6 +352,7 @@ public class ContactActivity extends AppCompatActivity {
             String company_name = "";
             String mailaddress = "";
             for (int i = 0; i < listTL_info.size(); i++) {
+                Log.d(TAG, "onClick i: " + i);
                 if (listTL_info.get(i) == View) {
                     iIndex = i;
                     employer_id = list_employer_id.get(i);
@@ -351,14 +361,18 @@ public class ContactActivity extends AppCompatActivity {
                     break;
                 }
             }
+            Log.d(TAG, "onClick company_name: " + company_name);
+            Log.d(TAG, "onClick employer_id: " + employer_id);
             if (iIndex >= 0) {
+                mMyApplication.setcompany_name(company_name);
+                mMyApplication.setemployerID(employer_id);
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(ContactActivity.this, ContactDialogActivity.class);
-                intent.putExtra(getString(R.string.Act),getString(R.string.Contact));
-                intent.putExtra(getString(R.string.ID),employer_id);
-                intent.putExtra(getString(R.string.company_name),company_name);
-                intent.putExtra(getString(R.string.mailaddress),mailaddress);
+//                intent.putExtra(getString(R.string.Act),getString(R.string.Contact));
+//                intent.putExtra(getString(R.string.ID),employer_id);
+//                intent.putExtra(getString(R.string.company_name),company_name);
+//                intent.putExtra(getString(R.string.mailaddress),mailaddress);
                 startActivity(intent);
             }
         }

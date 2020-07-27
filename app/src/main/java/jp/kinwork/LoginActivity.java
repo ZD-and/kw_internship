@@ -228,6 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //密码忘记的时候，再取得
     public void getPassword(){
         mFlg = "1";
+        dialog.show();
         mEmail = mEdLoginEmail.getText().toString();
         if(mEmail.equals("")){
             alertdialog(getString(R.string.error),getString(R.string.mailinput));
@@ -400,6 +401,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //初めのデータ取得
     private void InitialData(){
         mFlg = "2";
+        dialog.show();
         String userid = mMyApplication.getuser_id();
         String token = mMyApplication.getToken();
         Log.d(TAG, "InitialData userid: "+userid+ " token:"+token);
@@ -408,6 +410,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void sendDeviceToken(){
         mFlg = "3";
+        dialog.show();
         String userid = mMyApplication.getuser_id();
         String token = mMyApplication.getToken();
         urllodad(userid,token);

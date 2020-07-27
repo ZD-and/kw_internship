@@ -121,7 +121,6 @@ public class ResumeActivity extends AppCompatActivity {
     private TextView tltrtvkananame;
     private TextView tltrtvsex;
     private TextView tltrtvbirthday;
-    private TextView tltrtvcountry;
     private TextView tltrtvaddress;
     private TextView tltrtvphone;
     private TextView tvback;
@@ -284,7 +283,6 @@ public class ResumeActivity extends AppCompatActivity {
         tltrtvkananame  = (TextView) findViewById(R.id.tl_tr_tv_kananame);
         tltrtvsex       = (TextView) findViewById(R.id.tl_tr_tv_sex);
         tltrtvbirthday  = (TextView) findViewById(R.id.tl_tr_tv_birthday);
-        tltrtvcountry   = (TextView) findViewById(R.id.tl_tr_tv_country);
         tltrtvaddress   = (TextView) findViewById(R.id.tl_tr_tv_address);
         tltrtvphone     = (TextView) findViewById(R.id.tl_tr_tv_phone);
         tvback          = (TextView) findViewById(R.id.tv_back);
@@ -308,7 +306,7 @@ public class ResumeActivity extends AppCompatActivity {
         });
         bu_create=findViewById(R.id.bu_create);
         if(resume_status.equals("upd")){
-            bu_create.setText("履歴書変更");
+            bu_create.setText("履歴書を変更する");
         }
         bu_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -922,10 +920,6 @@ public class ResumeActivity extends AppCompatActivity {
                 tltrtvbirthday.setText(getString(R.string.birthday_nihongo) + obj.getString(getString(R.string.birthday)));
             }
 
-            //国籍
-//            if(! obj.getString("").equals("")){
-                tltrtvcountry.setText(getString(R.string.kokuseki) + myApplication.getcountry());
-//            }
             //住所
             if(! obj.getString(getString(R.string.add_1)).equals("") && ! obj.getString(getString(R.string.add_2)).equals("") && ! obj.getString(getString(R.string.add_3)).equals("")){
                 tltrtvaddress.setText(getString(R.string.address_nihongo) + obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));

@@ -256,6 +256,7 @@
                 android:layout_marginRight="20dp"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:padding="5dp"
                 android:hint=" 性別を選択してください"
                 android:textColor="@color/background_holo_dark"
                 android:textSize="15sp" />
@@ -298,6 +299,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:background="@null"
+                android:padding="5dp"
                 android:gravity="center_vertical"
                 android:hint=" 生年月日を選択してください"
                 android:textColor="@color/background_holo_dark"
@@ -383,14 +385,22 @@
                         android:gravity="center_vertical"
                         android:text="郵便番号" />
 
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="5dp"-->
+<!--                        android:text="（任意）"-->
+<!--                        android:textColor="@color/kin_dark"-->
+<!--                        android:textSize="10sp" />-->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:paddingLeft="5dp"
-                        android:text="（任意）"
+                        android:text="（必須）"
                         android:textSize="10sp"
-                        android:textColor="@color/kin_dark" />
+                        android:textColor="@color/holo_red_dark" />
                 </LinearLayout>
 
                 <TableRow

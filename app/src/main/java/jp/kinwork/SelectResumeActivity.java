@@ -226,12 +226,15 @@ public class SelectResumeActivity extends AppCompatActivity {
         token = PreferenceUtils.gettoken();
         if(resume_number >= 1 && ! resumeId_1.equals("A")){
             trresume1.setVisibility(View.VISIBLE);
+            tvresume1.setText(myApplication.getresume_name("1"));
         }
         if(resume_number >= 2 && ! resumeId_2.equals("A")){
             trresume2.setVisibility(View.VISIBLE);
+            tvresume2.setText(myApplication.getresume_name("2"));
         }
         if(resume_number == 3 && ! resumeId_3.equals("A")){
             trresume3.setVisibility(View.VISIBLE);
+            tvresume3.setText(myApplication.getresume_name("3"));
         }
         if(resume_number == 0){
             Erroralertdialog(getString(R.string.Erroralertdialog));

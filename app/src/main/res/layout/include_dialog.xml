@@ -157,7 +157,7 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textSize="15sp"
                                 android:paddingLeft="3dp"
-                                android:text="回復"/>
+                                android:text="返信"/>
                         </TableRow>
                     </TableLayout>
 
