@@ -82,7 +82,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     private String setmeg = "";
     private String DisplayEmailFlg = "0";
     private String sendflg = "0";
-    private String flg="";
 
 
     private PreferenceUtils mPreferenceUtils;
@@ -687,6 +686,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     }
     //点击回复或者新规的按钮触发事件
     public void Click_setmeg(View View){
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         if (View == null) {
             return;
         }
@@ -721,10 +722,15 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                 }
                 break;
         }
-        //当前界面隐藏
-        list_slmeg.get(nPageNum).setVisibility(GONE);
-        //显示送信界面
-        list_tlmeg.get(nPageNum).setVisibility(VISIBLE);
+        intent.setClass(this, SelectResumeActivity.class);
+        intent.putExtra("companyname",company_name);
+        intent.putExtra("mailtitle", setTitle);
+        intent.putExtra("mailmeg", setmeg);
+        startActivity(intent);
+//        //当前界面隐藏
+//        list_slmeg.get(nPageNum).setVisibility(GONE);
+//        //显示送信界面
+//        list_tlmeg.get(nPageNum).setVisibility(VISIBLE);
     }
     //将发送的信息添加到列表的最上方
     public void Setsendmeg(ScrollView xslmeg,LinearLayout xtlmeg,String title,String meg,String date){

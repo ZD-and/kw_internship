@@ -50,6 +50,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private TextView tvToCompanyName;
 
     private LinearLayout ll_sendresume;
+    private TableLayout tltlresume;
 
     private TableRow trresume1;
     private TableRow trresume2;
@@ -84,8 +85,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String SetCompanyName="";
     private String SetTitle = "";
     private String SetMeg = "";
-
-    private Button application;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +93,18 @@ public class SelectResumeActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_select_resume);
         Initialization();
+        if(myApplication.getContactDialog(0).equals("1")){
+            Intent intent = getIntent();
+            String companyname = intent.getStringExtra("companyname");
+            String mailtitle = intent.getStringExtra("mailtitle");
+            String mailmeg = intent.getStringExtra("mailmeg");
+            tvToCompanyName.setText(companyname);
+            ettitle.setText(mailtitle);
+            etmessage.setText(mailmeg);
+            tvback.setText("メール一覧");
+            tvbackdummy.setText("送信");
+            tltlresume.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -174,6 +186,7 @@ public class SelectResumeActivity extends AppCompatActivity {
         });
         ll_sendresume = (LinearLayout) findViewById(R.id.tl_sendresume);
         tvToCompanyName=(TextView)findViewById(R.id.tv_ToCompanyName);
+        tltlresume=(TableLayout)findViewById(R.id.tl_tl_resume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
         trresume1 = (TableRow) findViewById(R.id.tr_resume1);
@@ -297,6 +310,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     //返回检索画面
     public void Click_back(){
         MoveIntent(getString(R.string.back));
+
     }
 
     //应聘按钮
