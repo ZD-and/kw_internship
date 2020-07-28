@@ -94,6 +94,7 @@ public class SelectResumeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_resume);
         Initialization();
         if(myApplication.getContactDialog(0).equals("1")){
+            employerID=myApplication.getemployerID();
             Intent intent = getIntent();
             String companyname = intent.getStringExtra("companyname");
             String mailtitle = intent.getStringExtra("mailtitle");
@@ -102,7 +103,14 @@ public class SelectResumeActivity extends AppCompatActivity {
             ettitle.setText(mailtitle);
             etmessage.setText(mailmeg);
             tvback.setText("メール一覧");
+            tvback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MoveIntent("mymail");
+                }
+            });
             tvbackdummy.setText("送信");
+            tvbackdummy.setOnClickListener(Click_setSendMeg);
             tltlresume.setVisibility(View.GONE);
         }
     }
@@ -475,7 +483,54 @@ public class SelectResumeActivity extends AppCompatActivity {
                 myApplication.setAct(getString(R.string.SelectResume));
                 intent.setClass(SelectResumeActivity.this, MylistActivity.class);
                 break;
+            case "mymail":
+                intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
+                break;
         }
         startActivity(intent);
+    }
+
+    //送信处理
+    private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
+        public void onClick(View View) {
+            PostDate Pdata = new PostDate();
+            Map<String, String> param = new HashMap<String, String>();
+            Pdata.setUserId(userid);
+            Pdata.setToken(token);
+            Pdata.setjobId(JobId);
+            Pdata.setemployerId(employerID);
+            Pdata.setmailTitle(ettitle.getText().toString());
+            Pdata.setmailContent(etmessage.getText().toString());
+            String data = JsonChnge(AesKey, Pdata);
+            param.put(getString(R.string.file), PARAM_sendMessage);
+            param.put(getString(R.string.data), data);
+            param.put(getString(R.string.name), getString(R.string.SendMeg));
+            //数据通信处理（访问服务器，并取得访问结果）
+            new GithubQueryTask().execute(param);
+            sendMegalertdialog("送信しました。","");
+        }
+    };
+
+    //送信通信提示
+    private void sendMegalertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(SelectResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                } else {
+                    finish();
+                }
+            }
+        }).show();
     }
 }

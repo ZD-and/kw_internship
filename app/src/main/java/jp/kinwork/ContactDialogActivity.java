@@ -119,6 +119,14 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
+        //初始化viewpager页面
+        initPages();
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(this);
 
     }
 
@@ -128,14 +136,14 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         Log.d(TAG, "onStart: ");
         dialog = new ProgressDialog(this);
         dialog.setMessage("通信中");
-        //初始化viewpager页面
-        initPages();
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        PagerAdapter adapter = new customViewPagerAdapter(pages);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(this);
+//        //初始化viewpager页面
+//        initPages();
+//        viewPager = (ViewPager) findViewById(R.id.viewPager);
+//        PagerAdapter adapter = new customViewPagerAdapter(pages);
+//        viewPager.setAdapter(adapter);
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+//        tabLayout.setupWithViewPager(viewPager);
+//        viewPager.addOnPageChangeListener(this);
 //        Intent intent = getIntent();
         Initialization();
         Log.d(TAG, "onStart mMyApplication.getContactDialog(0): " + mMyApplication.getContactDialog(0));

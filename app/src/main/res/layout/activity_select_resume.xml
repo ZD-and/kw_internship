@@ -33,7 +33,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-
+                android:textColor="@color/background_holo_dark"
+                android:text="To: 会社名"
+                android:textStyle="bold"
+                />
             <TableLayout
                 android:id="@+id/tl_tl_resume"
                 android:layout_width="match_parent"
@@ -43,7 +46,13 @@
                 android:stretchColumns="1"
                 android:visibility="visible">
 
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="履歴書の選択"
+                    android:textColor="@color/background_holo_dark"
+                    android:textSize="12sp" />
 
                 <TableRow
                     android:id="@+id/tr_resume1"
@@ -127,7 +136,6 @@
                 android:textColor="@color/background_holo_dark"
                 android:textStyle="bold" />
 
-
             <EditText
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
@@ -172,3 +180,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
