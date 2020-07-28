@@ -101,7 +101,7 @@ public class SelectResumeActivity extends AppCompatActivity {
             String mailtitle = intent.getStringExtra("mailtitle");
             String mailmeg = intent.getStringExtra("mailmeg");
             employerID=intent.getStringExtra("emploerID");
-            tvToCompanyName.setText(companyname);
+            tvToCompanyName.setText("To:"+companyname);
             ettitle.setText(mailtitle);
             etmessage.setText(mailmeg);
             tvback.setText("メール一覧");
