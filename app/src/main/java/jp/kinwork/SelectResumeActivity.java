@@ -41,6 +41,8 @@ public class SelectResumeActivity extends AppCompatActivity {
 
     final static String PARAM = "/JobInfosMobile/jobApplySubmit";
     final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
+    final static String PARAM_sendmail = "/MyMailMobile/pendingMyMail";
+
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private MyApplication myApplication;
     private EditText ettitle;
@@ -94,11 +96,11 @@ public class SelectResumeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_resume);
         Initialization();
         if(myApplication.getContactDialog(0).equals("1")){
-            employerID=myApplication.getemployerID();
             Intent intent = getIntent();
             String companyname = intent.getStringExtra("companyname");
             String mailtitle = intent.getStringExtra("mailtitle");
             String mailmeg = intent.getStringExtra("mailmeg");
+            employerID=intent.getStringExtra("emploerID");
             tvToCompanyName.setText(companyname);
             ettitle.setText(mailtitle);
             etmessage.setText(mailmeg);
@@ -378,12 +380,14 @@ public class SelectResumeActivity extends AppCompatActivity {
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name = "";
+        String type="";
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            type=map.get("send");
             Log.d("***file***", file);
             Log.d("***data***", data);
             URL searchUrl = NetworkUtils.buildUrl(file);
@@ -405,7 +409,13 @@ public class SelectResumeActivity extends AppCompatActivity {
                     String message = obj.getString(getString(R.string.message));
                     String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
-                        MoveIntent(getString(R.string.Application));
+                        if(type.equals("send")){
+                            sendMegalertdialog("送信しました。","");
+
+                        }else {
+                            MoveIntent(getString(R.string.Application));
+
+                        }
                     } else {
                         if(errorCode.equals("100")){
                             message = "他の端末から既にログインしています。もう一度ログインしてください。";
@@ -498,17 +508,16 @@ public class SelectResumeActivity extends AppCompatActivity {
             Map<String, String> param = new HashMap<String, String>();
             Pdata.setUserId(userid);
             Pdata.setToken(token);
-            Pdata.setjobId(JobId);
             Pdata.setemployerId(employerID);
             Pdata.setmailTitle(ettitle.getText().toString());
             Pdata.setmailContent(etmessage.getText().toString());
             String data = JsonChnge(AesKey, Pdata);
-            param.put(getString(R.string.file), PARAM_sendMessage);
+            param.put(getString(R.string.file), PARAM_sendmail);
             param.put(getString(R.string.data), data);
             param.put(getString(R.string.name), getString(R.string.SendMeg));
+            param.put("send","send");
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
-            sendMegalertdialog("送信しました。","");
         }
     };
 

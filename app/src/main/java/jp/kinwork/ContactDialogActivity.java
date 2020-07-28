@@ -119,15 +119,6 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
-        //初始化viewpager页面
-        initPages();
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        PagerAdapter adapter = new customViewPagerAdapter(pages);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(this);
-
     }
 
     @Override
@@ -136,15 +127,15 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         Log.d(TAG, "onStart: ");
         dialog = new ProgressDialog(this);
         dialog.setMessage("通信中");
-//        //初始化viewpager页面
-//        initPages();
-//        viewPager = (ViewPager) findViewById(R.id.viewPager);
-//        PagerAdapter adapter = new customViewPagerAdapter(pages);
-//        viewPager.setAdapter(adapter);
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-//        tabLayout.setupWithViewPager(viewPager);
-//        viewPager.addOnPageChangeListener(this);
-//        Intent intent = getIntent();
+        //初始化viewpager页面
+        initPages();
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(this);
+        Intent intent = getIntent();
         Initialization();
         Log.d(TAG, "onStart mMyApplication.getContactDialog(0): " + mMyApplication.getContactDialog(0));
         Log.d(TAG, "onStart mMyApplication.getcompany_name(): " + mMyApplication.getcompany_name());
@@ -174,17 +165,20 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            DisplayEmailFlg = mMyApplication.getContactDialog(4);
-            if(DisplayEmailFlg.equals("")){
-                //flg为空的时候，显示全部的邮件
-                DisplayEmail(getString(R.string.tv_allEmail));
-            }else if(DisplayEmailFlg.equals("1")){
-                //flg为1的时候，显示收到的邮件
-                DisplayEmail(getString(R.string.tv_sendEmail));
-            }else if(DisplayEmailFlg.equals("0")){
-                //flg为1的时候，显示发送的邮件
-                DisplayEmail(getString(R.string.tv_ReceptionEmail));
-            }
+//            DisplayEmailFlg = mMyApplication.getContactDialog(4);
+//            if(DisplayEmailFlg.equals("")){
+//                //flg为空的时候，显示全部的邮件
+//                DisplayEmail(getString(R.string.tv_allEmail));
+//            }else if(DisplayEmailFlg.equals("1")){
+//                //flg为1的时候，显示收到的邮件
+//                DisplayEmail(getString(R.string.tv_sendEmail));
+//            }else if(DisplayEmailFlg.equals("0")){
+//                //flg为1的时候，显示发送的邮件
+//                DisplayEmail(getString(R.string.tv_ReceptionEmail));
+//            }
+            getSearchResults("1","all");
+            getSearchResults("1","receive");
+            getSearchResults("1","send");
         }
         tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
@@ -248,12 +242,13 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
 
     //初期化
     private void Initialization(){
-        bu_sendmeg_first = pages.get(0).findViewById(R.id.bu_sendmeg_first);
-        bu_sendmeg_second = pages.get(1).findViewById(R.id.bu_sendmeg_second);
-        bu_sendmeg_third = pages.get(2).findViewById(R.id.bu_sendmeg_third);
-        bu_sendmeg_first.setOnClickListener(Click_setSendMeg);
-        bu_sendmeg_second.setOnClickListener(Click_setSendMeg);
-        bu_sendmeg_third.setOnClickListener(Click_setSendMeg);
+
+//        bu_sendmeg_first = pages.get(0).findViewById(R.id.bu_sendmeg_first);
+//        bu_sendmeg_second = pages.get(1).findViewById(R.id.bu_sendmeg_second);
+//        bu_sendmeg_third = pages.get(2).findViewById(R.id.bu_sendmeg_third);
+//        bu_sendmeg_first.setOnClickListener(Click_setSendMeg);
+//        bu_sendmeg_second.setOnClickListener(Click_setSendMeg);
+//        bu_sendmeg_third.setOnClickListener(Click_setSendMeg);
         list_tlnamedata = new LinkedList<TableLayout>();
         list_tlreply    = new LinkedList<TableLayout>();
         list_tvtitle    = new LinkedList<TextView>();
@@ -682,7 +677,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         }
         int nPageNum = viewPager.getCurrentItem();
         sendflg = "1";
-        list_tvToCompanyName.get(nPageNum).setText("To:" + company_name);
+//        list_tvToCompanyName.get(nPageNum).setText("To:" + company_name);
         setTitle = "";
         setmeg = "";
         // 判断第几个按钮触发了事件
@@ -704,8 +699,8 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
                         setTitle = "Re:" + ti;
                         setmeg = "\n\n\n\n\n\n>" + tm;
                         /*他のページに伝えるもの、findbyidもらえない、null値になる*/
-                        list_ettitle.get(nPageNum).setText(setTitle);
-                        list_etmeg.get(nPageNum).setText(setmeg);
+//                        list_ettitle.get(nPageNum).setText(setTitle);
+//                        list_etmeg.get(nPageNum).setText(setmeg);
                         break;
                     }
                 }
@@ -715,6 +710,7 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
         intent.putExtra("companyname",company_name);
         intent.putExtra("mailtitle", setTitle);
         intent.putExtra("mailmeg", setmeg);
+        intent.putExtra("emploerID",employer_id);
         startActivity(intent);
 //        //当前界面隐藏
 //        list_slmeg.get(nPageNum).setVisibility(GONE);
@@ -844,26 +840,26 @@ public class ContactDialogActivity extends AppCompatActivity implements ViewPage
             }
         }
     }
-    //送信处理
-    private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
-        public void onClick(View View) {
-            int nPageNum = viewPager.getCurrentItem();
-            PostDate Pdata = new PostDate();
-            Map<String, String> param = new HashMap<String, String>();
-            Pdata.setUserId(userid);
-            Pdata.setToken(token);
-            Pdata.setemployerId(employer_id);
-            Pdata.setmailTitle(list_ettitle.get(nPageNum).getText().toString());
-            Pdata.setmailContent(list_etmeg.get(nPageNum).getText().toString());
-            String data = JsonChnge(AesKey, Pdata);
-            param.put(getString(R.string.file), PARAM_sendMessage);
-            param.put(getString(R.string.data), data);
-            param.put(getString(R.string.name), getString(R.string.SendMeg));
-            //数据通信处理（访问服务器，并取得访问结果）
-            new GithubQueryTask().execute(param);
-            alertdialog("送信しました。","");
-        }
-    };
+//    //送信处理
+//    private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
+//        public void onClick(View View) {
+//            int nPageNum = viewPager.getCurrentItem();
+//            PostDate Pdata = new PostDate();
+//            Map<String, String> param = new HashMap<String, String>();
+//            Pdata.setUserId(userid);
+//            Pdata.setToken(token);
+//            Pdata.setemployerId(employer_id);
+//            Pdata.setmailTitle(list_ettitle.get(nPageNum).getText().toString());
+//            Pdata.setmailContent(list_etmeg.get(nPageNum).getText().toString());
+//            String data = JsonChnge(AesKey, Pdata);
+//            param.put(getString(R.string.file), PARAM_sendMessage);
+//            param.put(getString(R.string.data), data);
+//            param.put(getString(R.string.name), getString(R.string.SendMeg));
+//            //数据通信处理（访问服务器，并取得访问结果）
+//            new GithubQueryTask().execute(param);
+//            alertdialog("送信しました。","");
+//        }
+//    };
     private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
