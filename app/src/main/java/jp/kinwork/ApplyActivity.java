@@ -46,27 +46,17 @@ public class ApplyActivity extends AppCompatActivity {
     private TextView tvapplyaccess;
     private TextView tvapplytreatment;
     private TextView tvapplyOther;
-    //    private TextView tvAToCompanyName;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
 
-    //    private EditText etAtitle;
-//    private EditText etAmeg;
-//
-//    private String deviceId;
-//    private String AesKey;
-//    private String userid;
-//    private String token;
     private String JobInfo;
     private String JobId;
     private String UserFlg;
     private String Act;
     private String jobflg;
     private String employerID;
-    private String companyname;
     private String address;
-    private String backflg = "";
 
     private Button bucreatetop;
     private Button bucreateBottom;
@@ -265,7 +255,6 @@ public class ApplyActivity extends AppCompatActivity {
                 JSONObject obj = new JSONObject(data);
                 Log.d("---obj---", obj.toString());
                 employerID = obj.getString("user_id");
-                companyname = obj.getString("company_name");
                 address = obj.getString("add_1") + obj.getString("add_2") + obj.getString("add_3") + obj.getString("add_4");
                 JobId = obj.getString("id");
                 tvapplyJobcategory.setText(obj.getString("occupation_name"));

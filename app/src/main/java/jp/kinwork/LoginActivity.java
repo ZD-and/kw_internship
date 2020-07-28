@@ -189,6 +189,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mJobInfo = mMyApplication.getjobinfo();
         mActivity = getIntent().getStringExtra(getString(R.string.Activity));
         mAuth = FirebaseAuth.getInstance();
+        if(!mPreferenceUtils.getLoginFlag().equals("0")){
+            dialog.show();
+        }
         getDeviceToken();
         initLine();
         getYahooUserInfo();
@@ -345,6 +348,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             mPreferenceUtils.setSendAndroidTokenProcessResult(processResult);
                             MoveScreen();
                         } else {
+                            mPreferenceUtils.setLoginFlag("0");
                             alertdialog("エラー",message);
                         }
                     }
@@ -591,6 +595,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SignInToKinWork(account.getEmail(),account.getId(),"1");
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
+                    mPreferenceUtils.setLoginFlag("0");
                     Log.e(TAG, "Google sign in failed", e);
                     Log.e(TAG, "e："+ e.getMessage());
                 }
@@ -667,6 +672,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onCancel() {
                 Log.d(TAG, "loginFaceBook onCancel: ");
+                mPreferenceUtils.setLoginFlag("0");
                 // App code
             }
 
@@ -674,6 +680,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onError(FacebookException exception) {
                 Log.d(TAG, "loginFaceBook onError: ");
                 Log.d(TAG, "exception: " + exception.toString());
+                mPreferenceUtils.setLoginFlag("0");
                 // App code
             }
         });
@@ -701,6 +708,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         public void failure(TwitterException exception) {
             Log.w(TAG, "twitterLogin:failure", exception);
+            mPreferenceUtils.setLoginFlag("0");
         }
     };
     // [END twitter]
@@ -716,10 +724,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             SignInToKinWork(user.getEmail(),userId,flag);
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            mPreferenceUtils.setLoginFlag("0");
                         }
 
                     }
@@ -880,6 +888,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String returnData = obj.getString(getString(R.string.returnData));
                             decryptchange(returnData);
                         } else {
+                            mPreferenceUtils.setLoginFlag("0");
                             alertdialog("エラー",message);
                         }
                     }catch (Exception e){

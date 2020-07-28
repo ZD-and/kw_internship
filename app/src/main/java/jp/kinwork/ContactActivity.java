@@ -31,6 +31,7 @@ import java.util.Map;
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.CommonView.BadgeView;
+import jp.kinwork.Common.KinWorkManagerController;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
@@ -100,6 +101,13 @@ public class ContactActivity extends AppCompatActivity {
         mMyApplication.setContactDialog("0",0);
         if(mMyApplication.getlast_name().length() > 0){
             urllodad();
+        }
+        if(!mPreferenceUtils.getSendAndroidTokenProcessResult()){
+            KinWorkManagerController kinWorkManagerController = new KinWorkManagerController();
+            if(kinWorkManagerController.getContext() == null){
+                kinWorkManagerController.setContext(getApplicationContext());
+            }
+            kinWorkManagerController.getDeviceTokenToServer();
         }
     }
 

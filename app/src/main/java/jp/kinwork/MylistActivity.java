@@ -44,6 +44,7 @@ import java.util.Map;
 
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.KinWorkManagerController;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -224,6 +225,13 @@ public class MylistActivity extends AppCompatActivity  {
         token = PreferenceUtils.gettoken();
         if(Act.equals(getString(R.string.SelectResume))){
             viewPager.setCurrentItem(1);
+        }
+        if(!PreferenceUtils.getSendAndroidTokenProcessResult()){
+            KinWorkManagerController kinWorkManagerController = new KinWorkManagerController();
+            if(kinWorkManagerController.getContext() == null){
+                kinWorkManagerController.setContext(getApplicationContext());
+            }
+            kinWorkManagerController.getDeviceTokenToServer();
         }
         dialog = new ProgressDialog(this);
         getJobList("1","SavedJob");

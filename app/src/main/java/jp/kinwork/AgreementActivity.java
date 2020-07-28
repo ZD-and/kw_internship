@@ -20,7 +20,6 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
 
     private String TAG = "AgreementActivity";
     private String mAgreement = "";
-    private String mActivity = "";
     private String[] Termsofservice_title = new String[]{"KinWork へようこそ","第1条（本サービスのご利用）","第2条（ユーザーの KinWork アカウント）","第3条（プライバシー ポリシー）","第4条（本サービス内のユーザーのコンテンツ）","第5条（本サービスの変更または終了）","第6条（ソーシャルボタンのご利用について）","第7条（保証）","第8条（お客様へのご連絡手段）","第9条（免責事項）","第10条（本規約について）","第11条（準拠法、裁判管轄）"};
     private String[] privacypolicy_title = new String[]{"1. パーソナルデータの取得","2. パーソナルデータの利用目的","3. 個人情報の提供の同意","4. 安全管理の実施","5. パーソナルデータに関する開示等、苦情および相談への対応"};
 
