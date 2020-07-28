@@ -189,6 +189,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mJobInfo = mMyApplication.getjobinfo();
         mActivity = getIntent().getStringExtra(getString(R.string.Activity));
         mAuth = FirebaseAuth.getInstance();
+        Log.d(TAG, "Initialization mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
         if(!mPreferenceUtils.getLoginFlag().equals("0")){
             dialog.show();
         }
@@ -508,6 +509,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //返回检索結果画面
     public void onClick(View view){
+        mLoginFlag = "0";
         Intent intent = new Intent();
         String saveId = mPreferenceUtils.getsaveid();
         switch (view.getId()){
@@ -889,6 +891,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             decryptchange(returnData);
                         } else {
                             mPreferenceUtils.setLoginFlag("0");
+                            Log.d(TAG, "onSuccess results mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
                             alertdialog("エラー",message);
                         }
                     }catch (Exception e){
