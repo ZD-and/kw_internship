@@ -661,7 +661,7 @@ public class ResumeActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
-                    String errCode = obj.getString(getString(R.string.errorCode));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     String returnData = obj.getString(getString(R.string.returnData));
                     if(processResult == true) {
                         if(createFlg.equals("1")){
@@ -686,13 +686,14 @@ public class ResumeActivity extends AppCompatActivity {
                             tlqualification.removeViewAt(iIndex);
                         }
                     } else {
-                        if(errCode.equals("100")){
-                            alertdialog("",meg,errCode);
+                        if(errorCode.equals("100")){
+                            meg = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog("",meg,errorCode);
                         }
                         else if(createFlg.equals("1") && !obj.getString(getString(R.string.fieldErrors)).equals("null")){
                             showError(obj.getString(getString(R.string.fieldErrors)));
                         } else {
-                            alertdialog(getString(R.string.error),meg,errCode);
+                            alertdialog(getString(R.string.error),meg,errorCode);
                         }
                     }
                 }catch (Exception e){
@@ -745,6 +746,7 @@ public class ResumeActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String Title,String meg,final String code){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle(Title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

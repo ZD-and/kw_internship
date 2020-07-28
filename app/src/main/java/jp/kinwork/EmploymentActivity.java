@@ -360,6 +360,7 @@ public class EmploymentActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -434,12 +434,24 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         startActivity(intent);
     }
     //通信结果提示
+    private String mErrorCode = "";
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                if(mErrorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(SearchResultsActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
@@ -525,6 +537,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
+                    mErrorCode = obj.getString(getString(R.string.errorCode));
                     Log.d(TAG,"returnData1:"+ obj.getString(getString(R.string.returnData)));
                     Log.d(TAG,"urlFlg:"+urlFlg);
                     Log.d(TAG,"url_name:"+ etnamereset);
@@ -582,7 +595,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
                         }
                     } else {
-                        if(urlFlg.equals(getString(R.string.likejob))){
+                        if(mErrorCode.equals("100")){
+                            meg = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog(getString(R.string.error), meg);
+                        } else if(urlFlg.equals(getString(R.string.likejob))){
                             IBNlikejob.setImageResource(R.mipmap.app_like);
                             alertdialog(getString(R.string.error),meg);
                         } else if(etnamereset.equals(getString(R.string.keyword)) || etnamereset.equals(getString(R.string.worklocation))){

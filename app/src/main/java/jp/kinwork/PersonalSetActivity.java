@@ -34,6 +34,7 @@ import java.util.Map;
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.ClassDdl.Resume;
 import jp.kinwork.Common.CommonAsyncTask;
+import jp.kinwork.Common.KinWorkManagerController;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -118,6 +119,13 @@ public class PersonalSetActivity extends AppCompatActivity {
         mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         mLineApiClient = new LineApiClientBuilder(getApplicationContext(), getString(R.string.line_client_id)).build();
         mAuth = FirebaseAuth.getInstance();
+        if(!mPreferenceUtils.getSendAndroidTokenProcessResult()){
+            KinWorkManagerController kinWorkManagerController = new KinWorkManagerController();
+            if(kinWorkManagerController.getContext() == null){
+                kinWorkManagerController.setContext(getApplicationContext());
+            }
+            kinWorkManagerController.getDeviceTokenToServer();
+        }
         flg = "0";
     }
     //菜单栏按钮
@@ -335,6 +343,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
