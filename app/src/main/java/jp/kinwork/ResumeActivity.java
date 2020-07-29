@@ -1092,7 +1092,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.status), getString(R.string.upd));
                 intent.putExtra(getString(R.string.professionalCareerId), professionalCareer.getId());
                 intent.putExtra(getString(R.string.jobName), professionalCareer.getJob_name());
-                intent.putExtra(getString(R.string.Companyname), professionalCareer.getJob_name());
+                intent.putExtra(getString(R.string.Companyname), professionalCareer.getCompany_name());
                 if(professionalCareer.getFrom_year() != null && professionalCareer.getFrom_month() !=null){
                     intent.putExtra(getString(R.string.Start_Y), professionalCareer.getFrom_year());
                     intent.putExtra(getString(R.string.Start_M), professionalCareer.getFrom_month());
