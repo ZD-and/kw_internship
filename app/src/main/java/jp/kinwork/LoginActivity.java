@@ -190,9 +190,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mActivity = getIntent().getStringExtra(getString(R.string.Activity));
         mAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "Initialization mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
-        if(!mPreferenceUtils.getLoginFlag().equals("0")){
-            dialog.show();
-        }
         getDeviceToken();
         initLine();
         getYahooUserInfo();
@@ -236,6 +233,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mEmail = mEdLoginEmail.getText().toString();
         if(mEmail.equals("")){
             alertdialog(getString(R.string.error),getString(R.string.mailinput));
+            dialog.dismiss();
             return;
         }
         //Json格式转换并且加密
@@ -510,6 +508,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //返回检索結果画面
     public void onClick(View view){
         mLoginFlag = "0";
+        if(!mPreferenceUtils.getLoginFlag().equals("0")){
+            return;
+        }
         Intent intent = new Intent();
         String saveId = mPreferenceUtils.getsaveid();
         switch (view.getId()){
@@ -585,6 +586,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         switch (mPreferenceUtils.getLoginFlag()){
             case "1":
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -624,13 +626,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     case CANCEL:
                         // Login canceled by user
                         Log.w(TAG, "Login canceled by user result.isSuccess():"+result.isSuccess());
-
+                        mPreferenceUtils.setLoginFlag("0");
                         break;
                     default:
                         // Login canceled due to other error
                         Log.e(TAG, "ERROR　Login FAILED!");
                         Log.e(TAG, "ERROR:" + result.getErrorData().toString());
                         Log.e(TAG, "ERROR lineApiClient:" + lineApiClient);
+                        mPreferenceUtils.setLoginFlag("0");
                 }
                 break;
         }
