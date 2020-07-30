@@ -172,7 +172,7 @@ public class QualificationActivity extends AppCompatActivity {
                                     (startYear == sysYear && startMonthOfYear +1 == sysMonth && startDayOfMonth >= sysDay)
                                     ) {
                                 tvQualificationstart.setText("");
-                                alertdialog(getString(R.string.alertdialog2));
+                                alertdialog(getString(R.string.alertdialog2),"");
                             } else {
                                 Start_mYear = startYear;
                                 Start_mMonth = startMonthOfYear + 1;
@@ -192,12 +192,23 @@ public class QualificationActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(QualificationActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
@@ -214,7 +225,7 @@ public class QualificationActivity extends AppCompatActivity {
     //内容取得、通信
     public void saveurl() {
         if(etQualificationname.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog12));
+            alertdialog(getString(R.string.alertdialog12),"");
         } else {
             //Json格式转换
             Gson Gson = new Gson();
@@ -286,11 +297,16 @@ public class QualificationActivity extends AppCompatActivity {
                 Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
-                    Boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    if(processResult == true) {
+                    boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
+                    if(processResult) {
                         NewIntent();
                     } else {
-                        alertdialog(obj.getString(getString(R.string.message)));
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

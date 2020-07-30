@@ -13,7 +13,7 @@ public class PreferenceUtils {
     private SharedPreferences.Editor editor;
 
     public PreferenceUtils(Context context) {
-        sp = context.getSharedPreferences("Information", context.MODE_PRIVATE);
+        sp = context.getSharedPreferences("Information", Context.MODE_PRIVATE);
         editor = sp.edit();
     }
 
@@ -53,6 +53,7 @@ public class PreferenceUtils {
     public String getbasicInfoID() {
         return sp.getString("basicInfoID", "A");
     }
+
 
     public void setbasicInfoID(String basicInfoID) {
         editor.putString("basicInfoID", basicInfoID);
@@ -102,6 +103,25 @@ public class PreferenceUtils {
         editor.putString("email", email);
         editor.commit();
     }
+
+    public void setLoginFlag(String loginflag) {
+        editor.putString("loginFlag", loginflag);
+        editor.commit();
+    }
+
+    public String getLoginFlag () {
+        return sp.getString("loginFlag", "0");
+    }
+
+    public void setSendAndroidTokenProcessResult(boolean processResult) {
+        editor.putBoolean("processResult", processResult);
+        editor.commit();
+    }
+
+    public boolean getSendAndroidTokenProcessResult () {
+        return sp.getBoolean("processResult", false);
+    }
+
 
     public void delresumeid() {
         editor.remove("resumeid_1");

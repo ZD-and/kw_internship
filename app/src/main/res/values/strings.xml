@@ -23,14 +23,28 @@
     <string name="title_mylist">マイリスト</string>
     <string name="title_personalsettings">個人設定</string>
     <string name="title_basic_info_edi">基本情報編集</string>
+    <string name="title_basic_info_edi_icon">個人情報</string>
     <string name="title_change_password">パスワード変更</string>
     <string name="title_In_mail_set">受信メール設定</string>
     <string name="title_edit_resume">履歴書編集</string>
+    <string name="title_resume">履歴書</string>
+    <string name="title_resume_default_1">履歴書①</string>
+    <string name="title_resume_default_2">履歴書②</string>
+    <string name="title_resume_default_3">履歴書③</string>
+    <string name="title_loginout_icon">ログアウト</string>
+    <string name="image_view_displayname">画像表示</string>
+    <string name="mark_into">></string>
 
     <!-- Strings related to AdvancSet -->
     <string name="Search">Search</string>
     <string name="employmentStatuslist">employmentStatus</string>
     <string name="yearlyIncome">yearlyIncome</string>
+    <string name="image_view_search_displayname">search画像表示</string>
+    <string name="title_Search_keyword">キーワード</string>
+    <string name="hint_Search_input">職種、業種、会社名など</string>
+    <string name="title_Search_position">勤務地</string>
+    <string name="hint_Search_position">都道府県、市区町村、駅名</string>
+    <string name="title_Search_buttun">検索</string>
 
     <!-- Strings related to Agreement -->
     <string name="termsofservice">利用規約</string>
@@ -53,6 +67,8 @@
     <string name="Apply">Apply</string>
     <string name="Activity">Activity</string>
     <string name="Cancel">キャンセル</string>
+    <string name="image_view_displayname_SearchResults">SearchResult画像表示</string>
+    <string name="hint_SearchResults_detailed_setting">詳細設定</string>
 
     <!-- Strings related to Basicinfoedit -->
     <string name="profilechange">個人情報編集</string>
@@ -69,6 +85,7 @@
     <string name="smunicipality">市区町村を入力してください。</string>
     <string name="stown">町目番地を入力してください。</string>
     <string name="sphone">電話番号を入力してください。</string>
+    <string name="sCategoryMap">最低限一つの業種を選択してください。</string>
     <string name="alertdialog">未来の年月を選択できません。</string>
     <string name="formatter">yyyy-MM-dd</string>
     <string name="file">file</string>
@@ -87,6 +104,7 @@
     <string name="last_name_kana">last_name_kana</string>
     <string name="post_code">post_code</string>
     <string name="phone_number">phone_number</string>
+    <string name="category_map">category_map</string>
     <string name="act">act</string>
 
     <!-- Strings related to Bootanimation -->
@@ -109,7 +127,7 @@
     <string name="key">key</string>
 
     <!-- Strings related to Changepw -->
-    <string name="password">パスワード</string>
+    <string name="password">新しいパスワードを入力してください</string>
     <string name="Spannable">確認のためもう一度、入力してください</string>
     <string name="userid">userid</string>
     <string name="token">token</string>
@@ -173,7 +191,7 @@
     <string name="Companyname">Companyname</string>
     <string name="CheckBox">CheckBox</string>
 
-    <!-- Strings related to MainKinWork -->
+    <!-- Strings related to LoginActivity -->
     <string name="login">ログイン中…</string>
     <string name="error">エラー</string>
     <string name="mailinput">メールアドレスを入力してください。</string>
@@ -200,6 +218,7 @@
     <string name="emailConfirm">emailConfirm</string>
     <string name="teiji">提示</string>
     <string name="kakutei">确定</string>
+    <string name="passworderror">パスワード一致しません</string>
 
     <!-- Strings related to Mylist -->
     <string name="SelectResume">SelectResume</string>
@@ -345,8 +364,8 @@
     <string name="highlightKeywords">highlightKeywords</string>
     <string name="jobId">jobId</string>
     <string name="contentShortsHighlight">contentShortsHighlight</string>
-    <string name="maehe">＜ 前へ</string>
-    <string name="tsugihe">次へ ＞</string>
+    <string name="maehe"> 前へ</string>
+    <string name="tsugihe">次へ </string>
     <string name="leftsearch">leftsearch</string>
     <string name="theleft">theleft</string>
     <string name="left">left</string>
@@ -357,6 +376,8 @@
     <string name="ll_contact">ll_contact</string>
     <string name="ll_mylist">ll_mylist</string>
     <string name="ll_personalsettings">ll_personalsettings</string>
+    <string name="ll_searchresults">ll_searchresults</string>
+    <string name="ll_search">ll_search</string>
     <string name="results">results</string>
 
     <!-- Strings related to SelectResume -->
@@ -668,4 +689,43 @@
         <item>ロシア</item>
         <item>ワリス・フテュナ諸島</item>
     </string-array>
+
+    <string-array name="categorymap">
+        <item>未選択</item>
+        <item>ITエンジニア</item>
+        <item>WEB・インターネット・ゲーム</item>
+        <item>クリエイティブ</item>
+        <item>食品</item>
+        <item>ホテル・交通</item>
+        <item>事務・管理</item>
+        <item>企画・経営</item>
+        <item>保育・教育</item>
+        <item>公共サービス</item>
+        <item>化学・素材</item>
+        <item>医療・福祉</item>
+        <item>医薬</item>
+        <item>営業</item>
+        <item>建築・土木・設備</item>
+        <item>技能工</item>
+        <item>美容・ブライダル</item>
+        <item>販売・フード・サービス</item>
+        <item>貿易・配送・倉庫</item>
+        <item>農林水産</item>
+        <item>金融・コンサルタント・不動産</item>
+        <item>電気・電子・機械・半導体</item>
+    </string-array>
+
+
+<!--    line連携-->
+    <string name="line_client_id">1654297537</string>
+<!--    yahoo連携-->
+    <string name="yahoo_client_id">dj00aiZpPURvZ3FRTTZLVFJpVCZzPWNvbnN1bWVyc2VjcmV0Jng9YTg-</string>
+    <string name="yahoo_login_scheme">yj-534f6</string>
+    <string name="yahoo_login_host">callback</string>
+<!--    facebook連携-->
+    <string name="facebook_app_id">448249382415623</string>
+    <string name="fb_login_protocol_scheme">fb448249382415623</string>
+<!--    twitter連携-->
+    <string name="twitter_consumer_key">owR1cLY7OQqRnOZ8UFja8Czgp</string>
+    <string name="twitter_consumer_secret">1OyHyGs5WNt6dEq78s6uzEKQV4AwaJvv2ronUefdL5n11rQ7qB</string>
 </resources>

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private TextView tvback;
     private TextView tvbackdummy;
 
-    private TableLayout tl_sendresume;
+    private LinearLayout ll_sendresume;
     private TableLayout tl_sendmeg;
 
     private TableRow trresume1;
@@ -162,7 +163,7 @@ public class SelectResumeActivity extends AppCompatActivity {
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.detailedinformation));
         tvbackdummy.setText(getString(R.string.detailedinformation));
-        tl_sendresume = (TableLayout) findViewById(R.id.tl_sendresume);
+        ll_sendresume = (LinearLayout) findViewById(R.id.tl_sendresume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
         trresume1 = (TableRow) findViewById(R.id.tr_resume1);
@@ -209,12 +210,15 @@ public class SelectResumeActivity extends AppCompatActivity {
         token = PreferenceUtils.gettoken();
         if(resume_number >= 1 && ! resumeId_1.equals("A")){
             trresume1.setVisibility(View.VISIBLE);
+            tvresume1.setText(myApplication.getresume_name("1"));
         }
         if(resume_number >= 2 && ! resumeId_2.equals("A")){
             trresume2.setVisibility(View.VISIBLE);
+            tvresume2.setText(myApplication.getresume_name("2"));
         }
         if(resume_number == 3 && ! resumeId_3.equals("A")){
             trresume3.setVisibility(View.VISIBLE);
+            tvresume3.setText(myApplication.getresume_name("3"));
         }
         if(resume_number == 0){
             Erroralertdialog(getString(R.string.Erroralertdialog));
@@ -295,7 +299,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     //应聘按钮
     public void Click_Application(){
         if(cbresumeId.equals("")){
-            alertdialog(getString(R.string.alertdialog16));
+            alertdialog(getString(R.string.alertdialog16),"");
         } else {
             setApplication();
         }
@@ -305,9 +309,9 @@ public class SelectResumeActivity extends AppCompatActivity {
     //执行应聘
     public void setApplication(){
         if(ettitle.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog17));
+            alertdialog(getString(R.string.alertdialog17),"");
         } else if(etmessage.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog18));
+            alertdialog(getString(R.string.alertdialog18),"");
         } else {
             PostDate Pdata = new PostDate();
             Map<String,String> param = new HashMap<String, String>();
@@ -370,16 +374,15 @@ public class SelectResumeActivity extends AppCompatActivity {
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    errormeg = obj.getString(getString(R.string.message));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
-//                        if(Act.equals("Search")){
-//                            MoveIntent(Act);
-//                        } else {
-//                            MoveIntent("Application");
-//                        }
                         MoveIntent(getString(R.string.Application));
                     } else {
-                        alertdialog(errormeg);
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -389,16 +392,27 @@ public class SelectResumeActivity extends AppCompatActivity {
     }
 
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
                 Log.d("**errormeg**", errormeg);
                 Log.d("**JobId**", JobId);
-                if(errormeg.equals(getString(R.string.errormeg))){
+                if(meg.equals(getString(R.string.errormeg))){
                     MoveIntent(getString(R.string.Application));
+                }
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(SelectResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
                 }
             }
         }).show();

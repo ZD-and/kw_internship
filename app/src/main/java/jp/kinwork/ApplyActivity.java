@@ -16,15 +16,22 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.CommonAsyncTask;
 import jp.kinwork.Common.MyApplication;
+import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 public class ApplyActivity extends AppCompatActivity {
-    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
-
+    final static String PARAM_File = "/MypagesMobile/initMypageData";
     private TableLayout tlapplyemploymentstatus;
     private TableLayout tlapplySalary;
     private TextView tvapplyJobcategory;
@@ -39,36 +46,22 @@ public class ApplyActivity extends AppCompatActivity {
     private TextView tvapplyaccess;
     private TextView tvapplytreatment;
     private TextView tvapplyOther;
-    //    private TextView tvAToCompanyName;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
 
-    //    private EditText etAtitle;
-//    private EditText etAmeg;
-//
-//    private String deviceId;
-//    private String AesKey;
-//    private String userid;
-//    private String token;
     private String JobInfo;
     private String JobId;
     private String UserFlg;
     private String Act;
     private String jobflg;
     private String employerID;
-    private String companyname;
     private String address;
-    private String backflg = "";
 
     private Button bucreatetop;
     private Button bucreateBottom;
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
-    private ImageView Ivsearch;
-    private TextView tvsearch;
-    private ImageView ivmylist;
-    private TextView tvmylist;
 
     private String[] employmentstatus = new String[]{"正社員","契約社員","アルバイト･パート","派遣社員","業務委託","嘱託社員","ボランティア","請負","インターン"};
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
@@ -79,6 +72,11 @@ public class ApplyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apply);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
     }
 
@@ -130,10 +128,6 @@ public class ApplyActivity extends AppCompatActivity {
         if(Act.equals(getString(R.string.Search))){
             tvback.setText(getString(R.string.SearchResults));
             tvbackdummy.setText(getString(R.string.SearchResults));
-            Ivsearch = (ImageView) findViewById(R.id.iv_b_search);
-            Ivsearch.setImageResource(R.mipmap.blue_search);
-            tvsearch = (TextView) findViewById(R.id.tv_b_search);
-            tvsearch.setTextColor(Color.parseColor("#5EACE2"));
             if(mMyApplication.getSApply(0).equals("1")){
                 JobInfo = mMyApplication.getSApply(1);
                 Act = mMyApplication.getSApply(2);
@@ -143,10 +137,6 @@ public class ApplyActivity extends AppCompatActivity {
         } else {
             tvback.setText(getString(R.string.mylist));
             tvbackdummy.setText(getString(R.string.mylist));
-            ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
-            tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
-            ivmylist.setImageResource(R.mipmap.blue_mylist);
-            tvmylist.setTextColor(Color.parseColor("#5EACE2"));
             if(mMyApplication.getMApply(0).equals("1")){
                 JobInfo = mMyApplication.getMApply(1);
                 Act = mMyApplication.getMApply(2);
@@ -172,11 +162,7 @@ public class ApplyActivity extends AppCompatActivity {
         mMyApplication.setJobname(tvapplyJobcategory.getText().toString());
         mMyApplication.setemployerID(employerID);
         if(UserFlg.equals("1")){
-            Intent intent = new Intent();
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.setClass(ApplyActivity.this, SelectResumeActivity.class);
-            startActivity(intent);
-
+            SignInToKinWork();
         } else {
             TextView msg = new TextView(this);
             msg.setText(getString(R.string.checkloginstatus));
@@ -191,7 +177,7 @@ public class ApplyActivity extends AppCompatActivity {
                     mPreferenceUtils.setsaveid(getString(R.string.Apply));
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    intent.setClass(ApplyActivity.this, MainKinWork.class);
+                    intent.setClass(ApplyActivity.this, LoginActivity.class);
                     intent.putExtra(getString(R.string.Activity),getString(R.string.Apply));
                     startActivity(intent);
 
@@ -203,6 +189,49 @@ public class ApplyActivity extends AppCompatActivity {
                 }
             }).show();
         }
+    }
+
+    private void SignInToKinWork(){
+        PostDate pd = new PostDate();
+        pd.setUserId(mPreferenceUtils.getuserId());
+        pd.setToken(mPreferenceUtils.gettoken());
+        String processData = new AESprocess().getencrypt(new Gson().toJson(pd,PostDate.class),mPreferenceUtils.getAesKey());
+        Map<String,String> param = new HashMap<String, String>();
+        param.put(getString(R.string.file), PARAM_File);
+        param.put(getString(R.string.data),processData);
+        //数据通信处理（访问服务器，并取得访问结果）
+        CommonAsyncTask commonAsyncTask = new CommonAsyncTask();
+        commonAsyncTask.setParams(mPreferenceUtils.getdeviceId());
+        commonAsyncTask.setListener(new CommonAsyncTask.Listener() {
+            @Override
+            public void onSuccess(String results) {
+                if(results != null && !results.equals("")){
+                    Log.d("ApplyActivity", "onSuccess results: " + results);
+                    try {
+                        JSONObject obj = new JSONObject(results);
+                        Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                        String message = obj.getString(getString(R.string.message));
+                        String errorCode = obj.getString(getString(R.string.errorCode));
+                        if(processResult == true) {
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            intent.setClass(ApplyActivity.this, SelectResumeActivity.class);
+                            startActivity(intent);
+                        } else {
+                            if(errorCode.equals("100")){
+                                message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            }
+                            alertdialog(message,errorCode);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+        commonAsyncTask.execute(param);
+
     }
 
     //返回检索画面
@@ -226,7 +255,6 @@ public class ApplyActivity extends AppCompatActivity {
                 JSONObject obj = new JSONObject(data);
                 Log.d("---obj---", obj.toString());
                 employerID = obj.getString("user_id");
-                companyname = obj.getString("company_name");
                 address = obj.getString("add_1") + obj.getString("add_2") + obj.getString("add_3") + obj.getString("add_4");
                 JobId = obj.getString("id");
                 tvapplyJobcategory.setText(obj.getString("occupation_name"));
@@ -280,169 +308,25 @@ public class ApplyActivity extends AppCompatActivity {
         }
     }
 
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(! Act.equals(getString(R.string.Search))){
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                    if(mMyApplication.getSURL(0).equals("0")){
-                        if(mMyApplication.getSApply(0).equals("0")){
-                            if(mMyApplication.getSearchResults(0).equals("0")){
-                                intent.setClass(ApplyActivity.this, SearchActivity.class);
-                                intent.putExtra("act","");
-                            } else {
-                                intent.setClass(ApplyActivity.this, SearchResultsActivity.class);
-                            }
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
+    //通信结果提示
+    private void alertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ApplyActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
                 }
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_contact:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getContactDialog(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, ContactActivity.class);
-                } else {
-                    intent.setClass(ApplyActivity.this, ContactDialogActivity.class);
-                }
-                break;
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                    if(mMyApplication.getMURL(0).equals("0")){
-                        if(mMyApplication.getMApply(0).equals("0")){
-                            intent.setClass(ApplyActivity.this, MylistActivity.class);
-                        } else {
-                            intent.setClass(ApplyActivity.this, ApplyActivity.class);
-                            Initialization();
-                        }
-                    } else {
-                        intent.setClass(ApplyActivity.this, WebActivity.class);
-                    }
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(Act.equals(getString(R.string.Search))){
-                    mMyApplication.setSApply("1",0);
-                    mMyApplication.setSApply(JobInfo,1);
-                    mMyApplication.setSApply(Act,2);
-                    mMyApplication.setSApply(jobflg,3);
-                } else {
-                    mMyApplication.setMApply("1",0);
-                    mMyApplication.setMApply(JobInfo,1);
-                    mMyApplication.setMApply(Act,2);
-                    mMyApplication.setMApply(jobflg,3);
-                }
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ApplyActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ApplyActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ApplyActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ApplyActivity.this, ResumeActivity.class);
-                }
-                break;
-        }
-        mMyApplication.setMURL("0",0);
-        mMyApplication.setMApply("0",0);
-        mMyApplication.setSearchResults("0",0);
-        startActivity(intent);
+            }
+        }).show();
     }
 
-//    public void Click_setSendMeg(View View){
-//        PostDate Pdata = new PostDate();
-//        Map<String,String> param = new HashMap<String, String>();
-//        Pdata.setUserId(userid);
-//        Pdata.setToken(token);
-//        Pdata.setemployerId(employerID);
-//        Pdata.setmailTitle(etAtitle.getText().toString());
-//        Pdata.setmailContent(etAmeg.getText().toString());
-//        String data = JsonChnge(AesKey,Pdata);
-//        param.put("file",PARAM_sendMessage);
-//        param.put("data",data);
-//        //数据通信处理（访问服务器，并取得访问结果）
-////        new GithubQueryTask().execute(param);
-//    }
-//
-//    //转换为Json格式并且AES加密
-//    public static String JsonChnge(String AesKey,PostDate Data) {
-//        Gson mGson = new Gson();
-//        String sdPdata = mGson.toJson(Data,PostDate.class);
-//        Log.d("sdPdata", sdPdata);
-//        AES mAes = new AES();
-//        byte[] mBytes = null;
-//        try {
-//            mBytes = sdPdata.getBytes("UTF8");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        String enString = mAes.encrypt(mBytes,AesKey);
-//        String encrypt = enString.replace("\n", "").replace("+","%2B");
-//        return encrypt;
-//
-//    }
-//
-//    //通信处理
-//    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
-//
-//        @Override
-//        protected String doInBackground(Map<String, String>... params) {
-//            Map<String, String> map = params[0];
-//            String file = map.get("file");
-//            String data = map.get("data");
-//            java.net.URL searchUrl = buildUrl(file);
-//            String githubSearchResults = null;
-//            try {
-//                githubSearchResults = getResponseFromHttpUrl(searchUrl,data,deviceId);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return githubSearchResults;
-//        }
-//        @Override
-//        protected void onPostExecute(String githubSearchResults) {
-//            if (githubSearchResults != null && !githubSearchResults.equals("")) {
-//                Log.d("***Results***", githubSearchResults);
-//                try {
-//                    JSONObject obj = new JSONObject(githubSearchResults);
-//                    boolean processResult = obj.getBoolean("processResult");
-//                    String meg = obj.getString("message");
-//                    if(processResult == true) {
-//                        Log.d("***returnData***", obj.getString("returnData"));
-//                    }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-////            dialog.dismiss();
-//        }
-//    }
 }

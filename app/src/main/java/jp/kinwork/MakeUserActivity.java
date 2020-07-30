@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
@@ -18,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +37,8 @@ import java.util.Map;
 import jp.kinwork.Common.AESprocess;
 import jp.kinwork.Common.ActivityCollector;
 import jp.kinwork.Common.ClassDdl.UserToken;
+import jp.kinwork.Common.CommonView.JumpTextWatcher;
+import jp.kinwork.Common.CountDown;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
@@ -44,40 +46,41 @@ import jp.kinwork.Common.PreferenceUtils;
 
 public class MakeUserActivity extends AppCompatActivity implements View.OnClickListener{
 
+    String TAG = "MakeUserActivity";
     final static String PARAM_sendValidateEmail = "/usersMobile/sendValidateEmail";
     final static String PARAM_checkValidateCode = "/usersMobile/checkValidateCode";
     final static String PARAM_setPassword = "/usersMobile/setPassword";
-    private String deviceId;
-    private String AesKey;
-    private String screenflg = "";
-    private String privacypolicyflg = "";
-    private String termsofserviceflg = "";
-    private String Email = "";
-    private String token = "";
+    private String mDeviceId;
+    private String mAesKey;
+    private String mScreenflg = "";
+    private String mPrivacypolicyflg = "";
+    private String mTermsofserviceflg = "";
+    private String mEmail = "";
+    private String mToken = "";
 
     private TextView tvinputA;
     private EditText edinputA;
     private TextView tvinputB;
     private EditText edinputB;
 
-    private TableLayout tlvalidateCode;
-    private TableLayout tlmudummyview;
+    private TextView tvDateCode;
+    private TextView tvCountdown;
+    private ImageView ivtermsofservice,ivprivacypolicy;
+    private Button mStartMakeUser;
 
-    private ImageView ivprivacypolicy;
-    private TextView tvprivacypolicy;
-
-    private ImageView ivtermsofservice;
-    private TextView tvtermsofservice;
-
-    private Button bubutton;
-
-    private PreferenceUtils PreferenceUtils;
-    private MyApplication MyApplication;
-
+    private PreferenceUtils mPreferenceUtils;
+    private MyApplication mMyApplication;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_user);
+        Log.d(TAG, "onCreate: ");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
         ActivityCollector.addActivity(this);
         load();
         Initialization();
@@ -86,12 +89,9 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         //null reference 処理
-        if(im.isActive() && getCurrentFocus() != null)
-        {
-            if (getCurrentFocus().getApplicationWindowToken() != null)
-            {
+        if(im.isActive() && getCurrentFocus() != null) {
+            if (getCurrentFocus().getApplicationWindowToken() != null) {
                 im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
@@ -100,157 +100,130 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     //关闭，返回登录画面
     public void Click_cancel(){
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
-                        PreferenceUtils.deluserinfo();
-                        MyApplication.setscreenflg("");
-                        MyApplication.settermsofserviceflg("");
-                        MyApplication.setprivacypolicyflg("");
-                        MyApplication.setinputA("");
-                        MyApplication.setinputB("");
-                        Intent intentClose = new Intent();
-                        intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intentClose.setClass(MakeUserActivity.this, MainKinWork.class);
-                        startActivity(intentClose);
-                    }
-                }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //取消按钮的点击事件
-                    }
-                }).show();
-
-
-
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                mPreferenceUtils.deluserinfo();
+                mMyApplication.setscreenflg("");
+                mMyApplication.settermsofserviceflg("");
+                mMyApplication.setprivacypolicyflg("");
+                mMyApplication.setinputA("");
+                mMyApplication.setinputB("");
+                Intent intentClose = new Intent();
+                intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intentClose.setClass(MakeUserActivity.this, LoginActivity.class);
+                startActivity(intentClose);
+            }
+        }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //取消按钮的点击事件
+            }
+        }).show();
     }
 
+
     public void Initialization(){
+        TextView tvBack = findViewById(R.id.tv_back);
+        tvBack.setOnClickListener(this);
+        tvBack.setText("戻る");
         tvinputA = (TextView) findViewById(R.id.tv_input_A);
         edinputA = (EditText) findViewById(R.id.ed_input_A);
         tvinputB = (TextView) findViewById(R.id.tv_input_B);
         edinputB = (EditText) findViewById(R.id.ed_input_B);
-        edinputA.setOnTouchListener(touchListener);
-        edinputB.setOnTouchListener(touchListener);
-        tlvalidateCode = (TableLayout) findViewById(R.id.tl_validateCode);
-        tlmudummyview=findViewById(R.id.tl_mu_dummyview);
-        tlmudummyview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_cancel();
-            }
-        });
-        ivprivacypolicy = (ImageView) findViewById(R.id.iv_privacypolicy);
-        tvprivacypolicy = (TextView) findViewById(R.id.tv_privacypolicy);
-        ivtermsofservice = (ImageView) findViewById(R.id.iv_termsofservice);
-        tvtermsofservice = (TextView) findViewById(R.id.tv_termsofservice);
-        ivprivacypolicy.setOnClickListener(this);
-        tvprivacypolicy.setOnClickListener(this);
-        ivtermsofservice.setOnClickListener(this);
-        tvtermsofservice.setOnClickListener(this);
-
-        bubutton = (Button) findViewById(R.id.bu_button);
-        bubutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bt_Click();
-            }
-        });
-        PreferenceUtils = new PreferenceUtils(MakeUserActivity.this);
-        Email = PreferenceUtils.getEmail();
-        token = PreferenceUtils.gettoken();
-        MyApplication = (MyApplication) getApplication();
-        screenflg = MyApplication.getscreenflg();
-        termsofserviceflg = MyApplication.gettermsofserviceflg();
-        privacypolicyflg = MyApplication.getprivacypolicyflg();
-        if(MyApplication.getinputA().length() > 0){
-            edinputA.setText(MyApplication.getinputA());
+        edinputA.addTextChangedListener(new JumpTextWatcher(edinputA,edinputB));
+        edinputB.addTextChangedListener(new JumpTextWatcher(edinputB,edinputA));
+        tvDateCode = (TextView) findViewById(R.id.tv_Date_Code);
+        tvDateCode.setOnClickListener(this);
+        tvCountdown = (TextView) findViewById(R.id.tv_countdown);
+        findViewById(R.id.ll_termsofservice).setOnClickListener(this);
+        findViewById(R.id.ll_privacypolicy).setOnClickListener(this);
+        ivtermsofservice = findViewById(R.id.iv_termsofservice);
+        ivprivacypolicy = findViewById(R.id.iv_privacypolicy);
+        mStartMakeUser = (Button) findViewById(R.id.bu_start_make_user);
+        mStartMakeUser.setOnClickListener(this);
+        mPreferenceUtils = new PreferenceUtils(MakeUserActivity.this);
+        mEmail = mPreferenceUtils.getEmail();
+        mToken = mPreferenceUtils.gettoken();
+        mMyApplication = (MyApplication) getApplication();
+        mScreenflg = mMyApplication.getscreenflg();
+        mTermsofserviceflg = mMyApplication.gettermsofserviceflg();
+        mPrivacypolicyflg = mMyApplication.getprivacypolicyflg();
+        if(mMyApplication.getinputA().length() > 0){
+            edinputA.setText(mMyApplication.getinputA());
         }
-        if(MyApplication.getinputB().length() > 0){
-            edinputB.setText(MyApplication.getinputB());
+        if(mMyApplication.getinputB().length() > 0){
+            edinputB.setText(mMyApplication.getinputB());
         }
-        if(termsofserviceflg.equals("1")){
+        if(mTermsofserviceflg.equals("1")){
             ivtermsofservice.setImageResource(R.drawable.ic_check_box);
         }
-        if(privacypolicyflg.equals("1")) {
+        if(mPrivacypolicyflg.equals("1")) {
             ivprivacypolicy.setImageResource(R.drawable.ic_check_box);
         }
-        if(screenflg.equals("") || screenflg.equals(getString(R.string.sendValidateEmail))){
+        if(mScreenflg.equals("") || mScreenflg.equals(getString(R.string.sendValidateEmail))){
             sendValidateEmail();
-        } else if(screenflg.equals(getString(R.string.checkValidateCode))){
+        } else if(mScreenflg.equals(getString(R.string.checkValidateCode))){
             checkValidateCode();
         } else {
             setPassword();
         }
     }
-    //点击输入框变蓝
-    View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (view.getId()){
-                case R.id.ed_input_A:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape_blue);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape);
-                    break;
-                case R.id.ed_input_B:
-                    edinputA.setBackgroundResource(R.drawable.ic_shape);
-                    edinputB.setBackgroundResource(R.drawable.ic_shape_blue);
-                    break;
-            }
-            return false;
-        }
-    };
+
     //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
-        deviceId = Initial_object.getString(getString(R.string.deviceid),"A");
-        AesKey = Initial_object.getString(getString(R.string.Information_Name_aesKey),"A");
+        mDeviceId = Initial_object.getString(getString(R.string.deviceid),"A");
+        mAesKey = Initial_object.getString(getString(R.string.Information_Name_aesKey),"A");
 
     }
     //注册账号画面设定
     public void sendValidateEmail(){
         tvinputA.setText(getString(R.string.mailaddressnihongo));
         tvinputB.setText(getString(R.string.mailaddressnihongo));
-        tlvalidateCode.setVisibility(View.GONE);
-        bubutton.setText(getString(R.string.bubutton));
-        screenflg = getString(R.string.sendValidateEmail);
-        // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString(getString(R.string.mailaddressnihongo));
-        // 设置文本字体大小
-        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
-        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputA.setHint(new SpannedString(ee));//转码
+        tvDateCode.setVisibility(View.GONE);
+        mStartMakeUser.setText(getString(R.string.bubutton));
+        mScreenflg = getString(R.string.sendValidateEmail);
+//        // 新建一个可以添加文本的对象
+//        SpannableString ee = new SpannableString(getString(R.string.mailaddressnihongo));
+//        // 设置文本字体大小
+//        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
+//        // 将字体大小附加到文本的属性
+//        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        // 设置hint属性
+//        edinputA.setHint(new SpannedString(ee));//转码
         // 新建一个可以添加文本的对象
         SpannableString eec = new SpannableString(getString(R.string.Spannable));
         // 设置文本字体大小
-        AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
+        AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(15, true);
         // 将字体大小附加到文本的属性
         eec.setSpan(aeec, 0, eec.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // 设置hint属性
         edinputB.setHint(new SpannedString(eec));//转码
+
+        edinputA.setHint(getString(R.string.mailaddressnihongo));//转码
+//        edinputB.setHint(getString(R.string.Spannable));//转码
     }
     //検証コード画面设定
     public void checkValidateCode(){
         tvinputA.setText(getString(R.string.tvinputA));
         tvinputB.setVisibility(View.GONE);
         edinputB.setVisibility(View.GONE);
-        tlvalidateCode.setVisibility(View.VISIBLE);
-        bubutton.setText(getString(R.string.bubutton2));
-        screenflg = getString(R.string.checkValidateCode);
-        // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString(getString(R.string.Spannableee));
-        // 设置文本字体大小
-        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
-        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputA.setHint(new SpannedString(ee));//转码
+        tvDateCode.setVisibility(View.VISIBLE);
+        mStartMakeUser.setText(getString(R.string.bubutton2));
+        mScreenflg = getString(R.string.checkValidateCode);
+//        // 新建一个可以添加文本的对象
+//        SpannableString ee = new SpannableString(getString(R.string.Spannableee));
+//        // 设置文本字体大小
+//        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
+//        // 将字体大小附加到文本的属性
+//        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        // 设置hint属性
+//        edinputA.setHint(new SpannedString(ee));//转码
+
+        edinputA.setHint(getString(R.string.Spannableee));//转码
     }
     //输入密码画面设定
     public void setPassword(){
@@ -260,102 +233,143 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         edinputB.setVisibility(View.VISIBLE);
         edinputA.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edinputB.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        tlvalidateCode.setVisibility(View.GONE);
-        bubutton.setText(getString(R.string.kakunin));
-        screenflg = getString(R.string.setPassword);
-        // 新建一个可以添加文本的对象
-        SpannableString ee = new SpannableString(getString(R.string.password));
-        // 设置文本字体大小
-        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
-        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputA.setHint(new SpannedString(ee));//转码
+        tvDateCode.setVisibility(View.GONE);
+        tvCountdown.setVisibility(View.GONE);
+        mStartMakeUser.setText(getString(R.string.kakunin));
+        mScreenflg = getString(R.string.setPassword);
+//        // 新建一个可以添加文本的对象
+//        SpannableString ee = new SpannableString(getString(R.string.password));
+//        // 设置文本字体大小
+//        AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
+//        // 将字体大小附加到文本的属性
+//        ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        // 设置hint属性
+//        edinputA.setHint(new SpannedString(ee));//转码
         // 新建一个可以添加文本的对象
         SpannableString eec = new SpannableString(getString(R.string.Spannable));
         // 设置文本字体大小
-        AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
+        AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(15, true);
         // 将字体大小附加到文本的属性
         eec.setSpan(aeec, 0, eec.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // 设置hint属性
         edinputB.setHint(new SpannedString(eec));//转码
+
+
+        edinputA.setHint(getString(R.string.password));//转码
+//        edinputB.setHint(getString(R.string.Spannable));//转码
+
     }
 
     //按钮触发事件
     public void bt_Click(){
         String inputA = edinputA.getText().toString();
         String inputB = edinputB.getText().toString();
-        PreferenceUtils.setdeviceId(deviceId);
-        PreferenceUtils.setAesKey(AesKey);
+        mPreferenceUtils.setdeviceId(mDeviceId);
+        mPreferenceUtils.setAesKey(mAesKey);
+        if(mScreenflg.equals(getString(R.string.setPassword)) && (! mTermsofserviceflg.equals("1") || ! mPrivacypolicyflg.equals("1"))){
+            alertdialog(getString(R.string.alertdialog10));
+        } else {
+            sendToServer(inputA,inputB);
+        }
+    }
+
+    private void sendToServer(String inputA,String inputB){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         //Json格式转换并且加密
-        switch (screenflg){
+        switch (mScreenflg){
             case "sendValidateEmail":
                 Pdata.setEmail(inputA);
                 Pdata.setEmailConform(inputB);
                 param.put("file",PARAM_sendValidateEmail);
                 break;
             case "checkValidateCode":
-                Pdata.setEmail(Email);
+                Pdata.setEmail(mEmail);
                 Pdata.setValidateCode(inputA);
                 param.put("file",PARAM_checkValidateCode);
                 break;
             case "setPassword":
-                Pdata.setEmail(Email);
-                Pdata.setToken(token);
+                Pdata.setEmail(mEmail);
+                Pdata.setToken(mToken);
                 Pdata.setPassword(inputA);
                 Pdata.setPasswordConform(inputB);
                 param.put("file",PARAM_setPassword);
                 break;
         }
-        String data = JsonChnge(AesKey,Pdata);
+        String data = JsonChnge(mAesKey,Pdata);
         param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),screenflg);
-        Log.d("***screenflg", screenflg);
-        Log.d("***Email", Email);
-        Log.d("***token", token);
-        if(screenflg.equals(getString(R.string.setPassword)) && (! termsofserviceflg.equals("1") || ! privacypolicyflg.equals("1"))){
-            alertdialog(getString(R.string.alertdialog10));
-        } else {
-            new GithubQueryTask().execute(param);
-        }
+        param.put(getString(R.string.name), mScreenflg);
+        Log.d("***screenflg", mScreenflg);
+        Log.d("***Email", mEmail);
+        Log.d("***token", mToken);
+        new GithubQueryTask().execute(param);
     }
 
     //契约按钮触发事件
     public void onClick(View View){
         String Agreement = "";
         switch (View.getId()){
-            case R.id.iv_privacypolicy:
-            case R.id.tv_privacypolicy:
-                if(privacypolicyflg.equals("1")){
+            case R.id.tv_back:
+                Click_cancel();
+                break;
+            case R.id.ll_privacypolicy:
+                if(mPrivacypolicyflg.equals("1")){
                     ivprivacypolicy.setImageResource(R.drawable.ic_check_box_outline);
-                    privacypolicyflg = "0";
-                    MyApplication.setprivacypolicyflg("0");
+                    mPrivacypolicyflg = "0";
+                    mMyApplication.setprivacypolicyflg("0");
                 } else {
                     Agreement = getString(R.string.privacypolicy);
                 }
                 break;
-            case R.id.iv_termsofservice:
-            case R.id.tv_termsofservice:
-                if(termsofserviceflg.equals("1")){
+            case R.id.ll_termsofservice:
+                if(mTermsofserviceflg.equals("1")){
                     ivtermsofservice.setImageResource(R.drawable.ic_check_box_outline);
-                    termsofserviceflg = "0";
-                    MyApplication.settermsofserviceflg("0");
+                    mTermsofserviceflg = "0";
+                    mMyApplication.settermsofserviceflg("0");
                 } else {
                     Agreement = getString(R.string.termsofservice);
                 }
                 break;
+            case R.id.tv_Date_Code:
+                Log.d(TAG, "onClick: tv_Date_Code" );
+                tvDateCode.setTextColor(Color.parseColor("#80323232"));
+                tvDateCode.setEnabled(false);
+                tvCountdown.setVisibility(android.view.View.VISIBLE);
+                mScreenflg = getString(R.string.sendValidateEmail);
+                sendToServer(mEmail,mEmail);
+                CountDown countDown = new CountDown(60000,1000);
+                countDown.setOnFinishListener(new CountDown.OnFinishListener() {
+                    @Override
+                    public void onFinish() {
+                        tvDateCode.setEnabled(true);
+                        tvDateCode.setTextColor(Color.parseColor("#0196FF"));
+                        tvCountdown.setVisibility(android.view.View.INVISIBLE);
+                    }
+                });
+                countDown.setOnTickListener(new CountDown.OnTickListener() {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        Log.d(TAG, "onTick: " + millisUntilFinished);
+                        int millisUntilFinished2 = (int) millisUntilFinished/1000;
+                        tvCountdown.setText("("+ millisUntilFinished2 + "s)");
+                    }
+                });
+                countDown.start();
+                break;
+            case R.id.bu_start_make_user:
+                bt_Click();
+                break;
+
         }
         Log.d("Agreement", Agreement);
         if(!Agreement.equals("")){
-            MyApplication.setAgreement(Agreement);
-            MyApplication.setscreenflg(screenflg);
+            mMyApplication.setAgreement(Agreement);
+            mMyApplication.setscreenflg(mScreenflg);
             if(edinputA.getText().length() > 0){
-                MyApplication.setinputA(edinputA.getText().toString());
+                mMyApplication.setinputA(edinputA.getText().toString());
             }
             if(edinputB.getText().length() > 0){
-                MyApplication.setinputB(edinputB.getText().toString());
+                mMyApplication.setinputB(edinputB.getText().toString());
             }
             MoveIntent(getString(R.string.Agreement));
         }
@@ -367,6 +381,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         if(Activity.equals(getString(R.string.setPassword))){
             intent.setClass(MakeUserActivity.this, PersonalSetActivity.class);
         } else {
+            mMyApplication.setActivity("MakeUserActivity");
             intent.setClass(MakeUserActivity.this, AgreementActivity.class);
         }
         startActivity(intent);
@@ -377,16 +392,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
         Log.d("sdPdata", sdPdata);
-//        AES mAes = new AES();
-//        byte[] mBytes = null;
-//        try {
-//            mBytes = sdPdata.getBytes("UTF8");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        String enString = mAes.encrypt(mBytes,AesKey);
-//        String encrypt = enString.replace("\n", "").replace("+","%2B");
-//        return encrypt;
         AESprocess AESprocess = new AESprocess();
         String encrypt = AESprocess.getencrypt(sdPdata,AesKey);
         return encrypt;
@@ -402,7 +407,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             URL searchUrl = NetworkUtils.buildUrl(file);
             String githubSearchResults = null;
             try {
-                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data,deviceId);
+                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl,data, mDeviceId);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -412,28 +417,16 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d(TAG, "Results:" + githubSearchResults);
+                Log.d(TAG, "mScreenflg:" + mScreenflg);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String message = "";
+                    String message = obj.getString(getString(R.string.message));
                     if(processResult == true) {
                         String returnData = obj.getString(getString(R.string.returnData));
                         decryptchange(returnData);
                     } else {
-                        String fieldErrors = obj.getString(getString(R.string.fieldErrors));
-                        JSONObject fieldError = new JSONObject(fieldErrors);
-                        if(fieldError.has(getString(R.string.email))){
-                            Log.d("***+++email+++***", fieldError.getString("email"));
-                            JSONArray ja = fieldError.getJSONArray(getString(R.string.email));
-                            Log.d("***email(index)***", ja.getString(0));
-                            message = ja.getString(0);
-                        }
-                        if(fieldError.has(getString(R.string.emailConfirm))){
-                            JSONArray ja = fieldError.getJSONArray(getString(R.string.emailConfirm));
-                            Log.d("***emailConfirm***", ja.getString(0));
-                            message = ja.getString(0);
-                        }
                         alertdialog(message);
                     }
                 }catch (Exception e){
@@ -447,38 +440,38 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
 
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
-        String datas = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***+++screenflg+++***", screenflg);
+        String datas = AESprocess.getdecrypt(data, mAesKey);
+        Log.d("***+++screenflg+++***", mScreenflg);
         Log.d("***screenflg-datas***", datas);
         Gson mGson = new Gson();
         PostDate PDate = mGson.fromJson(datas, PostDate.class);
         edinputA.setText("");
         edinputB.setText("");
-        switch (screenflg){
+        switch (mScreenflg){
             case "sendValidateEmail":
-                Email = PDate.getEmail();
-                PreferenceUtils.setemail(Email);
+                mEmail = PDate.getEmail();
+                mPreferenceUtils.setemail(mEmail);
                 checkValidateCode();
                 break;
             case "checkValidateCode":
-                Email = PDate.getEmail();
-                token = PDate.getToken();
-                PreferenceUtils.settoken(token);
+                mEmail = PDate.getEmail();
+                mToken = PDate.getToken();
+                mPreferenceUtils.settoken(mToken);
                 setPassword();
                 break;
             case "setPassword":
                 UserToken UserToken = PDate.getUserToken();
                 String userID = UserToken.getUser_id();
-                PreferenceUtils.setuserId(userID);
+                mPreferenceUtils.setuserId(userID);
                 MoveIntent(getString(R.string.setPassword));
                 break;
         }
     }
 
     //结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.error)).setMessage(message).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件

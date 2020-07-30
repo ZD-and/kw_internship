@@ -1,5 +1,6 @@
 package jp.kinwork;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,18 +14,21 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,13 +36,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
-import jp.kinwork.Common.CommonView.MyScrollView;
+import jp.kinwork.Common.KinWorkManagerController;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
@@ -46,9 +52,10 @@ import jp.kinwork.Common.PreferenceUtils;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class MylistActivity extends AppCompatActivity implements MyScrollView.OnScrollListener {
+public class MylistActivity extends AppCompatActivity  {
 
-    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
+//    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
+    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfoList";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
     final static String PARAM_deletelikeJob = "/MypagesMobile/deleteLikeJobByUrl";
@@ -65,21 +72,13 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private ImageView ivmylist;
     private TextView tvmylist;
     private TextView tvtitle;
-    private TextView tvlikecont;
-    private TextView tvTopApplycont;
-    private TextView tvname;
-    private TextView tvemail;
-    private TextView tltvlike;
-    private TextView tltvEntered;
     private MyApplication myApplication;
     private PreferenceUtils PreferenceUtils;
 
     private TableLayout tllike;
-    private TableLayout tltllike;
     private TableLayout tlEntered;
-    private TableLayout tlEnteredtitle;
+    private TableLayout tltllike;
     private TableLayout tltlEntered;
-    private TableLayout tlliketitle;
 
     private TableRow tltrlike;
     private TableRow tltrEntered;
@@ -96,7 +95,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private LinkedList<String> listEnteredjobId;
     private LinkedList<String> listDelEnteredID;
 
-    private JSONArray likejobList;
     private JSONObject objjobinfo;
 
     private int DeleteIndex = -1;
@@ -109,44 +107,66 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     private int ApplyjobpageCount = 0;
     private int ApplyjobCount = 0;
     private int ApplyDeleteIndex = -1;
+    private int nlikejobpage=0;
+
 
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
 
-    private MyScrollView myScrollView;
-    private LinearLayout mEnteredLayout;
-    private LinearLayout mTopEnteredLayout;
-
     String TAG = "MylistActivity";
+
+    private List<View> pages;
+
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylist);
-        myScrollView  = (MyScrollView) findViewById(R.id.SV_ScrollView);
-        mEnteredLayout = (LinearLayout) findViewById(R.id.layout);
-        mTopEnteredLayout = (LinearLayout) findViewById(R.id.top_layout);
-        tvTopApplycont = (TextView) findViewById(R.id.tv_apply_cont_top);
-        myScrollView.setOnScrollListener(this);
-        //当布局的状态或者控件的可见性发生改变回调的接口
-        findViewById(R.id.mylist_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                //这一步很重要，使得上面的布局和下面的布局重合
-                onScroll(myScrollView.getScrollY());
-            }
-        });
-        CreateNew();
-        Initialization();
-        Log.w("tvTopApplycont", tvTopApplycont.getText().toString());
+
     }
-    /**
-     * 滚动的回调方法，当滚动的Y距离大于或者等于 购买布局距离父类布局顶部的位置，就显示购买的悬浮框
-     * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框
-     *
-     */
-    @Override
-    public void onScroll(int scrollY) {
-        int mBuyLayout2ParentTop = Math.max(scrollY, mEnteredLayout.getTop());
-        mTopEnteredLayout.layout(0, mBuyLayout2ParentTop, mTopEnteredLayout.getWidth(), mBuyLayout2ParentTop + mTopEnteredLayout.getHeight());
+
+
+    private void initPages() {
+        pages = new ArrayList<View>();
+        View page01 = View.inflate(MylistActivity.this,R.layout.fragment_mylist_like,null);
+        View page02 = View.inflate(MylistActivity.this,R.layout.fragment_mylist_enter,null);
+        pages.add(page01);
+        pages.add(page02);
+    }
+
+    public class customViewPagerAdapter extends PagerAdapter {
+
+        private String[] mTitles = new String[]{"気に入り", "応募済み"};
+        List<View> pages;
+        public customViewPagerAdapter(List<View> pages){
+            this.pages = pages;
+        };
+
+        @Override
+        public int getCount() {
+            return pages.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return object==view;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View view = pages.get(position);
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(pages.get(position));
+        }
+
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
     }
 
     //数组初始化
@@ -161,35 +181,41 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         listIBTN_DelEnteredjob = new LinkedList<ImageView>();
         listEnteredjobId = new LinkedList<String>();
         listDelEnteredID = new LinkedList<String>();
-        likejobList = new JSONArray();
         objjobinfo = new JSONObject();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initPages();
+        Initialization();
+        CreateNew();
     }
     //初始化
     public void Initialization(){
-        tltvlike=findViewById(R.id.tl_tv_like);
-        tltvEntered=findViewById(R.id.tl_tv_Entered);
+        DeleteIndex = -1;
+        likejobIndex = -1;
+        ApplyjobIndex = -1;
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new MylistActivity.customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        TextView tltvlike=pages.get(0).findViewById(R.id.tl_tv_like);
+        TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
         tltvlike.setOnClickListener(Click_getmore);
         tltvEntered.setOnClickListener(Click_getmore);
-
-        tlEnteredtitle = (TableLayout) findViewById(R.id.tl_Entered_title_Top);
-        tlliketitle=findViewById(R.id.tl_like_title);
-        tlEnteredtitle.setOnClickListener(Click_visibility);
-        tlliketitle.setOnClickListener(Click_visibility);
         ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
         tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
         ivmylist.setImageResource(R.mipmap.blue_mylist);
         tvmylist.setTextColor(Color.parseColor("#5EACE2"));
-        tllike = (TableLayout) findViewById(R.id.tl_like);
-        tltllike = (TableLayout) findViewById(R.id.tl_tl_like);
-        tlEntered = (TableLayout) findViewById(R.id.tl_Entered);
-        tltlEntered = (TableLayout) findViewById(R.id.tl_tl_Entered);
-        tltrlike = (TableRow) findViewById(R.id.tl_tr_like);
-        tltrEntered = (TableRow) findViewById(R.id.tl_tr_Entered);
-        tvlikecont = (TextView) findViewById(R.id.tv_like_cont);
+        tllike = (TableLayout)pages.get(0).findViewById(R.id.tl_like);
+        tlEntered=(TableLayout)pages.get(1).findViewById(R.id.tl_Entered);
+        tltllike = (TableLayout)pages.get(0).findViewById(R.id.tl_tl_like);
+        tltlEntered = (TableLayout) pages.get(1).findViewById(R.id.tl_tl_Entered);
+        tltrlike = (TableRow) pages.get(0).findViewById(R.id.tl_tr_like);
+        tltrEntered = (TableRow) pages.get(1).findViewById(R.id.tl_tr_Entered);
         tvtitle      = (TextView) findViewById(R.id.tv_title_b_name);
         tvtitle.setText("マイリスト");
-        tvname = (TextView) findViewById(R.id.tv_userinfo_name);
-        tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(MylistActivity.this);
         Act = myApplication.getAct();
@@ -197,15 +223,20 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         AesKey = PreferenceUtils.getAesKey();
         userId = PreferenceUtils.getuserId();
         token = PreferenceUtils.gettoken();
-        if(myApplication.getlast_name().length() > 0){
-            tvname.setText(myApplication.getlast_name() + myApplication.getfirst_name() + " 様");
-        }
-        tvemail.setText(PreferenceUtils.getEmail());
         if(Act.equals(getString(R.string.SelectResume))){
-            tllike.setVisibility(View.GONE);
-            tlEntered.setVisibility(View.VISIBLE);
+            viewPager.setCurrentItem(1);
         }
-        getSearchResults();
+        if(!PreferenceUtils.getSendAndroidTokenProcessResult()){
+            KinWorkManagerController kinWorkManagerController = new KinWorkManagerController();
+            if(kinWorkManagerController.getContext() == null){
+                kinWorkManagerController.setContext(getApplicationContext());
+            }
+            kinWorkManagerController.getDeviceTokenToServer();
+        }
+        dialog = new ProgressDialog(this);
+        getJobList("1","SavedJob");
+        getJobList("1","ApplyJob");
+        nlikejobpage=nlikejobpage+1;
     }
     //获取搜索结果菜单栏按钮
     public void ll_Click(View View){
@@ -253,33 +284,34 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         startActivity(intent);
 
     }
-    //获取搜索结果
-    public void getSearchResults(){
-        PostDate Pdata1 = new PostDate();
-        Map<String,String> param1 = new HashMap<String, String>();
-        Pdata1.setUserId(userId);
-        Pdata1.setToken(token);
-        Pdata1.setpage(String.valueOf(1));
-        Pdata1.setOrder("");
-        Pdata1.setFlag("");
-        param1.put(getString(R.string.file),PARAM_likelist);
-        String data1 = JsonChnge(AesKey,Pdata1);
-        param1.put(getString(R.string.data),data1);
-        param1.put(getString(R.string.name),"");
-        PostDate Pdata2 = new PostDate();
-        Map<String,String> param2 = new HashMap<String, String>();
-        Pdata2.setUserId(userId);
-        Pdata2.setToken(token);
-        Pdata2.setcurrentPage("1");
-        param2.put(getString(R.string.file),PARAM_personalApplyJobList);
-        String data2 = JsonChnge(AesKey,Pdata2);
-        param2.put(getString(R.string.data),data2);
-        param2.put(getString(R.string.name),"");
-        //数据通信处理（気に入り取得）
-        new GithubQueryTask().execute(param1);
+
+    private boolean isSavedJobInfo = false;
+    private ProgressDialog dialog;
+    //获取気に入り搜索结果
+    //获取応募済み搜索结果
+    public void getJobList(String number,String jobInfo){
+        dialog.setMessage("通信中");
+        Log.d(TAG, "getJobList: ");
+        if(!dialog.isShowing()){
+            dialog.show();
+        }
+        PostDate Pdata = new PostDate();
+        Map<String,String> param = new HashMap<String, String>();
+        Pdata.setUserId(userId);
+        Pdata.setToken(token);
+        Pdata.setcurrentPage(number);
+        String data = JsonChnge(AesKey,Pdata);
+        if(jobInfo.equals("SavedJob")){
+            param.put(getString(R.string.file),PARAM_likelist);
+        } else {
+            param.put(getString(R.string.file),PARAM_personalApplyJobList);
+        }
+        param.put(getString(R.string.name),jobInfo);
+        param.put(getString(R.string.data),data);
         //数据通信处理（応募状況取得）
-        new GithubQueryTask().execute(param2);
+        new GithubQueryTask().execute(param);
     }
+
     //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
@@ -320,18 +352,20 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d(TAG+"***Results***", githubSearchResults);
-                Log.d(TAG+"***name***", name);
+                Log.d(TAG,"Results:"+ githubSearchResults);
+                Log.d(TAG,"name:"+ name);
+                Log.d(TAG,"DeleteIndex:"+ DeleteIndex);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         if(obj.getString(getString(R.string.returnData)).equals("[]")){
-                            alertdialog(getString(R.string.alertdialog11));
+                            alertdialog(getString(R.string.alertdialog11),"");
                         } else {
-                            if(name.equals("")){
-                                decryptchange(obj.getString(getString(R.string.returnData)));
+                            if(name.equals("SavedJob") || name.equals("ApplyJob")){
+                                decryptchange(obj.getString(getString(R.string.returnData)),name);
                             } else if(name.equals(getString(R.string.likejob)) || name.equals(getString(R.string.Enteredjob))){
                                 MoveApply(obj.getString(getString(R.string.returnData)));
                             } else if(name.equals(getString(R.string.deletelikejob))){
@@ -340,7 +374,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                                 if(likejobCount == 0){
                                     tllike.setVisibility(View.GONE);
                                 }
-                                tvlikecont.setText(likejobCount + "件");
+//                                tvlikecont.setText(likejobCount + "件");
                                 listIBTN_likejob.remove(DeleteIndex);
                                 tltllike.removeViewAt(DeleteIndex);
                             } else if(name.equals(getString(R.string.deleteApplyjob))){
@@ -350,51 +384,44 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                                     tltlEntered.setVisibility(View.GONE);
                                 }
                                 //tvApplycont.setText(ApplyjobCount + "件");
-                                tvTopApplycont.setText(ApplyjobCount + "件");
+//                                tvTopApplycont.setText(ApplyjobCount + "件");
                                 listIBTN_Enteredjob.remove(ApplyDeleteIndex);
                                 listIBTN_DelEnteredjob.remove(ApplyDeleteIndex);
                                 tltlEntered.removeViewAt(ApplyDeleteIndex);
                             }
                         }
                     } else {
-                        alertdialog(meg);
+                        if(errorCode.equals("100")){
+                            meg = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(meg,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
+            dialog.dismiss();
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data){
+    public void decryptchange(String data,String jobInfo){
         if(! data.equals("null")){
             AESprocess AESprocess = new AESprocess();
             String datas = AESprocess.getdecrypt(data,AesKey);
             Log.d(TAG+"**datas**", datas);
             try {
-                JSONObject obj = new JSONObject(datas);
-                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
-                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
-                    Log.d(TAG+"**likejob**", job.toString());
-                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
-                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
-                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
-                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
-                    tvlikecont.setText(likejobCount + "件");
-                    if(likejobpage >= likejobpageCount){
-                        tltrlike.setVisibility(View.GONE);
-                    } else {
-                        tltrlike.setVisibility(View.VISIBLE);
-                    }
-                    addlikejob(job);
+                if(jobInfo.equals("SavedJob")){
+                    JSONArray saveJob = new JSONArray(datas);
+                    Log.d(TAG+"**likejob**", saveJob.toString());
+                    addlikejob(saveJob);
                 } else {
+                    JSONObject obj = new JSONObject(datas);
+                    JSONArray job = obj.getJSONArray(getString(R.string.dataList));
                     Log.d(TAG+"**Applyjob**", job.toString());
                     ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
                     ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
                     Log.d(TAG+"**ApplyjobpageCount**", ApplyjobpageCount+"");
                     Log.d(TAG+"**ApplyjobCount**", ApplyjobCount+"");
-                    //tvApplycont.setText(ApplyjobCount + "件");
-                    tvTopApplycont.setText(ApplyjobCount + "件");
                     if(Applyjobpage >= ApplyjobpageCount){
                         tltrEntered.setVisibility(View.GONE);
                     } else {
@@ -402,11 +429,39 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                     }
                     addApplyjob(job);
                 }
-                Log.w(TAG+"tvTopApplycont", tvTopApplycont.getText().toString());
+//                JSONObject obj = new JSONObject(datas);
+//                JSONArray saveJob = new JSONArray(datas);
+//                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
+//                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
+//
+//                    Log.d(TAG+"**likejob**", job.toString());
+//                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
+//                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
+//                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
+//                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
+////                    tvlikecont.setText(likejobCount + "件");
+//                    if(likejobpage >= likejobpageCount){
+//                        tltrlike.setVisibility(View.GONE);
+//                    } else {
+//                        tltrlike.setVisibility(View.VISIBLE);
+//                    }
+//                    addlikejob(job);
+//                } else {
+//                    Log.d(TAG+"**Applyjob**", job.toString());
+//                    ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
+//                    ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
+//                    Log.d(TAG+"**ApplyjobpageCount**", ApplyjobpageCount+"");
+//                    Log.d(TAG+"**ApplyjobCount**", ApplyjobCount+"");
+//                    if(Applyjobpage >= ApplyjobpageCount){
+//                        tltrEntered.setVisibility(View.GONE);
+//                    } else {
+//                        tltrEntered.setVisibility(View.VISIBLE);
+//                    }
+//                    addApplyjob(job);
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            myScrollView.setVisibility(View.VISIBLE);
         }
     }
     //解密数据,移动到下一个画面
@@ -431,7 +486,8 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
         tlparams.setMargins(0,0,0,top);
-        for(int i=0; i < data.length(); i++){
+//        for(int i=0; i < data.length(); i++){
+        for(int i=data.length() - 1; i >= 0 ; i--){
             try {
                 likejobIndex = likejobIndex + 1;
                 JSONObject obj = data.getJSONObject(i);
@@ -536,6 +592,9 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     }
     //应聘一览数据取得
     public void addApplyjob(JSONArray data){
+        int top= dp2px(this, 10);
+        TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
+        tlparams.setMargins(0,0,0,top);
         for(int i=0; i < data.length(); i++){
             try {
                 ApplyjobIndex = ApplyjobIndex + 1;
@@ -543,9 +602,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 JSONObject objSavedResume = data.getJSONObject(i).getJSONObject(getString(R.string.SavedResume));
                 Log.d(TAG+"***objJobInfo***", objJobInfo.toString());
                 Log.d(TAG+"***objSavedResume***", objSavedResume.toString());
-                int top= dp2px(this, 10);
-                TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
-                tlparams.setMargins(0,0,0,top);
                 View mylist = getLayoutInflater().inflate(R.layout.include_mylist_enteredjob, null);
                 TableLayout Enteredjobinfo = mylist.findViewById(R.id.tl_e_basicinformation);
                 Enteredjobinfo.setOnClickListener(new View.OnClickListener() {
@@ -589,7 +645,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 listEnteredjobId.add(ApplyjobIndex,objJobInfo.getString(getString(R.string.id)));
                 listDelEnteredID.add(ApplyjobIndex,objSavedResume.getString(getString(R.string.id)));
                 listEnteredjobinfo.add(ApplyjobIndex,objJobInfo);
-                tltlEntered.addView(mylist,ApplyjobIndex);
+                tltlEntered.addView(mylist);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -601,40 +657,28 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         return (int)(dpValue*scale+0.5f);
     }
     //通信结果提示
-    private void alertdialog(String meg){
+    private void alertdialog(String meg,String errorCode){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(MylistActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
+
             }
         }).show();
     }
-    //項目の表示
-    public View.OnClickListener Click_visibility =new View.OnClickListener() {
-        public void onClick(View ClikcView) {
-            switch (ClikcView.getId()) {
-                case R.id.tl_like_title:
-                    if (likejobCount == 0) {
-                        tllike.setVisibility(View.GONE);
-                    } else {
-                        if (tllike.getVisibility() == View.GONE) {
-                            tllike.setVisibility(View.VISIBLE);
-                        } else {
-                            tllike.setVisibility(View.GONE);
-                        }
-                    }
-                    break;
-                case R.id.tl_Entered_title_Top:
-                    if (tlEntered.getVisibility() == View.GONE) {
-                        tlEntered.setVisibility(View.VISIBLE);
-                    } else {
-                        tlEntered.setVisibility(View.GONE);
-                    }
-                    break;
-            }
-        }
-    };
+
     //気に入り職歴信息取得
     public void Click_likejob(View View){
         if (View == null) {
@@ -649,7 +693,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             }
         }
         try {
-            Log.w(TAG+"Click_likejob_info", listlikejobinfo.get(iIndex).toString());
+            Log.w(TAG, "Click_likejob_info:"+ listlikejobinfo.get(iIndex).toString());
             objjobinfo = listlikejobinfo.get(iIndex).getJSONObject(getString(R.string.SavedLikedJob));
             JSONObject JobInfo = new JSONObject();
             if(listlikejobinfo.get(iIndex).has(getString(R.string.JobInfo))){
@@ -658,7 +702,7 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             if (iIndex >= 0) {
                 myApplication.setMyjob(getString(R.string.likejob));
                 if(objjobinfo.getString(getString(R.string.isFromKinwork)).equals("1")){
-                    if( JobInfo == null || ! JobInfo.getString(getString(R.string.status)).equals("1")) {
+                    if( JobInfo.length() == 0 || ! JobInfo.getString(getString(R.string.status)).equals("1")) {
                         PostDate Pdata = new PostDate();
                         Map<String,String> param = new HashMap<String, String>();
                         Pdata.setUserId(userId);
@@ -757,7 +801,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
     }
     //显示更多内容按钮
     private View.OnClickListener Click_getmore =new View.OnClickListener() {
-
         public void onClick(View View) {
             PostDate Pdata = new PostDate();
             Map<String, String> param = new HashMap<String, String>();
@@ -766,20 +809,13 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             switch (View.getId()) {
                 case R.id.tl_tv_like:
                     likejobpage = likejobpage + 1;
-                    param.put(getString(R.string.file), PARAM_likelist);
-                    Pdata.setpage(String.valueOf(likejobpage));
+                    getJobList(Integer.toString(likejobpage),"SavedJob");
                     break;
                 case R.id.tl_tv_Entered:
                     Applyjobpage = Applyjobpage + 1;
-                    param.put(getString(R.string.file), PARAM_personalApplyJobList);
-                    Pdata.setcurrentPage(String.valueOf(Applyjobpage));
+                    getJobList(Integer.toString(Applyjobpage),"ApplyJob");
                     break;
             }
-            String data = JsonChnge(AesKey, Pdata);
-            param.put(getString(R.string.data),data);
-            param.put(getString(R.string.name),"");
-            //数据通信处理（気に入り取得）
-            new GithubQueryTask().execute(param);
         }
     };
     //応募済み削除
@@ -842,9 +878,11 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(MylistActivity.this, ContactDialogActivity.class);
-                intent.putExtra(getString(R.string.company_name),obj.getString(getString(R.string.company_name)));
-                intent.putExtra(getString(R.string.address),obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
-                intent.putExtra(getString(R.string.ID),obj.getString(getString(R.string.employer_id)));
+                myApplication.setemployerID(obj.getString(getString(R.string.employer_id)));
+                myApplication.setcompany_name(obj.getString(getString(R.string.employer_id)));
+//                intent.putExtra(getString(R.string.company_name),obj.getString(getString(R.string.company_name)));
+//                intent.putExtra(getString(R.string.address),obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
+//                intent.putExtra(getString(R.string.ID),obj.getString(getString(R.string.employer_id)));
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();

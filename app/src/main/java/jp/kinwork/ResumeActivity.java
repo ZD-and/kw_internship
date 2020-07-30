@@ -121,7 +121,6 @@ public class ResumeActivity extends AppCompatActivity {
     private TextView tltrtvkananame;
     private TextView tltrtvsex;
     private TextView tltrtvbirthday;
-    private TextView tltrtvcountry;
     private TextView tltrtvaddress;
     private TextView tltrtvphone;
     private TextView tvback;
@@ -178,7 +177,7 @@ public class ResumeActivity extends AppCompatActivity {
     private JSONArray JSONArray_employment;
     private JSONArray JSONArray_education;
     private JSONArray JSONArray_qualification;
-
+    String TAG = "ResumeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,11 +186,16 @@ public class ResumeActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this) ;
         //dialog.setTitle("提示") ;
         dialog.setMessage(getString(R.string.Loading)) ;
-        Intent intent = getIntent();
         myApplication = (MyApplication) getApplication();
         IresumeIdflg = myApplication.getResumeId();
         resume_status = myApplication.getresume_status();
         ActCation = myApplication.getActCation();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Initialization();
         load();
     }
@@ -274,13 +278,11 @@ public class ResumeActivity extends AppCompatActivity {
         tl_tr_tv_qualification.setOnClickListener(onListener);
         tv_PrSkill.setOnClickListener(onListener);
 
-
         etresumename    = (EditText) findViewById(R.id.et_resume_name);
         tltrtvname      = (TextView) findViewById(R.id.tl_tr_tv_name);
         tltrtvkananame  = (TextView) findViewById(R.id.tl_tr_tv_kananame);
         tltrtvsex       = (TextView) findViewById(R.id.tl_tr_tv_sex);
         tltrtvbirthday  = (TextView) findViewById(R.id.tl_tr_tv_birthday);
-        tltrtvcountry   = (TextView) findViewById(R.id.tl_tr_tv_country);
         tltrtvaddress   = (TextView) findViewById(R.id.tl_tr_tv_address);
         tltrtvphone     = (TextView) findViewById(R.id.tl_tr_tv_phone);
         tvback          = (TextView) findViewById(R.id.tv_back);
@@ -303,6 +305,9 @@ public class ResumeActivity extends AppCompatActivity {
             }
         });
         bu_create=findViewById(R.id.bu_create);
+        if(resume_status.equals("upd")){
+            bu_create.setText("履歴書を変更する");
+        }
         bu_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -380,7 +385,9 @@ public class ResumeActivity extends AppCompatActivity {
             tvresumetitle.setText(myApplication.getpersonalset(1));
             myApplication.setresume_name(myApplication.getpersonalset(1),IresumeIdflg);
             employmentstatus = Integer.parseInt(myApplication.getpersonalset(2),10);
+            Log.d(TAG, "load employmentstatus: " + employmentstatus);
             String status = Integer.toBinaryString(employmentstatus);
+            Log.d(TAG, "load status: " + status);
             getstatus(status);
             Jobtypeexpectations = myApplication.getpersonalset(3);
             ethopeJobcategory.setText(Jobtypeexpectations);
@@ -442,30 +449,39 @@ public class ResumeActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.tl_tr_tv_employmenthistory:
+                    Log.d(TAG, "onClick JSONArray_employment.length(): " +JSONArray_employment.length());
                     if (JSONArray_employment.length() > 0) {
                         if (tljob.getVisibility() == View.GONE) {
                             tljob.setVisibility(View.VISIBLE);
                         } else {
                             tljob.setVisibility(View.GONE);
                         }
+                    } else {
+                        tljob.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tl_tr_tv_educational:
+                    Log.d(TAG, "onClick JSONArray_education.length(): " +JSONArray_education.length());
                     if (JSONArray_education.length() > 0) {
                         if (tleducational.getVisibility() == View.GONE) {
                             tleducational.setVisibility(View.VISIBLE);
                         } else {
                             tleducational.setVisibility(View.GONE);
                         }
+                    } else {
+                        tleducational.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tl_tr_tv_qualification:
+                    Log.d(TAG, "onClick JSONArray_qualification.length(): " +JSONArray_qualification.length());
                     if (JSONArray_qualification.length() > 0) {
                         if (tlqualification.getVisibility() == View.GONE) {
                             tlqualification.setVisibility(View.VISIBLE);
                         } else {
                             tlqualification.setVisibility(View.GONE);
                         }
+                    } else {
+                        tlqualification.setVisibility(View.GONE);
                     }
                     break;
                 case R.id.tv_PrSkill:
@@ -645,7 +661,7 @@ public class ResumeActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     processResult = obj.getBoolean(getString(R.string.processResult));
                     String meg = obj.getString(getString(R.string.message));
-                    String errCode = obj.getString(getString(R.string.errorCode));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     String returnData = obj.getString(getString(R.string.returnData));
                     if(processResult == true) {
                         if(createFlg.equals("1")){
@@ -670,15 +686,14 @@ public class ResumeActivity extends AppCompatActivity {
                             tlqualification.removeViewAt(iIndex);
                         }
                     } else {
-                        if(createFlg.equals("1")){
-                            if(!obj.getString(getString(R.string.fieldErrors)).equals("null")){
-                                showError(obj.getString(getString(R.string.fieldErrors)));
-                            }else {
-                                alertdialog(getString(R.string.error),meg,errCode);
-                            }
-
+                        if(errorCode.equals("100")){
+                            meg = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog("",meg,errorCode);
+                        }
+                        else if(createFlg.equals("1") && !obj.getString(getString(R.string.fieldErrors)).equals("null")){
+                            showError(obj.getString(getString(R.string.fieldErrors)));
                         } else {
-                            alertdialog(getString(R.string.error),meg,errCode);
+                            alertdialog(getString(R.string.error),meg,errorCode);
                         }
                     }
                 }catch (Exception e){
@@ -731,6 +746,7 @@ public class ResumeActivity extends AppCompatActivity {
     //通信结果提示
     private void alertdialog(String Title,String meg,final String code){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle(Title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -741,16 +757,27 @@ public class ResumeActivity extends AppCompatActivity {
                     intent.setClass(ResumeActivity.this, BasicinfoeditActivity.class);
                     startActivity(intent);
                 }
+                if(code.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
             }
         }).show();
     }
     //雇佣形态設定
     public void getstatus(String data){
         int number = 0;
+        Log.i(TAG,"转换内容的data:" + data);
         for(int i = data.length(); i > 0; i--){
-            Log.i("转换内容的", "第" + i + "位:" + data.charAt(i-1));
+            Log.i(TAG,"转换内容的第" + i + "位:" + data.charAt(i-1));
             String num= String.valueOf(data.charAt(i-1));
-            Log.i("转换内容的", "num:" + num);
+            Log.i(TAG,"转换内容的num:" + num);
             number = number + 1;
             if(number == 1 && num.equals("1")){
                 cbone.setChecked(true);
@@ -895,10 +922,6 @@ public class ResumeActivity extends AppCompatActivity {
                 tltrtvbirthday.setText(getString(R.string.birthday_nihongo) + obj.getString(getString(R.string.birthday)));
             }
 
-            //国籍
-//            if(! obj.getString("").equals("")){
-                tltrtvcountry.setText(getString(R.string.kokuseki) + myApplication.getcountry());
-//            }
             //住所
             if(! obj.getString(getString(R.string.add_1)).equals("") && ! obj.getString(getString(R.string.add_2)).equals("") && ! obj.getString(getString(R.string.add_3)).equals("")){
                 tltrtvaddress.setText(getString(R.string.address_nihongo) + obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
@@ -934,6 +957,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录履历信息取得
     private void resumeinfo(JSONArray data){
+        tljob.removeAllViews();
         for(int i=0; i < data.length(); i++){
             try {
                 JSONObject obj = data.getJSONObject(i);
@@ -949,7 +973,9 @@ public class ResumeActivity extends AppCompatActivity {
                     Log.d("***ResumegetString***", "["+JSONObject_resume.getString(getString(R.string.employment_status)) + "]");
                     if(! JSONObject_resume.getString(getString(R.string.employment_status)).equals("") && ! JSONObject_resume.getString(getString(R.string.employment_status)).equals("null")){
                         employmentstatus = Integer.parseInt(JSONObject_resume.getString(getString(R.string.employment_status)),10);
+                        Log.d(TAG, "resumeinfo employmentstatus: " +employmentstatus);
                         String status = Integer.toBinaryString(employmentstatus);
+                        Log.d(TAG, "resumeinfo status: " +status);
                         getstatus(status);
                     }
                     if(! JSONObject_resume.getString(getString(R.string.job_type_expectations)).equals("") && ! JSONObject_resume.getString(getString(R.string.job_type_expectations)).equals("null")){
@@ -1066,7 +1092,7 @@ public class ResumeActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.status), getString(R.string.upd));
                 intent.putExtra(getString(R.string.professionalCareerId), professionalCareer.getId());
                 intent.putExtra(getString(R.string.jobName), professionalCareer.getJob_name());
-                intent.putExtra(getString(R.string.Companyname), professionalCareer.getJob_name());
+                intent.putExtra(getString(R.string.Companyname), professionalCareer.getCompany_name());
                 if(professionalCareer.getFrom_year() != null && professionalCareer.getFrom_month() !=null){
                     intent.putExtra(getString(R.string.Start_Y), professionalCareer.getFrom_year());
                     intent.putExtra(getString(R.string.Start_M), professionalCareer.getFrom_month());
@@ -1108,6 +1134,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录学歴信息取得
     public void educationInfo(JSONArray data){
+        tleducational.removeAllViews();
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
             try {
@@ -1249,6 +1276,7 @@ public class ResumeActivity extends AppCompatActivity {
     }
     //已登录資格信息取得
     public void qualificationInfo(JSONArray data){
+        tlqualification.removeAllViews();
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
             try {

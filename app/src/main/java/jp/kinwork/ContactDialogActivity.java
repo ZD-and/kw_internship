@@ -2,15 +2,19 @@ package jp.kinwork;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,8 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -29,9 +34,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import jp.kinwork.Common.AES;
@@ -45,37 +52,25 @@ import static android.view.View.VISIBLE;
 import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
-public class ContactDialogActivity extends AppCompatActivity implements View.OnClickListener{
-
-//    final static String PARAM_File = "/SessionMessageMobile/selectByEmployerIdAndApplicantId";
-//    final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
-//    final static String PARAM_Readed = "/SessionMessageMobile/personalSetReaded";
+public class ContactDialogActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     final static String PARAM_File = "/MyMailMobile/MyMailList";
     final static String PARAM_sendMessage = "/MyMailMobile/pendingMyMail";
     final static String PARAM_Readed = "/MyMailMobile/setReaded";
 
-    private ImageView ivbcontact;
-    private TextView tvbcontact;
-    private LinearLayout llmeg;
-    private TableLayout tlinformation;
-    private TableLayout tlmeg;
-    private TableLayout tlnamedate;
-    private ScrollView slmeg;
+    private LinkedList<LinearLayout> list_llmeg;
+    private LinkedList<TableLayout> list_tlmeg;
+    private LinkedList<ScrollView> list_slmeg;
+
+    private Button bu_sendmeg_first;
+    private Button bu_sendmeg_second;
+    private Button bu_sendmeg_third;
+
     private ImageView imvivread;
     private TextView tvback;
     private TextView tvbacktitle;
     private TextView tvbackdummy;
     private TextView tltvcompany;
-    //    private TextView tltvmailaddress;
-    private EditText ettitle;
-    private EditText etmeg;
-    private TextView tvallEmail;
-    private TextView tvsendEmail;
-    private TextView tvReceptionEmail;
-    private TextView tvToCompanyName;
-
-    private Button bu_sendmeg;
 
     private String deviceId;
     private String AesKey;
@@ -83,17 +78,13 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
     private String token;
     private String employer_id;
     private String company_name;
-    //    private String mailaddress;
     private String Email;
-    //private String name = "";
     private String setTitle = "";
     private String setmeg = "";
     private String DisplayEmailFlg = "0";
-//    private String Act = "";
-
     private String sendflg = "0";
+    private String flg="";
 
-    private int iIndex = -1;
 
     private PreferenceUtils mPreferenceUtils;
     private MyApplication mMyApplication;
@@ -106,31 +97,68 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
     private LinkedList<TextView> list_tvisReaded;
     private LinkedList<ImageView> list_ivread;
     private LinkedList<String> list_String;
+    private LinkedList<String> list_StringAll;
+    private LinkedList<String> list_StringReceive;
+    private LinkedList<String> list_StringSend;
     private LinkedList<JSONObject> list_obj;
+    private LinkedList<EditText>list_ettitle;
+    private LinkedList<EditText>list_etmeg;
+    private LinkedList<TextView>list_tvToCompanyName;
 
-//    private ProgressDialog dialog;
+    String TAG = "ContactDialogActivity";
+
+    private ViewPager viewPager;
+    private List<View> pages;
+    private int index=0;
+    private int nMaildisplaypage = 0;
+    private int currentpageAll=1;
+    private int currentpageReceive=1;
+    private int currentpageSend=1;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_dialog);
-        Intent Intent = getIntent();
-//        Act = Intent.getStringExtra("Act");
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("通信中");
+        //初始化viewpager页面
+        initPages();
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        PagerAdapter adapter = new customViewPagerAdapter(pages);
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(this);
+//        Intent intent = getIntent();
         Initialization();
+        Log.d(TAG, "onStart mMyApplication.getContactDialog(0): " + mMyApplication.getContactDialog(0));
+        Log.d(TAG, "onStart mMyApplication.getcompany_name(): " + mMyApplication.getcompany_name());
+        Log.d(TAG, "onStart mMyApplication.getemployerID(): " + mMyApplication.getemployerID());
+
         if(mMyApplication.getContactDialog(0).equals("0")){
-            employer_id = Intent.getStringExtra(getString(R.string.ID));
-            company_name = Intent.getStringExtra(getString(R.string.company_name));
-//            mailaddress = Intent.getStringExtra("mailaddress");
-            Log.d("company_name", company_name);
+//            employer_id = intent.getStringExtra(getString(R.string.ID));
+//            company_name = intent.getStringExtra(getString(R.string.company_name));
+            employer_id = mMyApplication.getemployerID();
+            company_name = mMyApplication.getcompany_name();
+            Log.d(TAG, "onStart employer_id: " + employer_id);
+            Log.d(TAG, "company_name:"+company_name);
             mMyApplication.setContactDialog("1",0);
             mMyApplication.setContactDialog(employer_id,1);
             mMyApplication.setContactDialog(company_name,2);
-//            mMyApplication.setContactDialog(mailaddress,3);
-            getSearchResults();
+            getSearchResults("1","all");
+            getSearchResults("1","receive");
+            getSearchResults("1","send");
         } else {
             employer_id = mMyApplication.getContactDialog(1);
             company_name = mMyApplication.getContactDialog(2);
-//            mailaddress = mMyApplication.getContactDialog(3);
             try {
                 JSONArray obj = new JSONArray(mMyApplication.getContactDialog(3));
                 for(int x=0; x < obj.length(); x++){
@@ -139,7 +167,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            Collections.reverse(list_String);
             DisplayEmailFlg = mMyApplication.getContactDialog(4);
             if(DisplayEmailFlg.equals("")){
                 //flg为空的时候，显示全部的邮件
@@ -154,29 +181,72 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
         tvbacktitle.setText(getString(R.string.tvbacktitle));
         tltvcompany.setText(company_name);
-//        tltvmailaddress.setText(mailaddress);
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//        return super.onTouchEvent(event);
-//    }
+    private void initPages() {
+        pages = new ArrayList<View>();
+        View page01 = View.inflate(ContactDialogActivity.this,R.layout.fragment_first,null);
+        View page02 = View.inflate(ContactDialogActivity.this,R.layout.fragment_second,null);
+        View page03 = View.inflate(ContactDialogActivity.this,R.layout.fragment_third,null);
+        pages.add(page01);
+        pages.add(page02);
+        pages.add(page03);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    public class customViewPagerAdapter extends PagerAdapter {
+        private String[] mTitles = new String[]{"すべて", "受信トレイ", "送信済み"};
+        List<View> pages;
+        public customViewPagerAdapter(List<View> pages){
+            this.pages = pages;
+        };
+
+        @Override
+        public int getCount() {
+            return pages.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return object==view;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View view = pages.get(position);
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(pages.get(position));
+        }
+
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position];
+        }
+    }
 
     //初期化
     private void Initialization(){
-        bu_sendmeg=findViewById(R.id.bu_sendmeg);
-        bu_sendmeg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_setSendMeg();
-            }
-        });
-        ivbcontact = (ImageView) findViewById(R.id.iv_b_contact);
-        tvbcontact = (TextView) findViewById(R.id.tv_b_contact);
-        ivbcontact.setImageResource(R.mipmap.blue_contact);
-        tvbcontact.setTextColor(Color.parseColor("#5EACE2"));
+        bu_sendmeg_first = pages.get(0).findViewById(R.id.bu_sendmeg_first);
+        bu_sendmeg_second = pages.get(1).findViewById(R.id.bu_sendmeg_second);
+        bu_sendmeg_third = pages.get(2).findViewById(R.id.bu_sendmeg_third);
+        bu_sendmeg_first.setOnClickListener(Click_setSendMeg);
+        bu_sendmeg_second.setOnClickListener(Click_setSendMeg);
+        bu_sendmeg_third.setOnClickListener(Click_setSendMeg);
         list_tlnamedata = new LinkedList<TableLayout>();
         list_tlreply    = new LinkedList<TableLayout>();
         list_tvtitle    = new LinkedList<TextView>();
@@ -185,11 +255,37 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         list_tvisReaded = new LinkedList<TextView>();
         list_ivread     = new LinkedList<ImageView>();
         list_String     = new LinkedList<String>();
+        list_StringAll     = new LinkedList<String>();
+        list_StringReceive     = new LinkedList<String>();
+        list_StringSend     = new LinkedList<String>();
         list_obj     = new LinkedList<JSONObject>();
-        llmeg           = (LinearLayout) findViewById(R.id.ll_meg);
-        tlinformation   = (TableLayout) findViewById(R.id.tl_information);
-        tlmeg           = (TableLayout) findViewById(R.id.tl_meg);
-        slmeg           =  (ScrollView) findViewById(R.id.sl_meg);
+        list_llmeg = new LinkedList<LinearLayout>();
+        list_tlmeg = new LinkedList<TableLayout>();
+        list_slmeg = new LinkedList<ScrollView>();
+        list_ettitle=new LinkedList<EditText>();
+        list_etmeg=new LinkedList<EditText>();
+        list_tvToCompanyName=new LinkedList<TextView>();
+
+        list_llmeg.clear();
+        list_llmeg.add(0,(LinearLayout) pages.get(0).findViewById(R.id.ll_meg_first));
+        list_llmeg.add(1,(LinearLayout) pages.get(1).findViewById(R.id.ll_meg_second));
+        list_llmeg.add(2,(LinearLayout) pages.get(2).findViewById(R.id.ll_meg_third));
+        list_tlmeg.clear();
+        list_tlmeg.add(0,(TableLayout) pages.get(0).findViewById(R.id.tl_meg_first));
+        list_tlmeg.add(1,(TableLayout) pages.get(1).findViewById(R.id.tl_meg_second));
+        list_tlmeg.add(2,(TableLayout) pages.get(2).findViewById(R.id.tl_meg_third));
+        list_slmeg.clear();
+        list_slmeg.add(0,(ScrollView) pages.get(0).findViewById(R.id.sl_meg_first));
+        list_slmeg.add(1,(ScrollView) pages.get(1).findViewById(R.id.sl_meg_second));
+        list_slmeg.add(2,(ScrollView) pages.get(2).findViewById(R.id.sl_meg_third));
+
+        list_slmeg.get(0).setOnTouchListener(onTouchListener);
+        list_slmeg.get(0).setTag("0");
+        list_slmeg.get(1).setOnTouchListener(onTouchListener);
+        list_slmeg.get(1).setTag("1");
+        list_slmeg.get(2).setOnTouchListener(onTouchListener);
+        list_slmeg.get(2).setTag("2");
+
         tvback          = (TextView) findViewById(R.id.tv_back);
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,24 +293,22 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 Click_back();
             }
         });
-
         tvbacktitle               = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.title_contact));
         tvbackdummy.setText(getString(R.string.title_contact));
         tltvcompany     = (TextView) findViewById(R.id.tl_tv_company);
-//        tltvmailaddress     = (TextView) findViewById(R.id.tl_tv_mailaddress);
-        ettitle        = (EditText) findViewById(R.id.et_title);
-        etmeg          = (EditText) findViewById(R.id.et_meg);
 
-        tvallEmail = (TextView) findViewById(R.id.tv_allEmail);
-        tvsendEmail = (TextView) findViewById(R.id.tv_sendEmail);
-        tvReceptionEmail = (TextView) findViewById(R.id.tv_ReceptionEmail);
-        tvallEmail.setOnClickListener(this);
-        tvsendEmail.setOnClickListener(this);
-        tvReceptionEmail.setOnClickListener(this);
+        list_ettitle.add((EditText) pages.get(0).findViewById(R.id.et_title_first));
+        list_ettitle.add((EditText) pages.get(1).findViewById(R.id.et_title_second));
+        list_ettitle.add((EditText) pages.get(2).findViewById(R.id.et_title_third));
+        list_etmeg.add((EditText) pages.get(0).findViewById(R.id.et_meg_first));
+        list_etmeg.add((EditText) pages.get(1).findViewById(R.id.et_meg_second));
+        list_etmeg.add((EditText) pages.get(2).findViewById(R.id.et_meg_third));
+        list_tvToCompanyName.add((TextView) pages.get(0).findViewById(R.id.tv_ToCompanyName_first));
+        list_tvToCompanyName.add((TextView) pages.get(1).findViewById(R.id.tv_ToCompanyName_second));
+        list_tvToCompanyName.add((TextView) pages.get(2).findViewById(R.id.tv_ToCompanyName_third));
 
-        tvToCompanyName  = (TextView) findViewById(R.id.tv_ToCompanyName);
         mPreferenceUtils = new PreferenceUtils(ContactDialogActivity.this);
         mMyApplication = (MyApplication) getApplication();
         deviceId = mPreferenceUtils.getdeviceId();
@@ -224,26 +318,78 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         Email = mPreferenceUtils.getEmail();
     }
 
+    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN :
+                    break;
+                case MotionEvent.ACTION_MOVE :
+                    index++;
+                    break;
+                default :
+                    break;
+            }
+            Log.d(TAG, "onTouch v.getTag(): " + v.getTag());
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP &&  index > 0) {
+                index = 0;
+                int i = Integer.parseInt(v.getTag().toString());
+                View view = (list_slmeg.get(i)).getChildAt(0);
+                Log.d(TAG, "onTouch view: " + view);
+                Log.d(TAG, "onTouch v: " + v);
+                if (view != null && v != null && view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
+                    String type = "";
+                    String page = "";
+                    switch (i){
+                        case 0:
+                            currentpageAll=currentpageAll+1;
+                            page = Integer.toString(currentpageAll);
+                            type = "all";
+                            break;
+                        case 1:
+                            currentpageReceive=currentpageReceive+1;
+                            page = Integer.toString(currentpageReceive);
+                            type = "receive";
+                            break;
+                        case 2:
+                            currentpageSend=currentpageSend+1;
+                            page = Integer.toString(currentpageSend);
+                            type = "send";
+                            break;
+
+                    }
+                    getSearchResults(page,type);
+                }
+            }
+            return false;
+        }
+    };
+
     //获取搜索结果
-    public void getSearchResults(){
+    public void getSearchResults(String page,String Type){
+        dialog.show();
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
         Pdata.setUserId(userid);
         Pdata.setToken(token);
         Pdata.setemployerUserId(employer_id);
+        Pdata.setpage(page);
+        Pdata.setType(Type);//all:全部　receive:受信 send:送信
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),"");
+        param.put("Type",Type);
+        nMaildisplaypage=Integer.parseInt(page)-1;
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
 
     //转换为Json格式并且AES加密
-    public static String JsonChnge(String AesKey,PostDate Data) {
+    public String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
-        Log.d("sdPdata", sdPdata);
+        Log.d(TAG,"sdPdata:"+ sdPdata);
         AES mAes = new AES();
         byte[] mBytes = null;
         try {
@@ -258,14 +404,15 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
     }
     //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
-
         String name = "";
+        String type="";
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            type=map.get("Type");
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
@@ -274,33 +421,51 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 e.printStackTrace();
             }
             return githubSearchResults;
+
         }
         @Override
         protected void onPostExecute(String githubSearchResults) {
+            dialog.dismiss();
+            Log.d(TAG,"Results:"+ githubSearchResults);
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
-                    String meg = obj.getString(getString(R.string.message));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         Log.d("***returnData***", obj.getString(getString(R.string.returnData)));
                         if(!name.equals(getString(R.string.isReaded))){
-                            decryptchange(obj.getString(getString(R.string.returnData)),name);
+                            decryptchange(obj.getString(getString(R.string.returnData)),name,type);
+                        }
+                    }else {
+                        if(errorCode.equals("101")){
+                            if(type.equals("all")) {
+                                currentpageAll = currentpageAll - 1;
+                            }else if(type.equals("receive")){
+                                currentpageReceive = currentpageReceive - 1;
+                            }else{
+                                currentpageSend = currentpageSend - 1;
+                            }
+                        }
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                            alertdialog(message,errorCode);
+                        } else if(!errorCode.equals("101")){
+                            alertdialog(message,errorCode);
                         }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
-//            dialog.dismiss();
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data,String inputname){
+    public void decryptchange(String data,String inputname,String type){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
-        Log.d("***decryptdata***", decryptdata);
+        Log.d(TAG,"decryptdata:"+ decryptdata);
         try {
             if (inputname.equals(getString(R.string.SendMeg))) {
                 JSONObject obj = new JSONObject(decryptdata);
@@ -308,45 +473,83 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date curDate =  new Date(System.currentTimeMillis());
                 String strDate = formatter.format(curDate);
-                Log.d("***strDate***", strDate);
-                Setsendmeg(objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
-            }else {
+                Log.d(TAG,"strDate:"+ strDate);
+                Setsendmeg(list_slmeg.get(0),list_llmeg.get(0),objPendingMail.getString(getString(R.string.mail_title)), objPendingMail.getString(getString(R.string.mail_content)), strDate);
+            }else{
+                Log.d(TAG, "decryptchange type: " +type);
                 JSONArray obj = new JSONArray(decryptdata);
-                for(int x=0; x < obj.length(); x++){
-                    try {
-                        list_String.add(x,obj.getString(x));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                Log.d(TAG, "decryptchange obj.length(): " +obj.length());
+                if(type.equals("all")) {
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringAll.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringAll;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    Log.d(TAG, "decryptchange list_StringAll.size(): " +list_StringAll.size());
+                    Log.d(TAG, "decryptchange list_String.size(): " +list_String.size());
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(0);
+                }else if(type.equals("receive")){
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringReceive.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringReceive;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.d(TAG, "decryptchange list_StringReceive.size(): " +list_StringReceive.size());
+                    Log.d(TAG, "decryptchange list_String.size(): " +list_String.size());
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(1);
+                }else{
+                    for (int x = (nMaildisplaypage * 10) + 0; x < (nMaildisplaypage * 10) + obj.length(); x++) {
+                        try {
+                            list_StringSend.add(x, obj.getString(x - (nMaildisplaypage * 10)));
+                            list_String = list_StringSend;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.d(TAG, "decryptchange list_StringSend.size(): " +list_StringSend.size());
+                    Log.d(TAG, "decryptchange list_String.size(): " +list_String.size());
+                    mMyApplication.setContactDialog(decryptdata, 3);
+                    mMyApplication.setContactDialog(DisplayEmailFlg, 4);
+                    educationInfo(2);
                 }
-                mMyApplication.setContactDialog(decryptdata,3);
-                mMyApplication.setContactDialog(DisplayEmailFlg,4);
-//                Collections.reverse(list_String);
-                educationInfo("");
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
     //通信信息取得
-    public void educationInfo(String flg){
-        slmeg.scrollTo(0,0);
-        llmeg.removeAllViews();
-        list_tlnamedata.clear();
-        list_tvtitle.clear();
-        list_tvsubtitle.clear();
-        list_tvmeg.clear();
-        list_tlreply.clear();
-        list_ivread.clear();
-        list_obj.clear();
+    public void educationInfo(int pages){
+        list_llmeg.get(pages).removeAllViews();
+        Log.d(TAG, "educationInfo pages: " + pages);
+        Log.d(TAG, "educationInfo list_StringAll.size(): " +list_StringAll.size());
+        Log.d(TAG, "educationInfo list_StringReceive.size(): " +list_StringReceive.size());
+        Log.d(TAG, "educationInfo list_StringSend.size(): " +list_StringSend.size());
+        Log.d(TAG, "educationInfo list_String.size(): " +list_String.size());
         for(int i=0; i < list_String.size(); i++){
             try {
                 JSONObject obj = new JSONObject(list_String.get(i));
                 JSONObject objMyMail = obj.getJSONObject(getString(R.string.MyMail));
-                Log.d("***obj***", objMyMail.toString());
+                Log.d(TAG,"obj:"+ objMyMail.toString());
                 View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
                 TableLayout tltlTableLayout = (TableLayout) dialog.findViewById(R.id.tl_tl_TableLayout);
                 TableLayout tlnamedata = (TableLayout) dialog.findViewById(R.id.tl_name_data);
+                tlnamedata.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_meg_visibility(v);
+                    }
+                });
                 TextView tvcompany_name = (TextView) dialog.findViewById(R.id.tl_tv_company_name);
                 TextView tvisReaded = (TextView) dialog.findViewById(R.id.tv_isReaded);
                 ImageView ivread = (ImageView) dialog.findViewById(R.id.iv_read);
@@ -355,12 +558,20 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 TextView tvsubtitle = (TextView) dialog.findViewById(R.id.tl_tv_sub_title);
                 TextView tvmeg = (TextView) dialog.findViewById(R.id.tl_tv_meg);
                 TableLayout tlreply = (TableLayout) dialog.findViewById(R.id.tl_reply);
+                tlreply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_setmeg(v);
+                    }
+                });
                 TableLayout tlnew = (TableLayout) dialog.findViewById(R.id.tl_new);
+                tlnew.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Click_setmeg(v);
+                    }
+                });
                 tvdata.setText(objMyMail.getString(getString(R.string.send_time)));
-//                String Title = obj.getString("mailTitle");
-//                String mailTitle = new String(android.util.Base64.decode(Title.getBytes(), android.util.Base64.DEFAULT));
-//                String Content = obj.getString("mailContent");
-//                String mailContent = new String(android.util.Base64.decode(Content.getBytes(), android.util.Base64.DEFAULT));
                 String mailContent = objMyMail.getString(getString(R.string.mail_content)).replace("<br />","");
                 tvtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
                 tvsubtitle.setText(objMyMail.getString(getString(R.string.mail_title)));
@@ -377,22 +588,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 } else {
                     tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule_green);
                     tvcompany_name.setText(company_name + " へ");
-//                    tvcompany_name.setGravity(Gravity.RIGHT);
-//                    tvdata.setGravity(Gravity.RIGHT);
-//                    ivread.setVisibility(GONE);
                     tvisReaded.setVisibility(GONE);
                 }
-
-                //收信的场合不显示送信邮件
-                if(flg.equals("1") && objMyMail.getString(getString(R.string.direction)).equals("0")){
-                    dialog.setVisibility(GONE);
-
-                }
-                //送信的场合不显示收信邮件
-                else if(flg.equals("0") && objMyMail.getString(getString(R.string.direction)).equals("1")){
-                    dialog.setVisibility(GONE);
-                }
-                llmeg.addView(dialog,i);
+                list_llmeg.get(pages).addView(dialog,i);
                 list_tlnamedata.add(i,tlnamedata);
                 list_tvtitle.add(i,tvtitle);
                 list_tvsubtitle.add(i,tvsubtitle);
@@ -405,23 +603,25 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 e.printStackTrace();
             }
         }
-        slmeg.setVisibility(VISIBLE);
+        list_slmeg.get(pages).setVisibility(VISIBLE);
     }
     //返回联络画面
     public void Click_back(){
-        Log.d("sendflg", sendflg);
+        Log.d(TAG,"sendflg:"+ sendflg);
+        int nPageNum = viewPager.getCurrentItem();
         if(sendflg.equals("1")){
-            if(! ettitle.getText().toString().equals(setTitle) || ! etmeg.getText().toString().equals(setmeg)){
+            if(!list_ettitle.get(nPageNum).getText().toString().equals(setTitle) || ! list_etmeg.get(nPageNum).getText().toString().equals(setmeg)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("").setMessage(getString(R.string.setMessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        int nPageNum = viewPager.getCurrentItem();
                         //确定按钮的点击事件
                         sendflg = "0";
-                        slmeg.setVisibility(VISIBLE);
-                        tlmeg.setVisibility(GONE);
-                        ettitle.setText("");
-                        etmeg.setText("");
+                        list_slmeg.get(nPageNum).setVisibility(VISIBLE);
+                        list_tlmeg.get(nPageNum).setVisibility(GONE);
+                        list_ettitle.get(nPageNum).setText("");
+                        list_etmeg.get(nPageNum).setText("");
                     }
                 }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -431,74 +631,36 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 }).show();
             } else {
                 sendflg = "0";
-                slmeg.setVisibility(VISIBLE);
-                tlmeg.setVisibility(GONE);
-                ettitle.setText("");
-                etmeg.setText("");
+                list_slmeg.get(nPageNum).setVisibility(VISIBLE);
+                list_tlmeg.get(nPageNum).setVisibility(GONE);
+                list_ettitle.get(nPageNum).setText("");
+                list_etmeg.get(nPageNum).setText("");
             }
         } else {
-//            switch (View.getId()){
-//                case R.id.tv_back:
                     mMyApplication.setContactDialog("0",0);
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.setClass(ContactDialogActivity.this, ContactActivity.class);
                     startActivity(intent);
-//                    break;
-//            }
         }
-    }
-    //显示邮件
-    public void onClick(View View){
-        String name = "";
-        switch (View.getId()){
-            case R.id.tv_allEmail:
-                name = getString(R.string.tv_allEmail);
-                break;
-            case R.id.tv_sendEmail:
-                name = getString(R.string.tv_sendEmail);
-                break;
-            case R.id.tv_ReceptionEmail:
-                name = getString(R.string.tv_ReceptionEmail);
-                break;
-        }
-        DisplayEmail(name);
     }
     //显示邮件的背景设定
     public void DisplayEmail(String name){
         switch (name){
             case "tv_allEmail":
                 //显示全部的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_bule);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-                tvallEmail.setTextColor(Color.parseColor("#ffffffff"));
-                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "";
-                educationInfo("");
+                educationInfo(0);
                 break;
             case "tv_sendEmail":
                 //显示收到的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_bule);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
-                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvsendEmail.setTextColor(Color.parseColor("#ffffffff"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#0196FF"));
                 DisplayEmailFlg = "1";
-                educationInfo("1");
+                educationInfo(1);
                 break;
             case "tv_ReceptionEmail":
                 //显示发送的邮件
-                tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
-                tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
-                tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_bule);
-                tvallEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvsendEmail.setTextColor(Color.parseColor("#0196FF"));
-                tvReceptionEmail.setTextColor(Color.parseColor("#ffffffff"));
                 DisplayEmailFlg = "0";
-                educationInfo("0");
+                educationInfo(2);
                 break;
         }
         //flg保存到全局变量里
@@ -509,8 +671,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         if (View == null) {
             return;
         }
+        int nPageNum = viewPager.getCurrentItem();
         sendflg = "1";
-        tvToCompanyName.setText("To:" + company_name);
+        list_tvToCompanyName.get(nPageNum).setText("To:" + company_name);
         setTitle = "";
         setmeg = "";
         // 判断第几个按钮触发了事件
@@ -531,22 +694,23 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                         tm = tm.replace("\n","\n>");
                         setTitle = "Re:" + ti;
                         setmeg = "\n\n\n\n\n\n>" + tm;
-                        ettitle.setText(setTitle);
-                        etmeg.setText(setmeg);
+                        /*他のページに伝えるもの、findbyidもらえない、null値になる*/
+                        list_ettitle.get(nPageNum).setText(setTitle);
+                        list_etmeg.get(nPageNum).setText(setmeg);
                         break;
                     }
                 }
                 break;
         }
         //当前界面隐藏
-        slmeg.setVisibility(GONE);
+        list_slmeg.get(nPageNum).setVisibility(GONE);
         //显示送信界面
-        tlmeg.setVisibility(VISIBLE);
+        list_tlmeg.get(nPageNum).setVisibility(VISIBLE);
     }
     //将发送的信息添加到列表的最上方
-    public void Setsendmeg(String title,String meg,String date){
-        slmeg.setVisibility(VISIBLE);
-        tlmeg.setVisibility(GONE);
+    public void Setsendmeg(ScrollView xslmeg,LinearLayout xtlmeg,String title,String meg,String date){
+        xslmeg.setVisibility(VISIBLE);
+        xtlmeg.setVisibility(GONE);
         sendflg = "0";
         JSONObject obj = new JSONObject();
         try {
@@ -563,12 +727,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         View dialog = getLayoutInflater().inflate(R.layout.include_dialog, null);
         TableLayout tltlTableLayout = (TableLayout) dialog.findViewById(R.id.tl_tl_TableLayout);
         TableLayout tlnamedata = (TableLayout) dialog.findViewById(R.id.tl_name_data);
-        tlnamedata.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_meg_visibility(v);
-            }
-        });
         TextView tvcompany_name = (TextView) dialog.findViewById(R.id.tl_tv_company_name);
         TextView tvisReaded = (TextView) dialog.findViewById(R.id.tv_isReaded);
         ImageView ivread = (ImageView) dialog.findViewById(R.id.iv_read);
@@ -577,19 +735,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         TextView tvsubtitle = (TextView) dialog.findViewById(R.id.tl_tv_sub_title);
         TextView tvmeg = (TextView) dialog.findViewById(R.id.tl_tv_meg);
         TableLayout tlreply = (TableLayout) dialog.findViewById(R.id.tl_reply);
-        tlreply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_setmeg(v);
-            }
-        });
         TableLayout tlnew = (TableLayout) dialog.findViewById(R.id.tl_new);
-        tlnew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_setmeg(v);
-            }
-        });
         tltlTableLayout.setBackgroundResource(R.drawable.ic_shape_w_bule_green);
         tvcompany_name.setText(Email);
         tvcompany_name.setGravity(Gravity.RIGHT);
@@ -600,7 +746,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         tvtitle.setText(title);
         tvsubtitle.setText(title);
         tvmeg.setText(meg);
-        llmeg.addView(dialog,0);
+        list_llmeg.get(0).addView(dialog,0);
         Log.d("obj.toString()", obj.toString());
         list_String.addFirst(obj.toString());
         list_tlnamedata.addFirst(tlnamedata);
@@ -614,6 +760,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         if (View == null) {
             return;
         }
+        int nPageNum = viewPager.getCurrentItem();
         // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         TextView Click_tvtitle = new TextView(this);
@@ -665,6 +812,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                     param.put(getString(R.string.name),getString(R.string.isReaded));
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -683,74 +831,45 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
     }
     //送信处理
-    public void Click_setSendMeg(){
-        PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
-        Pdata.setUserId(userid);
-        Pdata.setToken(token);
-        Pdata.setemployerId(employer_id);
-        Pdata.setmailTitle(ettitle.getText().toString());
-        Pdata.setmailContent(etmeg.getText().toString());
-        String data = JsonChnge(AesKey,Pdata);
-        param.put(getString(R.string.file),PARAM_sendMessage);
-        param.put(getString(R.string.data),data);
-        param.put(getString(R.string.name),getString(R.string.SendMeg));
-        //数据通信处理（访问服务器，并取得访问结果）
-        new GithubQueryTask().execute(param);
-    }
-    //菜单栏界面移动
-    public void ll_Click(View View) {
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        switch (View.getId()) {
-            //检索画面に移動
-            case R.id.ll_b_search:
-                mMyApplication.setAct(getString(R.string.Search));
-                if(mMyApplication.getSURL(0).equals("0")){
-                    if(mMyApplication.getSApply(0).equals("0")){
-                        if(mMyApplication.getSearchResults(0).equals("0")){
-                            intent.setClass(ContactDialogActivity.this, SearchActivity.class);
-                            intent.putExtra(getString(R.string.act),"");
-                        } else {
-                            intent.setClass(ContactDialogActivity.this, SearchResultsActivity.class);
-                        }
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            case R.id.ll_b_contact:
-                intent.setClass(ContactDialogActivity.this, ContactDialogActivity.class);
-                break;
-            //Myリスト画面に移動
-            case R.id.ll_b_mylist:
-                mMyApplication.setAct(getString(R.string.Apply));
-                if(mMyApplication.getMURL(0).equals("0")){
-                    if(mMyApplication.getMApply(0).equals("0")){
-                        intent.setClass(ContactDialogActivity.this, MylistActivity.class);
-                    } else {
-                        intent.setClass(ContactDialogActivity.this, ApplyActivity.class);
-                    }
-                } else {
-                    intent.setClass(ContactDialogActivity.this, WebActivity.class);
-                }
-                break;
-            //個人設定画面に移動
-            case R.id.ll_b_personalsettings:
-                if(mMyApplication.getpersonalset(0).equals("0")){
-                    intent.setClass(ContactDialogActivity.this, PersonalSetActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("1")){
-                    intent.setClass(ContactDialogActivity.this, BasicinfoeditActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("2")){
-                    intent.setClass(ContactDialogActivity.this, ChangepwActivity.class);
-                } else if(mMyApplication.getpersonalset(0).equals("3")){
-                    intent.setClass(ContactDialogActivity.this, ResumeActivity.class);
-                }
-                break;
+    private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
+        public void onClick(View View) {
+            int nPageNum = viewPager.getCurrentItem();
+            PostDate Pdata = new PostDate();
+            Map<String, String> param = new HashMap<String, String>();
+            Pdata.setUserId(userid);
+            Pdata.setToken(token);
+            Pdata.setemployerId(employer_id);
+            Pdata.setmailTitle(list_ettitle.get(nPageNum).getText().toString());
+            Pdata.setmailContent(list_etmeg.get(nPageNum).getText().toString());
+            String data = JsonChnge(AesKey, Pdata);
+            param.put(getString(R.string.file), PARAM_sendMessage);
+            param.put(getString(R.string.data), data);
+            param.put(getString(R.string.name), getString(R.string.SendMeg));
+            //数据通信处理（访问服务器，并取得访问结果）
+            new GithubQueryTask().execute(param);
+            alertdialog("送信しました。","");
         }
-        mMyApplication.setContactDialog("0",0);
-        startActivity(intent);
+    };
+    private void alertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    mPreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(ContactDialogActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                } else {
+                    finish();
+                }
+            }
+        }).show();
     }
 }

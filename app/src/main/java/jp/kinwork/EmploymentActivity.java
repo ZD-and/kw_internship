@@ -166,7 +166,7 @@ public class EmploymentActivity extends AppCompatActivity {
                             String textString = String.valueOf(startYear) + getString(R.string.Year) + String.valueOf(startMonthOfYear + 1) + getString(R.string.Months);
                             if ((startYear > sysYear) || (startYear == sysYear && startMonthOfYear + 1 >= sysMonth)) {
                                 tvEmploymentStartYM.setText("");
-                                alertdialog(getString(R.string.alertdialog2));
+                                alertdialog(getString(R.string.alertdialog2),"");
                             } else {
                                 Start_mYear = startYear;
                                 Start_mMonth = startMonthOfYear + 1;
@@ -198,7 +198,7 @@ public class EmploymentActivity extends AppCompatActivity {
                             String textString = String.valueOf(endYear) + getString(R.string.Year) + String.valueOf(endMonthOfYear + 1) + getString(R.string.Months);
                             if ((Start_mYear > endYear) || (Start_mYear == endYear && Start_mMonth >= endMonthOfYear + 1)) {
                                 tvEmploymentEndYM.setText("");
-                                alertdialog(getString(R.string.alertdialog3));
+                                alertdialog(getString(R.string.alertdialog3),"");
                             } else {
                                 End_mYear = endYear;
                                 End_mMonth = endMonthOfYear + 1;
@@ -212,19 +212,6 @@ public class EmploymentActivity extends AppCompatActivity {
             }
         });
     }
-
-    //通信结果提示
-    private void alertdialog(String meg){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
-            }
-        }).show();
-    }
-
-
 
     //关闭，履历书画面
     public void Click_cancel(){
@@ -257,13 +244,13 @@ public class EmploymentActivity extends AppCompatActivity {
     //内容取得、通信
     public void saveurl() {
         if(etJobname.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog5));
+            alertdialog(getString(R.string.alertdialog5),"");
         } else if(etCompanyname.getText().toString().equals("")){
-            alertdialog(getString(R.string.alertdialog6));
+            alertdialog(getString(R.string.alertdialog6),"");
         } else if(! tvEmploymentEndYM.getText().toString().equals("") &&
                 (ChecksysYear < End_mYear || (ChecksysYear == End_mYear && ChecksysMonth <= End_mMonth)) &&
                 cbcurrent.isChecked() == false){
-            alertdialog(getString(R.string.alertdialog7));
+            alertdialog(getString(R.string.alertdialog7),"");
         } else {
             //Json格式转换
             Gson Gson = new Gson();
@@ -346,15 +333,19 @@ public class EmploymentActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                Log.d("***Results***", githubSearchResults);
+                Log.d("EmploymentActivity", "githubSearchResults:" + githubSearchResults);
                 try {
                     JSONObject obj = new JSONObject(githubSearchResults);
                     Boolean processResult = obj.getBoolean(getString(R.string.processResult));
+                    String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
                         NewIntent();
                     } else {
-                        Log.d("githubSearchResults:", githubSearchResults);
-
+                        if(errorCode.equals("100")){
+                            message = "他の端末から既にログインしています。もう一度ログインしてください。";
+                        }
+                        alertdialog(message,errorCode);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -363,6 +354,28 @@ public class EmploymentActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+    //通信结果提示
+    private void alertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    mMyApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    mMyApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(EmploymentActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                }
+            }
+        }).show();
     }
 
     //创建、更新判定

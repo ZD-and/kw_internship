@@ -1,8 +1,10 @@
 package jp.kinwork;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -12,20 +14,16 @@ import android.widget.Button;
 
 import jp.kinwork.Common.MyApplication;
 
+import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT;
+
 public class AgreementActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView tvagreementname;
-    private TextView tvagreementcontents;
-    private String termsofservice;
-    private String contents_Termsofservice;
-    private String privacypolicy;
-    private String contents_privacypolicy;
-    private String Agreement = "";
-    private String[] Termsofservice_title;
-    private String[] privacypolicy_title;
+    private String TAG = "AgreementActivity";
+    private String mAgreement = "";
+    private String[] Termsofservice_title = new String[]{"KinWork へようこそ","第1条（本サービスのご利用）","第2条（ユーザーの KinWork アカウント）","第3条（プライバシー ポリシー）","第4条（本サービス内のユーザーのコンテンツ）","第5条（本サービスの変更または終了）","第6条（ソーシャルボタンのご利用について）","第7条（保証）","第8条（お客様へのご連絡手段）","第9条（免責事項）","第10条（本規約について）","第11条（準拠法、裁判管轄）"};
+    private String[] privacypolicy_title = new String[]{"1. パーソナルデータの取得","2. パーソナルデータの利用目的","3. 個人情報の提供の同意","4. 安全管理の実施","5. パーソナルデータに関する開示等、苦情および相談への対応"};
 
-    private Button bu_back;
-    private Button bu_ok;
+
     private MyApplication mMyApplication;
 
 
@@ -33,46 +31,50 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agreement);
-        termsofservice = getString(R.string.termsofservice);
-        contents_Termsofservice = getString(R.string.contentsTermsofservice);
-        privacypolicy = getString(R.string.privacypolicy);
-        contents_privacypolicy = getString(R.string.contentsprivacypolicy);
-        Termsofservice_title = new String[]{getString(R.string.Termsofservice_title)};
-        privacypolicy_title = new String[]{getString(R.string.privacypolicy_title)};
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        TextView tvBack = findViewById(R.id.tv_back);
+        tvBack.setOnClickListener(this);
+        tvBack.setText("戻る");
+        TextView tvBackDummy = findViewById(R.id.tv_back_dummy);
+        tvBackDummy.setOnClickListener(this);
+        tvBackDummy.setText("同意");
+        tvBackDummy.setTextColor(Color.parseColor("#0196FF"));
 
         mMyApplication = (MyApplication) getApplication();
-        Agreement = mMyApplication.getAgreement();
-        tvagreementname = (TextView) findViewById(R.id.tv_agreement_name);
-        tvagreementcontents = (TextView) findViewById(R.id.tv_agreement_contents);
-        bu_back=findViewById(R.id.bu_back);
-        bu_ok=findViewById(R.id.bu_ok);
-        bu_back.setOnClickListener(this);
-        bu_ok.setOnClickListener(this);
+        mAgreement = mMyApplication.getAgreement();
+        TextView tvagreementname = (TextView) findViewById(R.id.tv_back_title);
+        TextView tvagreementcontents = (TextView) findViewById(R.id.tv_agreement_contents);
+
+//        findViewById(R.id.bu_ok).setOnClickListener(this);
         String text = "";
-        if(Agreement.equals(getString(R.string.termsofservice))){
-            tvagreementname.setText(termsofservice);
-//            text = contents_Termsofservice.replace("\\n", "\n");
-            text = ChangeString(contents_Termsofservice,Termsofservice_title);
+        if(mAgreement.equals(getString(R.string.termsofservice))){
+            tvagreementname.setText(getString(R.string.termsofservice));
+            text = ChangeString(getString(R.string.contentsTermsofservice),Termsofservice_title);
         } else {
-            tvagreementname.setText(privacypolicy);
-//            text = contents_privacypolicy.replace("\\n", "\n");
-            text = ChangeString(contents_privacypolicy,privacypolicy_title);
+            tvagreementname.setText(getString(R.string.privacypolicy));
+            text = ChangeString(getString(R.string.contentsprivacypolicy),privacypolicy_title);
         }
-        tvagreementcontents.setText(Html.fromHtml(text));
+        tvagreementcontents.setText(HtmlCompat.fromHtml(text,HtmlCompat.FROM_HTML_MODE_COMPACT));
+
     }
 
     public void onClick(View View){
-        mMyApplication.setAgreement(Agreement);
+        mMyApplication.setAgreement(mAgreement);
         switch (View.getId()){
-            case R.id.bu_back:
-                if(Agreement.equals(getString(R.string.termsofservice))){
+            case R.id.tv_back:
+                if(mAgreement.equals(getString(R.string.termsofservice))){
                     mMyApplication.settermsofserviceflg("0");
                 } else {
                     mMyApplication.setprivacypolicyflg("0");
                 }
                 break;
-            case R.id.bu_ok:
-                if(Agreement.equals(getString(R.string.termsofservice))){
+            case R.id.tv_back_dummy:
+                if(mAgreement.equals(getString(R.string.termsofservice))){
                     mMyApplication.settermsofserviceflg("1");
                 } else {
                     mMyApplication.setprivacypolicyflg("1");
@@ -80,7 +82,11 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
         Intent intent = new Intent();
-        intent.setClass(AgreementActivity.this,MakeUserActivity.class);
+        if(mMyApplication.getActivity().equals("MakeUserActivity")){
+            intent.setClass(AgreementActivity.this,MakeUserActivity.class);
+        } else {
+            intent.setClass(AgreementActivity.this,PersonalSetActivity.class);
+        }
         startActivity(intent);
     }
 
@@ -88,6 +94,7 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
         String Stringreturn = data_A;
         String data = "";
         for(int i = 0;i<data_B.length;i++){
+            Log.w(TAG,"data_B["+i+"]"+ data_B[i]);
             if(data_B[i].equals(getString(R.string.welcometoKinwork))){
                 data = "<font color=#000000><big><big><b>" + data_B[i] +"</b></big></big></font> <br />";
             } else {
@@ -96,7 +103,7 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
             Stringreturn = Stringreturn.replace(data_B[i],data);
         }
         Stringreturn = Stringreturn.replace("\\n", "<br />");
-        Log.w("Stringreturn", Stringreturn);
+        Log.w(TAG,"Stringreturn"+ Stringreturn);
         return Stringreturn;
     }
 }

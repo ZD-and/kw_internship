@@ -56,6 +56,10 @@ public class PostDate {
     private String contentShortsHighlight;
     private String order;
     private String flag;
+    private String type;
+    private String id;
+    private String android_token;
+    private String deviceType;
 
     private LinkedList<String> details = new LinkedList<String>();
 
@@ -252,4 +256,18 @@ public class PostDate {
     public void setFlag(String flag) {
         this.flag = flag;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setAndroidToken(String android_token) {
+        this.android_token = android_token;
+    }
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
 }

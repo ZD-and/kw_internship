@@ -1,74 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ContactActivity">
 
     <include
         android:id="@+id/title_contact"
-        layout="@layout/title_bule"/>
+        layout="@layout/title_bule"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <TextView
+        android:id="@+id/tv_contactlist"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:background="@color/colorLight"
+        android:textColor="#3F51B5"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center_vertical"
+        android:text="連絡リスト"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/title_contact"
-            layout="@layout/include_userinfo"/>
+    <TextView
+        android:id="@+id/tv_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/background_holo_dark"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="連絡対象なし"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_contactlist"/>
 
-        <TextView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_show">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/but_blue"
-            android:textColor="@color/colorLight"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="連絡リスト"
-            android:textStyle="bold"
-            />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_show"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/background_holo_dark"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="連絡対象なし"
-            android:textStyle="bold"
-            android:visibility="gone"
-            />
-
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <LinearLayout
+            <TableLayout
+                android:id="@+id/tl_contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp"
+                android:shrinkColumns="0"
+                android:stretchColumns="0">
 
-                <TableLayout
-                    android:id="@+id/tl_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:shrinkColumns="0"
-                    android:stretchColumns="0">
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 
-                </TableLayout>
-            </LinearLayout>
-        </ScrollView>
 
-    </TableLayout>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

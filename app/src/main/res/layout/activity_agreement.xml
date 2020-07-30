@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundblue"
-    android:orientation="vertical"
     tools:context=".AgreementActivity">
 
-    <LinearLayout
-        android:id="@+id/tl_agreement"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:ignore="MissingConstraints">
+    <include
+        layout="@layout/include_back"
+        android:id="@+id/include_back"
+        />
 
-        <TextView
-            android:id="@+id/tv_agreement_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:background="@color/but_blue"
-            android:text=""
-            android:textColor="@color/colorLight"
-            android:textSize="20dp" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_agreement_name"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="18dp"-->
+<!--        android:layout_marginBottom="21dp"-->
+<!--        android:background="@color/but_blue"-->
+<!--        android:paddingLeft="20dp"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:paddingBottom="10dp"-->
+<!--        android:text=""-->
+<!--        android:textColor="@color/colorLight"-->
+<!--        android:textSize="20dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/sl_meg"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    </LinearLayout>
 
     <ScrollView
         android:id="@+id/sl_meg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/ic_shape_null">
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ic_shape_null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/ll_meg"
@@ -52,41 +54,38 @@
                 android:id="@+id/tv_agreement_contents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/background_holo_dark"/>
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/background_holo_dark" />
 
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/tl_but"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bu_back"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="10dp"
-            android:text="戻る"
-            android:textColor="@color/colorLight"
-            android:backgroundTint="@color/but_blue"
-            />
+<!--    <Button-->
+<!--        android:id="@+id/bu_back"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="46dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:backgroundTint="@color/but_blue"-->
+<!--        android:text="戻る"-->
+<!--        android:textColor="@color/colorLight"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/bu_ok"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/bu_ok"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/bu_ok" />-->
 
-        <Button
-            android:id="@+id/bu_ok"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:text="同意する"
-            android:textColor="@color/colorLight"
-            android:backgroundTint="@color/but_blue"
-            />
-    </LinearLayout>
-</LinearLayout>
+<!--    <Button-->
+<!--        android:id="@+id/bu_ok"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:backgroundTint="@color/but_blue"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        -->
+<!--        android:text="同意する"-->
+<!--        android:textColor="@color/colorLight" />-->
+
+</FrameLayout>

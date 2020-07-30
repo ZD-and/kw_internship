@@ -389,15 +389,6 @@ public class BootanimationActivity extends AppCompatActivity {
         Log.d(TAG+"debug", "locationStart()");
         // LocationManager インスタンス生成
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        if (mLocationManager != null && mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//            Log.d("debug", "location manager Enabled");
-//        } else {
-//            // GPSを設定するように促す
-//            Intent settingsIntent =
-//                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//            startActivity(settingsIntent);
-//            Log.d("debug", "not gpsEnable, startActivity");
-//        }
         Log.d(TAG+"debug", "locationStart() AccessFineFocation:" +AccessFineFocation);
         if (AccessFineFocation.equals("1")) {
             if (ContextCompat.checkSelfPermission(this,
@@ -405,10 +396,6 @@ public class BootanimationActivity extends AppCompatActivity {
                     PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG+"debug", "checkSelfPermission false");
             }
-//            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    1000, 50, this);
-//            Location Location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
             criteria.setAltitudeRequired(false);//不要求海拔信息

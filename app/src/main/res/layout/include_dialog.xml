@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/bottom">
 
     <TableLayout
@@ -156,7 +157,7 @@
                                 android:textColor="@color/background_holo_dark"
                                 android:textSize="15sp"
                                 android:paddingLeft="3dp"
-                                android:text="回復"/>
+                                android:text="返信"/>
                         </TableRow>
                     </TableLayout>
 
@@ -194,4 +195,4 @@
         </TableLayout>
 
     </TableLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

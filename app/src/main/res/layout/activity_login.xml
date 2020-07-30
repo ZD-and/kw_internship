@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/frame_top_light"
+    tools:context=".LoginActivity">
+
+
+    <include
+        layout="@layout/include_back"
+        android:id="@+id/include_back"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/kinwork"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center"
+                android:text="メールアドレス"
+                android:textColor="@color/but_blue" />
+
+            <EditText
+                android:id="@+id/ed_login_email"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape_blue_select"
+                android:hint="メールアドレス"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="5dp"
+                android:selectAllOnFocus="false"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:text="パスワード"
+                android:textColor="@color/but_blue" />
+
+            <EditText
+                android:id="@+id/ed_password"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_shape_blue_select"
+                android:hint="パスワード"
+                android:inputType="textPassword"
+                android:paddingLeft="5dp"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/bu_MainLoginClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ic_shape_bule_all"
+                android:text="ログイン"
+                android:textColor="@color/colorLight" />
+
+            <TextView
+                android:id="@+id/Click_Forgetpw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text="パスワードがわからない"
+                android:textStyle="bold"
+                android:textColor="@color/but_blue"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/MakeNewuser_Click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:text="新規アカウント作成"
+                android:textStyle="bold"
+                android:textColor="@color/but_blue"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/NewuserSignIn_Click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:text="アカウント連携"
+                android:textStyle="bold"
+                android:textColor="@color/but_blue"
+                android:textSize="15sp" />
+
+            <include
+                layout="@layout/include_login_in_thirdparty"
+                />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -10,246 +10,240 @@ tools:context=".PersonalSetActivity">
         android:id="@+id/personalset_title"
         layout="@layout/title_bule" />
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <ScrollView
+        android:id="@+id/sl_resume"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:stretchColumns="1"
-        android:layout_weight="1">
+        android:layout_marginBottom="50dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            layout="@layout/include_userinfo"
-            />
-
-        <TableRow
-            android:id="@+id/tr_basicinfoedit"
-            android:background="@color/colorLight"
-            android:layout_marginTop="3dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_basic_info_edi"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_setting" />
-
-            <TextView
-                android:id="@+id/tv_basic_info_edi"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:text="個人情報"
-                android:textColor="@color/but_blue"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
-                android:text=">"
-                android:textColor="@color/but_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tr_changpw"
-            android:background="@color/colorLight"
-            android:layout_marginTop="3dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="30dp">
-            <ImageView
-                android:id="@+id/iv_change_password"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_pwc" />
-
-            <TextView
-                android:id="@+id/tv_change_password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:text="@string/title_change_password"
-                android:textColor="@color/but_blue"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
-                android:text=">"
-                android:textColor="@color/but_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tr_mailSet"
-            android:background="@color/colorLight"
-            android:layout_marginTop="3dp"
-            android:paddingTop="5dp"
-            android:visibility="gone"
-            android:paddingBottom="5dp"
-            android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_In_mail_set"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_mail" />
-
-            <TextView
-                android:id="@+id/tv_In_mail_set"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:text="@string/title_In_mail_set"
-                android:textColor="@color/but_blue"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
-                android:text=">"
-                android:textColor="@color/but_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tr_Resume"
-            android:background="@color/colorLight"
-            android:layout_marginTop="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/iv_In_Resume_set"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/app_resume_add" />
-
-            <TextView
-                android:id="@+id/tv_In_Resume_set"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:text="履歴書"
-                android:textColor="@color/but_blue"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="60dp"
-                android:gravity="center_vertical"
-                android:text=">"
-                android:textColor="@color/but_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-        </TableRow>
-        <TableLayout
-            android:id="@+id/tl_ResumeSet"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/tv_ResumeSet_1"
-                android:layout_width="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorLight"
-                android:gravity="center_vertical"
-                android:paddingLeft="40dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="履歴書①"
-                android:textStyle="bold"
-                android:textColor="@color/but_blue"
-                android:textSize="12dp" />
+                android:stretchColumns="1"
+                android:layout_weight="1"
+                >
+                <include
+                    layout="@layout/include_userinfo"
+                    />
 
-            <TextView
-                android:id="@+id/tv_ResumeSet_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorLight"
-                android:gravity="center_vertical"
-                android:paddingLeft="40dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="履歴書②"
-                android:textStyle="bold"
-                android:textColor="@color/but_blue"
-                android:textSize="12dp" />
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp">
+                </androidx.viewpager.widget.ViewPager>
 
-            <TextView
-                android:id="@+id/tv_ResumeSet_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorLight"
-                android:paddingLeft="40dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="履歴書③"
-                android:textStyle="bold"
-                android:textColor="@color/but_blue"
-                android:gravity="center_vertical"
-                android:textSize="12dp" />
+                <TableRow
+                    android:id="@+id/tr_basicinfoedit"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_basic_info_edi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:text="個人情報"
+                        android:textColor="@color/but_blue"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_changpw"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_change_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/title_change_password"
+                        android:textColor="@color/but_blue"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="40dp"
+
+                    android:text="このアプリについて"
+                    android:textColor="@color/kin_dark"
+                    android:gravity="center_vertical"
+                    android:textSize="20sp" />
 
 
-        </TableLayout>
+                <TableRow
+                    android:id="@+id/tr_termsofservice"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
 
-        <TableRow
-            android:id="@+id/tr_LoginOut"
-            android:background="@color/colorLight"
-            android:layout_marginTop="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="30dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="利用規約"
+                        android:textColor="@color/but_blue"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/iv_LoginOut"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_exit" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
 
-            <TextView
-                android:id="@+id/tv_LoginOut"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:text="ログアウト"
-                android:textColor="@color/but_blue"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                <TableRow
+                    android:id="@+id/tr_privacypolicy"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
 
-        </TableRow>
-    </TableLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="プライバシーポリシー"
+                        android:textColor="@color/but_blue"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-</FrameLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+                <TableRow
+                    android:id="@+id/tr_licenses"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="3dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="ライセンス情報"
+                        android:textColor="@color/but_blue"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_LoginOut"
+                    android:background="@color/colorLight"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_LoginOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="ログアウト"
+                        android:textColor="@color/holo_red_light"
+                        android:gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="60dp"
+                        android:gravity="right"
+                        android:text=">"
+                        android:textColor="@color/but_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
