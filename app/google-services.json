@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "861623119913-aghjssbm55da9l8i9ojt358ckmfnjb8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jp.kinwork",
+            "certificate_hash": "78ce5a07ef9139dc7a6c4dfc423e13bae2817c1d"
+          }
+        },
+        {
           "client_id": "861623119913-r226bnpc9lm2ir8ho858cgfo297vl0rn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
