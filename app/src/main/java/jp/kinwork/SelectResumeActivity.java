@@ -37,6 +37,9 @@ import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class SelectResumeActivity extends AppCompatActivity {
 
     final static String PARAM = "/JobInfosMobile/jobApplySubmit";
@@ -89,6 +92,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String SetMeg = "";
     private Intent intent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,18 +101,18 @@ public class SelectResumeActivity extends AppCompatActivity {
         Initialization();
         if(myApplication.getContactDialog(0).equals("1")){
             Intent intent = getIntent();
-            String companyname = intent.getStringExtra("companyname");
-            String mailtitle = intent.getStringExtra("mailtitle");
-            String mailmeg = intent.getStringExtra("mailmeg");
+            SetCompanyName= intent.getStringExtra("companyname");
+            SetTitle = intent.getStringExtra("mailtitle");
+            SetMeg = intent.getStringExtra("mailmeg");
             employerID=intent.getStringExtra("emploerID");
-            tvToCompanyName.setText("To:"+companyname);
-            ettitle.setText(mailtitle);
-            etmessage.setText(mailmeg);
+            tvToCompanyName.setText("To:"+SetCompanyName);
+            ettitle.setText(SetTitle);
+            etmessage.setText(SetMeg);
             tvback.setText("メール一覧");
             tvback.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MoveIntent("mymail");
+                    mailBack();
                 }
             });
             tvbackdummy.setText("送信");
@@ -355,6 +359,7 @@ public class SelectResumeActivity extends AppCompatActivity {
             param.put(getString(R.string.file),PARAM);
             param.put(getString(R.string.data),data);
             param.put(getString(R.string.name),getString(R.string.Application));
+            param.put("send","");
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
@@ -411,10 +416,8 @@ public class SelectResumeActivity extends AppCompatActivity {
                     if(processResult == true) {
                         if(type.equals("send")){
                             sendMegalertdialog("送信しました。","");
-
                         }else {
                             MoveIntent(getString(R.string.Application));
-
                         }
                     } else {
                         if(errorCode.equals("100")){
@@ -494,12 +497,34 @@ public class SelectResumeActivity extends AppCompatActivity {
                 myApplication.setAct(getString(R.string.SelectResume));
                 intent.setClass(SelectResumeActivity.this, MylistActivity.class);
                 break;
-            case "mymail":
-                intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
-                break;
         }
         startActivity(intent);
     }
+
+    //送信画面のback
+    public void mailBack(){
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        if(!ettitle.getText().toString().equals(SetTitle) || !etmessage.getText().toString().equals(SetMeg)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("").setMessage(getString(R.string.setMessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
+                    startActivity(intent);
+                }
+            }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //取消按钮的点击事件
+                }
+            }).show();
+        }else{
+            intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
+            startActivity(intent);
+        }
+    }
+
 
     //送信处理
     private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
