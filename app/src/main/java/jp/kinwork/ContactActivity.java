@@ -227,7 +227,9 @@ public class ContactActivity extends AppCompatActivity {
                         if(errorCode.equals("100")){
                             message = "他の端末から既にログインしています。もう一度ログインしてください。";
                         }
-                        alertdialog(message,errorCode);
+                        if(message.length() >0 ) {
+                            alertdialog(message, errorCode);
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();

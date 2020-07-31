@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -85,7 +86,7 @@ import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
+    final static String PARAM_A = "/Common/initialCommunication";
     final static String PARAM_login = "/usersMobile/login";
     final static String PARAM_Forgetwe = "/usersMobile/sendPasswordRecoverMail";
     final static String PARAM_init = "/MypagesMobile/initMypageData";
@@ -314,7 +315,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
             try {
-                githubSearchResults = getResponseFromHttpUrl(searchUrl,data, mDeviceId);
+                if(mFlg.equals("998")){
+                    githubSearchResults = getResponseFromHttpUrl(searchUrl,data,"");
+                } else {
+                    githubSearchResults = getResponseFromHttpUrl(searchUrl,data, mDeviceId);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -330,9 +335,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     JSONObject obj = new JSONObject(githubSearchResults);
                     boolean processResult = obj.getBoolean(getString(R.string.processResult));
                     String message = obj.getString(getString(R.string.message));
+                    String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult) {
                         String returnData = obj.getString(getString(R.string.returnData));
-                        if(mFlg.equals("0")){
+                        if(mFlg.equals("998")){
+                            login();
+                        }
+                        else if(mFlg.equals("0")){
                             decryptchange(returnData);
                         } else if(mFlg.equals("2")){
                             setMyApplication(returnData);
@@ -348,7 +357,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             MoveScreen();
                         } else {
                             mPreferenceUtils.setLoginFlag("0");
-                            alertdialog("エラー",message);
+                            if(errorCode.equals("998")){
+                                urllodad();
+                            } else {
+                                alertdialog("エラー",message);
+                            }
+
                         }
                     }
                 }catch (Exception e){
@@ -503,6 +517,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                mPreferenceUtils.setLoginFlag("0");
+            }
+            return super.onKeyDown(keyCode, event);
+        } else {
+            return false;
+        }
+
+
     }
 
     //返回检索結果画面
@@ -906,6 +934,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
         commonAsyncTask.execute(param);
 
+    }
+
+    //初次通信
+    public void urllodad() {
+        Map<String,String> param = new HashMap<String, String>();
+        param.put(getString(R.string.file),PARAM_A);
+        param.put(getString(R.string.data),"2");
+        mFlg = "998";
+        new GithubQueryTask().execute(param);
     }
 }
 
