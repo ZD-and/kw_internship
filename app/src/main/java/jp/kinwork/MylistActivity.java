@@ -13,10 +13,12 @@ import android.text.TextPaint;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ import java.util.Map;
 
 import jp.kinwork.Common.AES;
 import jp.kinwork.Common.AESprocess;
+import jp.kinwork.Common.CommonView.MyScrollView;
 import jp.kinwork.Common.KinWorkManagerController;
 import jp.kinwork.Common.MyApplication;
 import jp.kinwork.Common.PostDate;
@@ -54,8 +57,7 @@ import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class MylistActivity extends AppCompatActivity  {
 
-//    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
-    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfoList";
+    final static String PARAM_likelist = "/MypagesMobile/personalSavedJobInfo";
     final static String PARAM_personalApplyJobList = "/MypagesMobile/personalApplyJobList";
     final static String PARAM_jobDetail = "/JobInfosMobile/jobDetail";
     final static String PARAM_deletelikeJob = "/MypagesMobile/deleteLikeJobByUrl";
@@ -100,16 +102,18 @@ public class MylistActivity extends AppCompatActivity  {
     private int DeleteIndex = -1;
     private int likejobIndex = -1;
     private int ApplyjobIndex = -1;
-    private int likejobpage = 1;
+    private int likejobpage;
     private int likejobpageCount = 0;
     private int likejobCount = 0;
-    private int Applyjobpage = 1;
+    private int Applyjobpage;
     private int ApplyjobpageCount = 0;
     private int ApplyjobCount = 0;
     private int ApplyDeleteIndex = -1;
-    private int nlikejobpage=0;
+    private int index=0;
 
 
+    private ProgressDialog dialog;
+    private LinkedList<ScrollView> SV_ScrollView;
     private String[] salary_type = new String[]{" ","月給","年給","周給","日給","時給"};
 
     String TAG = "MylistActivity";
@@ -122,9 +126,8 @@ public class MylistActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylist);
-
+        CreateNew();
     }
-
 
     private void initPages() {
         pages = new ArrayList<View>();
@@ -188,22 +191,30 @@ public class MylistActivity extends AppCompatActivity  {
         super.onStart();
         initPages();
         Initialization();
-        CreateNew();
     }
+
     //初始化
     public void Initialization(){
-        DeleteIndex = -1;
-        likejobIndex = -1;
-        ApplyjobIndex = -1;
+        likejobpage=1;
+        Applyjobpage=1;
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         PagerAdapter adapter = new MylistActivity.customViewPagerAdapter(pages);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        TextView tltvlike=pages.get(0).findViewById(R.id.tl_tv_like);
-        TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
-        tltvlike.setOnClickListener(Click_getmore);
-        tltvEntered.setOnClickListener(Click_getmore);
+        SV_ScrollView = new LinkedList<ScrollView>();
+        SV_ScrollView.clear();
+        SV_ScrollView.add((ScrollView) pages.get(0).findViewById(R.id.SV_ScrollView_like));
+        SV_ScrollView.add((ScrollView) pages.get(1).findViewById(R.id.SV_ScrollView_enter));
+
+        SV_ScrollView.get(0).setOnTouchListener(onTouchListener);
+        SV_ScrollView.get(0).setTag("0");
+        SV_ScrollView.get(1).setOnTouchListener(onTouchListener);
+        SV_ScrollView.get(1).setTag("1");
+//        TextView tltvlike=pages.get(0).findViewById(R.id.tl_tv_like);
+//        TextView tltvEntered=pages.get(1).findViewById(R.id.tl_tv_Entered);
+//        tltvlike.setOnClickListener(Click_getmore);
+//        tltvEntered.setOnClickListener(Click_getmore);
         ivmylist = (ImageView) findViewById(R.id.iv_b_mylist);
         tvmylist = (TextView) findViewById(R.id.tv_b_mylist);
         ivmylist.setImageResource(R.mipmap.blue_mylist);
@@ -234,10 +245,44 @@ public class MylistActivity extends AppCompatActivity  {
             kinWorkManagerController.getDeviceTokenToServer();
         }
         dialog = new ProgressDialog(this);
-        getJobList("1","SavedJob");
-        getJobList("1","ApplyJob");
-        nlikejobpage=nlikejobpage+1;
+       getSearchResults("1","likejob");
+       getSearchResults("1","savejob");
     }
+
+    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN :
+                    break;
+                case MotionEvent.ACTION_MOVE :
+                    index++;
+                    break;
+                default :
+                    break;
+            }
+            Log.d(TAG, "onTouch v.getTag(): " + v.getTag());
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP &&  index > 0) {
+                int i = Integer.parseInt(v.getTag().toString());
+                View view = (SV_ScrollView.get(i)).getChildAt(0);
+                Log.d(TAG, "onTouch view: " + view);
+                Log.d(TAG, "onTouch v: " + v);
+                if (view != null && v != null && view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
+                    switch (i){
+                        case 0:
+                            likejobpage = likejobpage + 1;
+                            getSearchResults(Integer.toString(likejobpage),"likejob");
+                            break;
+                        case 1:
+                            Applyjobpage = Applyjobpage + 1;
+                            getSearchResults(Integer.toString(Applyjobpage),"savejob");
+                            break;
+                    }
+                }
+            }
+            return false;
+        }
+    };
     //获取搜索结果菜单栏按钮
     public void ll_Click(View View){
         Intent intent = new Intent();
@@ -285,30 +330,30 @@ public class MylistActivity extends AppCompatActivity  {
 
     }
 
-    private boolean isSavedJobInfo = false;
-    private ProgressDialog dialog;
-    //获取気に入り搜索结果
-    //获取応募済み搜索结果
-    public void getJobList(String number,String jobInfo){
+    //获取搜索结果
+    public void getSearchResults( String number,String jobInfo){
         dialog.setMessage("通信中");
-        Log.d(TAG, "getJobList: ");
         if(!dialog.isShowing()){
             dialog.show();
         }
         PostDate Pdata = new PostDate();
-        Map<String,String> param = new HashMap<String, String>();
+        Map<String,String> param= new HashMap<String, String>();
         Pdata.setUserId(userId);
         Pdata.setToken(token);
+        Pdata.setpage(number);
+        Pdata.setOrder("");
+        Pdata.setFlag("");
         Pdata.setcurrentPage(number);
         String data = JsonChnge(AesKey,Pdata);
-        if(jobInfo.equals("SavedJob")){
+        if(jobInfo.equals("likejob")){
             param.put(getString(R.string.file),PARAM_likelist);
-        } else {
+        }else{
             param.put(getString(R.string.file),PARAM_personalApplyJobList);
         }
-        param.put(getString(R.string.name),jobInfo);
         param.put(getString(R.string.data),data);
-        //数据通信处理（応募状況取得）
+        param.put(getString(R.string.name),"");
+        param.put("jobInfo",jobInfo);
+        //数据通信处理（気に入り取得）
         new GithubQueryTask().execute(param);
     }
 
@@ -332,6 +377,7 @@ public class MylistActivity extends AppCompatActivity  {
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name= "";
+        String jobInfo="";
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
@@ -339,6 +385,7 @@ public class MylistActivity extends AppCompatActivity  {
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            jobInfo=map.get("jobInfo");
             Log.d("***file***", file);
             URL searchUrl = buildUrl(file);
             String githubSearchResults = null;
@@ -364,8 +411,8 @@ public class MylistActivity extends AppCompatActivity  {
                         if(obj.getString(getString(R.string.returnData)).equals("[]")){
                             alertdialog(getString(R.string.alertdialog11),"");
                         } else {
-                            if(name.equals("SavedJob") || name.equals("ApplyJob")){
-                                decryptchange(obj.getString(getString(R.string.returnData)),name);
+                            if(name.equals("")){
+                                decryptchange(obj.getString(getString(R.string.returnData)));
                             } else if(name.equals(getString(R.string.likejob)) || name.equals(getString(R.string.Enteredjob))){
                                 MoveApply(obj.getString(getString(R.string.returnData)));
                             } else if(name.equals(getString(R.string.deletelikejob))){
@@ -374,7 +421,6 @@ public class MylistActivity extends AppCompatActivity  {
                                 if(likejobCount == 0){
                                     tllike.setVisibility(View.GONE);
                                 }
-//                                tvlikecont.setText(likejobCount + "件");
                                 listIBTN_likejob.remove(DeleteIndex);
                                 tltllike.removeViewAt(DeleteIndex);
                             } else if(name.equals(getString(R.string.deleteApplyjob))){
@@ -383,8 +429,7 @@ public class MylistActivity extends AppCompatActivity  {
                                 if(ApplyjobCount == 0){
                                     tltlEntered.setVisibility(View.GONE);
                                 }
-                                //tvApplycont.setText(ApplyjobCount + "件");
-//                                tvTopApplycont.setText(ApplyjobCount + "件");
+
                                 listIBTN_Enteredjob.remove(ApplyDeleteIndex);
                                 listIBTN_DelEnteredjob.remove(ApplyDeleteIndex);
                                 tltlEntered.removeViewAt(ApplyDeleteIndex);
@@ -404,19 +449,27 @@ public class MylistActivity extends AppCompatActivity  {
         }
     }
     //解密，并且保存得到的数据
-    public void decryptchange(String data,String jobInfo){
+    public void decryptchange(String data){
         if(! data.equals("null")){
             AESprocess AESprocess = new AESprocess();
             String datas = AESprocess.getdecrypt(data,AesKey);
             Log.d(TAG+"**datas**", datas);
             try {
-                if(jobInfo.equals("SavedJob")){
-                    JSONArray saveJob = new JSONArray(datas);
-                    Log.d(TAG+"**likejob**", saveJob.toString());
-                    addlikejob(saveJob);
+                JSONObject obj = new JSONObject(datas);
+                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
+                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
+                    Log.d(TAG+"**likejob**", job.toString());
+                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
+                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
+                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
+                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
+                    if(likejobpage >= likejobpageCount){
+                        tltrlike.setVisibility(View.GONE);
+                    } else {
+                        tltrlike.setVisibility(View.VISIBLE);
+                    }
+                    addlikejob(job);
                 } else {
-                    JSONObject obj = new JSONObject(datas);
-                    JSONArray job = obj.getJSONArray(getString(R.string.dataList));
                     Log.d(TAG+"**Applyjob**", job.toString());
                     ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
                     ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
@@ -429,36 +482,6 @@ public class MylistActivity extends AppCompatActivity  {
                     }
                     addApplyjob(job);
                 }
-//                JSONObject obj = new JSONObject(datas);
-//                JSONArray saveJob = new JSONArray(datas);
-//                JSONArray job = obj.getJSONArray(getString(R.string.dataList));
-//                if(obj.getJSONArray("dataList").length() > 0 && obj.getJSONArray(getString(R.string.dataList)).getJSONObject(0).has(getString(R.string.SavedLikedJob))){
-//
-//                    Log.d(TAG+"**likejob**", job.toString());
-//                    Log.d(TAG+"**likejobpageCount**", obj.getString(getString(R.string.pageCount)));
-//                    Log.d(TAG+"**likejobcount**", obj.getString(getString(R.string.count)));
-//                    likejobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
-//                    likejobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
-////                    tvlikecont.setText(likejobCount + "件");
-//                    if(likejobpage >= likejobpageCount){
-//                        tltrlike.setVisibility(View.GONE);
-//                    } else {
-//                        tltrlike.setVisibility(View.VISIBLE);
-//                    }
-//                    addlikejob(job);
-//                } else {
-//                    Log.d(TAG+"**Applyjob**", job.toString());
-//                    ApplyjobpageCount = Integer.parseInt(obj.getString(getString(R.string.pageCount)));
-//                    ApplyjobCount = Integer.parseInt(obj.getString(getString(R.string.count)));
-//                    Log.d(TAG+"**ApplyjobpageCount**", ApplyjobpageCount+"");
-//                    Log.d(TAG+"**ApplyjobCount**", ApplyjobCount+"");
-//                    if(Applyjobpage >= ApplyjobpageCount){
-//                        tltrEntered.setVisibility(View.GONE);
-//                    } else {
-//                        tltrEntered.setVisibility(View.VISIBLE);
-//                    }
-//                    addApplyjob(job);
-//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -483,17 +506,16 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //気に入り数据取得
     public void addlikejob(JSONArray data){
-        int top= dp2px(this, 10);
-        TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
-        tlparams.setMargins(0,0,0,top);
-//        for(int i=0; i < data.length(); i++){
-        for(int i=data.length() - 1; i >= 0 ; i--){
+        for(int i=0; i < data.length(); i++){
             try {
                 likejobIndex = likejobIndex + 1;
                 JSONObject obj = data.getJSONObject(i);
                 Log.d(TAG+"***addlikejob***", data.getString(i));
                 JSONObject SavedLikedJob = obj.getJSONObject(getString(R.string.SavedLikedJob));
                 Log.d(TAG+"***SavedLikedJob***", SavedLikedJob.toString());
+                int top= dp2px(this, 10);
+                TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
+                tlparams.setMargins(0,0,0,top);
                 View likejob;
                 String likejobflg = "0";
                 likejob = getLayoutInflater().inflate(R.layout.include_mylist_likejob, null);
@@ -592,9 +614,6 @@ public class MylistActivity extends AppCompatActivity  {
     }
     //应聘一览数据取得
     public void addApplyjob(JSONArray data){
-        int top= dp2px(this, 10);
-        TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
-        tlparams.setMargins(0,0,0,top);
         for(int i=0; i < data.length(); i++){
             try {
                 ApplyjobIndex = ApplyjobIndex + 1;
@@ -602,6 +621,9 @@ public class MylistActivity extends AppCompatActivity  {
                 JSONObject objSavedResume = data.getJSONObject(i).getJSONObject(getString(R.string.SavedResume));
                 Log.d(TAG+"***objJobInfo***", objJobInfo.toString());
                 Log.d(TAG+"***objSavedResume***", objSavedResume.toString());
+                int top= dp2px(this, 10);
+                TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
+                tlparams.setMargins(0,0,0,top);
                 View mylist = getLayoutInflater().inflate(R.layout.include_mylist_enteredjob, null);
                 TableLayout Enteredjobinfo = mylist.findViewById(R.id.tl_e_basicinformation);
                 Enteredjobinfo.setOnClickListener(new View.OnClickListener() {
@@ -799,25 +821,6 @@ public class MylistActivity extends AppCompatActivity  {
             new GithubQueryTask().execute(param);
         }
     }
-    //显示更多内容按钮
-    private View.OnClickListener Click_getmore =new View.OnClickListener() {
-        public void onClick(View View) {
-            PostDate Pdata = new PostDate();
-            Map<String, String> param = new HashMap<String, String>();
-            Pdata.setUserId(userId);
-            Pdata.setToken(token);
-            switch (View.getId()) {
-                case R.id.tl_tv_like:
-                    likejobpage = likejobpage + 1;
-                    getJobList(Integer.toString(likejobpage),"SavedJob");
-                    break;
-                case R.id.tl_tv_Entered:
-                    Applyjobpage = Applyjobpage + 1;
-                    getJobList(Integer.toString(Applyjobpage),"ApplyJob");
-                    break;
-            }
-        }
-    };
     //応募済み削除
     public void Click_DelApplyjob(View View){
         if (View == null) {
@@ -879,7 +882,7 @@ public class MylistActivity extends AppCompatActivity  {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.setClass(MylistActivity.this, ContactDialogActivity.class);
                 myApplication.setemployerID(obj.getString(getString(R.string.employer_id)));
-                myApplication.setcompany_name(obj.getString(getString(R.string.employer_id)));
+                myApplication.setcompany_name(obj.getString(getString(R.string.company_name)));
 //                intent.putExtra(getString(R.string.company_name),obj.getString(getString(R.string.company_name)));
 //                intent.putExtra(getString(R.string.address),obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
 //                intent.putExtra(getString(R.string.ID),obj.getString(getString(R.string.employer_id)));
