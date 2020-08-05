@@ -251,7 +251,11 @@ public class SelectResumeActivity extends AppCompatActivity {
             tvresume3.setText(myApplication.getresume_name("3"));
         }
         if(resume_number == 0){
-            Erroralertdialog(getString(R.string.Erroralertdialog));
+            if(myApplication.getContactDialog(0).equals("1")){
+
+            }else{
+                Erroralertdialog(getString(R.string.Erroralertdialog));
+            }
         }
         //会社名
         SetCompanyName="To:"+companyname;
