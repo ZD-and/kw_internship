@@ -3,6 +3,7 @@ package jp.kinwork;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,19 +37,25 @@ import jp.kinwork.Common.NetworkUtils;
 import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class SelectResumeActivity extends AppCompatActivity {
 
     final static String PARAM = "/JobInfosMobile/jobApplySubmit";
     final static String PARAM_sendMessage = "/SessionMessageMobile/sendMessage";
+    final static String PARAM_sendmail = "/MyMailMobile/pendingMyMail";
+
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private MyApplication myApplication;
     private EditText ettitle;
     private EditText etmessage;
     private TextView tvback;
     private TextView tvbackdummy;
+    private TextView tvToCompanyName;
 
     private LinearLayout ll_sendresume;
-    private TableLayout tl_sendmeg;
+    private TableLayout tltlresume;
 
     private TableRow trresume1;
     private TableRow trresume2;
@@ -80,10 +87,11 @@ public class SelectResumeActivity extends AppCompatActivity {
     private String errormeg = "";
     private int resume_number;
 
+    private String SetCompanyName="";
     private String SetTitle = "";
     private String SetMeg = "";
+    private Intent intent;
 
-    private Button application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +99,26 @@ public class SelectResumeActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_select_resume);
         Initialization();
+        if(myApplication.getContactDialog(0).equals("1")){
+            Intent intent = getIntent();
+            SetCompanyName= intent.getStringExtra("companyname");
+            SetTitle = intent.getStringExtra("mailtitle");
+            SetMeg = intent.getStringExtra("mailmeg");
+            employerID=intent.getStringExtra("emploerID");
+            tvToCompanyName.setText("To:"+SetCompanyName);
+            ettitle.setText(SetTitle);
+            etmessage.setText(SetMeg);
+            tvback.setText("メール一覧");
+            tvback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mailBack();
+                }
+            });
+            tvbackdummy.setText("送信");
+            tvbackdummy.setOnClickListener(Click_setSendMeg);
+            tltlresume.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -162,8 +190,17 @@ public class SelectResumeActivity extends AppCompatActivity {
         });
         tvbackdummy               = (TextView) findViewById(R.id.tv_back_dummy);
         tvback.setText(getString(R.string.detailedinformation));
-        tvbackdummy.setText(getString(R.string.detailedinformation));
+        tvbackdummy.setText("応募");
+        tvbackdummy.setTextColor(Color.parseColor("#0196FF"));
+        tvbackdummy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Click_Application();
+            }
+        });
         ll_sendresume = (LinearLayout) findViewById(R.id.tl_sendresume);
+        tvToCompanyName=(TextView)findViewById(R.id.tv_ToCompanyName);
+        tltlresume=(TableLayout)findViewById(R.id.tl_tl_resume);
         ettitle   = (EditText) findViewById(R.id.et_title);
         etmessage = (EditText) findViewById(R.id.et_message);
         trresume1 = (TableRow) findViewById(R.id.tr_resume1);
@@ -183,13 +220,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         tvresume2.setOnClickListener(Click_TextView);
         tvresume3.setOnClickListener(Click_TextView);
 
-        application=findViewById(R.id.bu_Application);
-        application.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Click_Application();
-            }
-        });
         myApplication = (MyApplication) getApplication();
         String flg = myApplication.getMyjob();
         companyname = myApplication.getcompany_name();
@@ -221,8 +251,12 @@ public class SelectResumeActivity extends AppCompatActivity {
             tvresume3.setText(myApplication.getresume_name("3"));
         }
         if(resume_number == 0){
-            Erroralertdialog(getString(R.string.Erroralertdialog));
+            if(!myApplication.getContactDialog(0).equals("1")){
+                Erroralertdialog(getString(R.string.Erroralertdialog));
+            }
         }
+        //会社名
+        SetCompanyName="To:"+companyname;
         //件名设定
         SetTitle = Jobname + getString(R.string.SetTitle) + myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）";
         //送信内容设定
@@ -237,6 +271,7 @@ public class SelectResumeActivity extends AppCompatActivity {
                 getString(R.string.SetMeg7) +
                 "\n" +
                 getString(R.string.SetMeg8);
+        tvToCompanyName.setText(SetCompanyName);
         ettitle.setText(SetTitle);
         etmessage.setText(SetMeg);
     }
@@ -294,6 +329,7 @@ public class SelectResumeActivity extends AppCompatActivity {
     //返回检索画面
     public void Click_back(){
         MoveIntent(getString(R.string.back));
+
     }
 
     //应聘按钮
@@ -325,6 +361,7 @@ public class SelectResumeActivity extends AppCompatActivity {
             param.put(getString(R.string.file),PARAM);
             param.put(getString(R.string.data),data);
             param.put(getString(R.string.name),getString(R.string.Application));
+            param.put("send","");
             //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
@@ -350,12 +387,14 @@ public class SelectResumeActivity extends AppCompatActivity {
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name = "";
+        String type="";
         @Override
         protected String doInBackground(Map<String, String>... params) {
             Map<String, String> map = params[0];
             String file = map.get(getString(R.string.file));
             String data = map.get(getString(R.string.data));
             name = map.get(getString(R.string.name));
+            type=map.get("send");
             Log.d("***file***", file);
             Log.d("***data***", data);
             URL searchUrl = NetworkUtils.buildUrl(file);
@@ -377,7 +416,11 @@ public class SelectResumeActivity extends AppCompatActivity {
                     String message = obj.getString(getString(R.string.message));
                     String errorCode = obj.getString(getString(R.string.errorCode));
                     if(processResult == true) {
-                        MoveIntent(getString(R.string.Application));
+                        if(type.equals("send")){
+                            sendMegalertdialog("送信しました。","");
+                        }else {
+                            MoveIntent(getString(R.string.Application));
+                        }
                     } else {
                         if(errorCode.equals("100")){
                             message = "他の端末から既にログインしています。もう一度ログインしてください。";
@@ -458,5 +501,73 @@ public class SelectResumeActivity extends AppCompatActivity {
                 break;
         }
         startActivity(intent);
+    }
+
+    //送信画面のback
+    public void mailBack(){
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        if(!ettitle.getText().toString().equals(SetTitle) || !etmessage.getText().toString().equals(SetMeg)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("").setMessage(getString(R.string.setMessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
+                    startActivity(intent);
+                }
+            }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //取消按钮的点击事件
+                }
+            }).show();
+        }else{
+            intent.setClass(SelectResumeActivity.this, ContactDialogActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+    //送信处理
+    private View.OnClickListener Click_setSendMeg = new View.OnClickListener() {
+        public void onClick(View View) {
+            PostDate Pdata = new PostDate();
+            Map<String, String> param = new HashMap<String, String>();
+            Pdata.setUserId(userid);
+            Pdata.setToken(token);
+            Pdata.setemployerId(employerID);
+            Pdata.setmailTitle(ettitle.getText().toString());
+            Pdata.setmailContent(etmessage.getText().toString());
+            String data = JsonChnge(AesKey, Pdata);
+            param.put(getString(R.string.file), PARAM_sendmail);
+            param.put(getString(R.string.data), data);
+            param.put(getString(R.string.name), getString(R.string.SendMeg));
+            param.put("send","send");
+            //数据通信处理（访问服务器，并取得访问结果）
+            new GithubQueryTask().execute(param);
+        }
+    };
+
+    //送信通信提示
+    private void sendMegalertdialog(String meg,String errorCode){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+                if(errorCode.equals("100")){
+                    PreferenceUtils.clear();
+                    myApplication.clear();
+                    Intent intentClose = new Intent();
+                    intentClose.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    myApplication.setAct(getString(R.string.Search));
+                    intentClose.setClass(SelectResumeActivity.this, SearchActivity.class);
+                    intentClose.putExtra("act", "");
+                    startActivity(intentClose);
+                } else {
+                    finish();
+                }
+            }
+        }).show();
     }
 }
