@@ -251,9 +251,7 @@ public class SelectResumeActivity extends AppCompatActivity {
             tvresume3.setText(myApplication.getresume_name("3"));
         }
         if(resume_number == 0){
-            if(myApplication.getContactDialog(0).equals("1")){
-
-            }else{
+            if(!myApplication.getContactDialog(0).equals("1")){
                 Erroralertdialog(getString(R.string.Erroralertdialog));
             }
         }
