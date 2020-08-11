@@ -715,7 +715,8 @@
         <item>電気・電子・機械・半導体</item>
     </string-array>
 
-
+<!--    google連携-->
+    <string name="google_web_client_id">861623119913-dc6nnlh7fetk8qp5q7i1sjnh8f0gm26r.apps.googleusercontent.com</string>
 <!--    line連携-->
     <string name="line_client_id">1654297537</string>
 <!--    yahoo連携-->
