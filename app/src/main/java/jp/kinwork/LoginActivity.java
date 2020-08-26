@@ -339,6 +339,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if(processResult) {
                         String returnData = obj.getString(getString(R.string.returnData));
                         if(mFlg.equals("998")){
+                            JSONObject objData = new JSONObject(returnData);
+                            String savedeviceId = objData.getString(getString(R.string.Information_Name_deviceId));
+                            String saveAesKey = objData.getString(getString(R.string.Information_Name_aesKey));
+                            SaveDate(getString(R.string.Initial),getString(R.string.Information_Name_deviceId),savedeviceId);
+                            SaveDate(getString(R.string.Initial),getString(R.string.Information_Name_aesKey),saveAesKey);
+                            SaveDate(getString(R.string.Information),getString(R.string.Information_Name_deviceId),savedeviceId);
+                            SaveDate(getString(R.string.Information),getString(R.string.Information_Name_aesKey),saveAesKey);
+                            load_id_key();
                             login();
                         }
                         else if(mFlg.equals("0")){
@@ -372,6 +380,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         }
+    }
+
+    //登録内容を保存
+    public void SaveDate(String file ,String name ,String value){
+        //创建SharedPreferences对象
+        SharedPreferences sp_LoginInformation = getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp_LoginInformation.edit();
+        editor.putString(name,value);
+        editor.commit();
     }
 
     //解密，并且保存得到的数据
@@ -675,6 +692,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initGoogle(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_web_client_id))
                 .requestId()
                 .requestEmail()
                 .build();
