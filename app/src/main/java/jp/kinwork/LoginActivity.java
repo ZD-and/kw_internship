@@ -935,13 +935,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         JSONObject obj = new JSONObject(results);
                         Boolean processResult = obj.getBoolean(getString(R.string.processResult));
                         String message = obj.getString(getString(R.string.message));
-                        if(processResult == true) {
+                        String errorCode = obj.getString(getString(R.string.errorCode));
+                        if (processResult == true) {
                             String returnData = obj.getString(getString(R.string.returnData));
                             decryptchange(returnData);
+                            if (mFlg.equals("998")) {
+                                JSONObject objData = new JSONObject(results);
+                                String savedeviceId = objData.getString(getString(R.string.Information_Name_deviceId));
+                                String saveAesKey = objData.getString(getString(R.string.Information_Name_aesKey));
+                                SaveDate(getString(R.string.Initial), getString(R.string.Information_Name_deviceId), savedeviceId);
+                                SaveDate(getString(R.string.Initial), getString(R.string.Information_Name_aesKey), saveAesKey);
+                                SaveDate(getString(R.string.Information), getString(R.string.Information_Name_deviceId), savedeviceId);
+                                SaveDate(getString(R.string.Information), getString(R.string.Information_Name_aesKey), saveAesKey);
+                                load_id_key();
+                                login();
+                            }
                         } else {
+
                             mPreferenceUtils.setLoginFlag("0");
-                            Log.d(TAG, "onSuccess results mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
-                            alertdialog("エラー",message);
+                            if (errorCode.equals("998")) {
+                                urllodad();
+                            }
+                            //Log.d(TAG, "onSuccess results mPreferenceUtils.getLoginFlag(): " + mPreferenceUtils.getLoginFlag());
+                            else{
+                                alertdialog("エラー", message);
+                            }
                         }
                     }catch (Exception e){
                         e.printStackTrace();
