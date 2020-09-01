@@ -5,10 +5,10 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\zml98\\KeyStorePath\\upLoad-keystore.jks')
+            storeFile file('C:\\Users\\zml98\\KeyStorePath\\release\\relsaseUpLoad.jks')
             storePassword 'su37s92k1'
             keyPassword 'su37s92k1'
-            keyAlias = 'keyUpload'
+            keyAlias = 'releaseUpload'
         }
     }
     compileOptions {
