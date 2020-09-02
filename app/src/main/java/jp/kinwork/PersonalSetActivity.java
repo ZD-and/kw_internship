@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import jp.kinwork.Common.PostDate;
 import jp.kinwork.Common.PreferenceUtils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,9 +54,15 @@ import static jp.kinwork.Common.NetworkUtils.buildUrl;
 public class PersonalSetActivity extends AppCompatActivity {
     final static String PARAM_File = "/MypagesMobile/initMypageData";
     final static String PARAM_logout = "/usersMobile/logoutMobile";
+    final static String PARAM_delResume = "/ResumesMobile/deleteResume";
+
+    private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
+    private String IresumeIdflg;
+    private String AesKey;
+
 
     private String flg = "0";
-
+    private MyApplication myApplication;
     private String mDeviceId;
     private String mAesKey;
     private String mUserId;
@@ -92,6 +100,8 @@ public class PersonalSetActivity extends AppCompatActivity {
     //初始化
     public void Initialization(){
         mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+
+
         mDeviceId = mPreferenceUtils.getdeviceId();
         mAesKey = mPreferenceUtils.getAesKey();
         mUserId = mPreferenceUtils.getuserId();
@@ -317,6 +327,14 @@ public class PersonalSetActivity extends AppCompatActivity {
                 for(int i = 0; i < Resumes.length(); i++){
                     Gson mGson = new Gson();
                     Resume resumedata = mGson.fromJson(Resumes.getString(i),Resume.class);
+
+
+
+                    //
+
+
+
+
                     resumeList.add(i,resumedata);
                     if(i == 0 && ! resumedata.getId().equals("")){
                         mPreferenceUtils.setresumeid_1(resumedata.getId());
@@ -331,6 +349,12 @@ public class PersonalSetActivity extends AppCompatActivity {
                         mMyApplication.setresume_name(resumedata.getresume_name(),"3");
                         ResumeNum += 1;
                     }
+
+
+
+                    //
+
+
                 }
                 mPreferenceUtils.setresume_number(ResumeNum);
             }
@@ -420,7 +444,9 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
     };
 
-    //履歴書设定
+
+
+        //履歴書设定
     public void load(){
         int resumeNumber = mPreferenceUtils.getresume_number();
         String Email = mPreferenceUtils.getEmail();
@@ -523,6 +549,7 @@ public class PersonalSetActivity extends AppCompatActivity {
             View view = getLayoutInflater().inflate(R.layout.include_resumeset, null);
             LinearLayout includeResumesetLinearlayout = (LinearLayout) view.findViewById(R.id.include_resumeset_linearlayout);
             LinearLayout linearLayoutResume = (LinearLayout) view.findViewById(R.id.linearLayout_resume);
+            ImageView dustbin = (ImageView) view.findViewById(R.id.imageview_dustbin);
             ImageView addImageView = (ImageView) view.findViewById(R.id.imageview_add);
             TextView includeResumeName = (TextView) view.findViewById(R.id.include_resume_name);
             TextView includeResumeHopeJobcategory = (TextView) view.findViewById(R.id.include_resume_hopeJobcategory);
@@ -531,6 +558,12 @@ public class PersonalSetActivity extends AppCompatActivity {
             TextView includeResumeHobbySkill = (TextView) view.findViewById(R.id.include_resume_hobby_skill);
             includeResumesetLinearlayout.setId(position);
             includeResumesetLinearlayout.setOnClickListener(resumeListener);
+            dustbin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Click_cancel();
+                }
+            });
             if(mList.size() ==0 || mList.size() == position){
                 addImageView.setVisibility(View.VISIBLE);
                 linearLayoutResume.setVisibility(View.GONE);
@@ -550,6 +583,9 @@ public class PersonalSetActivity extends AppCompatActivity {
             container.addView(view);
             return view;
         }
+
+
+
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
@@ -584,6 +620,79 @@ public class PersonalSetActivity extends AppCompatActivity {
             return view == (View) object;
         }
     }
+
+    //垃圾桶按钮的信息删除处理
+    public void Click_cancel(){
+        Delalertdialog(getString(R.string.Delalertdialog),getString(R.string.resume));
+    }
+    private void Delalertdialog(String meg, final String name){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //确定按钮的点击事件
+//                myApplication.setpersonalset("0",0);
+                Deleteprocessing();
+            }
+        }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //取消按钮的点击事件
+            }
+        }).show();
+    }
+    public void Deleteprocessing(){
+//        DeleteInfo(getString(R.string.resume));
+        IresumeIdflg = "1";
+        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        String resumeid_1 = PreferenceUtils.getresumeid_1();
+        String resumeid_2 = PreferenceUtils.getresumeid_2();
+        String resumeid_3 = PreferenceUtils.getresumeid_3();
+        PreferenceUtils.delresumeid();
+        if (IresumeIdflg.equals("1")) {
+            if (!resumeid_2.equals("A") && !resumeid_3.equals("A")) {
+                PreferenceUtils.setresumeid_1(resumeid_2);
+                PreferenceUtils.setresumeid_2(resumeid_3);
+            } else if (resumeid_3.equals("A")) {
+                PreferenceUtils.setresumeid_1(resumeid_2);
+            }
+        } else if (IresumeIdflg.equals("2")) {
+            if (!resumeid_3.equals("A")) {
+                PreferenceUtils.setresumeid_2(resumeid_3);
+            } else {
+                PreferenceUtils.setresumeid_1(resumeid_1);
+            }
+        } else {
+            PreferenceUtils.setresumeid_1(resumeid_1);
+            PreferenceUtils.setresumeid_2(resumeid_2);
+        }
+        urllodad();
+    }
+    public void DeleteInfo(String name){
+//        AesKey = PreferenceUtils.getAesKey();
+        PostDate Pdata = new PostDate();
+        Map<String,String>param = new HashMap<String, String>();
+        String data = JsonChnge(AesKey,Pdata);
+        param.put(getString(R.string.data),data);
+        param.put(getString(R.string.name),name);
+    }
+    //Json AES加密
+    public static String JsonChnge(String AesKey,PostDate Data) {
+        Gson mGson = new Gson();
+        String sdPdata = mGson.toJson(Data,PostDate.class);
+        Log.d("***sdPdata***", sdPdata);
+        AES mAes = new AES();
+        byte[] mBytes = null;
+        try {
+            mBytes = sdPdata.getBytes("UTF8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String enString = mAes.encrypt(mBytes,AesKey);
+        String encrypt = enString.replace("\n", "").replace("+","%2B");
+        return encrypt;
+    }
+
 
     private void goToAgreement(String touchBtn){
         mMyApplication.setActivity("PersonalSetActivity");
