@@ -23,9 +23,11 @@ import javax.net.ssl.X509TrustManager;
 
 public class NetworkUtils {
     String TAG = "NetworkUtils";
+
     //    final static String MAIN_URL ="https://www.kinwork.jp:1443";
     final static String MAIN_URL ="https://www.kinwork.jp:1444";
     //    final static String MAIN_URL ="https://www.kinwork.jp";
+
     public static URL buildUrl(String Sub_url) {
         String surl = MAIN_URL + Sub_url;
         URL url = null;

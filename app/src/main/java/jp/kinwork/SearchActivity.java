@@ -219,7 +219,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     ivclearkeyword.setVisibility(View.VISIBLE);
                     String Text = etkeyword.getText().toString();
                     if(blkeyword){
-//                        getSearchResults("0",Text);
+                        getSearchResults("0",Text);
                     }
                 } else {
                     lvgethint.setVisibility(View.GONE);
@@ -249,7 +249,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     ivclearworklocation.setTag(getString(R.string.clear));
                     String Text = etworklocation.getText().toString();
                     if(blworklocation){
-//                        getSearchResults("1",Text);
+                        getSearchResults("1",Text);
                     }
                 }
             }

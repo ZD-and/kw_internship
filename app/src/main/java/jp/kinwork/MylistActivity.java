@@ -852,6 +852,7 @@ public class MylistActivity extends AppCompatActivity  {
                     param.put(getString(R.string.name),getString(R.string.deleteApplyjob));
                     //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
+
                 }
             }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                 @Override
