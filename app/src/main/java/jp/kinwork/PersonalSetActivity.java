@@ -100,6 +100,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     //初始化
     public void Initialization(){
         mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
+        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
 
 
         mDeviceId = mPreferenceUtils.getdeviceId();
@@ -234,7 +235,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return githubSearchResults;
         }
         @Override
@@ -642,7 +642,7 @@ public class PersonalSetActivity extends AppCompatActivity {
         }).show();
     }
     public void Deleteprocessing(){
-//        DeleteInfo(getString(R.string.resume));
+        DeleteInfo(getString(R.string.resume));
         IresumeIdflg = "1";
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         String resumeid_1 = PreferenceUtils.getresumeid_1();
@@ -666,15 +666,16 @@ public class PersonalSetActivity extends AppCompatActivity {
             PreferenceUtils.setresumeid_1(resumeid_1);
             PreferenceUtils.setresumeid_2(resumeid_2);
         }
-        urllodad();
+//        urllodad();
     }
     public void DeleteInfo(String name){
-//        AesKey = PreferenceUtils.getAesKey();
+        AesKey = PreferenceUtils.getAesKey();
         PostDate Pdata = new PostDate();
         Map<String,String>param = new HashMap<String, String>();
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),name);
+//        new GithubQueryTask().execute(param);
     }
     //Json AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
