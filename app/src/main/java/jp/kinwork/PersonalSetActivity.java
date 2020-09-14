@@ -58,9 +58,6 @@ public class PersonalSetActivity extends AppCompatActivity {
 
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private String IresumeIdflg;
-    private String AesKey;
-
-
     private String flg = "0";
     private MyApplication myApplication;
     private String mDeviceId;
@@ -250,6 +247,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                     Log.d("***+++msg+++***", message);
                     if(processResult) {
                         String returnData = obj.getString(getString(R.string.returnData));
+                        Log.d("***returnData***", returnData);
                         switch (flg){
                             case "0":
                                 setData(returnData);
@@ -633,6 +631,7 @@ public class PersonalSetActivity extends AppCompatActivity {
                 //确定按钮的点击事件
 //                myApplication.setpersonalset("0",0);
                 Deleteprocessing();
+                onStart();
             }
         }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
@@ -641,13 +640,16 @@ public class PersonalSetActivity extends AppCompatActivity {
             }
         }).show();
     }
+
     public void Deleteprocessing(){
-        DeleteInfo(getString(R.string.resume));
         IresumeIdflg = "1";
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
         String resumeid_1 = PreferenceUtils.getresumeid_1();
         String resumeid_2 = PreferenceUtils.getresumeid_2();
         String resumeid_3 = PreferenceUtils.getresumeid_3();
+
+        DeleteInfo(getString(R.string.resume), resumeid_1);
+
         PreferenceUtils.delresumeid();
         if (IresumeIdflg.equals("1")) {
             if (!resumeid_2.equals("A") && !resumeid_3.equals("A")) {
@@ -666,16 +668,19 @@ public class PersonalSetActivity extends AppCompatActivity {
             PreferenceUtils.setresumeid_1(resumeid_1);
             PreferenceUtils.setresumeid_2(resumeid_2);
         }
-//        urllodad();
     }
-    public void DeleteInfo(String name){
-        AesKey = PreferenceUtils.getAesKey();
+
+    public void DeleteInfo(String name, String ID){
         PostDate Pdata = new PostDate();
         Map<String,String>param = new HashMap<String, String>();
-        String data = JsonChnge(AesKey,Pdata);
+        Pdata.setUserId(mUserId);
+        Pdata.setToken(mToken);
+        param.put(getString(R.string.file),PARAM_delResume);
+        Pdata.setResumeId(ID);
+        String data = JsonChnge(mAesKey,Pdata);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),name);
-//        new GithubQueryTask().execute(param);
+        new GithubQueryTask().execute(param);
     }
     //Json AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
