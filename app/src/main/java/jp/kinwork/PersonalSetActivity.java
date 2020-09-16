@@ -64,6 +64,7 @@ public class PersonalSetActivity extends AppCompatActivity {
     private String mAesKey;
     private String mUserId;
     private String mToken;
+    private String dustbinNum;
 
 //    private String deviceId;
     private TextView tvname;
@@ -443,8 +444,28 @@ public class PersonalSetActivity extends AppCompatActivity {
     };
 
 
+    private View.OnClickListener dustbinListener =new View.OnClickListener() {
 
-        //履歴書设定
+        public void onClick(View View) {
+            switch (View.getId()) {
+                //検索画面に
+                case 0:
+                    dustbinNum = "1";
+                    break;
+                case 1:
+                    dustbinNum = "2";
+                    break;
+                case 2:
+                    dustbinNum = "3";
+                    break;
+            }
+            Click_cancel();
+        }
+    };
+
+
+
+    //履歴書设定
     public void load(){
         int resumeNumber = mPreferenceUtils.getresume_number();
         String Email = mPreferenceUtils.getEmail();
@@ -556,12 +577,14 @@ public class PersonalSetActivity extends AppCompatActivity {
             TextView includeResumeHobbySkill = (TextView) view.findViewById(R.id.include_resume_hobby_skill);
             includeResumesetLinearlayout.setId(position);
             includeResumesetLinearlayout.setOnClickListener(resumeListener);
-            dustbin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Click_cancel();
-                }
-            });
+            dustbin.setId(position);
+            dustbin.setOnClickListener(dustbinListener);
+//            dustbin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Click_cancel();
+//                }
+//            });
             if(mList.size() ==0 || mList.size() == position){
                 addImageView.setVisibility(View.VISIBLE);
                 linearLayoutResume.setVisibility(View.GONE);
@@ -617,6 +640,8 @@ public class PersonalSetActivity extends AppCompatActivity {
             // Object 内に View が存在するか判定する
             return view == (View) object;
         }
+
+
     }
 
     //垃圾桶按钮的信息删除处理
@@ -641,6 +666,24 @@ public class PersonalSetActivity extends AppCompatActivity {
         }).show();
     }
 
+
+
+//    public class DetailOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+//
+//        private int currentPage;
+//
+//        @Override
+//        public void onPageSelected(int position) {
+//            currentPage = position;
+//        }
+//
+//        public final int getCurrentPage() {
+//            return currentPage;
+//        }
+//    }
+
+
+
     public void Deleteprocessing(){
         IresumeIdflg = "1";
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
@@ -648,7 +691,18 @@ public class PersonalSetActivity extends AppCompatActivity {
         String resumeid_2 = PreferenceUtils.getresumeid_2();
         String resumeid_3 = PreferenceUtils.getresumeid_3();
 
-        DeleteInfo(getString(R.string.resume), resumeid_1);
+
+
+
+        if(dustbinNum=="1") {
+            DeleteInfo(getString(R.string.resume), resumeid_1);
+        }else if(dustbinNum=="2"){
+            DeleteInfo(getString(R.string.resume), resumeid_2);
+        }else if(dustbinNum=="3"){
+            DeleteInfo(getString(R.string.resume), resumeid_3);
+        }
+
+
 
         PreferenceUtils.delresumeid();
         if (IresumeIdflg.equals("1")) {
