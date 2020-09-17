@@ -56,17 +56,12 @@ public class PersonalSetActivity extends AppCompatActivity {
     final static String PARAM_logout = "/usersMobile/logoutMobile";
     final static String PARAM_delResume = "/ResumesMobile/deleteResume";
 
-    private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
-    private String IresumeIdflg;
     private String flg = "0";
-    private MyApplication myApplication;
     private String mDeviceId;
     private String mAesKey;
     private String mUserId;
     private String mToken;
-    private String dustbinNum;
 
-//    private String deviceId;
     private TextView tvname;
     private TextView tvemail;
 
@@ -98,9 +93,6 @@ public class PersonalSetActivity extends AppCompatActivity {
     //初始化
     public void Initialization(){
         mPreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
-
-
         mDeviceId = mPreferenceUtils.getdeviceId();
         mAesKey = mPreferenceUtils.getAesKey();
         mUserId = mPreferenceUtils.getuserId();
@@ -193,26 +185,15 @@ public class PersonalSetActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this) ;
         dialog.setMessage("通信中");
         dialog.show();
-        String data = JsonChnge(mAesKey, mUserId, mToken);
+        PostDate Pdata = new PostDate();
+        Pdata.setUserId(mUserId);
+        Pdata.setToken(mToken);
+        String data = JsonChnge(mAesKey, Pdata);
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
-    }
-
-    //转换为Json格式并且AES加密
-    public static String JsonChnge(String AesKey,String data_a,String data_b) {
-        PostDate Pdata = new PostDate();
-        Pdata.setUserId(data_a);
-        Pdata.setToken(data_b);
-        Gson mGson = new Gson();
-        String sdPdata = mGson.toJson(Pdata,PostDate.class);
-        Log.d("***+++sdPdata+++***", sdPdata);
-        AESprocess AESprocess = new AESprocess();
-        String encrypt = AESprocess.getencrypt(sdPdata,AesKey);
-        Log.d("***+++encrypt+++***", encrypt);
-        return encrypt;
     }
 
     //访问服务器，并取得访问结果
@@ -274,6 +255,9 @@ public class PersonalSetActivity extends AppCompatActivity {
                                 intentResume.setClass(PersonalSetActivity.this, ResumeActivity.class);
                                 startActivity(intentResume);
                                 break;
+                            case "4":
+                                onStart();
+                                break;
                         }
                     }
                     else {
@@ -326,14 +310,6 @@ public class PersonalSetActivity extends AppCompatActivity {
                 for(int i = 0; i < Resumes.length(); i++){
                     Gson mGson = new Gson();
                     Resume resumedata = mGson.fromJson(Resumes.getString(i),Resume.class);
-
-
-
-                    //
-
-
-
-
                     resumeList.add(i,resumedata);
                     if(i == 0 && ! resumedata.getId().equals("")){
                         mPreferenceUtils.setresumeid_1(resumedata.getId());
@@ -348,12 +324,6 @@ public class PersonalSetActivity extends AppCompatActivity {
                         mMyApplication.setresume_name(resumedata.getresume_name(),"3");
                         ResumeNum += 1;
                     }
-
-
-
-                    //
-
-
                 }
                 mPreferenceUtils.setresume_number(ResumeNum);
             }
@@ -447,19 +417,20 @@ public class PersonalSetActivity extends AppCompatActivity {
     private View.OnClickListener dustbinListener =new View.OnClickListener() {
 
         public void onClick(View View) {
+            String PageNumber = "";
             switch (View.getId()) {
                 //検索画面に
                 case 0:
-                    dustbinNum = "1";
+                    PageNumber = "1";
                     break;
                 case 1:
-                    dustbinNum = "2";
+                    PageNumber = "2";
                     break;
                 case 2:
-                    dustbinNum = "3";
+                    PageNumber = "3";
                     break;
             }
-            Click_cancel();
+            Delalertdialog(getString(R.string.Delalertdialog),PageNumber);
         }
     };
 
@@ -579,12 +550,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             includeResumesetLinearlayout.setOnClickListener(resumeListener);
             dustbin.setId(position);
             dustbin.setOnClickListener(dustbinListener);
-//            dustbin.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Click_cancel();
-//                }
-//            });
             if(mList.size() ==0 || mList.size() == position){
                 addImageView.setVisibility(View.VISIBLE);
                 linearLayoutResume.setVisibility(View.GONE);
@@ -645,18 +610,14 @@ public class PersonalSetActivity extends AppCompatActivity {
     }
 
     //垃圾桶按钮的信息删除处理
-    public void Click_cancel(){
-        Delalertdialog(getString(R.string.Delalertdialog),getString(R.string.resume));
-    }
-    private void Delalertdialog(String meg, final String name){
+    private void Delalertdialog(String meg, final String PageNumber){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //确定按钮的点击事件
-//                myApplication.setpersonalset("0",0);
-                Deleteprocessing();
-                onStart();
+                flg = "4";
+                Deleteprocessing(PageNumber);
             }
         }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
@@ -666,61 +627,31 @@ public class PersonalSetActivity extends AppCompatActivity {
         }).show();
     }
 
+    public void Deleteprocessing(String PageNumber){
+        String resumeid_1 = mPreferenceUtils.getresumeid_1();
+        String resumeid_2 = mPreferenceUtils.getresumeid_2();
+        String resumeid_3 = mPreferenceUtils.getresumeid_3();
 
-
-//    public class DetailOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
-//
-//        private int currentPage;
-//
-//        @Override
-//        public void onPageSelected(int position) {
-//            currentPage = position;
-//        }
-//
-//        public final int getCurrentPage() {
-//            return currentPage;
-//        }
-//    }
-
-
-
-    public void Deleteprocessing(){
-        IresumeIdflg = "1";
-        PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
-        String resumeid_1 = PreferenceUtils.getresumeid_1();
-        String resumeid_2 = PreferenceUtils.getresumeid_2();
-        String resumeid_3 = PreferenceUtils.getresumeid_3();
-
-
-
-
-        if(dustbinNum=="1") {
+        mPreferenceUtils.delresumeid();
+        if (PageNumber.equals("1")) {
             DeleteInfo(getString(R.string.resume), resumeid_1);
-        }else if(dustbinNum=="2"){
-            DeleteInfo(getString(R.string.resume), resumeid_2);
-        }else if(dustbinNum=="3"){
-            DeleteInfo(getString(R.string.resume), resumeid_3);
-        }
-
-
-
-        PreferenceUtils.delresumeid();
-        if (IresumeIdflg.equals("1")) {
             if (!resumeid_2.equals("A") && !resumeid_3.equals("A")) {
-                PreferenceUtils.setresumeid_1(resumeid_2);
-                PreferenceUtils.setresumeid_2(resumeid_3);
+                mPreferenceUtils.setresumeid_1(resumeid_2);
+                mPreferenceUtils.setresumeid_2(resumeid_3);
             } else if (resumeid_3.equals("A")) {
-                PreferenceUtils.setresumeid_1(resumeid_2);
+                mPreferenceUtils.setresumeid_1(resumeid_2);
             }
-        } else if (IresumeIdflg.equals("2")) {
+        } else if (PageNumber.equals("2")) {
+            DeleteInfo(getString(R.string.resume), resumeid_2);
             if (!resumeid_3.equals("A")) {
-                PreferenceUtils.setresumeid_2(resumeid_3);
+                mPreferenceUtils.setresumeid_2(resumeid_3);
             } else {
-                PreferenceUtils.setresumeid_1(resumeid_1);
+                mPreferenceUtils.setresumeid_1(resumeid_1);
             }
         } else {
-            PreferenceUtils.setresumeid_1(resumeid_1);
-            PreferenceUtils.setresumeid_2(resumeid_2);
+            DeleteInfo(getString(R.string.resume), resumeid_3);
+            mPreferenceUtils.setresumeid_1(resumeid_1);
+            mPreferenceUtils.setresumeid_2(resumeid_2);
         }
     }
 
@@ -741,16 +672,8 @@ public class PersonalSetActivity extends AppCompatActivity {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
         Log.d("***sdPdata***", sdPdata);
-        AES mAes = new AES();
-        byte[] mBytes = null;
-        try {
-            mBytes = sdPdata.getBytes("UTF8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String enString = mAes.encrypt(mBytes,AesKey);
-        String encrypt = enString.replace("\n", "").replace("+","%2B");
-        return encrypt;
+        AESprocess AESprocess = new AESprocess();
+        return AESprocess.getencrypt(sdPdata,AesKey);
     }
 
 
