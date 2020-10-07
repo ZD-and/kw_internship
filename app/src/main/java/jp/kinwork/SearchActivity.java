@@ -111,7 +111,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         initData();
     }
 
-    //点击输入框以外键盘隐藏-star
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -124,7 +123,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
             return super.dispatchTouchEvent(ev);
         }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }
@@ -134,7 +132,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public  boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = { 0, 0 };
-            //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];
             int top = leftTop[1];
@@ -142,7 +139,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             int right = left + v.getWidth();
             if (event.getX() > left && event.getX() < right
                     && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
                 return false;
             } else {
 
@@ -151,9 +147,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
         return false;
     }
-    //点击输入框以外键盘隐藏-end
 
-    //位置取得权限是否取得的回调
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -250,7 +244,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-    //菜单栏按钮触发事件
     public void ll_Click(View View){
         String ViewID = "";
         myApplication.setkeyword(etkeyword.getText().toString());
@@ -325,7 +318,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
         startActivity(intent);
     }
-    //检索结果画面移动
     public void Click_Search(){
         myApplication.setkeyword(etkeyword.getText().toString());
         myApplication.setaddress(etworklocation.getText().toString());
@@ -349,7 +341,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             alertdialog(getString(R.string.error),getString(R.string.tsushinshippai));
         }
     }
-    //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -359,7 +350,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         }).show();
     }
-    //设置当前位置
     private void SetAddress(String date){
         Log.d(TAG, "date:"+date);
         try {
@@ -396,7 +386,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
         }
     }
-    //输入框监视，有数据的时候显示清空按钮
     public void initData(){
 
         etkeyword.setOnTouchListener(touchListener);
@@ -467,7 +456,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //获取当前选择的值
                 String data=(String) adapter.getItem(position);
                 Log.d(TAG+"etname", etname);
                 if(etname.equals("keyword")){
@@ -505,7 +493,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             return false;
         }
     };
-    //输入框的清空处理
     public void onClick(View View){
         Log.d(TAG, "onClick: ");
         switch (View.getId()){
@@ -536,7 +523,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         }
     }
-    //当前位置经纬度取得
     private void locationStart(){
         Log.d(TAG,"locationStart()");
         // LocationManager インスタンス生成
@@ -551,15 +537,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-        criteria.setAltitudeRequired(false);//不要求海拔信息
-        criteria.setBearingRequired(false);//不要求方位信息
-        criteria.setCostAllowed(false);//是否允许付费
-        criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(false);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
         Location Location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
         getaddress_components(Location);
     }
-    //当前地址通信取得
     private void getaddress_components(Location location){
         if(location != null){
             // 緯度の表示
@@ -576,7 +561,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-    //地址通信
     public class GithubQueryTask2 extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -615,7 +599,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
-    //获取搜索结果
     public void getSearchResults(String flg,String hintdata){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
@@ -632,10 +615,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
         String data = JsonChnge(AesKey,Pdata);
         param.put(getString(R.string.data),data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
-    //转换为Json格式并且AES加密
     public String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -652,7 +633,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         return encrypt;
 
     }
-    ////联想关键字访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name = "";
@@ -703,7 +683,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
-    //联想关键字设定悬浮窗
     public void getItem(String []Stringdata,String name){
         int top= 0;
         if(name.equals(getString(R.string.keyword))){
@@ -719,7 +698,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvgethint.setAdapter(adapter);
         lvgethint.setVisibility(View.VISIBLE);
     }
-    //位置取得权限是否取得
     private void AccessPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -731,7 +709,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             locationStart();
         }
     }
-    //dp转换为px
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);

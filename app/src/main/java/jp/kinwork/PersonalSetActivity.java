@@ -47,7 +47,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         Initialization();
         load();
     }
-    //初始化
     public void Initialization(){
         tvname = (TextView) findViewById(R.id.tv_userinfo_name);
         tvemail = (TextView) findViewById(R.id.tv_userinfo_email);
@@ -80,7 +79,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         myApplication = (MyApplication) getApplication();
         PreferenceUtils = new PreferenceUtils(PersonalSetActivity.this);
     }
-    //菜单栏按钮
     public void ll_Click(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -103,7 +101,6 @@ public class PersonalSetActivity extends AppCompatActivity {
                     Initialization();
                 }
                 break;
-            //Myリスト画面に移動
             case R.id.ll_b_contact:
                 if(myApplication.getContactDialog(0).equals("0")){
                     intent.setClass(PersonalSetActivity.this, ContactActivity.class);
@@ -123,35 +120,29 @@ public class PersonalSetActivity extends AppCompatActivity {
                     intent.setClass(PersonalSetActivity.this, WebActivity.class);
                 }
                 break;
-            //跳转个人设定画面
             case R.id.ll_b_personalsettings:
                 intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
                 break;
         }
         startActivity(intent);
     }
-    //子功能画面按钮
     private View.OnClickListener Listener =new View.OnClickListener() {
         public void onClick(View View) {
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             switch (View.getId()) {
-                //跳转基本情报设定画面
                 case R.id.tr_basicinfoedit:
                     intent.setClass(PersonalSetActivity.this, BasicinfoeditActivity.class);
                     intent.putExtra("Act", "person");
                     intent.putExtra("resume_status", "");
                     intent.putExtra("resume_Num", "");
                     break;
-                //跳转密码变更画面
                 case R.id.tr_changpw:
                     intent.setClass(PersonalSetActivity.this, ChangepwActivity.class);
                     break;
-                //跳转
 //            case R.id.tr_mailSet:
 //                intent.setClass(PersonalSetActivity.this, PersonalSetActivity.class);
 //                break;
-                //退出登录
                 case R.id.tr_LoginOut:
                     PreferenceUtils.clear();
                     intent.setClass(PersonalSetActivity.this, SearchActivity.class);
@@ -161,7 +152,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
-    //履歴書画面按钮
     private View.OnClickListener resumeListener =new View.OnClickListener() {
         public void onClick(View View) {
             String ResumeIdNum = "";
@@ -171,7 +161,6 @@ public class PersonalSetActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.setClass(PersonalSetActivity.this, ResumeActivity.class);
             switch (View.getId()) {
-                //検索画面に
                 case R.id.tv_ResumeSet_1:
                     ResumeIdNum = "1";
                     if(tvResumeSet1.getText().toString().equals(getString(R.string.tvResumeSet))){
@@ -203,7 +192,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
     };
 
-    //履歴書设定
     public void load(){
         int resumeNumber = PreferenceUtils.getresume_number();
         String Email = PreferenceUtils.getEmail();
@@ -237,7 +225,6 @@ public class PersonalSetActivity extends AppCompatActivity {
         }
     }
 
-    //履歴書隐藏/显示
     public void Click_Resume(){
         if(tlResumeSet.getVisibility() == View.VISIBLE){
             tlResumeSet.setVisibility(View.GONE);

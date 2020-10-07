@@ -90,14 +90,12 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         return super.onTouchEvent(event);
     }
 
-    //关闭，返回登录画面
     public void Click_cancel(){
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("").setMessage(getString(R.string.buildermessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
                         PreferenceUtils.deluserinfo();
                         MyApplication.setscreenflg("");
                         MyApplication.settermsofserviceflg("");
@@ -112,13 +110,8 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
                 }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //取消按钮的点击事件
                     }
                 }).show();
-
-
-
-
     }
 
     public void Initialization(){
@@ -179,7 +172,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             setPassword();
         }
     }
-    //点击输入框变蓝
     View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -196,7 +188,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
     };
-    //设备IDと対象Key取得
     public void load(){
         SharedPreferences Initial_object = getSharedPreferences(getString(R.string.Initial), Context.MODE_PRIVATE);
         deviceId = Initial_object.getString(getString(R.string.deviceid),"A");
@@ -210,24 +201,15 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         tlvalidateCode.setVisibility(View.GONE);
         bubutton.setText(getString(R.string.bubutton));
         screenflg = getString(R.string.sendValidateEmail);
-        // 新建一个可以添加文本的对象
         SpannableString ee = new SpannableString(getString(R.string.mailaddressnihongo));
-        // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputA.setHint(new SpannedString(ee));//转码
-        // 新建一个可以添加文本的对象
+        edinputA.setHint(new SpannedString(ee));
         SpannableString eec = new SpannableString(getString(R.string.Spannable));
-        // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         eec.setSpan(aeec, 0, eec.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputB.setHint(new SpannedString(eec));//转码
+        edinputB.setHint(new SpannedString(eec));
     }
-    //検証コード画面设定
     public void checkValidateCode(){
         tvinputA.setText(getString(R.string.tvinputA));
         tvinputB.setVisibility(View.GONE);
@@ -235,16 +217,11 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         tlvalidateCode.setVisibility(View.VISIBLE);
         bubutton.setText(getString(R.string.bubutton2));
         screenflg = getString(R.string.checkValidateCode);
-        // 新建一个可以添加文本的对象
         SpannableString ee = new SpannableString(getString(R.string.Spannableee));
-        // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
         edinputA.setHint(new SpannedString(ee));//转码
     }
-    //输入密码画面设定
     public void setPassword(){
         tvinputA.setText(getString(R.string.password));
         tvinputB.setText(getString(R.string.password));
@@ -255,25 +232,16 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         tlvalidateCode.setVisibility(View.GONE);
         bubutton.setText(getString(R.string.kakunin));
         screenflg = getString(R.string.setPassword);
-        // 新建一个可以添加文本的对象
         SpannableString ee = new SpannableString(getString(R.string.password));
-        // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
         edinputA.setHint(new SpannedString(ee));//转码
-        // 新建一个可以添加文本的对象
         SpannableString eec = new SpannableString(getString(R.string.Spannable));
-        // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         eec.setSpan(aeec, 0, eec.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        edinputB.setHint(new SpannedString(eec));//转码
+        edinputB.setHint(new SpannedString(eec));
     }
 
-    //按钮触发事件
     public void bt_Click(){
         String inputA = edinputA.getText().toString();
         String inputB = edinputB.getText().toString();
@@ -281,7 +249,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         PreferenceUtils.setAesKey(AesKey);
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
-        //Json格式转换并且加密
         switch (screenflg){
             case "sendValidateEmail":
                 Pdata.setEmail(inputA);
@@ -314,7 +281,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //契约按钮触发事件
     public void onClick(View View){
         String Agreement = "";
         switch (View.getId()){
@@ -364,7 +330,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         startActivity(intent);
     }
 
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -383,7 +348,6 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         String encrypt = AESprocess.getencrypt(sdPdata,AesKey);
         return encrypt;
     }
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -467,13 +431,11 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.teiji)).setMessage(meg).setPositiveButton(getString(R.string.kakutei), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }

@@ -187,8 +187,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         return super.onTouchEvent(event);
     }
 
-
-    //点击输入框以外键盘隐藏-star
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -201,7 +199,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
             return super.dispatchTouchEvent(ev);
         }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }
@@ -211,7 +208,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public  boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = { 0, 0 };
-            //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];
             int top = leftTop[1];
@@ -219,7 +215,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             int right = left + v.getWidth();
             if (event.getX() > left && event.getX() < right
                     && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
                 return false;
             } else {
 
@@ -228,9 +223,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
         return false;
     }
-    //点击输入框以外键盘隐藏-end
 
-    //数组初始化
     public void CreateNew(){
         listIBTN_info = new LinkedList<TableLayout>();
         listIBTN_job = new LinkedList<ImageView>();
@@ -239,7 +232,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         jobList = new JSONArray();
         objjobinfo = new JSONObject();
     }
-    //初期化
+
     public void Initialization(){
         llsearcgresults = (LinearLayout)findViewById(R.id.ll_searcg_results);
         lvgethintreset = (ListView)findViewById(R.id.lv_gethint_reset);
@@ -373,7 +366,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    //获取距离边距
     private void getWH(){
         keywordresetTop= dp2px(SearchResultsActivity.this, 20);
         tladvancset.post(new Runnable() {
@@ -406,7 +398,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-    //返回检索画面
     public void Click_back(){
         myApplication.setSearchResults("0",0);
         Intent intent = new Intent();
@@ -415,22 +406,18 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         intent.putExtra(getString(R.string.act),"");
         startActivity(intent);
     }
-    //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }
-    //dp转换为px
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
-    //获取搜索结果
     public void getSearchResults(){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
@@ -454,10 +441,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
         String data = JsonChnge(AesKey,Pdata);
         param.put("data",data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -474,11 +459,9 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         return encrypt;
 
     }
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
-        //在界面上显示进度条
         protected void onPreExecute() {
             if(etnamereset.equals("")){
                 dialog.show();
@@ -584,7 +567,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-    //解密，并且保存得到的数据
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
@@ -603,14 +585,12 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
 
     }
-    //结果显示(件数)
     public void displayresults(String numFound,String currentPage,String numOfPage){
         OfPage = Integer.parseInt(numOfPage);
         buPage = Integer.parseInt(currentPage);
         tltrtvtitle.setText(getString(R.string.kensakukekka) + numFound + getString(R.string.ken)  + currentPage + getString(R.string.pagemei) + numOfPage + getString(R.string.page));
         Buttom_set(OfPage,Integer.parseInt(currentPage));
     }
-    //结果显示(内容)
     public void addresults(JSONArray data){
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
@@ -728,12 +708,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-    //職歴信息取得
     public void Click_job(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listIBTN_info.size(); i++) {
             if (listIBTN_info.get(i) == View) {
@@ -771,12 +749,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
     }
-    //気に入り追加与取消
     public void Click_likejob(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         String likejobfl = "";
         int iIndex = -1;
         for (int i = 0; i < listIBTN_job.size(); i++) {
@@ -872,7 +848,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
     }
-    //翻页按钮设定
     private View.OnClickListener Click_buttom =new View.OnClickListener() {
         public void onClick(View View) {
             int PageNum = 0;
@@ -930,7 +905,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     };
-    //翻页按钮内容设定
     public void Buttom_set(int numOfPage,int PageNum){
         String butNumflg = "";
         tltrbuleftsearch.setTextColor(Color.parseColor("#0196FF"));
@@ -1156,7 +1130,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-    //再检索
     private View.OnClickListener Listener =new View.OnClickListener() {
         public void onClick(View View) {
             etnamereset = "";
@@ -1183,7 +1156,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     };
-    //菜单栏按钮触发事件
     public void ll_Click(View View){
         String ViewID = "";
         switch (View.getId()){
@@ -1210,7 +1182,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-    //画面移动
     private void Click_intent(String name){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -1257,16 +1228,13 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         startActivity(intent);
     }
 
-    //监听事件
     public void initData(){
-        //点击空白位置收起下来列表
         llsearcgresults.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 lvgethintreset.setVisibility(View.GONE);
             }
         });
-        //监听キーワード的内容
         etkeywordreset.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1293,7 +1261,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 blkeywordreset = false;
             }
         });
-        //监听地址栏的内容
         etworklocationreset.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1325,7 +1292,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         lvgethintreset.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //获取当前选择的值
                 String data=(String) adapterreset.getItem(position);
                 Log.w("etname", etnamereset);
 
@@ -1352,7 +1318,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-    //输入框的清空处理
 
     public void onClick(View View){
         switch (View.getId()){
@@ -1364,13 +1329,11 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
             case R.id.iv_clear_worklocation_reset:
-                //当前图片为清空的时候，清空输入框
                 if (ivclearworklocationreset.getTag().equals(getString(R.string.clear))){
                     etworklocationreset.setText("");
                     ivclearworklocationreset.setTag(getString(R.string.location));
                     ivclearworklocationreset.setImageResource(R.drawable.ic_location_on);
                 }else{
-                    //当前图片不为清空的时候，重新获取当前所在地
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION) !=
                             PackageManager.PERMISSION_GRANTED) {
@@ -1386,7 +1349,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    //当前位置经纬度取得
     private void locationStart(){
         Log.d("debug","locationStart()");
         // LocationManager インスタンス生成
@@ -1401,11 +1363,11 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
 
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-        criteria.setAltitudeRequired(false);//不要求海拔信息
-        criteria.setBearingRequired(false);//不要求方位信息
-        criteria.setCostAllowed(false);//是否允许付费
-        criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(false);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
         Location Location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
         getaddress_components(Location);
     }
@@ -1424,10 +1386,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     }
 
     private void getaddress_components(Location location){
-        // 緯度の表示
         String str1 = getString(R.string.Latitude)+location.getLatitude();
         Log.d("str1", str1);
-        // 経度の表示
         String str2 = getString(R.string.Longtude)+location.getLongitude();
         Log.d("str2", str2);
         Map<String,String> param = new HashMap<String, String>();
@@ -1476,7 +1436,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-    //设置当前位置
     private void SetAddress(String date){
         Log.d("date", date);
         try {
@@ -1511,7 +1470,6 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
     }
-    //联想关键字设定悬浮窗
     public void getItem(String []Stringdata,String name){
 
         int top= 0;
@@ -1538,25 +1496,19 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void setListViewHeightBasedOnChildren(ListView listView) {
-        // 获取ListView对应的Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             return;
         }
         int totalHeight = 0;
         for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-            // listAdapter.getCount()返回数据项的数目
             View listItem = listAdapter.getView(i,null, listView);
-            // 计算子项View 的宽高
             listItem.measure(0, 0);
-            // 统计所有子项的总高度
             totalHeight += listItem.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() *
                 (listAdapter.getCount() - 1));
-        // listView.getDividerHeight()获取子项间分隔符占用的高度
-        // params.height最后得到整个ListView完整显示需要的高度
         listView.setLayoutParams(params);
         listView.invalidate();
     }

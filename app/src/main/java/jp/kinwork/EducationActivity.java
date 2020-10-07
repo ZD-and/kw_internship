@@ -242,16 +242,13 @@ public class EducationActivity extends AppCompatActivity {
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }
 
-    //关闭，履历书画面
     public void Click_cancel(){
         NewIntent();
     }
-    //内容取得、通信
     public void saveurl() {
         if(etSchoolname.getText().toString().equals("")){
             alertdialog(getString(R.string.alertdialog4));
@@ -277,7 +274,6 @@ public class EducationActivity extends AppCompatActivity {
             postdate.setToken(token);
             postdate.setSchoolCareer(SchoolCareer);
             String sdPdata = Gson.toJson(postdate,PostDate.class);
-            //AES加密
             String data = AesChnge(AesKey, sdPdata);
             Map<String,String> param = new HashMap<String, String>();
             if (status.equals(getString(R.string.add))){
@@ -287,13 +283,11 @@ public class EducationActivity extends AppCompatActivity {
             }
             param.put(getString(R.string.data),data);
             param.put(getString(R.string.deviceid),deviceId);
-            //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
 
     }
 
-    //AES加密
     public static String AesChnge(String AesKey, String data) {
         AES mAes = new AES();
         byte[] mBytes = null;
@@ -307,7 +301,6 @@ public class EducationActivity extends AppCompatActivity {
         return encrypt;
     }
 
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -348,7 +341,6 @@ public class EducationActivity extends AppCompatActivity {
         }
     }
 
-    //创建、更新判定
     public void getstatus(String data){
         if(data.equals(getString(R.string.upd))){
             schoolCareerId = intent.getStringExtra(getString(R.string.schoolCareerId));

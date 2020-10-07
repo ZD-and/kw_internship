@@ -129,7 +129,6 @@ public class QualificationActivity extends AppCompatActivity {
     }
 
 
-    //通信情報取得
     public void load(){
         deviceId = PreferenceUtils.getdeviceId();
         AesKey = PreferenceUtils.getAesKey();
@@ -149,7 +148,6 @@ public class QualificationActivity extends AppCompatActivity {
         Start_mYear = calendar.get(Calendar.YEAR);
         Start_mMonth = calendar.get(Calendar.MONTH) +1;
         Start_mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        //监听事件
         tvQualificationstart.setOnClickListener(new View.OnClickListener() {
 
             Calendar SYScalendar = Calendar.getInstance();
@@ -191,7 +189,6 @@ public class QualificationActivity extends AppCompatActivity {
         });
     }
 
-    //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -202,21 +199,17 @@ public class QualificationActivity extends AppCompatActivity {
         }).show();
     }
 
-    //按钮点击触发事件
     public void bt_Click() {
         saveurl();
     }
 
-    //关闭，履历书画面
     public void Click_cancel(){
         NewIntent();
     }
-    //内容取得、通信
     public void saveurl() {
         if(etQualificationname.getText().toString().equals("")){
             alertdialog(getString(R.string.alertdialog12));
         } else {
-            //Json格式转换
             Gson Gson = new Gson();
             PostDate postdate = new PostDate();
             Qualification Qualification = new Qualification();
@@ -231,7 +224,6 @@ public class QualificationActivity extends AppCompatActivity {
             postdate.setToken(token);
             postdate.setQualification(Qualification);
             String sdPdata = Gson.toJson(postdate,PostDate.class);
-            //AES加密
             String data = AesChnge(AesKey, sdPdata);
             Map<String,String> param = new HashMap<String, String>();
             if (status.equals(getString(R.string.add))){
@@ -247,7 +239,6 @@ public class QualificationActivity extends AppCompatActivity {
 
     }
 
-    //AES加密
     public static String AesChnge(String AesKey, String data) {
         AES mAes = new AES();
         byte[] mBytes = null;
@@ -261,7 +252,6 @@ public class QualificationActivity extends AppCompatActivity {
         return encrypt;
     }
 
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -301,7 +291,6 @@ public class QualificationActivity extends AppCompatActivity {
         }
     }
 
-    //创建、更新判定
     public void getstatus(String data){
         if(data.equals(getString(R.string.upd))){
             QualificationId = intent.getStringExtra(getString(R.string.qualificationId));
@@ -317,7 +306,6 @@ public class QualificationActivity extends AppCompatActivity {
         }
     }
 
-    //履歴書作成画面に
     public void NewIntent(){
         myApplication.setresume_status(resumestatus);
         Intent intent = new Intent();

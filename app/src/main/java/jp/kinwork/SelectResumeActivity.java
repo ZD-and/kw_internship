@@ -99,7 +99,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    //点击输入框以外键盘隐藏-star
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -112,7 +111,6 @@ public class SelectResumeActivity extends AppCompatActivity {
             }
             return super.dispatchTouchEvent(ev);
         }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }
@@ -122,7 +120,6 @@ public class SelectResumeActivity extends AppCompatActivity {
     public  boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] leftTop = { 0, 0 };
-            //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
             int left = leftTop[0];
             int top = leftTop[1];
@@ -130,7 +127,6 @@ public class SelectResumeActivity extends AppCompatActivity {
             int right = left + v.getWidth();
             if (event.getX() > left && event.getX() < right
                     && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
                 return false;
             } else {
 
@@ -139,7 +135,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         }
         return false;
     }
-    //点击输入框以外键盘隐藏-end
 
 
     //初期化
@@ -211,9 +206,7 @@ public class SelectResumeActivity extends AppCompatActivity {
         if(resume_number == 0){
             Erroralertdialog(getString(R.string.Erroralertdialog));
         }
-        //件名设定
         SetTitle = Jobname + getString(R.string.SetTitle) + myApplication.getlast_name() + " " + myApplication.getfirst_name() + "（" + myApplication.getlast_name_kana() + " " + myApplication.getfirst_name_kana() + "）";
-        //送信内容设定
         SetMeg = companyname + getString(R.string.SetMeg1) +
                 "\n" +
                 getString(R.string.SetMeg2) +
@@ -229,7 +222,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         etmessage.setText(SetMeg);
     }
 
-    //履歴書選択按钮
     private View.OnClickListener Click_CheckBox =new View.OnClickListener() {
         public void onClick(View View) {
             switch (View.getId()) {
@@ -255,7 +247,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         }
     };
 
-    //履歴書選択按钮
     private View.OnClickListener Click_TextView =new View.OnClickListener() {
         public void onClick(View View) {
             String ResumeIdNum = "";
@@ -279,12 +270,10 @@ public class SelectResumeActivity extends AppCompatActivity {
         }
     };
 
-    //返回检索画面
     public void Click_back(){
         MoveIntent(getString(R.string.back));
     }
 
-    //应聘按钮
     public void Click_Application(){
         if(cbresumeId.equals("")){
             alertdialog(getString(R.string.alertdialog16));
@@ -293,8 +282,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         }
     }
 
-
-    //执行应聘
     public void setApplication(){
         if(ettitle.getText().toString().equals("")){
             alertdialog(getString(R.string.alertdialog17));
@@ -313,11 +300,9 @@ public class SelectResumeActivity extends AppCompatActivity {
             param.put(getString(R.string.file),PARAM);
             param.put(getString(R.string.data),data);
             param.put(getString(R.string.name),getString(R.string.Application));
-            //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
     }
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -334,7 +319,6 @@ public class SelectResumeActivity extends AppCompatActivity {
         return encrypt;
 
     }
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name = "";
@@ -380,13 +364,11 @@ public class SelectResumeActivity extends AppCompatActivity {
         }
     }
 
-    //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
                 Log.d("**errormeg**", errormeg);
                 Log.d("**JobId**", JobId);
                 if(errormeg.equals(getString(R.string.errormeg))){
@@ -396,25 +378,21 @@ public class SelectResumeActivity extends AppCompatActivity {
         }).show();
     }
 
-    //通信结果提示
     private void Erroralertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.sakusei), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
                 MoveIntent(getString(R.string.resume));
             }
         }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //取消按钮的点击事件
                 MoveIntent(getString(R.string.back));
             }
         }).show();
     }
 
-    //画面移动
     public void MoveIntent(String name){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

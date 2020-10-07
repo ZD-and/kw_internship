@@ -150,7 +150,6 @@ public class MainKinWork extends AppCompatActivity {
         dialog.setMessage(getString(R.string.login)) ;
     }
 
-    //点击输入框变蓝
     View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -167,7 +166,6 @@ public class MainKinWork extends AppCompatActivity {
             return false;
         }
     };
-    //登录处理
     public void MainLoginClick(){
         flg = "0";
         Email = edloginEmail.getText().toString();
@@ -175,8 +173,6 @@ public class MainKinWork extends AppCompatActivity {
         urllodad(Email,password);
     }
 
-
-    //密码忘记的时候，再取得
     public void Click_Forgetpw(){
         flg = "1";
         Email = edloginEmail.getText().toString();
@@ -184,16 +180,13 @@ public class MainKinWork extends AppCompatActivity {
             alertdialog(getString(R.string.error),getString(R.string.mailinput));
             return;
         }
-        //Json格式转换并且加密
         String data = JsonChnge(AesKey,Email,"",flg);
         Map<String,String>param = new HashMap<String, String>();
         param.put(getString(R.string.file),PARAM_Forgetwe);
         param.put(getString(R.string.data),data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
 
-    //新账号作成画面移动
     public void MakeNewuser_Click(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -212,7 +205,6 @@ public class MainKinWork extends AppCompatActivity {
 
     //内容取得、通信
     private void urllodad(String data_A, String data_B) {
-        //Json格式转换并且加密
         String data = JsonChnge(AesKey,data_A,data_B,flg);
         Map<String,String>param = new HashMap<String, String>();
         if (flg.equals("0")){
@@ -221,11 +213,9 @@ public class MainKinWork extends AppCompatActivity {
             param.put(getString(R.string.file),PARAM_init);
         }
         param.put(getString(R.string.data),data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
 
-    //转换为Json格式并且AES加密
     private static String JsonChnge(String AesKey,String Data_a,String Data_b,String Flg) {
         PostDate Pdata = new PostDate();
         if(! Flg.equals("2")){
@@ -252,11 +242,9 @@ public class MainKinWork extends AppCompatActivity {
         return encrypt;
     }
 
-    //访问服务器，并取得访问结果
     private class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
-        //在界面上显示进度条
         protected void onPreExecute() {
             dialog.show();
         };
@@ -306,7 +294,6 @@ public class MainKinWork extends AppCompatActivity {
         }
     }
 
-    //解密，并且保存得到的数据
     private void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
@@ -336,13 +323,11 @@ public class MainKinWork extends AppCompatActivity {
         }
     }
 
-    //通信结果提示
     private void alertdialog(String title,String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }
@@ -439,7 +424,6 @@ public class MainKinWork extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //返回检索結果画面
     public void onClick(View View){
         switch (View.getId()){
             case R.id.tl_dummyview:

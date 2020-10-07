@@ -126,11 +126,9 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         mTopEnteredLayout = (LinearLayout) findViewById(R.id.top_layout);
         tvTopApplycont = (TextView) findViewById(R.id.tv_apply_cont_top);
         myScrollView.setOnScrollListener(this);
-        //当布局的状态或者控件的可见性发生改变回调的接口
         findViewById(R.id.mylist_layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                //这一步很重要，使得上面的布局和下面的布局重合
                 onScroll(myScrollView.getScrollY());
             }
         });
@@ -138,18 +136,13 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         Initialization();
         Log.w("tvTopApplycont", tvTopApplycont.getText().toString());
     }
-    /**
-     * 滚动的回调方法，当滚动的Y距离大于或者等于 购买布局距离父类布局顶部的位置，就显示购买的悬浮框
-     * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框
-     *
-     */
+
     @Override
     public void onScroll(int scrollY) {
         int mBuyLayout2ParentTop = Math.max(scrollY, mEnteredLayout.getTop());
         mTopEnteredLayout.layout(0, mBuyLayout2ParentTop, mTopEnteredLayout.getWidth(), mBuyLayout2ParentTop + mTopEnteredLayout.getHeight());
     }
 
-    //数组初始化
     public void CreateNew(){
         listTL_likejobinfo = new LinkedList<TableLayout>();
         listIBTN_likejob = new LinkedList<ImageView>();
@@ -164,7 +157,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         likejobList = new JSONArray();
         objjobinfo = new JSONObject();
     }
-    //初始化
     public void Initialization(){
         tltvlike=findViewById(R.id.tl_tv_like);
         tltvEntered=findViewById(R.id.tl_tv_Entered);
@@ -207,7 +199,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         }
         getSearchResults();
     }
-    //获取搜索结果菜单栏按钮
     public void ll_Click(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -215,7 +206,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             case R.id.ll_b_mylist:
                 intent.setClass(MylistActivity.this, MylistActivity.class);
                 break;
-            //跳转检索画面
             case R.id.ll_b_search:
                 myApplication.setAct(getString(R.string.Search));
                 if(myApplication.getSApply(0).equals("0")){
@@ -229,7 +219,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                     intent.setClass(MylistActivity.this, ApplyActivity.class);
                 }
                 break;
-            //跳转联络画面
             case R.id.ll_b_contact:
                 if(myApplication.getContactDialog(0).equals("0")){
                     intent.setClass(MylistActivity.this, ContactActivity.class);
@@ -237,7 +226,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                     intent.setClass(MylistActivity.this, ContactDialogActivity.class);
                 }
                 break;
-            //跳转个人设定画面
             case R.id.ll_b_personalsettings:
                 if(myApplication.getpersonalset(0).equals("0")){
                     intent.setClass(MylistActivity.this, PersonalSetActivity.class);
@@ -253,7 +241,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         startActivity(intent);
 
     }
-    //获取搜索结果
     public void getSearchResults(){
         PostDate Pdata1 = new PostDate();
         Map<String,String> param1 = new HashMap<String, String>();
@@ -275,12 +262,9 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         String data2 = JsonChnge(AesKey,Pdata2);
         param2.put(getString(R.string.data),data2);
         param2.put(getString(R.string.name),"");
-        //数据通信处理（気に入り取得）
         new GithubQueryTask().execute(param1);
-        //数据通信处理（応募状況取得）
         new GithubQueryTask().execute(param2);
     }
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -296,7 +280,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         String encrypt = enString.replace("\n", "").replace("+","%2B");
         return encrypt;
     }
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name= "";
@@ -365,7 +348,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             }
         }
     }
-    //解密，并且保存得到的数据
     public void decryptchange(String data){
         if(! data.equals("null")){
             AESprocess AESprocess = new AESprocess();
@@ -409,7 +391,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             myScrollView.setVisibility(View.VISIBLE);
         }
     }
-    //解密数据,移动到下一个画面
     public void MoveApply(String data){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
@@ -426,7 +407,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             e.printStackTrace();
         }
     }
-    //気に入り数据取得
     public void addlikejob(JSONArray data){
         int top= dp2px(this, 10);
         TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams();
@@ -534,7 +514,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             }
         }
     }
-    //应聘一览数据取得
     public void addApplyjob(JSONArray data){
         for(int i=0; i < data.length(); i++){
             try {
@@ -595,18 +574,15 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             }
         }
     }
-    //dp转换为px
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
-    //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }
@@ -640,7 +616,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listTL_likejobinfo.size(); i++) {
             if (listTL_likejobinfo.get(i) == View) {
@@ -687,8 +662,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
         if (View == null) {
             return;
         }
-
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listIBTN_likejob.size(); i++) {
             if (listIBTN_likejob.get(i) == View) {
@@ -703,7 +676,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             builder.setTitle("").setMessage(getString(R.string.buildermessage2)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //确定按钮的点击事件
                     PostDate Pdata = new PostDate();
                     Map<String,String> param = new HashMap<String, String>();
                     Pdata.setUserId(userId);
@@ -713,24 +685,20 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                     String data = JsonChnge(AesKey,Pdata);
                     param.put(getString(R.string.data),data);
                     param.put(getString(R.string.name),getString(R.string.deletelikejob));
-                    //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 }
             }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //取消按钮的点击事件
                 }
             }).show();
         }
     }
-    //応募済み職歴信息取得
     public void Click_enteredjob(View View){
         String E_jobid = "";
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listTL_Enteredjobinfo.size(); i++) {
             if (listTL_Enteredjobinfo.get(i) == View) {
@@ -755,7 +723,6 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             new GithubQueryTask().execute(param);
         }
     }
-    //显示更多内容按钮
     private View.OnClickListener Click_getmore =new View.OnClickListener() {
 
         public void onClick(View View) {
@@ -778,16 +745,13 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
             String data = JsonChnge(AesKey, Pdata);
             param.put(getString(R.string.data),data);
             param.put(getString(R.string.name),"");
-            //数据通信处理（気に入り取得）
             new GithubQueryTask().execute(param);
         }
     };
-    //応募済み削除
     public void Click_DelApplyjob(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listIBTN_DelEnteredjob.size(); i++) {
             if (listIBTN_DelEnteredjob.get(i) == View) {
@@ -811,23 +775,19 @@ public class MylistActivity extends AppCompatActivity implements MyScrollView.On
                     String data = JsonChnge(AesKey,Pdata);
                     param.put(getString(R.string.data),data);
                     param.put(getString(R.string.name),getString(R.string.deleteApplyjob));
-                    //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 }
             }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //取消按钮的点击事件
                 }
             }).show();
         }
     }
-    //通信一览画面跳转
     public void Click_ContactDialog(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listIBTN_Enteredjob.size(); i++) {
             if (listIBTN_Enteredjob.get(i) == View) {

@@ -52,21 +52,17 @@ public class WebActivity extends AppCompatActivity {
         mWebview = (WebView) findViewById(R.id.webView1);
         mWebSettings = mWebview.getSettings();
 
-        //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
         mWebSettings.setJavaScriptEnabled(true);
 
-        //设置自适应屏幕，两者合用
-        mWebSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
-        mWebSettings.setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+        mWebSettings.setUseWideViewPort(true);
+        mWebSettings.setLoadWithOverviewMode(true);
 
-        //缩放操作
-        mWebSettings.setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
-        mWebSettings.setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
-        mWebSettings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        mWebSettings.setSupportZoom(true);
+        mWebSettings.setBuiltInZoomControls(true);
+        mWebSettings.setDisplayZoomControls(false);
 
         mWebview.loadUrl(url);
 
-        //设置不用系统浏览器打开,直接显示在当前Webview
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -128,7 +124,6 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    //点击返回上一页面而不是退出浏览器
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
@@ -143,7 +138,6 @@ public class WebActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    //销毁Webview
     @Override
     protected void onDestroy() {
         if (mWebview != null) {
@@ -157,7 +151,6 @@ public class WebActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    //返回检索画面
     public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -171,7 +164,6 @@ public class WebActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //获取搜索结果菜单栏按钮
     public void ll_Click(View View){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
