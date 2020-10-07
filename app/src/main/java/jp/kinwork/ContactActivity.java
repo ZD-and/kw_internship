@@ -153,9 +153,7 @@ public class ContactActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //内容取得、通信
     private void urllodad() {
-        //Json格式转换并且加密
         PostDate Pdata = new PostDate();
         Pdata.setUserId(userId);
         Pdata.setToken(token);
@@ -175,11 +173,9 @@ public class ContactActivity extends AppCompatActivity {
         Map<String,String> param = new HashMap<String, String>();
         param.put(getString(R.string.file),PARAM_File);
         param.put(getString(R.string.data),data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
 
-    //访问服务器，并取得访问结果
     private class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -220,7 +216,6 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
-    //解密，并且保存得到的数据
     private void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
@@ -299,13 +294,11 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
-    //dp转换为px
     private int dp2px(Context context, float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
 
-    //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -322,7 +315,6 @@ public class ContactActivity extends AppCompatActivity {
             if (View == null) {
                 return;
             }
-            // 判断第几个“-”按钮触发了事件
             int iIndex = -1;
             String employer_id = "";
             String company_name = "";

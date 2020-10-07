@@ -24,7 +24,6 @@ import javax.net.ssl.X509TrustManager;
 public class NetworkUtils {
     String TAG = "NetworkUtils";
     final static String MAIN_URL ="https://www.kinwork.jp:1443";
-//    final static String MAIN_URL ="https://www.kinwork.jp";
     public static URL buildUrl(String Sub_url) {
         String surl = MAIN_URL + Sub_url;
         URL url = null;
@@ -64,7 +63,6 @@ public class NetworkUtils {
             urlConnection.setReadTimeout(3000);
 
             urlConnection.connect();
-            //urlConnection.setRequestProperty("Content-Type","application/json; charset=UTF-8");
             urlConnection.getOutputStream().write(data.getBytes());
             int code = urlConnection.getResponseCode();
             Log.d("NetworkUtils-code:", "" + code);

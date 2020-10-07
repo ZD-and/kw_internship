@@ -92,7 +92,6 @@ public class ResumeActivity extends AppCompatActivity {
     private String IresumeIdflg;
     private String canmove = "0";
     private String createFlg = "0";
-    private String saveID = "";
     private String Jobtypeexpectations = "";
     private String Neareststation = "";
     private String Ismovingok = "0";
@@ -114,7 +113,6 @@ public class ResumeActivity extends AppCompatActivity {
     private TextView tl_tr_tv_employmenthistory;
     private TextView tl_tr_tv_qualification;
     private TextView tv_PrSkill;
-    private TextView tv_resume_title;
     private TextView tvcancel;
     private TextView tvconfirmation;
 
@@ -155,7 +153,6 @@ public class ResumeActivity extends AppCompatActivity {
     private int iIndex             = 0;
     private int employmentstatus   = 0;
 
-    private Resume Resume;
     private jp.kinwork.Common.PreferenceUtils PreferenceUtils;
     private SchoolCareer schoolCareer;
     private ProfessionalCareer professionalCareer;
@@ -188,7 +185,6 @@ public class ResumeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resume);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dialog = new ProgressDialog(this) ;
-        //dialog.setTitle("提示") ;
         dialog.setMessage(getString(R.string.Loading)) ;
         Intent intent = getIntent();
         myApplication = (MyApplication) getApplication();
@@ -202,8 +198,6 @@ public class ResumeActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        //im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        //null reference 処理
         if(im.isActive() && getCurrentFocus() != null)
         {
             if (getCurrentFocus().getApplicationWindowToken() != null)
@@ -333,7 +327,6 @@ public class ResumeActivity extends AppCompatActivity {
         JSONArray_employment = new JSONArray();
         JSONArray_education = new JSONArray();
         JSONArray_qualification = new JSONArray();
-        saveID = PreferenceUtils.getsaveid();
         slresume.post(new Runnable() {
             @Override
             public void run() {
@@ -361,7 +354,7 @@ public class ResumeActivity extends AppCompatActivity {
         });
 
     }
-    //本地保存情报取得
+    //ローカル情報取得
     public void load(){
         resumeNumber = PreferenceUtils.getresume_number();
         deviceId = PreferenceUtils.getdeviceId();
@@ -426,7 +419,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
         Create_reaume(userId,token);
     }
-    //"×"按钮触发删除事件
+    //履歴書削除
     public void Click_cancel(){
         Delalertdialog(getString(R.string.Delalertdialog),getString(R.string.resume));
     }
@@ -599,7 +592,7 @@ public class ResumeActivity extends AppCompatActivity {
         //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
-    //转换为Json格式并且AES加密
+
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -616,7 +609,7 @@ public class ResumeActivity extends AppCompatActivity {
         return encrypt;
 
     }
-    //访问服务器，并取得访问结果
+    //サーバーと通信
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name= "";
@@ -696,7 +689,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //解密，并且保存得到的数据
+
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
@@ -719,7 +712,7 @@ public class ResumeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //通信结果提示
+    //通知ダイアログ
     private void alertdialog(String Title,String meg,final String code){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(Title).setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -735,7 +728,8 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }).show();
     }
-    //雇佣形态設定
+
+    //ステータス取得
     public void getstatus(String data){
         int number = 0;
         for(int i = data.length(); i > 0; i--){
@@ -823,7 +817,6 @@ public class ResumeActivity extends AppCompatActivity {
         switch (View.getId()) {
             //職歴画面に
             case R.id.bu_info_employment:
-//                myApplication.setnum(listIBTNDel_employment.size());
                 myApplication.setActCation(getString(R.string.emp));
                 Intent intent_employment = new Intent();
                 intent_employment.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -833,7 +826,6 @@ public class ResumeActivity extends AppCompatActivity {
                 break;
             //学歴画面に
             case R.id.bu_info_education:
-//                myApplication.setnum(listIBTNDel_employment.size());
                 myApplication.setActCation(getString(R.string.edu));
                 Intent intent_education = new Intent();
                 intent_education.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -843,7 +835,6 @@ public class ResumeActivity extends AppCompatActivity {
                 break;
             //資格画面に
             case R.id.bu_info_qualification:
-//                myApplication.setnum(listIBTNDel_employment.size());
                 myApplication.setActCation(getString(R.string.qua));
                 Intent intent_qualification = new Intent();
                 intent_qualification.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -856,7 +847,7 @@ public class ResumeActivity extends AppCompatActivity {
 
         }
     };
-    //dp转换为px
+    //dpからpx変換
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
@@ -887,9 +878,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
 
             //国籍
-//            if(! obj.getString("").equals("")){
-                tltrtvcountry.setText(getString(R.string.kokuseki) + myApplication.getcountry());
-//            }
+            tltrtvcountry.setText(getString(R.string.kokuseki) + myApplication.getcountry());
             //住所
             if(! obj.getString(getString(R.string.add_1)).equals("") && ! obj.getString(getString(R.string.add_2)).equals("") && ! obj.getString(getString(R.string.add_3)).equals("")){
                 tltrtvaddress.setText(getString(R.string.address_nihongo) + obj.getString(getString(R.string.add_1)) + obj.getString(getString(R.string.add_2)) + obj.getString(getString(R.string.add_3)) + obj.getString(getString(R.string.add_4)));
@@ -903,7 +892,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
 
     }
-    //新履历ID取得
+    //履歴書ID取得
     public void addedResumeid(String data){
         try {
             JSONObject obj = new JSONObject(data);
@@ -923,7 +912,7 @@ public class ResumeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //已登录履历信息取得
+    //履歴情報取得
     private void resumeinfo(JSONArray data){
         for(int i=0; i < data.length(); i++){
             try {
@@ -973,7 +962,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录職歴信息取得
+    //職歴情報取得
     public void employmentInfo(JSONArray data){
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
@@ -1032,12 +1021,11 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录職歴信息変更
+    //職歴情報変更
     public void Updemployment(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
         int iIndex = -1;
         for (int i = 0; i < listIBTNAdd_employment.size(); i++) {
             if (listIBTNAdd_employment.get(i) == View) {
@@ -1079,12 +1067,12 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录職歴信息削除
+    //職歴削除
     public void Delemployment(View v){
         if (v == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
+
         int iIndex = -1;
         for (int i = 0; i < listIBTNDel_employment.size(); i++) {
             if (listIBTNDel_employment.get(i) == v) {
@@ -1097,7 +1085,7 @@ public class ResumeActivity extends AppCompatActivity {
             Delalertdialog(getString(R.string.Delalertdialog2),getString(R.string.employment));
         }
     }
-    //已登录学歴信息取得
+    //学歴情報取得
     public void educationInfo(JSONArray data){
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
@@ -1112,7 +1100,6 @@ public class ResumeActivity extends AppCompatActivity {
                 TextView degree = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_degree);
                 TextView schoolname = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_schoolname);
                 TextView majorfield = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_majorfield);
-                //TextView schoollocation = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_schoollocation);
                 TextView durationofentrance = (TextView) add_education.findViewById(R.id.I_tl_tr_tv_durationofentrance);
                 ImageView educationcreate = (ImageView) add_education.findViewById(R.id.I_ibu_educationcreate);
                 educationcreate.setOnClickListener(new View.OnClickListener() {
@@ -1163,12 +1150,12 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录学歴信息変更
+    //学歴情報変更
     public void Updeducation(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
+
         int iIndex = -1;
         for (int i = 0; i < listIBTNAdd_education.size(); i++) {
             if (listIBTNAdd_education.get(i) == View) {
@@ -1220,12 +1207,12 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录学歴信息削除
+    //学歴情報削除
     public void Deleducation(View v){
         if (v == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
+
         int iIndex = -1;
         for (int i = 0; i < listIBTNDel_education.size(); i++) {
             if (listIBTNDel_education.get(i) == v) {
@@ -1238,7 +1225,7 @@ public class ResumeActivity extends AppCompatActivity {
             Delalertdialog(getString(R.string.Delalertdialog3),getString(R.string.education));
         }
     }
-    //已登录資格信息取得
+    //資格情報取得
     public void qualificationInfo(JSONArray data){
         Gson gson = new Gson();
         for(int i=0; i < data.length(); i++){
@@ -1274,7 +1261,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     }
-    //已登录資格信息変更
+    //資格情報変更
     private View.OnClickListener Updqualification =new View.OnClickListener() {
         public void onClick(View View) {
             if (View == null) {
@@ -1315,7 +1302,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }
     };
-    //已登录資格信息削除
+    //資格情報変更削除
     private View.OnClickListener Delqualification =new View.OnClickListener() {
         public void onClick(View v) {
             if (v == null) {
@@ -1352,7 +1339,7 @@ public class ResumeActivity extends AppCompatActivity {
             }
         }).show();
     }
-    //信息删除处理
+    //删除处理
     public void Deleteprocessing(String name,int Index){
         Log.d("***name***", "[" + name + "]" );
         Log.d("***Del_number***", "[" + resumeNumber + "]" );
@@ -1413,7 +1400,7 @@ public class ResumeActivity extends AppCompatActivity {
                 DeleteInfo(name,qualificationId);
         }
     }
-    //服务器数据信息删除
+    //サーバーと通信して、データ删除
     public void DeleteInfo(String name,String ID){
         PostDate Pdata = new PostDate();
         Map<String,String>param = new HashMap<String, String>();
@@ -1444,15 +1431,10 @@ public class ResumeActivity extends AppCompatActivity {
         myApplication.setActCation("");
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        if(saveID.equals("SelectResume")){
-//            intent.setClass(ResumeActivity.this, SelectResumeActivity.class);
-//        } else {
-//
-//        }
         intent.setClass(ResumeActivity.this, PersonalSetActivity.class);
         startActivity(intent);
     }
-    //返回按钮
+    //戻るボタン
     public void Click_back(){
         status_sum = one_1      +
                      two_2      +
@@ -1491,7 +1473,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
 
     }
-    //错误信息提示
+    //エラーメッセージ
     private void showError(String data){
         try {
             JSONObject obj = new JSONObject(data);
@@ -1513,7 +1495,7 @@ public class ResumeActivity extends AppCompatActivity {
         }
 
     }
-    //履历书名字设定
+    //履歴書名設定
     private View.OnClickListener Listener =new View.OnClickListener() {
 
         public void onClick(View View) {
@@ -1547,7 +1529,6 @@ public class ResumeActivity extends AppCompatActivity {
                         param.put(getString(R.string.file),PARAM_ResumeName);
                         param.put(getString(R.string.data),data);
                         param.put(getString(R.string.name),getString(R.string.ResumeName));
-                        //数据通信处理（访问服务器，并取得访问结果）
                         new GithubQueryTask().execute(param);
                     }
                     break;
@@ -1555,7 +1536,6 @@ public class ResumeActivity extends AppCompatActivity {
         }
     };
 
-    //菜单栏按钮
     public void ll_Click(View View){
         status_sum = one_1      +
                     two_2      +

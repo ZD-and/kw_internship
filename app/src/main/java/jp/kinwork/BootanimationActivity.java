@@ -40,11 +40,10 @@ import static jp.kinwork.Common.NetworkUtils.buildUrl;
 import static jp.kinwork.Common.NetworkUtils.getResponseFromHttpUrl;
 
 public class BootanimationActivity extends AppCompatActivity {
-    //初次通信
+
     final static String PARAM_A = "/Common/initialCommunication";
-    //Mypage获取初始所有数据
     final static String PARAM_B = "/MypagesMobile/initMypageData";
-    private final int SPLASH_DISPLAY_LENGHT = 3000; // 两秒后进入系统
+    private final int SPLASH_DISPLAY_LENGHT = 3000;
 
     //    private boolean sProcessResult;
     private String savedeviceId;
@@ -119,7 +118,7 @@ public class BootanimationActivity extends AppCompatActivity {
         locationStart();
     }
 
-    //判断是否是初次通信
+    //初回通信判定
     public void Check(){
         Log.d(TAG, "Check: ");
         load();
@@ -157,7 +156,7 @@ public class BootanimationActivity extends AppCompatActivity {
         mMyApplication.setToken(loadToken);
     }
 
-    //初次通信
+    //初回通信
     public void urllodad() {
         Map<String,String> param = new HashMap<String, String>();
         param.put(getString(R.string.file),PARAM_A);
@@ -166,7 +165,7 @@ public class BootanimationActivity extends AppCompatActivity {
         new GithubQueryTask().execute(param);
     }
 
-    //初始所有数据
+    //データ取得
     public void urlMypageData(){
         load();
         Log.d(TAG+"loadUserId", loadUserId);
@@ -178,16 +177,13 @@ public class BootanimationActivity extends AppCompatActivity {
             param.put(getString(R.string.file),PARAM_B);
             param.put(getString(R.string.data),data);
             flg = "2";
-            //数据通信处理（访问服务器，并取得访问结果）
             new GithubQueryTask().execute(param);
         }
         else {
             Bootanimation();
         }
-//        locationStart();
     }
 
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,String Data_a,String Data_b) {
         PostDate Pdata = new PostDate();
         Pdata.setUserId(Data_a);
@@ -207,7 +203,6 @@ public class BootanimationActivity extends AppCompatActivity {
         return encrypt;
     }
 
-    //解密，并且保存得到的数据
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,loadAesKey);
@@ -333,7 +328,7 @@ public class BootanimationActivity extends AppCompatActivity {
         }
     }
 
-    //跳转至主画面
+    //メイン画面に遷移
     private void Bootanimation(){
         mMyApplication.setAccessFineFocation(AccessFineFocation);
         if (loaddeviceId.equals("A") || loadAesKey.equals("A")) {
@@ -351,7 +346,7 @@ public class BootanimationActivity extends AppCompatActivity {
         }
     }
 
-    //已登录職歴信息取得
+    //職歴情報取得
     public void setResumeInfo(JSONArray data){
         int num = 0;
         for(int i=0; i < data.length(); i++){
@@ -377,11 +372,10 @@ public class BootanimationActivity extends AppCompatActivity {
             }
         }
     }
-    //本地保存信息清空
+    //ローカル情報クリア
     private void clearSP(){
         SharedPreferences sp = getSharedPreferences("Information", 0);
         SharedPreferences.Editor editor = sp.edit();
-        //用clear()方法清除数据，commit()保存清除结果
         editor.clear().commit();
     }
 
@@ -410,11 +404,11 @@ public class BootanimationActivity extends AppCompatActivity {
 //            Location Location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);//设置为最大精度
-            criteria.setAltitudeRequired(false);//不要求海拔信息
-            criteria.setBearingRequired(false);//不要求方位信息
-            criteria.setCostAllowed(false);//是否允许付费
-            criteria.setPowerRequirement(Criteria.POWER_LOW);//对电量的要求
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setAltitudeRequired(false);
+            criteria.setBearingRequired(false);
+            criteria.setCostAllowed(false);
+            criteria.setPowerRequirement(Criteria.POWER_LOW);
             Location Location = mLocationManager.getLastKnownLocation(mLocationManager.getBestProvider(criteria,true));
             Log.d(TAG+"debug", "locationStart() Location:" +Location);
             if (Location != null) {

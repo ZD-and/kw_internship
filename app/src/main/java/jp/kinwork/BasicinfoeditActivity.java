@@ -383,7 +383,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
 
     }
-    //返回按钮
+    //戻るボタン
     public void Click_back(View View){
         mMyApplication.setpersonalset("0",0);
         Intent intent = new Intent();
@@ -397,7 +397,7 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH) + 1;
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        //监听事件
+
         ttbirthday.setOnClickListener(new View.OnClickListener() {
 
             Calendar SYScalendar = Calendar.getInstance();
@@ -436,36 +436,33 @@ public class BasicinfoeditActivity extends AppCompatActivity {
     ////生年月日選択 end
     //性別選択 start
     private void showSex() {
-        //监听事件
         ttsex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSexChooseDialog();
             }
-        })
-        ;
-
+        });
     }
     private void showSexChooseDialog() {
-        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);// 自定义对话框
+        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
         builder3.setSingleChoiceItems(sexArry, selectedFruitIndex, new DialogInterface.OnClickListener() {// 2默认的选中
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {// which是被选中的位置
+            public void onClick(DialogInterface dialog, int which) {
                 // showToast(which+"");
                 selectedFruitIndex = which;
                 Log.d("selectedFruitIndex", ": " +which);
                 ttsex.setText(sexArry[which]);
                 mMyApplication.setsex_div(String.valueOf(which));
-                dialog.dismiss();// 随便点击一个item消失对话框，不用点击确认取消
+                dialog.dismiss();
             }
         });
-        builder3.show();// 让弹出框显示
+        builder3.show();
     }
     //性別選択 end
     //国籍選択 start
     private void showCountry() {
-        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);// 自定义对话框
+        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
         //监听事件
         ttcountry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -477,20 +474,20 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     }
     private void showCountryChooseDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);// 自定义对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setSingleChoiceItems(CountryData, CountryDataNum, new DialogInterface.OnClickListener() {// 2默认的选中
 
             @Override
-            public void onClick(DialogInterface dialog, int which) {// which是被选中的位置
+            public void onClick(DialogInterface dialog, int which) {
                 // showToast(which+"");
                 CountryDataNum = which;
                 Log.d("CountryData", ": " +which);
                 ttcountry.setText(CountryData[which]);
                 mMyApplication.setcountry(String.valueOf(which));
-                dialog.dismiss();// 随便点击一个item消失对话框，不用点击确认取消
+                dialog.dismiss();
             }
         });
-        builder.show();// 让弹出框显示
+        builder.show();
     }
     //国籍選択 end
 
@@ -585,7 +582,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         new GithubQueryTask().execute(param);
     }
 
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,String data) {
         Log.d("***AES加密sdPdata***", data);
         AES mAes = new AES();
@@ -601,7 +597,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
 
     }
 
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
@@ -646,7 +641,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
     }
 
-    //解密，并且保存得到的数据
     public void decryptchange(String data){
         AESprocess AESprocess = new AESprocess();
         String datas = AESprocess.getdecrypt(data,AesKey);
@@ -711,7 +705,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }
     }
 
-    //通信结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("エラー").setMessage(meg).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
@@ -722,13 +715,12 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         }).show();
     }
 
-    //dp转换为px
     private int dp2px(Context context,float dpValue){
         float scale=context.getResources().getDisplayMetrics().density;
         return (int)(dpValue*scale+0.5f);
     }
 
-    //特定字体设置
+    //文字設定
     private void SetStyle(TextView View,String A,String flg){
         String String =  View.getText().toString() + A;
         int length1 = String.indexOf(A);
@@ -744,7 +736,6 @@ public class BasicinfoeditActivity extends AppCompatActivity {
         View.setText(style_name);
     }
 
-    //菜单栏按钮
     public void ll_Click(View View){
         mMyApplication.setpersonalset("1",0);//姓
         mMyApplication.setpersonalset(etfname.getText().toString(),1);//姓

@@ -205,7 +205,7 @@ public class ApplyActivity extends AppCompatActivity {
         }
     }
 
-    //返回检索画面
+    //戻るボタン
     public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -218,7 +218,7 @@ public class ApplyActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
-    //工作情报内容
+    //仕事内容
     public void setjobinfo(String data){
         if (data != null && !data.equals("")) {
             try {
@@ -261,7 +261,7 @@ public class ApplyActivity extends AppCompatActivity {
             }
         }
     }
-    //雇佣形态設定
+    //ステータス設定
     public void setstatus(String data){
         Log.i("转换内容的data", data);
         int iIndex = -1;
@@ -385,11 +385,9 @@ public class ApplyActivity extends AppCompatActivity {
 //        String data = JsonChnge(AesKey,Pdata);
 //        param.put("file",PARAM_sendMessage);
 //        param.put("data",data);
-//        //数据通信处理（访问服务器，并取得访问结果）
 ////        new GithubQueryTask().execute(param);
 //    }
 //
-//    //转换为Json格式并且AES加密
 //    public static String JsonChnge(String AesKey,PostDate Data) {
 //        Gson mGson = new Gson();
 //        String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -407,7 +405,6 @@ public class ApplyActivity extends AppCompatActivity {
 //
 //    }
 //
-//    //通信处理
 //    public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 //
 //        @Override

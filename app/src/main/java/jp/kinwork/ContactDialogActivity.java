@@ -142,13 +142,13 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 //            Collections.reverse(list_String);
             DisplayEmailFlg = mMyApplication.getContactDialog(4);
             if(DisplayEmailFlg.equals("")){
-                //flg为空的时候，显示全部的邮件
+                //flgが設定されない場合、全部メールを表示
                 DisplayEmail(getString(R.string.tv_allEmail));
             }else if(DisplayEmailFlg.equals("1")){
-                //flg为1的时候，显示收到的邮件
+                //flgが１を設定される場合、送信メールを表示
                 DisplayEmail(getString(R.string.tv_sendEmail));
             }else if(DisplayEmailFlg.equals("0")){
-                //flg为1的时候，显示发送的邮件
+                //flgが１を設定される場合、受信メールを表示
                 DisplayEmail(getString(R.string.tv_ReceptionEmail));
             }
         }
@@ -224,7 +224,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         Email = mPreferenceUtils.getEmail();
     }
 
-    //获取搜索结果
+    //検索悔過k
     public void getSearchResults(){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
@@ -239,7 +239,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         new GithubQueryTask().execute(param);
     }
 
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,PostDate Data) {
         Gson mGson = new Gson();
         String sdPdata = mGson.toJson(Data,PostDate.class);
@@ -256,7 +255,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         return encrypt;
 
     }
-    //访问服务器，并取得访问结果
+
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         String name = "";
@@ -296,7 +295,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 //            dialog.dismiss();
         }
     }
-    //解密，并且保存得到的数据
+
     public void decryptchange(String data,String inputname){
         AESprocess AESprocess = new AESprocess();
         String decryptdata = AESprocess.getdecrypt(data,AesKey);
@@ -328,7 +327,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
     }
-    //通信信息取得
+
     public void educationInfo(String flg){
         slmeg.scrollTo(0,0);
         llmeg.removeAllViews();
@@ -383,12 +382,11 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                     tvisReaded.setVisibility(GONE);
                 }
 
-                //收信的场合不显示送信邮件
                 if(flg.equals("1") && objMyMail.getString(getString(R.string.direction)).equals("0")){
                     dialog.setVisibility(GONE);
 
                 }
-                //送信的场合不显示收信邮件
+
                 else if(flg.equals("0") && objMyMail.getString(getString(R.string.direction)).equals("1")){
                     dialog.setVisibility(GONE);
                 }
@@ -407,7 +405,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
         slmeg.setVisibility(VISIBLE);
     }
-    //返回联络画面
+
     public void Click_back(){
         Log.d("sendflg", sendflg);
         if(sendflg.equals("1")){
@@ -416,7 +414,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 builder.setTitle("").setMessage(getString(R.string.setMessage)).setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //确定按钮的点击事件
+
                         sendflg = "0";
                         slmeg.setVisibility(VISIBLE);
                         tlmeg.setVisibility(GONE);
@@ -426,7 +424,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 }).setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //取消按钮的点击事件
+
                     }
                 }).show();
             } else {
@@ -448,7 +446,7 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
 //            }
         }
     }
-    //显示邮件
+
     public void onClick(View View){
         String name = "";
         switch (View.getId()){
@@ -464,11 +462,10 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         }
         DisplayEmail(name);
     }
-    //显示邮件的背景设定
+
     public void DisplayEmail(String name){
         switch (name){
             case "tv_allEmail":
-                //显示全部的邮件
                 tvallEmail.setBackgroundResource(R.drawable.frame_left_bule);
                 tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
                 tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
@@ -479,7 +476,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 educationInfo("");
                 break;
             case "tv_sendEmail":
-                //显示收到的邮件
                 tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
                 tvsendEmail.setBackgroundResource(R.drawable.frame_center_bule);
                 tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_null);
@@ -490,7 +486,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 educationInfo("1");
                 break;
             case "tv_ReceptionEmail":
-                //显示发送的邮件
                 tvallEmail.setBackgroundResource(R.drawable.frame_left_null);
                 tvsendEmail.setBackgroundResource(R.drawable.frame_center_null);
                 tvReceptionEmail.setBackgroundResource(R.drawable.frame_right_bule);
@@ -501,10 +496,9 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 educationInfo("0");
                 break;
         }
-        //flg保存到全局变量里
         mMyApplication.setContactDialog(DisplayEmailFlg,4);
     }
-    //点击回复或者新规的按钮触发事件
+
     public void Click_setmeg(View View){
         if (View == null) {
             return;
@@ -513,13 +507,13 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         tvToCompanyName.setText("To:" + company_name);
         setTitle = "";
         setmeg = "";
-        // 判断第几个按钮触发了事件
+
         int iIndex = -1;
         TextView Click_tvsubtitle = new TextView(this);
         TextView Click_tvmeg = new TextView(this);
         switch (View.getId()){
             case R.id.tl_reply:
-                //点击回复的时候设定内容
+
                 for (int i = 0; i < list_tlreply.size(); i++) {
                     if (list_tlreply.get(i) == View) {
                         iIndex = i;
@@ -538,12 +532,10 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
-        //当前界面隐藏
         slmeg.setVisibility(GONE);
-        //显示送信界面
         tlmeg.setVisibility(VISIBLE);
     }
-    //将发送的信息添加到列表的最上方
+
     public void Setsendmeg(String title,String meg,String date){
         slmeg.setVisibility(VISIBLE);
         tlmeg.setVisibility(GONE);
@@ -609,12 +601,12 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         list_tvmeg.addFirst(tvmeg);
         list_tlreply.addFirst(tlreply);
     }
-    //显示具体的邮件信息，如果当前邮件为企业发来的未读信息，则设定为已读
+
     public void Click_meg_visibility(View View){
         if (View == null) {
             return;
         }
-        // 判断第几个“-”按钮触发了事件
+
         int iIndex = -1;
         TextView Click_tvtitle = new TextView(this);
         TextView Click_tvsubtitle = new TextView(this);
@@ -663,7 +655,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
                     param.put(getString(R.string.file),PARAM_Readed);
                     param.put(getString(R.string.data),data);
                     param.put(getString(R.string.name),getString(R.string.isReaded));
-                    //数据通信处理（访问服务器，并取得访问结果）
                     new GithubQueryTask().execute(param);
                 }
             } catch (JSONException e) {
@@ -682,7 +673,6 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-    //送信处理
     public void Click_setSendMeg(){
         PostDate Pdata = new PostDate();
         Map<String,String> param = new HashMap<String, String>();
@@ -695,10 +685,8 @@ public class ContactDialogActivity extends AppCompatActivity implements View.OnC
         param.put(getString(R.string.file),PARAM_sendMessage);
         param.put(getString(R.string.data),data);
         param.put(getString(R.string.name),getString(R.string.SendMeg));
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
-    //菜单栏界面移动
     public void ll_Click(View View) {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

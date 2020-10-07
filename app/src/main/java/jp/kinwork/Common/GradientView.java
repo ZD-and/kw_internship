@@ -35,7 +35,6 @@ public class GradientView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //获取View的宽高
         int width = getWidth();
         int height = getHeight();
 

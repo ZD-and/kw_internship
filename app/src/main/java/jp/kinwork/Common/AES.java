@@ -19,18 +19,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AES {
     private final String KEY_GENERATION_ALG = "PBEWITHSHAANDTWOFISH-CBC";
-    // private final String KEY_GENERATION_ALG = "PBKDF2WithHmacSHA1";
     private final int HASH_ITERATIONS = 10000;
     private final int KEY_LENGTH = 128;
-//    private char[] humanPassphrase = { 'P', 'e', 'r', ' ', 'v', 'a', 'l', 'l',
-//            'u', 'm', ' ', 'd', 'u', 'c', 'e', 's', ' ', 'L', 'a', 'b', 'a',
-//            'n', 't' };// per vallum duces labant
-//    private byte[] salt = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD,
-//            0xE, 0xF }; // must save this for next time we want the key
-//
-////    private char[] humanPassphrase = null;
-////    private byte[] salt = null;
-
 
 
 //    private PBEKeySpec myKeyspec = new PBEKeySpec(humanPassphrase, salt,

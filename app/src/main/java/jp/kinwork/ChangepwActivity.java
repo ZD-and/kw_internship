@@ -116,27 +116,17 @@ public class ChangepwActivity extends AppCompatActivity {
             etpasswordNewConform.setText(mMyApplication.getpersonalset(3));
         }
 
-        // 新建一个可以添加文本的对象
         SpannableString ee = new SpannableString(getString(R.string.password));
-        // 设置文本字体大小
         AbsoluteSizeSpan aee = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         ee.setSpan(aee, 0, ee.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        etpasswordNew.setHint(new SpannedString(ee));//转码
-        // 新建一个可以添加文本的对象
+        etpasswordNew.setHint(new SpannedString(ee));
         SpannableString eec = new SpannableString(getString(R.string.Spannable));
-        // 设置文本字体大小
         AbsoluteSizeSpan aeec = new AbsoluteSizeSpan(12, true);
-        // 将字体大小附加到文本的属性
         eec.setSpan(aeec, 0, eec.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint属性
-        etpasswordNewConform.setHint(new SpannedString(eec));//转码
+        etpasswordNewConform.setHint(new SpannedString(eec));
 
     }
 
-
-    //菜单栏按钮
     public void ll_Click(View View){
         mMyApplication.setpersonalset("2",0);
         mMyApplication.setpersonalset(etpasswordOld.getText().toString(),1);
@@ -203,18 +193,13 @@ public class ChangepwActivity extends AppCompatActivity {
         passwordOld = etpasswordOld.getText().toString();
         passwordNew = etpasswordNew.getText().toString();
         passwordNewConform = etpasswordNewConform.getText().toString();
-        //Json格式转换并且加密
         String data = JsonChnge(AesKey,UserId, token,passwordOld,passwordNew,passwordNewConform);
         Map<String,String> param = new HashMap<String, String>();
         param.put("file",PARAM_File);
         param.put("data",data);
-        //数据通信处理（访问服务器，并取得访问结果）
         new GithubQueryTask().execute(param);
     }
 
-
-
-    //转换为Json格式并且AES加密
     public static String JsonChnge(String AesKey,String data_a,String data_b,String data_c,String data_d,String data_e) {
         PostDate Pdata = new PostDate();
         Pdata.setUserId(data_a);
@@ -231,13 +216,11 @@ public class ChangepwActivity extends AppCompatActivity {
         return encrypt;
     }
 
-    //结果提示
     private void alertdialog(String meg){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("エラー").setMessage(meg).setPositiveButton("はい", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //确定按钮的点击事件
             }
         }).show();
     }
@@ -252,7 +235,7 @@ public class ChangepwActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    //删除保存内容
+    //保存内容删除
     public void removeDate(String name){
         //创建SharedPreferences对象
         SharedPreferences sp_LoginInformation = getSharedPreferences("Information", Context.MODE_PRIVATE);
@@ -261,7 +244,7 @@ public class ChangepwActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    //本地情报取得
+    //ローカル情報取得
     public void load(){
         SharedPreferences object = getSharedPreferences("Information", Context.MODE_PRIVATE);
         deviceId = object.getString(getString(R.string.Information_Name_deviceId),"A");
@@ -270,7 +253,6 @@ public class ChangepwActivity extends AppCompatActivity {
         token = object.getString(getString(R.string.token),"A");
     }
 
-    //访问服务器，并取得访问结果
     public class GithubQueryTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override

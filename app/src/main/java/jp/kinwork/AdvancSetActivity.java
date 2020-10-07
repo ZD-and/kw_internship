@@ -52,7 +52,6 @@ public class AdvancSetActivity extends AppCompatActivity {
         myApplication = (MyApplication) getApplication();
     }
 
-    //菜单栏按钮触发事件
     public void Click_back(){
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -60,7 +59,7 @@ public class AdvancSetActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //检索结果画面移动
+    //検索結果に移動
     public void Click_Search(){
         keyword = etJobname.getText().toString();
         address = etaddress.getText().toString();

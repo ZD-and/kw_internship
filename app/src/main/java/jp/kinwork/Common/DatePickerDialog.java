@@ -42,9 +42,9 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
         mCallBack = callBack;
 
         Context themeContext = getContext();
-        setButton(BUTTON_POSITIVE, "確 定", this);
-        setButton(BUTTON_NEGATIVE, "取 消", this);
-        setButton(BUTTON_NEUTRAL, "清 空", this);
+        setButton(BUTTON_POSITIVE, "確認", this);
+        setButton(BUTTON_NEGATIVE, "キャンセル", this);
+        setButton(BUTTON_NEUTRAL, "クリア", this);
         setIcon(0);
 
         LayoutInflater inflater = (LayoutInflater) themeContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,7 +62,6 @@ public class DatePickerDialog extends AlertDialog implements OnClickListener, On
 
     private void hideDay(DatePicker mDatePicker) {
         try {  
-            /* 处理android5.0以上的特殊情况 */
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 int daySpinnerId = Resources.getSystem().getIdentifier("day", "id", "android");
                 if (daySpinnerId != 0) {
