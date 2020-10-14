@@ -337,8 +337,9 @@
     <string name="employmentStatus">employmentStatus</string>
     <string name="tsushinshierror">通信失敗</string>
     <string name="ken">件</string>
-    <string name="pagemei">ページ目/</string>
-    <string name="page">ページ</string>
+    <string name="kuhaku">　</string>
+    <string name="pagemei">/</string>
+    <string name="page">　ページ</string>
     <string name="isPaid">isPaid</string>
     <string name="kinworktag">kinworktag</string>
     <string name="isLiked">isLiked</string>

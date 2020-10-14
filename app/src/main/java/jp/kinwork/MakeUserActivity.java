@@ -83,6 +83,31 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         Initialization();
     }
 
+    //---ブアクティビティからデータを取得するために、必要
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        //指定データが存在する場合、データを取得する
+        if( data.hasExtra("termsofserviceflg"))
+        {
+            termsofserviceflg = data.getStringExtra("termsofserviceflg");
+        }
+
+        if( data.hasExtra("privacypolicyflg"))
+        {
+            privacypolicyflg = data.getStringExtra("privacypolicyflg");
+        }
+        Log.d("Mu/termsofserviceflg",termsofserviceflg);
+        Log.d("Mu/privacypolicyflg",privacypolicyflg);
+        if(termsofserviceflg.equals("1")){
+            ivtermsofservice.setImageResource(R.drawable.ic_check_box);
+        }
+        if(privacypolicyflg.equals("1")) {
+            ivprivacypolicy.setImageResource(R.drawable.ic_check_box);
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -158,12 +183,14 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         if(MyApplication.getinputB().length() > 0){
             edinputB.setText(MyApplication.getinputB());
         }
-        if(termsofserviceflg.equals("1")){
+
+        //---チェック表示変更をアクティビティリザルトへ移動する
+        /*if(termsofserviceflg.equals("1")){
             ivtermsofservice.setImageResource(R.drawable.ic_check_box);
         }
         if(privacypolicyflg.equals("1")) {
             ivprivacypolicy.setImageResource(R.drawable.ic_check_box);
-        }
+        }*/
         if(screenflg.equals("") || screenflg.equals(getString(R.string.sendValidateEmail))){
             sendValidateEmail();
         } else if(screenflg.equals(getString(R.string.checkValidateCode))){
@@ -327,7 +354,16 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         } else {
             intent.setClass(MakeUserActivity.this, AgreementActivity.class);
         }
-        startActivity(intent);
+        //---サブアクティビティにより、移動する方法を差別化
+        if(Activity.equals((getString(R.string.Agreement))))
+        {
+            //---リザルトを取得するためにリザルトを取得できる方式にする
+            startActivityForResult(intent,111);
+        }
+        else
+        {
+            startActivity(intent);
+        }
     }
 
     public static String JsonChnge(String AesKey,PostDate Data) {

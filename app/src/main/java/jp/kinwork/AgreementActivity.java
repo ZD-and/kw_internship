@@ -63,25 +63,42 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
 
     public void onClick(View View){
         mMyApplication.setAgreement(Agreement);
+        Intent intent = new Intent();
         switch (View.getId()){
             case R.id.bu_back:
                 if(Agreement.equals(getString(R.string.termsofservice))){
                     mMyApplication.settermsofserviceflg("0");
+                    //---情報をintentに保存する
+                    intent.putExtra("termsofserviceflg",mMyApplication.gettermsofserviceflg());
                 } else {
                     mMyApplication.setprivacypolicyflg("0");
+                    //---情報をintentに保存する
+                    intent.putExtra("privacypolicyflg",mMyApplication.getprivacypolicyflg());
                 }
                 break;
             case R.id.bu_ok:
                 if(Agreement.equals(getString(R.string.termsofservice))){
                     mMyApplication.settermsofserviceflg("1");
+                    //---情報をintentに保存する
+                    intent.putExtra("termsofserviceflg",mMyApplication.gettermsofserviceflg());
                 } else {
                     mMyApplication.setprivacypolicyflg("1");
+                    //---情報をintentに保存する
+                    intent.putExtra("privacypolicyflg",mMyApplication.getprivacypolicyflg());
                 }
                 break;
         }
-        Intent intent = new Intent();
+        Log.d("Ag/termsofserviceflg",mMyApplication.gettermsofserviceflg());
+        Log.d("Ag/privacypolicyflg",mMyApplication.getprivacypolicyflg());
+
         intent.setClass(AgreementActivity.this,MakeUserActivity.class);
-        startActivity(intent);
+
+        //---サブアクティビティの方式で、データをリザルトを設定する
+        setResult(111,intent);
+        //startActivity(intent);
+
+        //---サブアクティビティを削除
+        finish();
     }
 
     private String ChangeString(String data_A,String[] data_B){
@@ -98,5 +115,16 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
         Stringreturn = Stringreturn.replace("\\n", "<br />");
         Log.w("Stringreturn", Stringreturn);
         return Stringreturn;
+    }
+
+    //---サブアクティビティの場合、Backキーを押すとの対応
+    //---これがないと、BACｋキーを押すとエラーが発生
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("termsofserviceflg",mMyApplication.gettermsofserviceflg());
+        intent.putExtra("privacypolicyflg",mMyApplication.getprivacypolicyflg());
+        setResult(111, intent);
+        finish();
     }
 }

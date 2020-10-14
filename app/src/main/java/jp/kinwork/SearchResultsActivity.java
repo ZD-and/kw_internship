@@ -103,23 +103,25 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
     private Button tltrbuBefore;
     private Button tltrbuNext;
-    private Button tltrbuleftsearch;
-    private Button tltrburightsearch;
+    //private Button tltrbuleftsearch;
+    //private Button tltrburightsearch;
     private Button tltrbutheleft;
     private Button tltrbuleft;
     private Button tltrbucentre;
     private Button tltrburight;
     private Button tltrbutheright;
+    private Button tltrbuInvisiable;
 
     private Button tltrbuBeforeBottom;
     private Button tltrbuNextBottom;
-    private Button tltrbuleftsearchBottom;
-    private Button tltrburightsearchBottom;
+    //private Button tltrbuleftsearchBottom;
+    //private Button tltrburightsearchBottom;
     private Button tltrbutheleftBottom;
     private Button tltrbuleftBottom;
     private Button tltrbucentreBottom;
     private Button tltrburightBottom;
     private Button tltrbutherightBottom;
+    private Button tltrbuInvisiableBottom;
 
     private TextView tltrtvtitle;
     private TextView tvback;
@@ -183,7 +185,13 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+        View focuseView = getCurrentFocus();
+        /*null　チェック*/
+        if(focuseView != null)
+        {
+            im.hideSoftInputFromWindow(focuseView.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
         return super.onTouchEvent(event);
     }
 
@@ -252,7 +260,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         });
         tvbacktitle     = (TextView) findViewById(R.id.tv_back_title);
         tvbackdummy     = (TextView) findViewById(R.id.tv_back_dummy);
-        tvback.setText(getString(R.string.kensaku));
+        tvback.setText(getString(R.string.back));
         tvbacktitle.setText(getString(R.string.kensakukekka));
         tvbackdummy.setText(getString(R.string.kensaku));
         tltrtvtitle = (TextView) findViewById(R.id.tl_tr_tv_title);
@@ -280,8 +288,12 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
         tltrbuBefore = (Button) findViewById(R.id.tl_tr_bu_Before);
         tltrbuNext = (Button) findViewById(R.id.tl_tr_bu_Next);
+/*
         tltrbuleftsearch = (Button) findViewById(R.id.tl_tr_bu_leftsearch);
         tltrburightsearch = (Button) findViewById(R.id.tl_tr_bu_rightsearch);
+*/
+        tltrbuInvisiable = (Button) findViewById(R.id.tl_tr_bu_Invisiable);
+        tltrbuInvisiableBottom = (Button) findViewById(R.id.tl_tr_bu_Invisiable_Bottom);
         tltrbutheleft = (Button) findViewById(R.id.tl_tr_bu_theleft);
         tltrbuleft = (Button) findViewById(R.id.tl_tr_bu_left);
         tltrbucentre = (Button) findViewById(R.id.tl_tr_bu_centre);
@@ -289,8 +301,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrbutheright = (Button) findViewById(R.id.tl_tr_bu_theright);
         tltrbuBeforeBottom = (Button) findViewById(R.id.tl_tr_bu_Before_Bottom);
         tltrbuNextBottom = (Button) findViewById(R.id.tl_tr_bu_Next_Bottom);
-        tltrbuleftsearchBottom = (Button) findViewById(R.id.tl_tr_bu_leftsearch_Bottom);
-        tltrburightsearchBottom = (Button) findViewById(R.id.tl_tr_bu_rightsearch_Bottom);
+        //tltrbuleftsearchBottom = (Button) findViewById(R.id.tl_tr_bu_leftsearch_Bottom);
+        //tltrburightsearchBottom = (Button) findViewById(R.id.tl_tr_bu_rightsearch_Bottom);
         tltrbutheleftBottom = (Button) findViewById(R.id.tl_tr_bu_theleft_Bottom);
         tltrbuleftBottom = (Button) findViewById(R.id.tl_tr_bu_left_Bottom);
         tltrbucentreBottom = (Button) findViewById(R.id.tl_tr_bu_centre_Bottom);
@@ -299,8 +311,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
 
         tltrbuBefore.setOnClickListener(Click_buttom);
         tltrbuNext.setOnClickListener(Click_buttom);
-        tltrbuleftsearch.setOnClickListener(Click_buttom);
-        tltrburightsearch.setOnClickListener(Click_buttom);
+        //tltrbuleftsearch.setOnClickListener(Click_buttom);
+       // tltrburightsearch.setOnClickListener(Click_buttom);
         tltrbutheleft.setOnClickListener(Click_buttom);
         tltrbuleft.setOnClickListener(Click_buttom);
         tltrbucentre.setOnClickListener(Click_buttom);
@@ -308,8 +320,8 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         tltrbutheright.setOnClickListener(Click_buttom);
         tltrbuBeforeBottom.setOnClickListener(Click_buttom);
         tltrbuNextBottom.setOnClickListener(Click_buttom);
-        tltrbuleftsearchBottom.setOnClickListener(Click_buttom);
-        tltrburightsearchBottom.setOnClickListener(Click_buttom);
+        //tltrbuleftsearchBottom.setOnClickListener(Click_buttom);
+        //tltrburightsearchBottom.setOnClickListener(Click_buttom);
         tltrbutheleftBottom.setOnClickListener(Click_buttom);
         tltrbuleftBottom.setOnClickListener(Click_buttom);
         tltrbucentreBottom .setOnClickListener(Click_buttom);
@@ -588,7 +600,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     public void displayresults(String numFound,String currentPage,String numOfPage){
         OfPage = Integer.parseInt(numOfPage);
         buPage = Integer.parseInt(currentPage);
-        tltrtvtitle.setText(getString(R.string.kensakukekka) + numFound + getString(R.string.ken)  + currentPage + getString(R.string.pagemei) + numOfPage + getString(R.string.page));
+        tltrtvtitle.setText(getString(R.string.kensakukekka) + numFound + getString(R.string.ken) + getString(R.string.kuhaku) + currentPage + getString(R.string.pagemei)  + numOfPage + getString(R.string.page));
         Buttom_set(OfPage,Integer.parseInt(currentPage));
     }
     public void addresults(JSONArray data){
@@ -862,10 +874,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                         Textpage = String.valueOf(i);
                     }
                     break;
-                case R.id.tl_tr_bu_leftsearch:
+/*                case R.id.tl_tr_bu_leftsearch:
                 case R.id.tl_tr_bu_leftsearch_Bottom:
                     Textpage = tltrbuleftsearch.getText().toString();
-                    break;
+                    break;*/
                 case R.id.tl_tr_bu_theleft:
                 case R.id.tl_tr_bu_theleft_Bottom:
                     Textpage = tltrbutheleft.getText().toString();
@@ -886,10 +898,10 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 case R.id.tl_tr_bu_theright_Bottom:
                     Textpage = tltrbutheright.getText().toString();
                     break;
-                case R.id.tl_tr_bu_rightsearch:
+/*                case R.id.tl_tr_bu_rightsearch:
                 case R.id.tl_tr_bu_rightsearch_Bottom:
                     Textpage = tltrburightsearch.getText().toString();
-                    break;
+                    break;*/
                 case R.id.tl_tr_bu_Next:
                 case R.id.tl_tr_bu_Next_Bottom:
                     PageNum = Integer.parseInt(page);
@@ -907,61 +919,70 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
     };
     public void Buttom_set(int numOfPage,int PageNum){
         String butNumflg = "";
-        tltrbuleftsearch.setTextColor(Color.parseColor("#0196FF"));
+        //tltrbuleftsearch.setTextColor(Color.parseColor("#0196FF"));
         tltrbutheleft.setTextColor(Color.parseColor("#0196FF"));
         tltrbuleft.setTextColor(Color.parseColor("#0196FF"));
         tltrbucentre.setTextColor(Color.parseColor("#0196FF"));
         tltrburight.setTextColor(Color.parseColor("#0196FF"));
         tltrbutheright.setTextColor(Color.parseColor("#0196FF"));
-        tltrburightsearch.setTextColor(Color.parseColor("#0196FF"));
+        //.setTextColor(Color.parseColor("#0196FF"));
 
-        tltrbuleftsearchBottom.setTextColor(Color.parseColor("#0196FF"));
+       // tltrbuleftsearchBottom.setTextColor(Color.parseColor("#0196FF"));
         tltrbutheleftBottom.setTextColor(Color.parseColor("#0196FF"));
         tltrbuleftBottom.setTextColor(Color.parseColor("#0196FF"));
         tltrbucentreBottom.setTextColor(Color.parseColor("#0196FF"));
         tltrburightBottom.setTextColor(Color.parseColor("#0196FF"));
         tltrbutherightBottom.setTextColor(Color.parseColor("#0196FF"));
-        tltrburightsearchBottom.setTextColor(Color.parseColor("#0196FF"));
+        //tltrburightsearchBottom.setTextColor(Color.parseColor("#0196FF"));
 
-        tltrbuleftsearch.setBackgroundColor(Color.parseColor("#EEF9FF"));
+        //tltrbuleftsearch.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbutheleft.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbuleft.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbucentre.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrburight.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbutheright.setBackgroundColor(Color.parseColor("#EEF9FF"));
-        tltrburightsearch.setBackgroundColor(Color.parseColor("#EEF9FF"));
+       // tltrburightsearch.setBackgroundColor(Color.parseColor("#EEF9FF"));
 
-        tltrbuleftsearchBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
+        tltrbuBefore.setBackgroundResource(R.color.backgroundblue);
+
+        tltrbuBeforeBottom.setBackgroundResource(R.color.backgroundblue);
+       // tltrbuleftsearchBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbutheleftBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbuleftBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbucentreBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrburightBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
         tltrbutherightBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
-        tltrburightsearchBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
+       // tltrburightsearchBottom.setBackgroundColor(Color.parseColor("#EEF9FF"));
+        tltrbuNext.setBackgroundResource(R.color.backgroundblue);
+        tltrbuNextBottom.setBackgroundResource(R.color.backgroundblue);
 
         tltrbuBefore.setText("");
-        tltrbuleftsearch.setText("");
+        //tltrbuleftsearch.setText("");
         tltrbutheleft.setText("");
         tltrbuleft.setText("");
         tltrbucentre.setText("");
         tltrburight.setText("");
         tltrbutheright.setText("");
-        tltrburightsearch.setText("");
+       // tltrburightsearch.setText("");
         tltrbuNext.setText("");
 
         tltrbuBeforeBottom.setText("");
-        tltrbuleftsearchBottom.setText("");
+        //tltrbuleftsearchBottom.setText("");
         tltrbutheleftBottom.setText("");
         tltrbuleftBottom.setText("");
         tltrbucentreBottom.setText("");
         tltrburightBottom.setText("");
         tltrbutherightBottom.setText("");
-        tltrburightsearchBottom.setText("");
+        //tltrburightsearchBottom.setText("");
         tltrbuNextBottom.setText("");
 
         if(PageNum > 1) {
             tltrbuBefore.setText(getString(R.string.maehe));
             tltrbuBeforeBottom.setText(getString(R.string.maehe));
+            tltrbuBefore.setVisibility(View.VISIBLE);
+            tltrbuBeforeBottom.setVisibility(View.VISIBLE);
+           //tltrbuInvisiable.setVisibility(View.GONE);
+           //tltrbuInvisiableBottom.setVisibility(View.GONE);
         }
         if(PageNum < numOfPage) {
             tltrbuNext.setText(getString(R.string.tsugihe));
@@ -969,24 +990,32 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
         }
 
         if(PageNum == 1) {
-            leftsearch = PageNum;
-            theleft = PageNum + 1;
-            left = PageNum + 2;
-            centre = PageNum + 3;
-            right = PageNum + 4;
-            theright = PageNum + 5;
-            rightsearch = PageNum + 6;
-            butNumflg = getString(R.string.leftsearch);
-        }else if(PageNum == 2) {
-            leftsearch = PageNum - 1;
-            theleft = PageNum;
+            //leftsearch = PageNum;
+            theleft = PageNum + 0;
             left = PageNum + 1;
             centre = PageNum + 2;
             right = PageNum + 3;
             theright = PageNum + 4;
-            rightsearch = PageNum + 5;
+            //rightsearch = PageNum + 6;
+            //butNumflg = getString(R.string.leftsearch);
             butNumflg = getString(R.string.theleft);
-        }else if(PageNum == 3) {
+            tltrbuBefore.setVisibility(View.INVISIBLE);
+            tltrbuBefore.setVisibility(View.INVISIBLE);
+            //tltrbuBefore.setVisibility(View.GONE);
+            //tltrbuBeforeBottom.setVisibility(View.GONE);
+            //tltrbuInvisiable.setVisibility(View.INVISIBLE);
+            //tltrbuInvisiableBottom.setVisibility(View.INVISIBLE);
+        }else if(PageNum == 2) {
+            //leftsearch = PageNum - 1;
+            theleft = PageNum - 1;
+            left = PageNum + 0;
+            centre = PageNum + 1;
+            right = PageNum + 2;
+            theright = PageNum + 3;
+            //rightsearch = PageNum + 5;
+           //butNumflg = getString(R.string.theleft);
+            butNumflg = getString(R.string.left);
+        }/*else if(PageNum == 3) {
             leftsearch = PageNum - 2;
             theleft = PageNum - 1;
             left = PageNum;
@@ -1004,35 +1033,38 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
             theright = PageNum + 1;
             rightsearch = PageNum + 2;
             butNumflg = getString(R.string.right);
-        }else if(PageNum + 1 == numOfPage) {
-            leftsearch = PageNum - 5;
+        }*/else if(PageNum + 1 == numOfPage) {
+            //leftsearch = PageNum - 5;
+            theleft = PageNum - 3;
+            left = PageNum - 2;
+            centre = PageNum - 1;
+            right = PageNum - 0;
+            theright = PageNum + 1;
+            //rightsearch = PageNum + 1;
+            //butNumflg = getString(R.string.theright);
+            butNumflg = getString(R.string.right);
+        }else if(PageNum == numOfPage) {
+            //leftsearch = PageNum - 6;
             theleft = PageNum - 4;
             left = PageNum - 3;
             centre = PageNum - 2;
             right = PageNum - 1;
-            theright = PageNum;
-            rightsearch = PageNum + 1;
+            theright = PageNum - 0;
+           // rightsearch = PageNum;
+           //butNumflg = getString(R.string.rightsearch);
             butNumflg = getString(R.string.theright);
-        }else if(PageNum == numOfPage) {
-            leftsearch = PageNum - 6;
-            theleft = PageNum - 5;
-            left = PageNum - 4;
-            centre = PageNum - 3;
-            right = PageNum - 2;
-            theright = PageNum - 1;
-            rightsearch = PageNum;
-            butNumflg = getString(R.string.rightsearch);
         }else {
-            leftsearch = PageNum - 3;
+           // leftsearch = PageNum - 3;
             theleft = PageNum - 2;
             left = PageNum - 1;
             centre = PageNum;
             right = PageNum + 1;
             theright = PageNum + 2;
-            rightsearch = PageNum + 3;
+           // rightsearch = PageNum + 3;
             butNumflg = getString(R.string.centre);
         }
-        if(leftsearch <= numOfPage){
+
+ /*       if(leftsearch <= numOfPage){
             tltrbuleftsearch.setText(String.valueOf(leftsearch));
             tltrbuleftsearchBottom.setText(String.valueOf(leftsearch));
             if(butNumflg.equals(getString(R.string.leftsearch))){
@@ -1044,7 +1076,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 tltrbuleftsearch.setBackgroundResource(R.drawable.ic_shape_bule);
                 tltrbuleftsearchBottom.setBackgroundResource(R.drawable.ic_shape_bule);
             }
-        }
+        }*/
         if(theleft <= numOfPage){
             tltrbutheleft.setText(String.valueOf(theleft));
             tltrbutheleftBottom.setText(String.valueOf(theleft));
@@ -1110,7 +1142,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 tltrbutherightBottom.setBackgroundResource(R.drawable.ic_shape_bule);
             }
         }
-        if(rightsearch <= numOfPage){
+        /*if(rightsearch <= numOfPage){
             tltrburightsearch.setText(String.valueOf(rightsearch));
             tltrburightsearchBottom.setText(String.valueOf(rightsearch));
             if(butNumflg.equals(getString(R.string.rightsearch))){
@@ -1122,7 +1154,7 @@ public class SearchResultsActivity extends AppCompatActivity implements View.OnC
                 tltrburightsearch.setBackgroundResource(R.drawable.ic_shape_bule);
                 tltrburightsearchBottom.setBackgroundResource(R.drawable.ic_shape_bule);
             }
-        }
+        }*/
         svsearch.post(new Runnable() {
             @Override
             public void run() {
