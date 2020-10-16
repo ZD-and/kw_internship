@@ -78,6 +78,12 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_user);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         ActivityCollector.addActivity(this);
         load();
         Initialization();
@@ -317,6 +323,8 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
             }
             MoveIntent(getString(R.string.Agreement));
         }
+        Log.d("privacypolicyflg",MyApplication.getprivacypolicyflg());
+        Log.d("termsofserviceflg",MyApplication.gettermsofserviceflg());
     }
 
     public void MoveIntent(String Activity){
@@ -327,7 +335,7 @@ public class MakeUserActivity extends AppCompatActivity implements View.OnClickL
         } else {
             intent.setClass(MakeUserActivity.this, AgreementActivity.class);
         }
-        startActivity(intent);
+         startActivity(intent);
     }
 
     public static String JsonChnge(String AesKey,PostDate Data) {

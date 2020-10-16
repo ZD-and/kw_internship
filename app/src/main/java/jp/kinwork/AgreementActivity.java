@@ -77,6 +77,8 @@ public class AgreementActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     mMyApplication.setprivacypolicyflg("1");
                 }
+                //Log.d("termsofserviceflg",mMyApplication.gettermsofserviceflg());
+                //Log.d("privacypolicyflg",mMyApplication.getprivacypolicyflg());
                 break;
         }
         Intent intent = new Intent();

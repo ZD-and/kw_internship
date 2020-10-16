@@ -122,13 +122,13 @@
 
             <TableRow
                 android:layout_marginTop="5dp">
+
                 <ImageView
                     android:id="@+id/iv_termsofservice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    app:srcCompat="@drawable/ic_check_box_outline"
-                    />
+                    app:srcCompat="@drawable/ic_check_box_outline" />
 
                 <TextView
                     android:id="@+id/tv_termsofservice"
